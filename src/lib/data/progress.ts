@@ -162,6 +162,75 @@ export function markModuleCompleted(dbms: string, moduleId: number): void {
 	}
 }
 
+export function unmarkTaskCompleted(
+	dbms: string,
+	moduleId: number,
+	taskIndexOrId: number
+): void {
+	const prog = getProgress(dbms);
+	const mod = prog.modules[moduleId];
+	if (!mod) return;
+
+	let targetIndex = taskIndexOrId;
+	if (mod.questionIds && mod.questionIds.includes(taskIndexOrId)) {
+		const qIdx = mod.questionIds.indexOf(taskIndexOrId);
+		if (qIdx !== -1 && (!mod.completedTasks?.includes(taskIndexOrId) || taskIndexOrId >= mod.questionIds.length)) {
+			targetIndex = qIdx;
+		}
+	}
+
+	const updatedCompleted = (mod.completedTasks || []).filter((idx) => idx !== targetIndex);
+	saveProgress(dbms, {
+		...prog,
+		modules: {
+			...prog.modules,
+			[moduleId]: {
+				...mod,
+				completedTasks: updatedCompleted
+			}
+		}
+	});
+}
+
+export function unmarkChallengeTaskCompleted(
+	dbms: string,
+	taskIndexOrId: number
+): void {
+	const prog = getProgress(dbms);
+	if (!prog.challenge) return;
+
+	let targetIndex = taskIndexOrId;
+	if (prog.challenge.questionIds && prog.challenge.questionIds.includes(taskIndexOrId)) {
+		const qIdx = prog.challenge.questionIds.indexOf(taskIndexOrId);
+		if (qIdx !== -1 && (!prog.challenge.completedTasks?.includes(taskIndexOrId) || taskIndexOrId >= prog.challenge.questionIds.length)) {
+			targetIndex = qIdx;
+		}
+	}
+
+	const updatedCompleted = (prog.challenge.completedTasks || []).filter((idx) => idx !== targetIndex);
+	const isAllPassed = prog.challenge.questionIds ? updatedCompleted.length === prog.challenge.questionIds.length : false;
+
+	saveProgress(dbms, {
+		...prog,
+		challenge: {
+			...prog.challenge,
+			completedTasks: updatedCompleted,
+			passed: isAllPassed
+		}
+	});
+}
+
+export const progressStore = {
+	getProgress,
+	saveProgress,
+	clearProgress,
+	markModuleCompleted,
+	unmarkTaskCompleted,
+	getChallengeProgress,
+	saveChallengeProgress,
+	unmarkChallengeTaskCompleted
+};
+
 export function getChallengeProgress(dbms: string): ChallengeProgress | null {
 	const prog = getProgress(dbms);
 	return prog.challenge || null;

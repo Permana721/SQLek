@@ -1,6 +1,6 @@
 import type { Question, Module, LocalizedString, SyntaxPatternItem, SchemaBlueprintColumn, QuestionEngineOverride, MockPreviewData } from './types';
 export type { Question, Module, LocalizedString, SyntaxPatternItem, SchemaBlueprintColumn, QuestionEngineOverride, MockPreviewData };
-export { STATIC_TABLE_PREVIEWS, getQuestionPreviewData } from './previewData';
+export { STATIC_TABLE_PREVIEWS, getQuestionPreviewData, fetchDynamicPreview, fetchAllDynamicPreviews } from './previewData';
 
 const mod1Seed = `CREATE TABLE movies (id INT, title TEXT, director TEXT, year INT, rating NUMERIC(3,1));
 INSERT INTO movies VALUES 
@@ -3893,8 +3893,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all unique `status` values from `items`, ordered alphabetically.",
-                id: "Ambil seluruh nilai unik kolom `status` dari tabel `items`, diurutkan secara alfabetis."
+                en: "Retrieve all unique status values from items, ordered alphabetically.",
+                id: "Ambil seluruh nilai unik kolom status dari tabel items, diurutkan secara alfabetis."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT DISTINCT status FROM items ORDER BY status;",
@@ -4657,12 +4657,12 @@ function generateModule2(): Question[] {
                         en: "SELECT DISTINCT syntax",
                         id: "Syntax eliminasi data kembar dengan DISTINCT"
                     },
-                    code: "SELECT DISTINCT column_name FROM mytable ORDER BY column_name;"
+                    code: "SELECT DISTINCT column_name FROM mytable WHERE filter_col = 'val' ORDER BY column_name;"
                 }
             ],
             instructions: {
-                en: "Retrieve unique `status` values for items in category `'Furniture'`, ordered alphabetically.",
-                id: "Ambil nilai unik `status` untuk barang pada kategori `'Furniture'`, diurutkan secara alfabetis."
+                en: "Retrieve unique `status` values for items in category 'Furniture', ordered alphabetically.",
+                id: "Ambil nilai unik `status` untuk barang pada kategori 'Furniture', diurutkan secara alfabetis."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT DISTINCT status FROM items WHERE category = 'Furniture' ORDER BY status;",

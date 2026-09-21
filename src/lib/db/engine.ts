@@ -8,19 +8,59 @@ export class PgliteEngine implements IDbEngine {
 	private db: PGlite | null = null;
 
 	async init(seedSql: string): Promise<void> {
-		await this.destroy();
+		if (this.db) {
+			try {
+				await this.db.exec(`
+					ROLLBACK;
+					SET search_path TO public;
+					DO $$ 
+					DECLARE 
+						s text;
+					BEGIN
+						FOR s IN 
+							SELECT nspname FROM pg_namespace 
+							WHERE nspname NOT IN ('pg_catalog', 'information_schema', 'pg_toast') 
+							  AND nspname NOT LIKE 'pg_temp_%' 
+							  AND nspname NOT LIKE 'pg_toast_temp_%'
+						LOOP
+							EXECUTE 'DROP SCHEMA IF EXISTS ' || quote_ident(s) || ' CASCADE';
+						END LOOP;
+					END $$;
+					CREATE SCHEMA public;
+					GRANT ALL ON SCHEMA public TO public;
+				`);
+				if (seedSql && seedSql.trim()) {
+					await this.db.exec(seedSql);
+				}
+				return;
+			} catch (e) {
+				await this.destroy();
+			}
+		}
+
 		this.db = new PGlite();
-		if (seedSql.trim()) {
+		if (seedSql && seedSql.trim()) {
 			await this.db.exec(seedSql);
 		}
 	}
 
 	async query(sql: string): Promise<DbResult> {
 		if (!this.db) throw new Error('Database engine not initialized');
-		const res = await this.db.query(sql);
-		const rows = (res.rows || []) as Record<string, any>[];
-		const columns = res.fields ? res.fields.map(f => f.name) : (rows.length > 0 ? Object.keys(rows[0]) : []);
-		return { columns, rows };
+		try {
+			const res = await this.db.query(sql);
+			const rows = (res.rows || []) as Record<string, any>[];
+			const columns = res.fields ? res.fields.map(f => f.name) : (rows.length > 0 ? Object.keys(rows[0]) : []);
+			return { columns, rows };
+		} catch (e: any) {
+			if (e && (e.code === '42601' || /cannot insert multiple commands/i.test(e.message || ''))) {
+				const execRes = await this.db.exec(sql);
+				const lastRes = execRes.length > 0 ? execRes[execRes.length - 1] : { rows: [], fields: [] };
+				const rows = (lastRes.rows || []) as Record<string, any>[];
+				const columns = lastRes.fields ? lastRes.fields.map(f => f.name) : (rows.length > 0 ? Object.keys(rows[0]) : []);
+				return { columns, rows };
+			}
+			throw e;
+		}
 	}
 
 	async destroy(): Promise<void> {
@@ -113,14 +153,15 @@ export class SqlJsEngine implements IDbEngine {
 	async init(seedSql: string): Promise<void> {
 		await this.destroy();
 		if (!sqlInstance) {
-			sqlInstance = await initSqlJs({
+			const options = typeof window !== 'undefined' ? {
 				locateFile: (file: string) => {
 					if (file === 'sql-wasm-browser.wasm') {
 						return '/sql-wasm.wasm';
 					}
 					return `/${file}`;
 				}
-			});
+			} : undefined;
+			sqlInstance = await initSqlJs(options);
 		}
 		this.db = new sqlInstance.Database();
 		this.db.create_function('JSON_CONTAINS', (target: string, candidate: string, path?: string) => {

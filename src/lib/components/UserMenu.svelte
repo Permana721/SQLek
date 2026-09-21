@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { locale, t } from '$lib/data/locale';
+	import { hideSyntaxPattern, toggleHideSyntaxPattern } from '$lib/stores/preferences';
 
 	let {
 		engine = 'postgres',
@@ -17,6 +18,10 @@
 
 	function toggleMenu() {
 		isOpen = !isOpen;
+	}
+
+	function handleToggleSyntaxPattern() {
+		toggleHideSyntaxPattern();
 	}
 
 	function handleReset() {
@@ -69,7 +74,7 @@
 
 	{#if isOpen}
 		<div
-			class="absolute right-0 mt-2 w-56 origin-top-right rounded-lg bg-zinc-950 border border-zinc-800 shadow-2xl p-1 z-50 focus:outline-none"
+			class="absolute right-0 mt-2 w-60 origin-top-right rounded-lg bg-zinc-950 border border-zinc-850 shadow-2xl p-1 z-50 focus:outline-none"
 			role="menu"
 		>
 			<div class="px-3 py-2 border-b border-zinc-850">
@@ -80,6 +85,49 @@
 			</div>
 
 			<div class="p-1">
+				<button
+					type="button"
+					onclick={handleToggleSyntaxPattern}
+					class="w-full flex items-center gap-2 px-2.5 py-1.5 text-xs font-mono rounded-md text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900 transition-colors text-left"
+					role="menuitem"
+				>
+					{#if $hideSyntaxPattern}
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="w-3.5 h-3.5 shrink-0"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+							<circle cx="12" cy="12" r="3" />
+						</svg>
+						<span>{t[$locale].showSyntaxPattern}</span>
+					{:else}
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="w-3.5 h-3.5 shrink-0"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+							<path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+							<path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+							<line x1="2" x2="22" y1="2" y2="22" />
+						</svg>
+						<span>{t[$locale].hideSyntaxPattern}</span>
+					{/if}
+				</button>
+
+				<div class="my-1 border-t border-zinc-850"></div>
+
 				{#if onResetDatabase}
 					<button
 						type="button"

@@ -69,7 +69,12 @@ export const t = {
 		taskHeader: (curr: number, total: number) => `Task ${curr} of ${total}`,
 		previewBadge: (n: number) => `Preview Only (Complete Task ${n} to Unlock Execution)`,
 		completedBadge: "Completed",
-		initialTablePreview: (name: string) => `Initial Table Preview (${name})`,
+		initialTablePreview: (name: string, info?: string) =>
+			info ? `Initial Table Preview (${name} - ${info})` : `Initial Table Preview (${name})`,
+		showingRowsInfo: (shown: number, total: number) =>
+			shown < total ? `Showing first ${shown} of ${total} rows` : `${total} rows`,
+		showAllRows: (total: number) => `Show all (${total})`,
+		showFewerRows: (limit: number) => `Show first ${limit}`,
 		targetSchemaBlueprint: "Target Schema Blueprint",
 		sampleRecordsExpected: "Sample records expected in the schema:",
 		ddlTableNotCreatedMsg: "This table does not exist yet. Run your DDL query to create it.",
@@ -95,12 +100,14 @@ export const t = {
 		sessionInfo: "Session Info",
 		resetSession: "Reset Session",
 		resetDatabase: "Reset Database",
+		hideSyntaxPattern: "Hide Syntax Pattern",
+		showSyntaxPattern: "Show Syntax Pattern",
 		engine: "Engine",
 		// Challenge Mode
 		finalBossBadge: "FINAL BOSS",
 		challengeTitle: "Comprehensive Random Exam",
 		challengeDesc: "Test your end-to-end database mastery. Questions from all modules (DDL, WHERE, Aggregations, Relations, Subqueries, Window Functions, Transactions, through Indexing) are completely randomized with dynamic contexts.",
-		challengeTasksCount: "20 Randomized Tasks per Session",
+		challengeTasksCount: "30 Randomized Tasks per Session",
 		challengeUnlockCondition: "Complete Modules 1–9 to unlock",
 		challengeStartBtn: "Start Exam →",
 		challengeLockedBtn: "Locked",
@@ -108,7 +115,7 @@ export const t = {
 		challengeCompletedBadge: "Exam Passed",
 		finishExamNav: "Finish Exam & Back to Menu",
 		challengeCongratulations: "🏆 Comprehensive Challenge Completed! Incredible Mastery!",
-		challengeCompleteMsg: "You have conquered all 20 randomized challenge tasks across all curriculum modules!",
+		challengeCompleteMsg: "You have conquered all 30 randomized challenge tasks across all curriculum modules!",
 		challengeRedirectToast: "Complete Modules 1 through 9 to unlock the Comprehensive Challenge."
 	},
 	id: {
@@ -144,7 +151,12 @@ export const t = {
 		taskHeader: (curr: number, total: number) => `Soal ${curr} dari ${total}`,
 		previewBadge: (n: number) => `Preview (Selesaikan Soal ${n} untuk Membuka Eksekusi)`,
 		completedBadge: "Selesai",
-		initialTablePreview: (name: string) => `Preview Tabel (${name})`,
+		initialTablePreview: (name: string, info?: string) =>
+			info ? `Preview Tabel (${name} - ${info})` : `Preview Tabel (${name})`,
+		showingRowsInfo: (shown: number, total: number) =>
+			shown < total ? `Menampilkan ${shown} dari ${total} baris` : `${total} baris`,
+		showAllRows: (total: number) => `Tampilkan semua (${total})`,
+		showFewerRows: (limit: number) => `Tampilkan ${limit} baris`,
 		targetSchemaBlueprint: "Struktur Skema Target",
 		sampleRecordsExpected: "Contoh data yang diharapkan pada skema ini:",
 		ddlTableNotCreatedMsg: "Tabel ini belum ada di database. Jalankan query DDL untuk membuatnya.",
@@ -170,12 +182,14 @@ export const t = {
 		sessionInfo: "Info Sesi",
 		resetSession: "Reset Sesi",
 		resetDatabase: "Reset Database",
+		hideSyntaxPattern: "Sembunyikan Syntax Pattern",
+		showSyntaxPattern: "Tampilkan Syntax Pattern",
 		engine: "Engine",
 		// Challenge Mode
 		finalBossBadge: "FINAL BOSS",
 		challengeTitle: "Simulasi Ujian & Latihan Acak",
 		challengeDesc: "Uji pemahaman komprehensifmu! Soal-soal dari seluruh modul (DDL, WHERE, Agregasi, JOIN, Subquery, Window Functions, Transaksi, hingga Indexing) akan diacak tanpa urutan kategori tertentu.",
-		challengeTasksCount: "20 Soal Acak per Sesi",
+		challengeTasksCount: "30 Soal Acak per Sesi",
 		challengeUnlockCondition: "Selesaikan Modul 1–9 untuk membuka",
 		challengeStartBtn: "Mulai Ujian →",
 		challengeLockedBtn: "Terkunci",
@@ -183,7 +197,7 @@ export const t = {
 		challengeCompletedBadge: "Ujian Selesai",
 		finishExamNav: "Selesai & Kembali ke Menu",
 		challengeCongratulations: "🏆 Ujian Komprehensif Selesai! Luar Biasa!",
-		challengeCompleteMsg: "Kamu telah berhasil menuntaskan seluruh 20 soal tantangan acak dari semua modul kurikulum!",
+		challengeCompleteMsg: "Kamu telah berhasil menuntaskan seluruh 30 soal tantangan acak dari semua modul kurikulum!",
 		challengeRedirectToast: "Selesaikan Modul 1 sampai 9 terlebih dahulu sebelum membuka Ujian Komprehensif."
 	}
 };

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { MODULES, resolveQuestionForEngine, type Question } from '$lib/data/questions';
+import { getRandomizedExamPool } from '$lib/utils/shuffle';
 
 describe('Curriculum & Question Bank Integrity', () => {
 	const allQuestions: Question[] = MODULES.flatMap((m) => m.questions);
@@ -277,6 +278,62 @@ describe('Curriculum & Question Bank Integrity', () => {
 				expect(q.mockPreviewData!.columns.length).toBeGreaterThan(0);
 				expect(Array.isArray(q.mockPreviewData?.rows)).toBe(true);
 				expect(q.mockPreviewData!.rows.length).toBeGreaterThan(0);
+			}
+		});
+	});
+
+	describe('Challenge Mode Randomized Exam Pool', () => {
+		it('returns exactly 30 questions by default for postgres', () => {
+			const pool = getRandomizedExamPool('postgres');
+			expect(pool.length).toBe(30);
+			const uniqueIds = new Set(pool.map((q) => q.id));
+			expect(uniqueIds.size).toBe(30);
+		});
+
+		it('returns exactly 30 questions by default for mysql', () => {
+			const pool = getRandomizedExamPool('mysql');
+			expect(pool.length).toBe(30);
+			const uniqueIds = new Set(pool.map((q) => q.id));
+			expect(uniqueIds.size).toBe(30);
+		});
+
+		it('supports custom questionCount when provided', () => {
+			const pool = getRandomizedExamPool('postgres', 15);
+			expect(pool.length).toBe(15);
+		});
+
+		it('resolves questions for the requested engine (applying engine overrides)', () => {
+			const pool = getRandomizedExamPool('mysql', 30);
+			for (const q of pool) {
+				expect(q.expected_query).toBeTruthy();
+				expect(q.instructions.en).toBeTruthy();
+			}
+		});
+	});
+
+	describe('Module 2 Slot 7 DISTINCT Integrity', () => {
+		it('verifies instructions, expected_query, and syntaxPatterns consistency across variations', () => {
+			const mod2 = MODULES.find((m) => m.id === 2)!;
+			const slot7Questions = mod2.questions.filter((q) => q.categorySlot === 7);
+			expect(slot7Questions.length).toBe(5);
+
+			for (const q of slot7Questions) {
+				if (q.instructions.en.includes('Furniture') || q.instructions.id.includes('Furniture')) {
+					expect(q.expected_query).toBe(
+						"SELECT DISTINCT status FROM items WHERE category = 'Furniture' ORDER BY status;"
+					);
+					expect(q.syntaxPatterns[0].code).toBe(
+						"SELECT DISTINCT column_name FROM mytable WHERE filter_col = 'val' ORDER BY column_name;"
+					);
+				}
+				if (q.expected_query === 'SELECT DISTINCT status FROM items ORDER BY status;') {
+					expect(q.instructions.en).toBe(
+						'Retrieve all unique status values from items, ordered alphabetically.'
+					);
+					expect(q.instructions.id).toBe(
+						'Ambil seluruh nilai unik kolom status dari tabel items, diurutkan secara alfabetis.'
+					);
+				}
 			}
 		});
 	});

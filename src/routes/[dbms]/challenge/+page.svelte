@@ -4,15 +4,16 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { MODULES, resolveQuestionForEngine, type Question } from '$lib/data/questions';
-	import { getQuestionPreviewData } from '$lib/data/previewData';
+	import { getQuestionPreviewData, fetchAllDynamicPreviews, type MockPreviewData } from '$lib/data/previewData';
 	import { getRandomizedExamPool } from '$lib/utils/shuffle';
 	import { createDbEngine, type IDbEngine, type DbResult } from '$lib/db/engine';
-	import { getProgress, isExamUnlocked, saveChallengeProgress, isAdminMode } from '$lib/data/progress';
+	import { getProgress, isExamUnlocked, saveChallengeProgress, unmarkChallengeTaskCompleted, isAdminMode } from '$lib/data/progress';
 	import SqlEditor from '$lib/components/SqlEditor.svelte';
 	import UserMenu from '$lib/components/UserMenu.svelte';
 	import LanguageToggle from '$lib/components/LanguageToggle.svelte';
 	import Logo from '$lib/components/Logo.svelte';
 	import { locale, t } from '$lib/data/locale';
+	import { hideSyntaxPattern } from '$lib/stores/preferences';
 
 	const dbmsParam = $derived(page.params.dbms === 'mysql' ? 'mysql' : 'postgres');
 	const dbmsLabel = $derived(dbmsParam.toUpperCase());
@@ -33,7 +34,30 @@
 	let isLastTask = $derived(sampledQuestions.length > 0 && currentIndex === sampledQuestions.length - 1);
 	let isAllCompleted = $derived(sampledQuestions.length > 0 && completedIndices.length === sampledQuestions.length);
 
-	let seedDataResult = $derived(getQuestionPreviewData(currentQuestion));
+	// Dynamic live preview state synchronized with WASM database
+	let dynamicPreviews = $state<Record<string, MockPreviewData>>({});
+	let activePreviewTable = $state<string>('');
+	let previewLimit = $state<number>(10);
+	let previewRequestId = 0;
+
+	let activePreviewData = $derived.by(() => {
+		if (currentQuestion?.isDdlCreate) {
+			return getQuestionPreviewData(currentQuestion);
+		}
+		const tName = activePreviewTable || currentQuestion?.table_names?.[0];
+		if (tName && dynamicPreviews[tName]) {
+			return dynamicPreviews[tName];
+		}
+		return getQuestionPreviewData(currentQuestion, tName);
+	});
+
+	let previewRowInfo = $derived.by(() => {
+		if (currentQuestion?.isDdlCreate) return '';
+		if (!activePreviewData || activePreviewData.totalRowCount === undefined) return '';
+		const shown = activePreviewData.rows ? activePreviewData.rows.length : 0;
+		const total = activePreviewData.totalRowCount;
+		return t[$locale].showingRowsInfo(shown, total);
+	});
 
 	let dbEngine: IDbEngine | null = null;
 	let activeDbms: string | null = null;
@@ -42,6 +66,9 @@
 	let queryResult = $state<DbResult | null>(null);
 	let queryError = $state<string | null>(null);
 	let isRunningQuery = $state(false);
+
+	// In-memory cache of user input per question id
+	const userDrafts = new Map<number, string>();
 
 	const expectedResultsCache = new Map<string, DbResult>();
 
@@ -70,31 +97,105 @@
 		return dbEngine;
 	}
 
-	async function handleResetDatabase() {
-		if (!currentQuestion) return;
-		if (dbEngine && activeDbms === dbmsParam) {
-			await dbEngine.init(currentQuestion.seed_sql || '');
-		} else {
-			await ensureChallengeEngine(currentQuestion.seed_sql || '', dbmsParam);
+	async function initChallengeEngineAndPreview(q: Question | null, dbms: 'mysql' | 'postgres', limit: number = previewLimit) {
+		if (!q) return;
+		const reqId = ++previewRequestId;
+		try {
+			const engine = await ensureChallengeEngine(q.seed_sql || '', dbms);
+			if (reqId !== previewRequestId) return;
+			if (!q.isDdlCreate) {
+				const previews = await fetchAllDynamicPreviews(engine, q, limit);
+				if (reqId !== previewRequestId) return;
+				dynamicPreviews = previews;
+			} else {
+				dynamicPreviews = {};
+			}
+		} catch (e) {
+			console.error('Failed to initialize challenge engine and preview:', e);
 		}
-		queryResult = null;
-		queryError = null;
 	}
 
+	async function togglePreviewLimit() {
+		const newLimit = previewLimit === 10 ? 0 : 10;
+		previewLimit = newLimit;
+		if (currentQuestion) {
+			await initChallengeEngineAndPreview(currentQuestion, dbmsParam, newLimit);
+		}
+	}
+
+	async function handleResetDatabase() {
+		if (!currentQuestion) return;
+
+		// 1. Re-seed database instance
+		await ensureChallengeEngine(currentQuestion.seed_sql || '', dbmsParam);
+
+		// 2. Clear query input and output state
+		userCode = '';
+		queryResult = null;
+		queryError = null;
+
+		// 3. Clear draft cache for this specific task
+		if (rawCurrentQuestion) {
+			userDrafts.delete(rawCurrentQuestion.id);
+			if (typeof window !== 'undefined') {
+				try {
+					localStorage.removeItem(`sqlek_draft_${rawCurrentQuestion.id}`);
+				} catch (e) {
+					// Ignore storage error
+				}
+			}
+		}
+
+		// 4. Invalidate progress for this specific task slot index only
+		completedIndices = completedIndices.filter((idx) => idx !== currentIndex);
+		challengePassed = sampledQuestions.length > 0 && completedIndices.length === sampledQuestions.length;
+		unmarkChallengeTaskCompleted(dbmsParam, currentIndex);
+
+		// 5. Refresh preview tables
+		activePreviewTable = currentQuestion.table_names?.[0] || 'Schema';
+		await initChallengeEngineAndPreview(currentQuestion, dbmsParam, previewLimit);
+	}
+
+	// Instant 0ms synchronous task switching with background WASM preview sync
 	function selectTask(idx: number) {
 		if (idx < 0 || idx >= sampledQuestions.length) return;
+
+		// Save draft of currently active question before switching
+		if (rawCurrentQuestion) {
+			if (userCode) {
+				userDrafts.set(rawCurrentQuestion.id, userCode);
+				if (typeof window !== 'undefined') {
+					try {
+						localStorage.setItem(`sqlek_draft_${rawCurrentQuestion.id}`, userCode);
+					} catch (e) {}
+				}
+			} else {
+				userDrafts.delete(rawCurrentQuestion.id);
+				if (typeof window !== 'undefined') {
+					try {
+						localStorage.removeItem(`sqlek_draft_${rawCurrentQuestion.id}`);
+					} catch (e) {}
+				}
+			}
+		}
+
 		currentIndex = idx;
 		queryResult = null;
 		queryError = null;
 
-		const q = resolveQuestionForEngine(sampledQuestions[idx], dbmsParam);
-		if (q.starterQuery) {
-			userCode = q.starterQuery;
-		} else if (q.table_names && q.table_names.length > 0) {
-			userCode = `SELECT * FROM ${q.table_names[0]};`;
-		} else {
-			userCode = '-- Write your query here';
+		// Strictly default to empty string unless the user has actively typed a draft
+		const nextQ = sampledQuestions[idx];
+		let draft = (nextQ && userDrafts.get(nextQ.id)) || '';
+		if (!draft && nextQ && typeof window !== 'undefined') {
+			try {
+				draft = localStorage.getItem(`sqlek_draft_${nextQ.id}`) || '';
+			} catch (e) {}
 		}
+		userCode = draft;
+
+		const q = resolveQuestionForEngine(sampledQuestions[idx], dbmsParam);
+		activePreviewTable = q.table_names?.[0] || 'Schema';
+		initChallengeEngineAndPreview(q, dbmsParam, previewLimit);
 	}
 
 	function goToNext() {
@@ -143,6 +244,23 @@
 		});
 	}
 
+	async function getExpectedVerificationState(q: Question, engineName: 'mysql' | 'postgres'): Promise<DbResult> {
+		const key = `verification_${engineName}_${q.id}`;
+		const cached = expectedResultsCache.get(key);
+		if (cached) return cached;
+
+		const vEngine = createDbEngine(engineName);
+		try {
+			await vEngine.init(q.seed_sql || '');
+			await vEngine.query(q.expected_query);
+			const expectedState = await vEngine.query(q.verification_query!);
+			expectedResultsCache.set(key, expectedState);
+			return expectedState;
+		} finally {
+			await vEngine.destroy();
+		}
+	}
+
 	async function handleRun() {
 		if (!currentQuestion || !isCurrentTaskUnlocked || isRunningQuery) return;
 		isRunningQuery = true;
@@ -150,7 +268,7 @@
 		queryResult = null;
 
 		try {
-			const engine = await ensureChallengeEngine(currentQuestion.seed_sql, dbmsParam);
+			const engine = await ensureChallengeEngine(currentQuestion.seed_sql || '', dbmsParam);
 			const uRes = await engine.query(userCode);
 			queryResult = uRes;
 
@@ -186,11 +304,7 @@
 					queryResult = actualState;
 				}
 
-				const vEngine = createDbEngine(dbmsParam);
-				await vEngine.init(currentQuestion.seed_sql);
-				await vEngine.query(currentQuestion.expected_query);
-				const expectedState = await vEngine.query(currentQuestion.verification_query);
-				await vEngine.destroy();
+				const expectedState = await getExpectedVerificationState(currentQuestion, dbmsParam);
 
 				if (jsonEquals(actualState.rows, expectedState.rows)) {
 					markCurrentTaskCompleted();
@@ -213,10 +327,19 @@
 	}
 
 	function handleResetChallenge() {
-		const pool = getRandomizedExamPool(dbmsParam, 20);
+		const pool = getRandomizedExamPool(dbmsParam, 30);
 		sampledQuestions = pool;
 		completedIndices = [];
 		challengePassed = false;
+		if (typeof window !== 'undefined') {
+			try {
+				pool.forEach((q) => {
+					localStorage.removeItem(`sqlek_draft_${q.id}`);
+				});
+			} catch (e) {}
+		}
+		userDrafts.clear();
+		userCode = '';
 		saveChallengeProgress(dbmsParam, {
 			questionIds: pool.map((q) => q.id),
 			completedTasks: [],
@@ -227,6 +350,8 @@
 	}
 
 	function loadChallengeData(dbms: 'mysql' | 'postgres') {
+		userDrafts.clear();
+		userCode = '';
 		const prog = getProgress(dbms);
 		if (!$isAdminMode && !isExamUnlocked(prog.completedModules, $isAdminMode)) {
 			goto(`${base}/${dbms}`);
@@ -234,7 +359,7 @@
 		}
 
 		const chal = prog.challenge;
-		if (chal && chal.questionIds && chal.questionIds.length === 20) {
+		if (chal && chal.questionIds && chal.questionIds.length === 30) {
 			const allMap = new Map<number, Question>();
 			for (const m of MODULES) {
 				for (const q of m.questions) {
@@ -245,16 +370,20 @@
 				.map((id) => allMap.get(id))
 				.filter((q): q is Question => q !== undefined);
 
-			if (loaded.length === 20) {
+			if (loaded.length === 30) {
 				sampledQuestions = loaded;
 				completedIndices = chal.completedTasks || [];
 				challengePassed = chal.passed || false;
 				selectTask(0);
+				const firstQ = resolveQuestionForEngine(loaded[0], dbms);
+				ensureChallengeEngine(firstQ?.seed_sql || '', dbms).catch((e) => {
+					console.error('Failed to initialize challenge engine in background:', e);
+				});
 				return;
 			}
 		}
 
-		const pool = getRandomizedExamPool(dbms, 20);
+		const pool = getRandomizedExamPool(dbms, 30);
 		sampledQuestions = pool;
 		completedIndices = [];
 		challengePassed = false;
@@ -335,8 +464,8 @@
 		</div>
 
 		<div class="flex items-center gap-3 sm:gap-4">
-			<!-- Scrollable 20 Task Pills -->
-			<div class="flex items-center gap-1.5 overflow-x-auto py-1 max-w-[160px] sm:max-w-[320px] md:max-w-[460px] lg:max-w-[580px]">
+			<!-- Scrollable 30 Task Pills -->
+			<div class="flex items-center gap-1.5 overflow-x-auto py-1 max-w-[160px] sm:max-w-[320px] md:max-w-[460px] lg:max-w-[580px] xl:max-w-[700px]">
 				{#each sampledQuestions as _, idx}
 					{@const isDone = completedIndices.includes(idx)}
 					{@const isActive = idx === currentIndex}
@@ -349,7 +478,7 @@
 								? 'bg-zinc-900 border border-zinc-700 text-zinc-300 hover:text-white'
 								: 'bg-zinc-950 border border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:text-zinc-400'}"
 					>
-						{#if isDone && !isActive}
+						{#if isDone}
 							✓
 						{:else}
 							{idx + 1}
@@ -427,7 +556,7 @@
 							</div>
 						{/if}
 
-						{#if currentQuestion.syntaxPatterns && currentQuestion.syntaxPatterns.length > 0}
+						{#if !$hideSyntaxPattern && currentQuestion.syntaxPatterns && currentQuestion.syntaxPatterns.length > 0}
 							<div class="space-y-2">
 								<h3 class="text-xs font-mono font-medium uppercase tracking-wider text-zinc-400">
 									{t[$locale].syntaxPattern}
@@ -445,9 +574,34 @@
 
 						<!-- Live Table Preview / Target Schema Blueprint -->
 						<div>
-							<h3 class="text-xs font-mono font-medium uppercase tracking-wider text-zinc-400 mb-2">
-								{t[$locale].initialTablePreview(currentQuestion.table_names[0] || 'Schema')}
-							</h3>
+							<div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+								<h3 class="text-xs font-mono font-medium uppercase tracking-wider text-zinc-400">
+									{t[$locale].initialTablePreview(activePreviewTable || currentQuestion.table_names[0] || 'Schema', previewRowInfo)}
+								</h3>
+								{#if !currentQuestion.isDdlCreate && activePreviewData && activePreviewData.totalRowCount !== undefined && activePreviewData.totalRowCount > 10}
+									<button
+										type="button"
+										onclick={togglePreviewLimit}
+										class="text-[11px] font-mono text-zinc-400 hover:text-zinc-200 underline transition-colors cursor-pointer"
+									>
+										{previewLimit === 10 ? t[$locale].showAllRows(activePreviewData.totalRowCount) : t[$locale].showFewerRows(10)}
+									</button>
+								{/if}
+							</div>
+
+							{#if currentQuestion.table_names && currentQuestion.table_names.length > 1}
+								<div class="flex items-center gap-1.5 mb-2.5 flex-wrap">
+									{#each currentQuestion.table_names as tName}
+										<button
+											type="button"
+											onclick={() => activePreviewTable = tName}
+											class="px-2 py-0.5 text-xs font-mono rounded border transition-colors {activePreviewTable === tName ? 'bg-zinc-800 text-zinc-100 border-zinc-700 font-medium' : 'bg-zinc-950 text-zinc-400 border-zinc-850 hover:bg-zinc-900'}"
+										>
+											{tName}
+										</button>
+									{/each}
+								</div>
+							{/if}
 
 							{#if currentQuestion.targetSchemaBlueprint && currentQuestion.targetSchemaBlueprint.length > 0}
 								<div class="overflow-x-auto border border-zinc-850 rounded-md bg-zinc-950/40 mb-3">
@@ -479,20 +633,20 @@
 								</div>
 							{/if}
 
-							{#if seedDataResult && seedDataResult.rows.length > 0}
-								<div class="overflow-x-auto border border-zinc-850 rounded-md bg-zinc-950/40">
+							{#if activePreviewData && activePreviewData.rows.length > 0}
+								<div class="max-h-72 overflow-auto border border-zinc-850 rounded-md bg-zinc-950/40">
 									<table class="w-full text-left text-xs font-mono border-collapse">
-										<thead class="bg-zinc-950/60 border-b border-zinc-850 text-zinc-400">
+										<thead class="sticky top-0 bg-zinc-950 border-b border-zinc-850 text-zinc-400 z-10">
 											<tr>
-												{#each seedDataResult.columns as col}
+												{#each activePreviewData.columns as col}
 													<th class="p-2 border-r last:border-r-0 border-zinc-900 font-medium">{col}</th>
 												{/each}
 											</tr>
 										</thead>
 										<tbody>
-											{#each seedDataResult.rows as row}
+											{#each activePreviewData.rows as row}
 												<tr class="border-b last:border-b-0 border-zinc-900 hover:bg-zinc-900/30 transition-colors">
-													{#each seedDataResult.columns as col}
+													{#each activePreviewData.columns as col}
 														<td class="p-2 border-r last:border-r-0 border-zinc-900 text-zinc-300">
 															{row[col] !== null && row[col] !== undefined ? String(row[col]) : 'NULL'}
 														</td>
@@ -502,19 +656,38 @@
 										</tbody>
 									</table>
 								</div>
-							{:else if !currentQuestion.isDdlCreate}
+							{:else if activePreviewData && activePreviewData.columns.length > 0}
 								<div class="overflow-x-auto border border-zinc-850 rounded-md bg-zinc-950/40">
 									<table class="w-full text-left text-xs font-mono border-collapse">
 										<thead class="bg-zinc-950/60 border-b border-zinc-850 text-zinc-400">
 											<tr>
-												{#each seedDataResult?.columns || [] as col}
+												{#each activePreviewData.columns as col}
 													<th class="p-2 border-r last:border-r-0 border-zinc-900 font-medium">{col}</th>
 												{/each}
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
-												<td colspan={seedDataResult?.columns.length || 1} class="p-3 text-center text-zinc-500 italic">
+												<td colspan={activePreviewData.columns.length} class="p-3 text-center text-zinc-500 italic">
+													(0 rows)
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							{:else if !currentQuestion.isDdlCreate}
+								<div class="overflow-x-auto border border-zinc-850 rounded-md bg-zinc-950/40">
+									<table class="w-full text-left text-xs font-mono border-collapse">
+										<thead class="bg-zinc-950/60 border-b border-zinc-850 text-zinc-400">
+											<tr>
+												{#each activePreviewData?.columns || [] as col}
+													<th class="p-2 border-r last:border-r-0 border-zinc-900 font-medium">{col}</th>
+												{/each}
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td colspan={activePreviewData?.columns?.length || 1} class="p-3 text-center text-zinc-500 italic">
 													(0 rows)
 												</td>
 											</tr>

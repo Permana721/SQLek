@@ -227,4 +227,122 @@ describe('Progression & Module Gating', () => {
 			expect(isTaskUnlocked(4, [], false)).toBe(false);
 		});
 	});
+
+	describe('Single-Task Progress Invalidation (unmarkTaskCompleted)', () => {
+		class MockStorage {
+			store: Record<string, string> = {};
+			getItem(key: string) {
+				return this.store[key] ?? null;
+			}
+			setItem(key: string, value: string) {
+				this.store[key] = String(value);
+			}
+			removeItem(key: string) {
+				delete this.store[key];
+			}
+			clear() {
+				this.store = {};
+			}
+		}
+
+		let originalWindow: any;
+		let originalLocalStorage: any;
+		let mockStorage: MockStorage;
+
+		beforeEach(async () => {
+			mockStorage = new MockStorage();
+			originalWindow = (globalThis as any).window;
+			originalLocalStorage = (globalThis as any).localStorage;
+			(globalThis as any).window = globalThis;
+			(globalThis as any).localStorage = mockStorage;
+		});
+
+		afterEach(() => {
+			(globalThis as any).window = originalWindow;
+			(globalThis as any).localStorage = originalLocalStorage;
+		});
+
+		it('unmarks only the specified task index while preserving preceding and subsequent tasks', async () => {
+			const { saveProgress, getProgress, unmarkTaskCompleted } = await import('$lib/data/progress');
+
+			saveProgress('postgres', {
+				completedModules: [1],
+				modules: {
+					1: {
+						questionIds: [101, 102, 103],
+						completedTasks: [0, 1, 2]
+					},
+					2: {
+						questionIds: [201, 202],
+						completedTasks: [0]
+					}
+				}
+			});
+
+			// Unmark Task 2 (slot index 1)
+			unmarkTaskCompleted('postgres', 1, 1);
+
+			const updated = getProgress('postgres');
+			// Task 0 (preceding) and Task 2 (subsequent) must remain completed
+			expect(updated.modules[1].completedTasks).toEqual([0, 2]);
+			// Other modules must remain untouched
+			expect(updated.modules[2].completedTasks).toEqual([0]);
+			expect(updated.completedModules).toEqual([1]);
+		});
+
+		it('unmarks task by question ID when matching question ID is passed', async () => {
+			const { saveProgress, getProgress, unmarkTaskCompleted } = await import('$lib/data/progress');
+
+			saveProgress('postgres', {
+				completedModules: [],
+				modules: {
+					1: {
+						questionIds: [501, 502, 503],
+						completedTasks: [0, 1]
+					}
+				}
+			});
+
+			// Unmark by question ID 502 (slot index 1)
+			unmarkTaskCompleted('postgres', 1, 502);
+
+			const updated = getProgress('postgres');
+			expect(updated.modules[1].completedTasks).toEqual([0]);
+		});
+
+		it('progressStore helper object provides unmarkTaskCompleted', async () => {
+			const { progressStore } = await import('$lib/data/progress');
+
+			progressStore.saveProgress('mysql', {
+				completedModules: [],
+				modules: {
+					1: {
+						questionIds: [11, 12],
+						completedTasks: [0, 1]
+					}
+				}
+			});
+
+			progressStore.unmarkTaskCompleted('mysql', 1, 0);
+
+			const updated = progressStore.getProgress('mysql');
+			expect(updated.modules[1].completedTasks).toEqual([1]);
+		});
+
+		it('unmarks single task in challenge progress', async () => {
+			const { saveChallengeProgress, getChallengeProgress, unmarkChallengeTaskCompleted } = await import('$lib/data/progress');
+
+			saveChallengeProgress('postgres', {
+				questionIds: [1, 2, 3],
+				completedTasks: [0, 1, 2],
+				passed: true
+			});
+
+			unmarkChallengeTaskCompleted('postgres', 1);
+
+			const updated = getChallengeProgress('postgres');
+			expect(updated?.completedTasks).toEqual([0, 2]);
+			expect(updated?.passed).toBe(false);
+		});
+	});
 });

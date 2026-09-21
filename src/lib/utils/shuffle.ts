@@ -35,7 +35,7 @@ export function sampleDiverseQuestions(questions: Question[]): Question[] {
     return picked;
 }
 
-export function getRandomizedExamPool(engine: string, questionCount = 20): Question[] {
+export function getRandomizedExamPool(engine: string, questionCount = 30): Question[] {
     const allQuestions = MODULES.flatMap((m) => m.questions).map((q) =>
         resolveQuestionForEngine(q, engine)
     );
@@ -46,38 +46,5 @@ export function getRandomizedExamPool(engine: string, questionCount = 20): Quest
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
 
-    const pool: Question[] = [];
-    const usedIds = new Set<number>();
-
-    for (const mod of MODULES) {
-        const modQuestions = mod.questions
-            .map((q) => resolveQuestionForEngine(q, engine))
-            .filter((q) => !usedIds.has(q.id));
-
-        for (let i = modQuestions.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [modQuestions[i], modQuestions[j]] = [modQuestions[j], modQuestions[i]];
-        }
-
-        const toTake = Math.min(2, modQuestions.length);
-        for (let i = 0; i < toTake; i++) {
-            usedIds.add(modQuestions[i].id);
-            pool.push(modQuestions[i]);
-        }
-    }
-
-    for (const q of shuffled) {
-        if (pool.length >= questionCount) break;
-        if (!usedIds.has(q.id)) {
-            usedIds.add(q.id);
-            pool.push(q);
-        }
-    }
-
-    for (let i = pool.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [pool[i], pool[j]] = [pool[j], pool[i]];
-    }
-
-    return pool.slice(0, questionCount);
+    return shuffled.slice(0, questionCount);
 }

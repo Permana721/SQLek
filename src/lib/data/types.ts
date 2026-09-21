@@ -17,6 +17,9 @@ export interface SchemaBlueprintColumn {
 export interface MockPreviewData {
     columns: string[];
     rows: Record<string, any>[];
+    totalRowCount?: number;
+    tableName?: string;
+    isDynamic?: boolean;
 }
 
 export interface QuestionEngineOverride {

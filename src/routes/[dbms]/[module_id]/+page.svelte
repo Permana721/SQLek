@@ -4,34 +4,33 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { MODULES, resolveQuestionForEngine, type Question } from '$lib/data/questions';
-	import { getQuestionPreviewData } from '$lib/data/previewData';
+	import { getQuestionPreviewData, fetchAllDynamicPreviews, type MockPreviewData } from '$lib/data/previewData';
 	import { sampleDiverseQuestions } from '$lib/utils/shuffle';
 	import { createDbEngine, type IDbEngine, type DbResult } from '$lib/db/engine';
-	import { getProgress, saveProgress, clearProgress, isModuleUnlocked, markModuleCompleted, getNextNavigationAction, getNavigationLabel, isAdminMode } from '$lib/data/progress';
+	import { getProgress, saveProgress, clearProgress, isModuleUnlocked, markModuleCompleted, unmarkTaskCompleted, getNextNavigationAction, getNavigationLabel, isAdminMode } from '$lib/data/progress';
 	import SqlEditor from '$lib/components/SqlEditor.svelte';
 	import UserMenu from '$lib/components/UserMenu.svelte';
 	import LanguageToggle from '$lib/components/LanguageToggle.svelte';
 	import Logo from '$lib/components/Logo.svelte';
 	import { locale, t } from '$lib/data/locale';
+	import { hideSyntaxPattern } from '$lib/stores/preferences';
 
 	const TOTAL_MODULES = MODULES.length;
-
+	const moduleId = $derived(Number(page.params.module_id) || 1);
 	const dbmsParam = $derived(page.params.dbms === 'mysql' ? 'mysql' : 'postgres');
-	const moduleId = $derived(parseInt(page.params.module_id || '1', 10));
+	const dbmsLabel = $derived(dbmsParam.toUpperCase());
 
 	let currentModule = $derived(MODULES.find((m) => m.id === moduleId) || MODULES[0]);
-
 	let cleanTitle = $derived(
 		(currentModule?.title?.[$locale] || '')
 			.replace(/^(Modul|Module)\s+\d+:\s*/i, '')
 	);
-	let dbmsLabel = $derived(dbmsParam.toUpperCase());
 	let pageTitle = $derived(`Module ${moduleId}: ${cleanTitle} (${dbmsLabel}) | SQL Interactive`);
 
+	let completedModules = $state<number[]>([]);
 	let sampledQuestions = $state<Question[]>([]);
 	let currentIndex = $state(0);
 	let completedIndices = $state<number[]>([]);
-	let completedModules = $state<number[]>([]);
 
 	let rawCurrentQuestion = $derived(sampledQuestions[currentIndex] || null);
 	let currentQuestion = $derived(rawCurrentQuestion ? resolveQuestionForEngine(rawCurrentQuestion, dbmsParam) : null);
@@ -45,18 +44,42 @@
 	let isLastTask = $derived(sampledQuestions.length > 0 && currentIndex === sampledQuestions.length - 1);
 	let isLastModule = $derived(moduleId >= TOTAL_MODULES);
 
-	// Instant static table preview - never invokes WASM for read-only preview rendering
-	let seedDataResult = $derived(getQuestionPreviewData(currentQuestion));
+	// Dynamic live preview state synchronized with WASM database
+	let dynamicPreviews = $state<Record<string, MockPreviewData>>({});
+	let activePreviewTable = $state<string>('');
+	let previewLimit = $state<number>(10);
+	let previewRequestId = 0;
+
+	let activePreviewData = $derived.by(() => {
+		if (currentQuestion?.isDdlCreate) {
+			return getQuestionPreviewData(currentQuestion);
+		}
+		const tName = activePreviewTable || currentQuestion?.table_names?.[0];
+		if (tName && dynamicPreviews[tName]) {
+			return dynamicPreviews[tName];
+		}
+		return getQuestionPreviewData(currentQuestion, tName);
+	});
+
+	let previewRowInfo = $derived.by(() => {
+		if (currentQuestion?.isDdlCreate) return '';
+		if (!activePreviewData || activePreviewData.totalRowCount === undefined) return '';
+		const shown = activePreviewData.rows ? activePreviewData.rows.length : 0;
+		const total = activePreviewData.totalRowCount;
+		return t[$locale].showingRowsInfo(shown, total);
+	});
 
 	// Persistent Database Engine instance per module session
 	let dbEngine: IDbEngine | null = null;
-	let activeModuleId: number | null = null;
 	let activeDbms: string | null = null;
 
 	let userCode = $state('');
 	let queryResult = $state<DbResult | null>(null);
 	let queryError = $state<string | null>(null);
 	let isRunningQuery = $state(false);
+
+	// In-memory cache of user input per question id
+	const userDrafts = new Map<number, string>();
 
 	// Expected query result cache by engine_questionId
 	const expectedResultsCache = new Map<string, DbResult>();
@@ -69,56 +92,123 @@
 				// Cleanup error ignored
 			}
 			dbEngine = null;
-			activeModuleId = null;
 			activeDbms = null;
 		}
 	}
 
-	async function ensureModuleEngine(modId: number, dbms: 'mysql' | 'postgres'): Promise<IDbEngine> {
-		if (dbEngine && activeModuleId === modId && activeDbms === dbms) {
+	async function ensureModuleEngine(seedSql: string, dbms: 'mysql' | 'postgres'): Promise<IDbEngine> {
+		if (dbEngine && activeDbms === dbms) {
+			await dbEngine.init(seedSql || '');
 			return dbEngine;
 		}
 		await cleanupEngine();
 
-		const targetModule = MODULES.find((m) => m.id === modId) || MODULES[0];
-		const moduleSeedSql = targetModule.questions.find((q) => q.seed_sql)?.seed_sql || '';
-
 		const engine = createDbEngine(dbms);
-		await engine.init(moduleSeedSql);
+		await engine.init(seedSql || '');
 		dbEngine = engine;
-		activeModuleId = modId;
 		activeDbms = dbms;
 		return dbEngine;
 	}
 
-	async function handleResetDatabase() {
-		const targetModule = MODULES.find((m) => m.id === moduleId) || MODULES[0];
-		const moduleSeedSql = targetModule.questions.find((q) => q.seed_sql)?.seed_sql || '';
-
-		if (dbEngine && activeModuleId === moduleId && activeDbms === dbmsParam) {
-			await dbEngine.init(moduleSeedSql);
-		} else {
-			await ensureModuleEngine(moduleId, dbmsParam);
+	async function initTaskEngineAndPreview(q: Question | null, dbms: 'mysql' | 'postgres', limit: number = previewLimit) {
+		if (!q) return;
+		const reqId = ++previewRequestId;
+		try {
+			const engine = await ensureModuleEngine(q.seed_sql || '', dbms);
+			if (reqId !== previewRequestId) return;
+			if (!q.isDdlCreate) {
+				const previews = await fetchAllDynamicPreviews(engine, q, limit);
+				if (reqId !== previewRequestId) return;
+				dynamicPreviews = previews;
+			} else {
+				dynamicPreviews = {};
+			}
+		} catch (e) {
+			console.error('Failed to initialize engine and preview:', e);
 		}
-		queryResult = null;
-		queryError = null;
 	}
 
-	// Instant 0ms synchronous task switching - completely bypasses WASM
+	async function togglePreviewLimit() {
+		const newLimit = previewLimit === 10 ? 0 : 10;
+		previewLimit = newLimit;
+		if (currentQuestion) {
+			await initTaskEngineAndPreview(currentQuestion, dbmsParam, newLimit);
+		}
+	}
+
+	async function handleResetDatabase() {
+		if (!currentQuestion) return;
+
+		// 1. Re-seed database instance
+		const seed = currentQuestion.seed_sql || '';
+		await ensureModuleEngine(seed, dbmsParam);
+
+		// 2. Clear query input and output state
+		userCode = '';
+		queryResult = null;
+		queryError = null;
+
+		// 3. Clear draft cache for this specific task
+		if (rawCurrentQuestion) {
+			userDrafts.delete(rawCurrentQuestion.id);
+			if (typeof window !== 'undefined') {
+				try {
+					localStorage.removeItem(`sqlek_draft_${rawCurrentQuestion.id}`);
+				} catch (e) {
+					// Ignore storage error
+				}
+			}
+		}
+
+		// 4. Invalidate progress for this specific task slot index only
+		completedIndices = completedIndices.filter((idx) => idx !== currentIndex);
+		unmarkTaskCompleted(dbmsParam, moduleId, currentIndex);
+
+		// 5. Refresh preview tables
+		activePreviewTable = currentQuestion.table_names?.[0] || 'Schema';
+		await initTaskEngineAndPreview(currentQuestion, dbmsParam, previewLimit);
+	}
+
+	// Instant 0ms synchronous task switching with background WASM preview sync
 	function selectTask(idx: number) {
 		if (idx < 0 || idx >= sampledQuestions.length) return;
+
+		// Save draft of currently active question before switching
+		if (rawCurrentQuestion) {
+			if (userCode) {
+				userDrafts.set(rawCurrentQuestion.id, userCode);
+				if (typeof window !== 'undefined') {
+					try {
+						localStorage.setItem(`sqlek_draft_${rawCurrentQuestion.id}`, userCode);
+					} catch (e) {}
+				}
+			} else {
+				userDrafts.delete(rawCurrentQuestion.id);
+				if (typeof window !== 'undefined') {
+					try {
+						localStorage.removeItem(`sqlek_draft_${rawCurrentQuestion.id}`);
+					} catch (e) {}
+				}
+			}
+		}
+
 		currentIndex = idx;
 		queryResult = null;
 		queryError = null;
 
-		const q = resolveQuestionForEngine(sampledQuestions[idx], dbmsParam);
-		if (q.starterQuery) {
-			userCode = q.starterQuery;
-		} else if (q.table_names && q.table_names.length > 0) {
-			userCode = `SELECT * FROM ${q.table_names[0]};`;
-		} else {
-			userCode = '-- Write your query here';
+		// Strictly default to empty string unless the user has actively typed a draft
+		const nextQ = sampledQuestions[idx];
+		let draft = (nextQ && userDrafts.get(nextQ.id)) || '';
+		if (!draft && nextQ && typeof window !== 'undefined') {
+			try {
+				draft = localStorage.getItem(`sqlek_draft_${nextQ.id}`) || '';
+			} catch (e) {}
 		}
+		userCode = draft;
+
+		const q = resolveQuestionForEngine(sampledQuestions[idx], dbmsParam);
+		activePreviewTable = q.table_names?.[0] || 'Schema';
+		initTaskEngineAndPreview(q, dbmsParam, previewLimit);
 	}
 
 	function goToNext() {
@@ -174,6 +264,23 @@
 		});
 	}
 
+	async function getExpectedVerificationState(q: Question, engineName: 'mysql' | 'postgres'): Promise<DbResult> {
+		const key = `verification_${engineName}_${q.id}`;
+		const cached = expectedResultsCache.get(key);
+		if (cached) return cached;
+
+		const vEngine = createDbEngine(engineName);
+		try {
+			await vEngine.init(q.seed_sql || '');
+			await vEngine.query(q.expected_query);
+			const expectedState = await vEngine.query(q.verification_query!);
+			expectedResultsCache.set(key, expectedState);
+			return expectedState;
+		} finally {
+			await vEngine.destroy();
+		}
+	}
+
 	async function handleRun() {
 		if (!currentQuestion || !isCurrentTaskUnlocked || isRunningQuery) return;
 		isRunningQuery = true;
@@ -181,7 +288,8 @@
 		queryResult = null;
 
 		try {
-			const engine = await ensureModuleEngine(moduleId, dbmsParam);
+			const seed = currentQuestion.seed_sql || '';
+			const engine = await ensureModuleEngine(seed, dbmsParam);
 			const uRes = await engine.query(userCode);
 			queryResult = uRes;
 
@@ -217,11 +325,7 @@
 					queryResult = actualState;
 				}
 
-				const vEngine = createDbEngine(dbmsParam);
-				await vEngine.init(currentQuestion.seed_sql);
-				await vEngine.query(currentQuestion.expected_query);
-				const expectedState = await vEngine.query(currentQuestion.verification_query);
-				await vEngine.destroy();
+				const expectedState = await getExpectedVerificationState(currentQuestion, dbmsParam);
 
 				if (jsonEquals(actualState.rows, expectedState.rows)) {
 					markCurrentTaskCompleted();
@@ -246,6 +350,15 @@
 		clearProgress(dbmsParam);
 		completedModules = [];
 		completedIndices = [];
+		if (typeof window !== 'undefined') {
+			try {
+				sampledQuestions.forEach((q) => {
+					localStorage.removeItem(`sqlek_draft_${q.id}`);
+				});
+			} catch (e) {}
+		}
+		userDrafts.clear();
+		userCode = '';
 		currentIndex = 0;
 		sampledQuestions = sampleDiverseQuestions(currentModule.questions);
 		selectTask(0);
@@ -300,15 +413,10 @@
 			});
 		}
 
-		// Instantly select first task with 0ms delay
+		// Instantly select first task with 0ms delay and sync engine in background
+		userDrafts.clear();
+		userCode = '';
 		selectTask(0);
-
-		// Initialize persistent database engine in background
-		try {
-			await ensureModuleEngine(modId, dbms);
-		} catch (e: any) {
-			console.error('Failed to initialize module engine in background:', e);
-		}
 	}
 
 	function handleNextNavigation() {
@@ -396,7 +504,7 @@
 								? 'bg-zinc-900 border border-zinc-700 text-zinc-300 hover:text-white'
 								: 'bg-zinc-950 border border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:text-zinc-400'}"
 					>
-						{#if isDone && !isActive}
+						{#if isDone}
 							✓
 						{:else}
 							{idx + 1}
@@ -453,7 +561,7 @@
 							</div>
 						{/if}
 
-						{#if currentQuestion.syntaxPatterns && currentQuestion.syntaxPatterns.length > 0}
+						{#if !$hideSyntaxPattern && currentQuestion.syntaxPatterns && currentQuestion.syntaxPatterns.length > 0}
 							<div class="space-y-2.5">
 								<h4 class="text-xs font-mono font-medium uppercase tracking-wider text-zinc-400">
 									{t[$locale].syntaxPattern}
@@ -482,9 +590,34 @@
 
 						<!-- Middle Section: Live Preview Table of Seed Data / Target Schema Blueprint -->
 						<div>
-							<h3 class="text-xs font-mono font-medium uppercase tracking-wider text-zinc-400 mb-2">
-								{t[$locale].initialTablePreview(currentQuestion.table_names[0] || 'Schema')}
-							</h3>
+							<div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+								<h3 class="text-xs font-mono font-medium uppercase tracking-wider text-zinc-400">
+									{t[$locale].initialTablePreview(activePreviewTable || currentQuestion.table_names[0] || 'Schema', previewRowInfo)}
+								</h3>
+								{#if !currentQuestion.isDdlCreate && activePreviewData && activePreviewData.totalRowCount !== undefined && activePreviewData.totalRowCount > 10}
+									<button
+										type="button"
+										onclick={togglePreviewLimit}
+										class="text-[11px] font-mono text-zinc-400 hover:text-zinc-200 underline transition-colors cursor-pointer"
+									>
+										{previewLimit === 10 ? t[$locale].showAllRows(activePreviewData.totalRowCount) : t[$locale].showFewerRows(10)}
+									</button>
+								{/if}
+							</div>
+
+							{#if currentQuestion.table_names && currentQuestion.table_names.length > 1}
+								<div class="flex items-center gap-1.5 mb-2.5 flex-wrap">
+									{#each currentQuestion.table_names as tName}
+										<button
+											type="button"
+											onclick={() => activePreviewTable = tName}
+											class="px-2 py-0.5 text-xs font-mono rounded border transition-colors {activePreviewTable === tName ? 'bg-zinc-800 text-zinc-100 border-zinc-700 font-medium' : 'bg-zinc-950 text-zinc-400 border-zinc-850 hover:bg-zinc-900'}"
+										>
+											{tName}
+										</button>
+									{/each}
+								</div>
+							{/if}
 
 							{#if currentQuestion.targetSchemaBlueprint && currentQuestion.targetSchemaBlueprint.length > 0}
 								<div class="overflow-x-auto border border-zinc-850 rounded-md bg-zinc-950/40 mb-3">
@@ -516,20 +649,20 @@
 								</div>
 							{/if}
 
-							{#if seedDataResult && seedDataResult.rows.length > 0}
-								<div class="overflow-x-auto border border-zinc-850 rounded-md bg-zinc-950/40">
+							{#if activePreviewData && activePreviewData.rows.length > 0}
+								<div class="max-h-72 overflow-auto border border-zinc-850 rounded-md bg-zinc-950/40">
 									<table class="w-full text-left text-xs font-mono border-collapse">
-										<thead class="bg-zinc-950/60 border-b border-zinc-850 text-zinc-400">
+										<thead class="sticky top-0 bg-zinc-950 border-b border-zinc-850 text-zinc-400 z-10">
 											<tr>
-												{#each seedDataResult.columns as col}
+												{#each activePreviewData.columns as col}
 													<th class="p-2 border-r last:border-r-0 border-zinc-900 font-medium">{col}</th>
 												{/each}
 											</tr>
 										</thead>
 										<tbody>
-											{#each seedDataResult.rows as row}
+											{#each activePreviewData.rows as row}
 												<tr class="border-b last:border-b-0 border-zinc-900 hover:bg-zinc-900/30 transition-colors">
-													{#each seedDataResult.columns as col}
+													{#each activePreviewData.columns as col}
 														<td class="p-2 border-r last:border-r-0 border-zinc-900 text-zinc-300">
 															{row[col] !== null && row[col] !== undefined ? String(row[col]) : 'NULL'}
 														</td>
@@ -539,19 +672,38 @@
 										</tbody>
 									</table>
 								</div>
-							{:else if seedDataResult && seedDataResult.columns.length > 0}
+							{:else if activePreviewData && activePreviewData.columns.length > 0}
 								<div class="overflow-x-auto border border-zinc-850 rounded-md bg-zinc-950/40">
 									<table class="w-full text-left text-xs font-mono border-collapse">
 										<thead class="bg-zinc-950/60 border-b border-zinc-850 text-zinc-400">
 											<tr>
-												{#each seedDataResult.columns as col}
+												{#each activePreviewData.columns as col}
 													<th class="p-2 border-r last:border-r-0 border-zinc-900 font-medium">{col}</th>
 												{/each}
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
-												<td colspan={seedDataResult.columns.length} class="p-3 text-center text-zinc-500 italic">
+												<td colspan={activePreviewData.columns.length} class="p-3 text-center text-zinc-500 italic">
+													(0 rows)
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							{:else if !currentQuestion.isDdlCreate}
+								<div class="overflow-x-auto border border-zinc-850 rounded-md bg-zinc-950/40">
+									<table class="w-full text-left text-xs font-mono border-collapse">
+										<thead class="bg-zinc-950/60 border-b border-zinc-850 text-zinc-400">
+											<tr>
+												{#each activePreviewData?.columns || [] as col}
+													<th class="p-2 border-r last:border-r-0 border-zinc-900 font-medium">{col}</th>
+												{/each}
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td colspan={activePreviewData?.columns?.length || 1} class="p-3 text-center text-zinc-500 italic">
 													(0 rows)
 												</td>
 											</tr>

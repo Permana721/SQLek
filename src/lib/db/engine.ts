@@ -16,6 +16,7 @@ export class PgliteEngine implements IDbEngine {
 					DO $$ 
 					DECLARE 
 						s text;
+						r text;
 					BEGIN
 						FOR s IN 
 							SELECT nspname FROM pg_namespace 
@@ -25,10 +26,31 @@ export class PgliteEngine implements IDbEngine {
 						LOOP
 							EXECUTE 'DROP SCHEMA IF EXISTS ' || quote_ident(s) || ' CASCADE';
 						END LOOP;
+						FOR r IN 
+							SELECT rolname FROM pg_roles 
+							WHERE rolname NOT LIKE 'pg_%' AND rolname <> 'postgres'
+						LOOP
+							BEGIN
+								EXECUTE 'DROP OWNED BY ' || quote_ident(r);
+							EXCEPTION WHEN OTHERS THEN
+								NULL;
+							END;
+							EXECUTE 'DROP ROLE IF EXISTS ' || quote_ident(r);
+						END LOOP;
 					END $$;
 					CREATE SCHEMA public;
 					GRANT ALL ON SCHEMA public TO public;
 				`);
+				try {
+					const extraDbs = await this.db.query(
+						"SELECT datname FROM pg_database WHERE datname NOT IN ('postgres', 'template0', 'template1');"
+					);
+					for (const row of extraDbs.rows as any[]) {
+						try {
+							await this.db.query(`DROP DATABASE IF EXISTS "${row.datname}";`);
+						} catch {}
+					}
+				} catch {}
 				if (seedSql && seedSql.trim()) {
 					await this.db.exec(seedSql);
 				}
@@ -61,6 +83,20 @@ export class PgliteEngine implements IDbEngine {
 			}
 			throw e;
 		}
+	}
+
+	async dumpDataDir(compression: 'none' | 'gzip' = 'none'): Promise<Blob | File> {
+		if (!this.db) throw new Error('Database engine not initialized');
+		return await (this.db as any).dumpDataDir(compression);
+	}
+
+	async loadDataDir(file: Blob | File): Promise<void> {
+		await this.destroy();
+		this.db = await PGlite.create({ loadDataDir: file });
+	}
+
+	getInternalDb(): PGlite | null {
+		return this.db;
 	}
 
 	async destroy(): Promise<void> {
@@ -113,6 +149,7 @@ function preprocessSqlForSqlJs(sql: string): string {
 		.replace(/\bLOCK\s+INSTANCE\s+FOR\s+BACKUP;?/gi, ';')
 		.replace(/\bUNLOCK\s+INSTANCE;?/gi, ';')
 		.replace(/\bCREATE\s+USER\b[^;]+;?/gi, ';')
+		.replace(/\bALTER\s+USER\b[^;]+;?/gi, ';')
 		.replace(/\bGRANT\b[^;]+;?/gi, ';')
 		.replace(/\bREVOKE\b[^;]+;?/gi, ';')
 		.replace(/\bLOCK\s+TABLE\b[^;]+;?/gi, ';')

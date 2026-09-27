@@ -7,16 +7,17 @@
 	import { getQuestionPreviewData, fetchAllDynamicPreviews, type MockPreviewData } from '$lib/data/previewData';
 	import { sampleDiverseQuestions } from '$lib/utils/shuffle';
 	import { createDbEngine, type IDbEngine, type DbResult } from '$lib/db/engine';
-	import { getProgress, saveProgress, clearProgress, isModuleUnlocked, markModuleCompleted, unmarkTaskCompleted, getNextNavigationAction, getNavigationLabel, isAdminMode } from '$lib/data/progress';
+	import { getProgress, saveProgress, clearProgress, isModuleUnlocked, markModuleCompleted, unmarkTaskCompleted, getNextNavigationAction, getNavigationLabel, isAdminMode, saveLastActiveState, isModulePassed } from '$lib/data/progress';
 	import SqlEditor from '$lib/components/SqlEditor.svelte';
 	import UserMenu from '$lib/components/UserMenu.svelte';
 	import LanguageToggle from '$lib/components/LanguageToggle.svelte';
 	import Logo from '$lib/components/Logo.svelte';
 	import { locale, t } from '$lib/data/locale';
 	import { hideSyntaxPattern } from '$lib/stores/preferences';
+	import BackupRestoreModal from '$lib/components/BackupRestoreModal.svelte';
 
 	const TOTAL_MODULES = MODULES.length;
-	const moduleId = $derived(Number(page.params.module_id) || 1);
+	const moduleId = $derived(Number(String(page.params.module_id || '').replace(/^module-?/i, '')) || 1);
 	const dbmsParam = $derived(page.params.dbms === 'mysql' ? 'mysql' : 'postgres');
 	const dbmsLabel = $derived(dbmsParam.toUpperCase());
 
@@ -72,6 +73,8 @@
 	// Persistent Database Engine instance per module session
 	let dbEngine: IDbEngine | null = null;
 	let activeDbms: string | null = null;
+	let isBackupModalOpen = $state(false);
+	let isRestoredFromBackup = $state(false);
 
 	let userCode = $state('');
 	let queryResult = $state<DbResult | null>(null);
@@ -93,21 +96,36 @@
 			}
 			dbEngine = null;
 			activeDbms = null;
+			isRestoredFromBackup = false;
 		}
 	}
 
 	async function ensureModuleEngine(seedSql: string, dbms: 'mysql' | 'postgres'): Promise<IDbEngine> {
 		if (dbEngine && activeDbms === dbms) {
-			await dbEngine.init(seedSql || '');
+			if (!isRestoredFromBackup) {
+				await dbEngine.init(seedSql || '');
+			}
 			return dbEngine;
 		}
 		await cleanupEngine();
+		isRestoredFromBackup = false;
 
 		const engine = createDbEngine(dbms);
 		await engine.init(seedSql || '');
 		dbEngine = engine;
 		activeDbms = dbms;
 		return dbEngine;
+	}
+
+	async function handleDatabaseRestored(restoredEngine: IDbEngine) {
+		dbEngine = restoredEngine;
+		isRestoredFromBackup = true;
+		queryError = null;
+		queryResult = null;
+		if (currentQuestion) {
+			const previews = await fetchAllDynamicPreviews(dbEngine, currentQuestion, previewLimit);
+			dynamicPreviews = previews;
+		}
 	}
 
 	async function initTaskEngineAndPreview(q: Question | null, dbms: 'mysql' | 'postgres', limit: number = previewLimit) {
@@ -138,6 +156,7 @@
 
 	async function handleResetDatabase() {
 		if (!currentQuestion) return;
+		isRestoredFromBackup = false;
 
 		// 1. Re-seed database instance
 		const seed = currentQuestion.seed_sql || '';
@@ -172,6 +191,7 @@
 	// Instant 0ms synchronous task switching with background WASM preview sync
 	function selectTask(idx: number) {
 		if (idx < 0 || idx >= sampledQuestions.length) return;
+		isRestoredFromBackup = false;
 
 		// Save draft of currently active question before switching
 		if (rawCurrentQuestion) {
@@ -209,6 +229,27 @@
 		const q = resolveQuestionForEngine(sampledQuestions[idx], dbmsParam);
 		activePreviewTable = q.table_names?.[0] || 'Schema';
 		initTaskEngineAndPreview(q, dbmsParam, previewLimit);
+
+		// Record LastActiveState (guard against overwriting when visiting an already passed module)
+		const isPassedModule = completedModules.includes(moduleId) || isModulePassed(moduleId, dbmsParam);
+		if (!isPassedModule) {
+			saveLastActiveState({
+				moduleId: String(page.params.module_id || moduleId),
+				taskIndex: idx,
+				engine: dbmsParam
+			});
+		}
+
+		// Synchronize URL query parameter ?task=idx without full reload
+		if (typeof window !== 'undefined') {
+			try {
+				const currentUrl = new URL(window.location.href);
+				if (currentUrl.searchParams.get('task') !== String(idx)) {
+					currentUrl.searchParams.set('task', String(idx));
+					window.history.replaceState(window.history.state, '', currentUrl.toString());
+				}
+			} catch (e) {}
+		}
 	}
 
 	function goToNext() {
@@ -245,6 +286,8 @@
 			completedIndices = [...completedIndices, currentIndex];
 		}
 
+		const wasModuleAlreadyCompleted = completedModules.includes(moduleId) || isModulePassed(moduleId, dbmsParam);
+
 		let newCompletedModules = [...completedModules];
 		if (completedIndices.length === sampledQuestions.length && !newCompletedModules.includes(moduleId)) {
 			newCompletedModules.push(moduleId);
@@ -262,6 +305,14 @@
 				}
 			}
 		});
+
+		if (!wasModuleAlreadyCompleted) {
+			saveLastActiveState({
+				moduleId: String(page.params.module_id || moduleId),
+				taskIndex: currentIndex,
+				engine: dbmsParam
+			});
+		}
 	}
 
 	async function getExpectedVerificationState(q: Question, engineName: 'mysql' | 'postgres'): Promise<DbResult> {
@@ -413,10 +464,34 @@
 			});
 		}
 
-		// Instantly select first task with 0ms delay and sync engine in background
 		userDrafts.clear();
 		userCode = '';
-		selectTask(0);
+
+		let targetTaskIndex = 0;
+		const taskParam =
+			page.url.searchParams.get('task') ??
+			(typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('task') : null);
+
+		if (taskParam !== null && !isNaN(Number(taskParam))) {
+			const parsed = Number(taskParam);
+			if (parsed >= 0 && parsed < sampledQuestions.length) {
+				targetTaskIndex = parsed;
+			} else {
+				const qIndex = sampledQuestions.findIndex((q) => q.id === parsed);
+				if (qIndex !== -1) {
+					targetTaskIndex = qIndex;
+				}
+			}
+		} else {
+			const firstIncomplete = sampledQuestions.findIndex((_, idx) => !completedIndices.includes(idx));
+			if (firstIncomplete !== -1) {
+				targetTaskIndex = firstIncomplete;
+			} else {
+				targetTaskIndex = 0;
+			}
+		}
+
+		selectTask(targetTaskIndex);
 	}
 
 	function handleNextNavigation() {
@@ -430,11 +505,31 @@
 
 		markModuleCompleted(dbmsParam, moduleId);
 		if (action === 'next-module') {
+			saveLastActiveState({
+				moduleId: String(moduleId + 1),
+				taskIndex: 0,
+				engine: dbmsParam
+			});
 			goto(`/${dbmsParam}/${moduleId + 1}`);
 			return;
 		}
 
 		goto('/');
+	}
+
+	function handlePopState() {
+		if (typeof window === 'undefined') return;
+		const taskParam = new URL(window.location.href).searchParams.get('task');
+		if (taskParam !== null && !isNaN(Number(taskParam))) {
+			const parsed = Number(taskParam);
+			if (parsed >= 0 && parsed < sampledQuestions.length && parsed !== currentIndex) {
+				selectTask(parsed);
+			}
+		}
+	}
+
+	if (typeof window !== 'undefined') {
+		window.addEventListener('popstate', handlePopState);
 	}
 
 	$effect(() => {
@@ -452,6 +547,9 @@
 	});
 
 	onDestroy(() => {
+		if (typeof window !== 'undefined') {
+			window.removeEventListener('popstate', handlePopState);
+		}
 		cleanupEngine();
 	});
 </script>
@@ -516,8 +614,28 @@
 			<div class="h-4 w-px bg-zinc-850"></div>
 
 			<div class="flex items-center gap-2 shrink-0">
+				{#if dbmsParam === 'postgres'}
+					<button
+						type="button"
+						onclick={() => { isBackupModalOpen = true; }}
+						title="{t[$locale].backupRestoreTitle} (pg_dump / psql)"
+						class="px-2.5 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-emerald-400 hover:border-emerald-500/30 flex items-center gap-1.5 text-xs font-mono transition-colors cursor-pointer"
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+							<polyline points="7 10 12 15 17 10" />
+							<line x1="12" y1="15" x2="12" y2="3" />
+						</svg>
+						<span class="hidden sm:inline">{t[$locale].backupRestoreBtn}</span>
+					</button>
+				{/if}
 				<LanguageToggle />
-				<UserMenu engine={dbmsParam} onResetSession={handleResetSession} onResetDatabase={handleResetDatabase} />
+				<UserMenu
+					engine={dbmsParam}
+					onResetSession={handleResetSession}
+					onResetDatabase={handleResetDatabase}
+					onOpenBackupRestore={() => { isBackupModalOpen = true; }}
+				/>
 			</div>
 		</div>
 	</header>
@@ -872,4 +990,12 @@
 			</div>
 		</main>
 	{/if}
+
+	<BackupRestoreModal
+		isOpen={isBackupModalOpen}
+		engine={dbmsParam}
+		activeEngine={dbEngine}
+		onClose={() => { isBackupModalOpen = false; }}
+		onRestored={handleDatabaseRestored}
+	/>
 </div>

@@ -6,11 +6,13 @@
 	let {
 		engine = 'postgres',
 		onResetSession = () => {},
-		onResetDatabase
+		onResetDatabase,
+		onOpenBackupRestore
 	}: {
 		engine?: 'postgres' | 'mysql';
 		onResetSession?: () => void;
 		onResetDatabase?: () => void;
+		onOpenBackupRestore?: () => void;
 	} = $props();
 
 	let isOpen = $state(false);
@@ -127,6 +129,34 @@
 				</button>
 
 				<div class="my-1 border-t border-zinc-850"></div>
+
+				{#if onOpenBackupRestore}
+					<button
+						type="button"
+						onclick={() => {
+							isOpen = false;
+							onOpenBackupRestore?.();
+						}}
+						class="w-full flex items-center gap-2 px-2.5 py-1.5 text-xs font-mono rounded-md text-zinc-400 hover:text-emerald-400 hover:bg-zinc-900 transition-colors text-left"
+						role="menuitem"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="w-3.5 h-3.5 shrink-0 text-emerald-400"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+							<polyline points="7 10 12 15 17 10" />
+							<line x1="12" y1="15" x2="12" y2="3" />
+						</svg>
+						<span>{t[$locale].backupRestoreBtn}</span>
+					</button>
+				{/if}
 
 				{#if onResetDatabase}
 					<button

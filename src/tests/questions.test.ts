@@ -328,10 +328,10 @@ describe('Curriculum & Question Bank Integrity', () => {
 				}
 				if (q.expected_query === 'SELECT DISTINCT status FROM items ORDER BY status;') {
 					expect(q.instructions.en).toBe(
-						'Retrieve all unique status values from items, ordered alphabetically.'
+						'List all distinct inventory status values (`status`) currently tracked across `items`, sorted alphabetically.'
 					);
 					expect(q.instructions.id).toBe(
-						'Ambil seluruh nilai unik kolom status dari tabel items, diurutkan secara alfabetis.'
+						'Tampilkan seluruh status inventaris unik (`status`) yang saat ini tercatat pada `items`, tersusun menurut abjad.'
 					);
 				}
 			}

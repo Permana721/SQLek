@@ -1,32 +1,59 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
-	import { clearProgress } from '$lib/data/progress';
+	import { goto } from '$app/navigation';
+	import { MODULES } from '$lib/data/questions';
+	import {
+		clearProgress,
+		resolveResumePath,
+		isModulePassed,
+		progressStore,
+		getEngineResumeUrl
+	} from '$lib/data/progress';
 	import UserMenu from '$lib/components/UserMenu.svelte';
 	import LanguageToggle from '$lib/components/LanguageToggle.svelte';
 	import Logo from '$lib/components/Logo.svelte';
 	import { locale, t } from '$lib/data/locale';
 
-	let lastPgModule = $state(1);
-	let lastMyModule = $state(1);
+	let targetPgModule = $state(MODULES[0]);
+	let targetMyModule = $state(MODULES[0]);
+	let isPgCompleted1 = $state(false);
+	let isMyCompleted1 = $state(false);
+	let resumePgUrl = $state('/postgres/1?task=0');
+	let resumeMyUrl = $state('/mysql/1?task=0');
 
-	function checkSavedModules() {
+	function updateEngineStates() {
 		try {
-			const savedPg = localStorage.getItem('sql_active_module_postgres');
-			const savedMy = localStorage.getItem('sql_active_module_mysql');
-			lastPgModule = savedPg ? Math.max(1, Number(savedPg)) : 1;
-			lastMyModule = savedMy ? Math.max(1, Number(savedMy)) : 1;
+			isPgCompleted1 = isModulePassed(1, 'postgres');
+			isMyCompleted1 = isModulePassed(1, 'mysql');
+
+			targetPgModule = MODULES.find((m) => !isModulePassed(m.id, 'postgres')) || MODULES[0];
+			targetMyModule = MODULES.find((m) => !isModulePassed(m.id, 'mysql')) || MODULES[0];
+
+			resumePgUrl = resolveResumePath('postgres');
+			resumeMyUrl = resolveResumePath('mysql');
 		} catch (e) {}
+	}
+
+	function handleSelectEngine(e: MouseEvent, engine: string) {
+		e.preventDefault();
+		const resumeUrl = resolveResumePath(engine);
+		goto(resumeUrl);
 	}
 
 	function handleResetSession() {
 		clearProgress('postgres');
 		clearProgress('mysql');
-		checkSavedModules();
+		updateEngineStates();
 	}
 
 	onMount(() => {
-		checkSavedModules();
+		updateEngineStates();
+	});
+
+	$effect(() => {
+		const _ = $progressStore;
+		updateEngineStates();
 	});
 </script>
 
@@ -56,8 +83,9 @@
 
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-5 w-full max-w-2xl">
 			<a
-				href="/postgres/{lastPgModule}"
-				class="group relative flex flex-col text-left p-6 bg-zinc-950 border border-zinc-800 hover:border-zinc-500 rounded-xl transition-all duration-200"
+				href={resumePgUrl}
+				onclick={(e) => handleSelectEngine(e, 'postgres')}
+				class="group relative flex flex-col text-left p-6 bg-zinc-950 border border-zinc-800 hover:border-zinc-500 rounded-xl transition-all duration-200 cursor-pointer"
 			>
 				<div class="flex items-center justify-between mb-4">
 					<div class="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center font-mono font-bold text-sm text-zinc-200 group-hover:border-zinc-700 transition-colors">
@@ -72,14 +100,15 @@
 					{t[$locale].pgDesc}
 				</p>
 				<div class="pt-3 border-t border-zinc-900 flex items-center justify-between text-xs font-mono text-zinc-300 group-hover:text-white transition-colors">
-					<span>{lastPgModule > 1 ? t[$locale].continueModule(lastPgModule) : t[$locale].startModule1}</span>
+					<span>{isPgCompleted1 ? t[$locale].continueModule(targetPgModule.id) : t[$locale].startModule1}</span>
 					<span class="text-zinc-500 group-hover:text-white transition-transform group-hover:translate-x-0.5">&rarr;</span>
 				</div>
 			</a>
 
 			<a
-				href="/mysql/{lastMyModule}"
-				class="group relative flex flex-col text-left p-6 bg-zinc-950 border border-zinc-800 hover:border-zinc-500 rounded-xl transition-all duration-200"
+				href={resumeMyUrl}
+				onclick={(e) => handleSelectEngine(e, 'mysql')}
+				class="group relative flex flex-col text-left p-6 bg-zinc-950 border border-zinc-800 hover:border-zinc-500 rounded-xl transition-all duration-200 cursor-pointer"
 			>
 				<div class="flex items-center justify-between mb-4">
 					<div class="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center font-mono font-bold text-sm text-zinc-200 group-hover:border-zinc-700 transition-colors">
@@ -94,7 +123,7 @@
 					{t[$locale].myDesc}
 				</p>
 				<div class="pt-3 border-t border-zinc-900 flex items-center justify-between text-xs font-mono text-zinc-300 group-hover:text-white transition-colors">
-					<span>{lastMyModule > 1 ? t[$locale].continueModule(lastMyModule) : t[$locale].startModule1}</span>
+					<span>{isMyCompleted1 ? t[$locale].continueModule(targetMyModule.id) : t[$locale].startModule1}</span>
 					<span class="text-zinc-500 group-hover:text-white transition-transform group-hover:translate-x-0.5">&rarr;</span>
 				</div>
 			</a>

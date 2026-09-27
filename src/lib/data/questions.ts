@@ -183,8 +183,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all columns and records from the `movies` table.",
-                id: "Ambil seluruh kolom dan data row dari tabel `movies`."
+                en: "Show all data from the `movies` table.",
+                id: "Tampilkan semua data dari tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "SELECT * FROM movies;",
@@ -215,8 +215,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve only the `title` and `director` columns from `movies`.",
-                id: "Ambil hanya kolom `title` dan `director` dari tabel `movies`."
+                en: "Show the `title` and `director` of every movie.",
+                id: "Tampilkan `title` dan `director` dari setiap film."
             },
             seed_sql: mod1Seed,
             expected_query: "SELECT title, director FROM movies;",
@@ -247,8 +247,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table 'books' with 'id' SERIAL PRIMARY KEY, 'title' TEXT NOT NULL, and 'price' INT.",
-                id: "Buat tabel 'books' dengan 'id' SERIAL PRIMARY KEY, 'title' TEXT NOT NULL, dan 'price' INT."
+                en: "Create a `books` table with an auto-incrementing `id`, a required `title`, and a `price`.",
+                id: "Buat tabel `books` dengan `id` yang otomatis bertambah, `title` yang wajib diisi, dan `price`."
             },
             seed_sql: "",
             expected_query: "CREATE TABLE books (id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, title TEXT NOT NULL, price INT);",
@@ -324,8 +324,8 @@ function generateModule1(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Create a table 'books' with 'id' INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 'title' TEXT NOT NULL, and 'price' INT.",
-                        id: "Buat tabel 'books' dengan 'id' INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 'title' TEXT NOT NULL, dan 'price' INT."
+                        en: "Create a new table named `books` with an auto-generated identity `id` as the primary key, a required text column `title`, and an integer column `price` that defaults to 0.",
+                        id: "Buat tabel baru bernama `books` dengan kolom `id` sebagai primary key berpenomoran otomatis (identity), `title` bertipe teks yang wajib diisi, serta `price` bertipe bilangan bulat dengan nilai bawaan 0."
                     },
                     seed_sql: "",
                     expected_query: "CREATE TABLE books (id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, title TEXT NOT NULL, price INT);",
@@ -400,8 +400,8 @@ function generateModule1(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Create a table 'books' with 'id' INT AUTO_INCREMENT PRIMARY KEY, 'title' VARCHAR(255) NOT NULL, and 'price' INT.",
-                        id: "Buat tabel 'books' dengan 'id' INT AUTO_INCREMENT PRIMARY KEY, 'title' VARCHAR(255) NOT NULL, dan 'price' INT."
+                        en: "Create a new table named `books` with an auto-incrementing primary key `id`, a required variable-length string column `title` (up to 255 characters), and an integer column `price`.",
+                        id: "Buat tabel baru bernama `books` dengan primary key berurut otomatis `id`, kolom string wajib `title` (hingga 255 karakter), dan kolom integer `price`."
                     },
                     seed_sql: "",
                     expected_query: "CREATE TABLE books (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255) NOT NULL, price INT);",
@@ -485,8 +485,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Add a new column `genre` of type TEXT to `movies`.",
-                id: "Tambahkan kolom baru `genre` bertipe TEXT ke tabel `movies`."
+                en: "Add a `genre` column (text) to the `movies` table.",
+                id: "Tambahkan kolom `genre` (teks) ke tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "ALTER TABLE movies ADD COLUMN genre TEXT;",
@@ -518,8 +518,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Insert a new movie with id=16, title='Soul', director='Pete Docter', year=2020, rating=8.0 into `movies`.",
-                id: "Sisipkan record film baru dengan id=16, title='Soul', director='Pete Docter', year=2020, rating=8.0 ke dalam tabel `movies`."
+                en: "Add a new movie to `movies`: `id` 16, `title` 'Soul', `director` 'Pete Docter', `year` 2020, `rating` 8.0.",
+                id: "Tambahkan film baru ke `movies`: `id` 16, `title` 'Soul', `director` 'Pete Docter', `year` 2020, `rating` 8.0."
             },
             seed_sql: mod1Seed,
             expected_query: "INSERT INTO movies (id, title, director, year, rating) VALUES (16, 'Soul', 'Pete Docter', 2020, 8.0);",
@@ -551,8 +551,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Update the `movies` table to set `rating = 9.2` where `id = 11`.",
-                id: "Perbarui tabel `movies` untuk mengubah nilai `rating = 9.2` pada data dengan `id = 11`."
+                en: "Change the `rating` of the movie with `id` 11 to 9.2.",
+                id: "Ubah `rating` film dengan `id` 11 menjadi 9.2."
             },
             seed_sql: mod1Seed,
             expected_query: "UPDATE movies SET rating = 9.2 WHERE id = 11;",
@@ -584,8 +584,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Adjust the `movies` table: increment `rating` by `0.5` (`rating = rating + 0.5`) for movies where `year >= 2010`.",
-                id: "Perbarui tabel `movies`: naikkan nilai `rating` sebesar `0.5` (`rating = rating + 0.5`) untuk film dengan kondisi `year >= 2010`."
+                en: "Add 0.5 to the `rating` of every movie released in 2010 or later.",
+                id: "Tambahkan 0.5 ke `rating` setiap film yang rilis tahun 2010 ke atas."
             },
             seed_sql: mod1Seed,
             expected_query: "UPDATE movies SET rating = rating + 0.5 WHERE year >= 2010;",
@@ -617,8 +617,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Delete all records from the `movies` table where `year < 2000`.",
-                id: "Hapus seluruh data dari tabel `movies` yang memenuhi kriteria `year < 2000`."
+                en: "Remove all movies released before 2000.",
+                id: "Hapus semua film yang rilis sebelum tahun 2000."
             },
             seed_sql: mod1Seed,
             expected_query: "DELETE FROM movies WHERE year < 2000;",
@@ -651,7 +651,7 @@ function generateModule1(): Question[] {
             ],
             instructions: {
                 en: "Remove the `rating` column from `movies`.",
-                id: "Hapus kolom `rating` dari tabel `movies` menggunakan ALTER TABLE."
+                id: "Hapus kolom `rating` dari tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "ALTER TABLE movies DROP COLUMN rating;",
@@ -683,8 +683,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Empty all records from the `movies` table instantly using `TRUNCATE TABLE`.",
-                id: "Kosongkan seluruh data dari tabel `movies` secara instan menggunakan perintah `TRUNCATE TABLE`."
+                en: "Clear all data from the `movies` table.",
+                id: "Kosongkan semua data dari tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "TRUNCATE TABLE movies;",
@@ -716,8 +716,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all columns and records from the `movies` table.",
-                id: "Ambil seluruh kolom dan data row dari tabel `movies`."
+                en: "Show all data from the `movies` table.",
+                id: "Tampilkan semua data dari tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "SELECT * FROM movies;",
@@ -748,8 +748,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve only the `title` and `director` columns from `movies`.",
-                id: "Ambil hanya kolom `title` dan `director` dari tabel `movies`."
+                en: "Show the `title` and `director` of every movie.",
+                id: "Tampilkan `title` dan `director` dari setiap film."
             },
             seed_sql: mod1Seed,
             expected_query: "SELECT title, director FROM movies;",
@@ -780,8 +780,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table 'books' with 'id' SERIAL PRIMARY KEY, 'title' TEXT NOT NULL, and 'price' INT.",
-                id: "Buat tabel 'books' dengan 'id' SERIAL PRIMARY KEY, 'title' TEXT NOT NULL, dan 'price' INT."
+                en: "Create a `books` table with an auto-incrementing `id`, a required `title`, and a `price`.",
+                id: "Buat tabel `books` dengan `id` yang otomatis bertambah, `title` yang wajib diisi, dan `price`."
             },
             seed_sql: "",
             expected_query: "CREATE TABLE books (id SERIAL PRIMARY KEY, title TEXT NOT NULL, price INT);",
@@ -857,8 +857,8 @@ function generateModule1(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Create a table 'books' with 'id' INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 'title' TEXT NOT NULL, and 'price' INT.",
-                        id: "Buat tabel 'books' dengan 'id' INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 'title' TEXT NOT NULL, dan 'price' INT."
+                        en: "Create a new table named `books` with an auto-generated identity `id` as the primary key, a required text column `title`, and an integer column `price` that defaults to 0.",
+                        id: "Buat tabel baru bernama `books` dengan kolom `id` sebagai primary key berpenomoran otomatis (identity), `title` bertipe teks yang wajib diisi, serta `price` bertipe bilangan bulat dengan nilai bawaan 0."
                     },
                     seed_sql: "",
                     expected_query: "CREATE TABLE books (id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, title TEXT NOT NULL, price INT);",
@@ -937,8 +937,8 @@ function generateModule1(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Create a table `books` with `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, `title` VARCHAR(255) NOT NULL, `status` ENUM('draft', 'published') DEFAULT 'draft', and `price` INT UNSIGNED NOT NULL.",
-                        id: "Buat tabel `books` dengan `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, `title` VARCHAR(255) NOT NULL, `status` ENUM('draft', 'published') DEFAULT 'draft', dan `price` INT UNSIGNED NOT NULL."
+                        en: "Create a new table named `books` with an unsigned auto-incrementing primary key `id`, a required text column `title` (up to 255 characters), a publication `status` column accepting only 'draft' or 'published' defaulting to 'draft', and an unsigned integer `price`.",
+                        id: "Buat tabel baru bernama `books` dengan primary key berurut tak bertanda `id`, kolom judul wajib `title` (hingga 255 karakter), kolom status publikasi yang hanya menerima 'draft' atau 'published' dengan nilai bawaan 'draft', dan kolom integer tak bertanda `price`."
                     },
                     seed_sql: "",
                     expected_query: "CREATE TABLE books (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255) NOT NULL, status ENUM('draft', 'published') DEFAULT 'draft', price INT UNSIGNED NOT NULL);",
@@ -1021,8 +1021,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Add a new column `genre` of type TEXT to `movies`.",
-                id: "Tambahkan kolom baru `genre` bertipe TEXT ke tabel `movies`."
+                en: "Add a `genre` column (text) to the `movies` table.",
+                id: "Tambahkan kolom `genre` (teks) ke tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "ALTER TABLE movies ADD COLUMN genre TEXT;",
@@ -1054,8 +1054,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Insert a new movie with id=16, title='Soul', director='Pete Docter', year=2020, rating=8.0 into `movies`.",
-                id: "Sisipkan record film baru dengan id=16, title='Soul', director='Pete Docter', year=2020, rating=8.0 ke dalam tabel `movies`."
+                en: "Add a new movie to `movies`: `id` 16, `title` 'Soul', `director` 'Pete Docter', `year` 2020, `rating` 8.0.",
+                id: "Tambahkan film baru ke `movies`: `id` 16, `title` 'Soul', `director` 'Pete Docter', `year` 2020, `rating` 8.0."
             },
             seed_sql: mod1Seed,
             expected_query: "INSERT INTO movies (id, title, director, year, rating) VALUES (16, 'Soul', 'Pete Docter', 2020, 8.0);",
@@ -1084,8 +1084,8 @@ function generateModule1(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Insert a new movie with id=16, title='Soul', director='Pete Docter', year=2020, rating=8.0 into `movies`, then retrieve the generated key using `SELECT LAST_INSERT_ID();`.",
-                        id: "Sisipkan record film baru dengan id=16, title='Soul', director='Pete Docter', year=2020, rating=8.0 ke dalam tabel `movies`, lalu ambil ID yang dihasilkan menggunakan `SELECT LAST_INSERT_ID();`."
+                        en: "Register a new movie into the `movies` table with `id` 16, `title` 'Soul', `director` 'Pete Docter', `year` 2020, and `rating` 8.0, then retrieve the newly generated identifier.",
+                        id: "Daftarkan entri film baru ke dalam tabel `movies` dengan `id` 16, `title` 'Soul', `director` 'Pete Docter', `year` 2020, dan `rating` 8.0, lalu ambil ID yang baru saja dihasilkan."
                     },
                     expected_query: "INSERT INTO movies (id, title, director, year, rating) VALUES (16, 'Soul', 'Pete Docter', 2020, 8.0); SELECT LAST_INSERT_ID();",
                     verification_query: "SELECT id, title, director, year, rating FROM movies WHERE id = 16;",
@@ -1115,8 +1115,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Update the `movies` table to set `year = 2009` where `id = 12`.",
-                id: "Perbarui tabel `movies` untuk mengubah nilai `year = 2009` pada data dengan `id = 12`."
+                en: "Change the `year` of the movie with `id` 12 to 2009.",
+                id: "Ubah `year` film dengan `id` 12 menjadi 2009."
             },
             seed_sql: mod1Seed,
             expected_query: "UPDATE movies SET year = 2009 WHERE id = 12;",
@@ -1148,8 +1148,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Adjust the `movies` table: increment `rating` by `0.2` (`rating = rating + 0.2`) for movies where `year < 2000`.",
-                id: "Perbarui tabel `movies`: naikkan nilai `rating` sebesar `0.2` (`rating = rating + 0.2`) untuk film dengan kondisi `year < 2000`."
+                en: "Add 0.2 to the `rating` of every movie released before 2000.",
+                id: "Tambahkan 0.2 ke `rating` setiap film yang rilis sebelum tahun 2000."
             },
             seed_sql: mod1Seed,
             expected_query: "UPDATE movies SET rating = rating + 0.2 WHERE year < 2000;",
@@ -1181,8 +1181,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Delete all records from the `movies` table where `rating < 7.5`.",
-                id: "Hapus seluruh data dari tabel `movies` yang memenuhi kriteria `rating < 7.5`."
+                en: "Remove all movies with a `rating` below 7.5.",
+                id: "Hapus semua film dengan `rating` di bawah 7.5."
             },
             seed_sql: mod1Seed,
             expected_query: "DELETE FROM movies WHERE rating < 7.5;",
@@ -1214,8 +1214,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Rename column `director` to `filmmaker` in `movies`.",
-                id: "Ubah nama kolom `director` menjadi `filmmaker` pada tabel `movies`."
+                en: "Rename the `director` column in `movies` to `filmmaker`.",
+                id: "Ubah nama kolom `director` di tabel `movies` menjadi `filmmaker`."
             },
             seed_sql: mod1Seed,
             expected_query: "ALTER TABLE movies RENAME COLUMN director TO filmmaker;",
@@ -1244,8 +1244,8 @@ function generateModule1(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Reposition column `year` INT to appear directly after `title` using `ALTER TABLE movies MODIFY COLUMN year INT AFTER title;`.",
-                        id: "Pindahkan urutan kolom `year` bertipe INT agar berada tepat setelah kolom `title` menggunakan `ALTER TABLE movies MODIFY COLUMN year INT AFTER title;`."
+                        en: "Reorganize the column layout in `movies` so that the `year` integer column is positioned directly after `title`.",
+                        id: "Tata ulang susunan kolom pada `movies` agar atribut integer `year` ditempatkan tepat setelah `title`."
                     },
                     expected_query: "ALTER TABLE movies MODIFY COLUMN year INT AFTER title;",
                     verification_query: "SELECT id, title, year, director, rating FROM movies LIMIT 3;",
@@ -1275,8 +1275,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Empty all records from the `movies` table instantly using `TRUNCATE TABLE`.",
-                id: "Kosongkan seluruh data dari tabel `movies` secara instan menggunakan perintah `TRUNCATE TABLE`."
+                en: "Clear all data from the `movies` table.",
+                id: "Kosongkan semua data dari tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "TRUNCATE TABLE movies;",
@@ -1308,8 +1308,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all columns and records from the `movies` table.",
-                id: "Ambil seluruh kolom dan data row dari tabel `movies`."
+                en: "Show all data from the `movies` table.",
+                id: "Tampilkan semua data dari tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "SELECT * FROM movies;",
@@ -1340,8 +1340,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve only the `title` and `director` columns from `movies`.",
-                id: "Ambil hanya kolom `title` dan `director` dari tabel `movies`."
+                en: "Show the `title` and `director` of every movie.",
+                id: "Tampilkan `title` dan `director` dari setiap film."
             },
             seed_sql: mod1Seed,
             expected_query: "SELECT title, director FROM movies;",
@@ -1372,8 +1372,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table 'books' with 'id' SERIAL PRIMARY KEY, 'title' TEXT NOT NULL, and 'price' INT.",
-                id: "Buat tabel 'books' dengan 'id' SERIAL PRIMARY KEY, 'title' TEXT NOT NULL, dan 'price' INT."
+                en: "Create a `books` table with an auto-incrementing `id`, a required `title`, and a `price`.",
+                id: "Buat tabel `books` dengan `id` yang otomatis bertambah, `title` yang wajib diisi, dan `price`."
             },
             seed_sql: "",
             expected_query: "CREATE TABLE books (id SERIAL PRIMARY KEY, title TEXT NOT NULL, price INT);",
@@ -1449,8 +1449,8 @@ function generateModule1(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Create a table 'books' with 'id' INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 'title' TEXT NOT NULL, and 'price' INT.",
-                        id: "Buat tabel 'books' dengan 'id' INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 'title' TEXT NOT NULL, dan 'price' INT."
+                        en: "Create a new table named `books` with an auto-generated identity `id` as the primary key, a required text column `title`, and an integer column `price` that defaults to 0.",
+                        id: "Buat tabel baru bernama `books` dengan kolom `id` sebagai primary key berpenomoran otomatis (identity), `title` bertipe teks yang wajib diisi, serta `price` bertipe bilangan bulat dengan nilai bawaan 0."
                     },
                     seed_sql: "",
                     expected_query: "CREATE TABLE books (id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, title TEXT NOT NULL, price INT);",
@@ -1525,8 +1525,8 @@ function generateModule1(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Create a table 'books' with 'id' INT AUTO_INCREMENT PRIMARY KEY, 'title' VARCHAR(255) NOT NULL, and 'price' INT.",
-                        id: "Buat tabel 'books' dengan 'id' INT AUTO_INCREMENT PRIMARY KEY, 'title' VARCHAR(255) NOT NULL, dan 'price' INT."
+                        en: "Create a new table named `books` with an auto-incrementing primary key `id`, a required variable-length string column `title` (up to 255 characters), and an integer column `price`.",
+                        id: "Buat tabel baru bernama `books` dengan primary key berurut otomatis `id`, kolom string wajib `title` (hingga 255 karakter), dan kolom integer `price`."
                     },
                     seed_sql: "",
                     expected_query: "CREATE TABLE books (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255) NOT NULL, price INT);",
@@ -1610,8 +1610,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Add a new column `genre` of type TEXT to `movies`.",
-                id: "Tambahkan kolom baru `genre` bertipe TEXT ke tabel `movies`."
+                en: "Add a `genre` column (text) to the `movies` table.",
+                id: "Tambahkan kolom `genre` (teks) ke tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "ALTER TABLE movies ADD COLUMN genre TEXT;",
@@ -1643,8 +1643,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Insert a new movie with id=16, title='Soul', director='Pete Docter', year=2020, rating=8.0 into `movies`.",
-                id: "Sisipkan record film baru dengan id=16, title='Soul', director='Pete Docter', year=2020, rating=8.0 ke dalam tabel `movies`."
+                en: "Add a new movie to `movies`: `id` 16, `title` 'Soul', `director` 'Pete Docter', `year` 2020, `rating` 8.0.",
+                id: "Tambahkan film baru ke `movies`: `id` 16, `title` 'Soul', `director` 'Pete Docter', `year` 2020, `rating` 8.0."
             },
             seed_sql: mod1Seed,
             expected_query: "INSERT INTO movies (id, title, director, year, rating) VALUES (16, 'Soul', 'Pete Docter', 2020, 8.0);",
@@ -1676,8 +1676,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Update the `movies` table to set `rating = 8.5` where `id = 1`.",
-                id: "Perbarui tabel `movies` untuk mengubah nilai `rating = 8.5` pada data dengan `id = 1`."
+                en: "Change the `rating` of the movie with `id` 1 to 8.5.",
+                id: "Ubah `rating` film dengan `id` 1 menjadi 8.5."
             },
             seed_sql: mod1Seed,
             expected_query: "UPDATE movies SET rating = 8.5 WHERE id = 1;",
@@ -1709,8 +1709,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Adjust the `movies` table: increment `rating` by `0.4` (`rating = rating + 0.4`) for movies where `year BETWEEN 2000 AND 2008`.",
-                id: "Perbarui tabel `movies`: naikkan nilai `rating` sebesar `0.4` (`rating = rating + 0.4`) untuk film dengan kondisi `year BETWEEN 2000 AND 2008`."
+                en: "Add 0.4 to the `rating` of every movie released between 2000 and 2008.",
+                id: "Tambahkan 0.4 ke `rating` setiap film yang rilis antara tahun 2000 dan 2008."
             },
             seed_sql: mod1Seed,
             expected_query: "UPDATE movies SET rating = rating + 0.4 WHERE year BETWEEN 2000 AND 2008;",
@@ -1742,8 +1742,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Delete all records from the `movies` table where `id = 2`.",
-                id: "Hapus seluruh data dari tabel `movies` yang memenuhi kriteria `id = 2`."
+                en: "Remove the movie with `id` 2.",
+                id: "Hapus film dengan `id` 2."
             },
             seed_sql: mod1Seed,
             expected_query: "DELETE FROM movies WHERE id = 2;",
@@ -1776,7 +1776,7 @@ function generateModule1(): Question[] {
             ],
             instructions: {
                 en: "Remove the `year` column from `movies`.",
-                id: "Hapus kolom `year` dari tabel `movies` menggunakan ALTER TABLE."
+                id: "Hapus kolom `year` dari tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "ALTER TABLE movies DROP COLUMN year;",
@@ -1808,8 +1808,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Empty all records from the `movies` table instantly using `TRUNCATE TABLE`.",
-                id: "Kosongkan seluruh data dari tabel `movies` secara instan menggunakan perintah `TRUNCATE TABLE`."
+                en: "Clear all data from the `movies` table.",
+                id: "Kosongkan semua data dari tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "TRUNCATE TABLE movies;",
@@ -1841,8 +1841,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all columns and records from the `movies` table.",
-                id: "Ambil seluruh kolom dan data row dari tabel `movies`."
+                en: "Show all data from the `movies` table.",
+                id: "Tampilkan semua data dari tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "SELECT * FROM movies;",
@@ -1873,8 +1873,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve only the `title` and `director` columns from `movies`.",
-                id: "Ambil hanya kolom `title` dan `director` dari tabel `movies`."
+                en: "Show the `title` and `director` of every movie.",
+                id: "Tampilkan `title` dan `director` dari setiap film."
             },
             seed_sql: mod1Seed,
             expected_query: "SELECT title, director FROM movies;",
@@ -1905,8 +1905,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table 'books' with 'id' SERIAL PRIMARY KEY, 'title' TEXT NOT NULL, and 'price' INT.",
-                id: "Buat tabel 'books' dengan 'id' SERIAL PRIMARY KEY, 'title' TEXT NOT NULL, dan 'price' INT."
+                en: "Create a `books` table with an auto-incrementing `id`, a required `title`, and a `price`.",
+                id: "Buat tabel `books` dengan `id` yang otomatis bertambah, `title` yang wajib diisi, dan `price`."
             },
             seed_sql: "",
             expected_query: "CREATE TABLE books (id SERIAL PRIMARY KEY, title TEXT NOT NULL, price INT);",
@@ -1982,8 +1982,8 @@ function generateModule1(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Create a table 'books' with 'id' INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 'title' TEXT NOT NULL, and 'price' INT.",
-                        id: "Buat tabel 'books' dengan 'id' INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 'title' TEXT NOT NULL, dan 'price' INT."
+                        en: "Create a new table named `books` with an auto-generated identity `id` as the primary key, a required text column `title`, and an integer column `price` that defaults to 0.",
+                        id: "Buat tabel baru bernama `books` dengan kolom `id` sebagai primary key berpenomoran otomatis (identity), `title` bertipe teks yang wajib diisi, serta `price` bertipe bilangan bulat dengan nilai bawaan 0."
                     },
                     seed_sql: "",
                     expected_query: "CREATE TABLE books (id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, title TEXT NOT NULL, price INT);",
@@ -2058,8 +2058,8 @@ function generateModule1(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Create a table 'books' with 'id' INT AUTO_INCREMENT PRIMARY KEY, 'title' VARCHAR(255) NOT NULL, and 'price' INT.",
-                        id: "Buat tabel 'books' dengan 'id' INT AUTO_INCREMENT PRIMARY KEY, 'title' VARCHAR(255) NOT NULL, dan 'price' INT."
+                        en: "Create a new table named `books` with an auto-incrementing primary key `id`, a required variable-length string column `title` (up to 255 characters), and an integer column `price`.",
+                        id: "Buat tabel baru bernama `books` dengan primary key berurut otomatis `id`, kolom string wajib `title` (hingga 255 karakter), dan kolom integer `price`."
                     },
                     seed_sql: "",
                     expected_query: "CREATE TABLE books (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255) NOT NULL, price INT);",
@@ -2143,8 +2143,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Add a new column `genre` of type TEXT to `movies`.",
-                id: "Tambahkan kolom baru `genre` bertipe TEXT ke tabel `movies`."
+                en: "Add a `genre` column (text) to the `movies` table.",
+                id: "Tambahkan kolom `genre` (teks) ke tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "ALTER TABLE movies ADD COLUMN genre TEXT;",
@@ -2176,8 +2176,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Insert a new movie with id=16, title='Soul', director='Pete Docter', year=2020, rating=8.0 into `movies`.",
-                id: "Sisipkan record film baru dengan id=16, title='Soul', director='Pete Docter', year=2020, rating=8.0 ke dalam tabel `movies`."
+                en: "Add a new movie to `movies`: `id` 16, `title` 'Soul', `director` 'Pete Docter', `year` 2020, `rating` 8.0.",
+                id: "Tambahkan film baru ke `movies`: `id` 16, `title` 'Soul', `director` 'Pete Docter', `year` 2020, `rating` 8.0."
             },
             seed_sql: mod1Seed,
             expected_query: "INSERT INTO movies (id, title, director, year, rating) VALUES (16, 'Soul', 'Pete Docter', 2020, 8.0);",
@@ -2209,8 +2209,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Update the `movies` table to set `rating = 9.1` where `id = 13`.",
-                id: "Perbarui tabel `movies` untuk mengubah nilai `rating = 9.1` pada data dengan `id = 13`."
+                en: "Change the `rating` of the movie with `id` 13 to 9.1.",
+                id: "Ubah `rating` film dengan `id` 13 menjadi 9.1."
             },
             seed_sql: mod1Seed,
             expected_query: "UPDATE movies SET rating = 9.1 WHERE id = 13;",
@@ -2242,8 +2242,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Adjust the `movies` table: increment `rating` by `0.3` (`rating = rating + 0.3`) for movies where `year >= 2008`.",
-                id: "Perbarui tabel `movies`: naikkan nilai `rating` sebesar `0.3` (`rating = rating + 0.3`) untuk film dengan kondisi `year >= 2008`."
+                en: "Add 0.3 to the `rating` of every movie released in 2008 or later.",
+                id: "Tambahkan 0.3 ke `rating` setiap film yang rilis tahun 2008 ke atas."
             },
             seed_sql: mod1Seed,
             expected_query: "UPDATE movies SET rating = rating + 0.3 WHERE year >= 2008;",
@@ -2275,8 +2275,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Delete all records from the `movies` table where `director = 'Martin Scorsese'`.",
-                id: "Hapus seluruh data dari tabel `movies` yang memenuhi kriteria `director = 'Martin Scorsese'`."
+                en: "Remove all movies directed by Martin Scorsese.",
+                id: "Hapus semua film yang disutradarai Martin Scorsese."
             },
             seed_sql: mod1Seed,
             expected_query: "DELETE FROM movies WHERE director = 'Martin Scorsese';",
@@ -2308,8 +2308,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Rename column `title` to `movie_title` in `movies`.",
-                id: "Ubah nama kolom `title` menjadi `movie_title` pada tabel `movies`."
+                en: "Rename the `title` column in `movies` to `movie_title`.",
+                id: "Ubah nama kolom `title` di tabel `movies` menjadi `movie_title`."
             },
             seed_sql: mod1Seed,
             expected_query: "ALTER TABLE movies RENAME COLUMN title TO movie_title;",
@@ -2341,8 +2341,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Empty all records from the `movies` table instantly using `TRUNCATE TABLE`.",
-                id: "Kosongkan seluruh data dari tabel `movies` secara instan menggunakan perintah `TRUNCATE TABLE`."
+                en: "Clear all data from the `movies` table.",
+                id: "Kosongkan semua data dari tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "TRUNCATE TABLE movies;",
@@ -2374,8 +2374,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all columns and records from the `movies` table.",
-                id: "Ambil seluruh kolom dan data row dari tabel `movies`."
+                en: "Show all data from the `movies` table.",
+                id: "Tampilkan semua data dari tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "SELECT * FROM movies;",
@@ -2406,8 +2406,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve only the `title` and `director` columns from `movies`.",
-                id: "Ambil hanya kolom `title` dan `director` dari tabel `movies`."
+                en: "Show the `title` and `director` of every movie.",
+                id: "Tampilkan `title` dan `director` dari setiap film."
             },
             seed_sql: mod1Seed,
             expected_query: "SELECT title, director FROM movies;",
@@ -2438,8 +2438,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table 'books' with 'id' SERIAL PRIMARY KEY, 'title' TEXT NOT NULL, and 'price' INT.",
-                id: "Buat tabel 'books' dengan 'id' SERIAL PRIMARY KEY, 'title' TEXT NOT NULL, dan 'price' INT."
+                en: "Create a `books` table with an auto-incrementing `id`, a required `title`, and a `price`.",
+                id: "Buat tabel `books` dengan `id` yang otomatis bertambah, `title` yang wajib diisi, dan `price`."
             },
             seed_sql: "",
             expected_query: "CREATE TABLE books (id SERIAL PRIMARY KEY, title TEXT NOT NULL, price INT);",
@@ -2515,8 +2515,8 @@ function generateModule1(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Create a table 'books' with 'id' INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 'title' TEXT NOT NULL, and 'price' INT.",
-                        id: "Buat tabel 'books' dengan 'id' INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 'title' TEXT NOT NULL, dan 'price' INT."
+                        en: "Create a new table named `books` with an auto-generated identity `id` as the primary key, a required text column `title`, and an integer column `price` that defaults to 0.",
+                        id: "Buat tabel baru bernama `books` dengan kolom `id` sebagai primary key berpenomoran otomatis (identity), `title` bertipe teks yang wajib diisi, serta `price` bertipe bilangan bulat dengan nilai bawaan 0."
                     },
                     seed_sql: "",
                     expected_query: "CREATE TABLE books (id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, title TEXT NOT NULL, price INT);",
@@ -2591,8 +2591,8 @@ function generateModule1(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Create a table 'books' with 'id' INT AUTO_INCREMENT PRIMARY KEY, 'title' VARCHAR(255) NOT NULL, and 'price' INT.",
-                        id: "Buat tabel 'books' dengan 'id' INT AUTO_INCREMENT PRIMARY KEY, 'title' VARCHAR(255) NOT NULL, dan 'price' INT."
+                        en: "Create a new table named `books` with an auto-incrementing primary key `id`, a required variable-length string column `title` (up to 255 characters), and an integer column `price`.",
+                        id: "Buat tabel baru bernama `books` dengan primary key berurut otomatis `id`, kolom string wajib `title` (hingga 255 karakter), dan kolom integer `price`."
                     },
                     seed_sql: "",
                     expected_query: "CREATE TABLE books (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255) NOT NULL, price INT);",
@@ -2676,8 +2676,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Add a new column `genre` of type TEXT to `movies`.",
-                id: "Tambahkan kolom baru `genre` bertipe TEXT ke tabel `movies`."
+                en: "Add a `genre` column (text) to the `movies` table.",
+                id: "Tambahkan kolom `genre` (teks) ke tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "ALTER TABLE movies ADD COLUMN genre TEXT;",
@@ -2709,8 +2709,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Insert a new movie with id=16, title='Soul', director='Pete Docter', year=2020, rating=8.0 into `movies`.",
-                id: "Sisipkan record film baru dengan id=16, title='Soul', director='Pete Docter', year=2020, rating=8.0 ke dalam tabel `movies`."
+                en: "Add a new movie to `movies`: `id` 16, `title` 'Soul', `director` 'Pete Docter', `year` 2020, `rating` 8.0.",
+                id: "Tambahkan film baru ke `movies`: `id` 16, `title` 'Soul', `director` 'Pete Docter', `year` 2020, `rating` 8.0."
             },
             seed_sql: mod1Seed,
             expected_query: "INSERT INTO movies (id, title, director, year, rating) VALUES (16, 'Soul', 'Pete Docter', 2020, 8.0);",
@@ -2742,8 +2742,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Update the `movies` table to set `year = 2015` where `id = 15`.",
-                id: "Perbarui tabel `movies` untuk mengubah nilai `year = 2015` pada data dengan `id = 15`."
+                en: "Change the `year` of the movie with `id` 15 to 2015.",
+                id: "Ubah `year` film dengan `id` 15 menjadi 2015."
             },
             seed_sql: mod1Seed,
             expected_query: "UPDATE movies SET year = 2015 WHERE id = 15;",
@@ -2775,8 +2775,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Adjust the `movies` table: increment `rating` by `0.1` (`rating = rating + 0.1`) for movies where `year < 2005`.",
-                id: "Perbarui tabel `movies`: naikkan nilai `rating` sebesar `0.1` (`rating = rating + 0.1`) untuk film dengan kondisi `year < 2005`."
+                en: "Add 0.1 to the `rating` of every movie released before 2005.",
+                id: "Tambahkan 0.1 ke `rating` setiap film yang rilis sebelum tahun 2005."
             },
             seed_sql: mod1Seed,
             expected_query: "UPDATE movies SET rating = rating + 0.1 WHERE year < 2005;",
@@ -2808,8 +2808,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Delete all records from the `movies` table where `year > 2012`.",
-                id: "Hapus seluruh data dari tabel `movies` yang memenuhi kriteria `year > 2012`."
+                en: "Remove all movies released after 2012.",
+                id: "Hapus semua film yang rilis setelah tahun 2012."
             },
             seed_sql: mod1Seed,
             expected_query: "DELETE FROM movies WHERE year > 2012;",
@@ -2842,7 +2842,7 @@ function generateModule1(): Question[] {
             ],
             instructions: {
                 en: "Remove the `director` column from `movies`.",
-                id: "Hapus kolom `director` dari tabel `movies` menggunakan ALTER TABLE."
+                id: "Hapus kolom `director` dari tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "ALTER TABLE movies DROP COLUMN director;",
@@ -2874,8 +2874,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Empty all records from the `movies` table instantly using `TRUNCATE TABLE`.",
-                id: "Kosongkan seluruh data dari tabel `movies` secara instan menggunakan perintah `TRUNCATE TABLE`."
+                en: "Clear all data from the `movies` table.",
+                id: "Kosongkan semua data dari tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "TRUNCATE TABLE movies;",
@@ -2907,8 +2907,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all columns and records from the `movies` table.",
-                id: "Ambil seluruh kolom dan data row dari tabel `movies`."
+                en: "Show all data from the `movies` table.",
+                id: "Tampilkan semua data dari tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "SELECT * FROM movies;",
@@ -2939,8 +2939,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve only the `title` and `director` columns from `movies`.",
-                id: "Ambil hanya kolom `title` dan `director` dari tabel `movies`."
+                en: "Show the `title` and `director` of every movie.",
+                id: "Tampilkan `title` dan `director` dari setiap film."
             },
             seed_sql: mod1Seed,
             expected_query: "SELECT title, director FROM movies;",
@@ -2971,8 +2971,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table 'books' with 'id' SERIAL PRIMARY KEY, 'title' TEXT NOT NULL, and 'price' INT.",
-                id: "Buat tabel 'books' dengan 'id' SERIAL PRIMARY KEY, 'title' TEXT NOT NULL, dan 'price' INT."
+                en: "Create a `books` table with an auto-incrementing `id`, a required `title`, and a `price`.",
+                id: "Buat tabel `books` dengan `id` yang otomatis bertambah, `title` yang wajib diisi, dan `price`."
             },
             seed_sql: "",
             expected_query: "CREATE TABLE books (id SERIAL PRIMARY KEY, title TEXT NOT NULL, price INT);",
@@ -3048,8 +3048,8 @@ function generateModule1(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Create a table 'books' with 'id' INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 'title' TEXT NOT NULL, and 'price' INT.",
-                        id: "Buat tabel 'books' dengan 'id' INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 'title' TEXT NOT NULL, dan 'price' INT."
+                        en: "Create a new table named `books` with an auto-generated identity `id` as the primary key, a required text column `title`, and an integer column `price` that defaults to 0.",
+                        id: "Buat tabel baru bernama `books` dengan kolom `id` sebagai primary key berpenomoran otomatis (identity), `title` bertipe teks yang wajib diisi, serta `price` bertipe bilangan bulat dengan nilai bawaan 0."
                     },
                     seed_sql: "",
                     expected_query: "CREATE TABLE books (id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, title TEXT NOT NULL, price INT);",
@@ -3124,8 +3124,8 @@ function generateModule1(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Create a table 'books' with 'id' INT AUTO_INCREMENT PRIMARY KEY, 'title' VARCHAR(255) NOT NULL, and 'price' INT.",
-                        id: "Buat tabel 'books' dengan 'id' INT AUTO_INCREMENT PRIMARY KEY, 'title' VARCHAR(255) NOT NULL, dan 'price' INT."
+                        en: "Create a new table named `books` with an auto-incrementing primary key `id`, a required variable-length string column `title` (up to 255 characters), and an integer column `price`.",
+                        id: "Buat tabel baru bernama `books` dengan primary key berurut otomatis `id`, kolom string wajib `title` (hingga 255 karakter), dan kolom integer `price`."
                     },
                     seed_sql: "",
                     expected_query: "CREATE TABLE books (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255) NOT NULL, price INT);",
@@ -3209,8 +3209,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Add a new column `genre` of type TEXT to `movies`.",
-                id: "Tambahkan kolom baru `genre` bertipe TEXT ke tabel `movies`."
+                en: "Add a `genre` column (text) to the `movies` table.",
+                id: "Tambahkan kolom `genre` (teks) ke tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "ALTER TABLE movies ADD COLUMN genre TEXT;",
@@ -3242,8 +3242,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Insert a new movie with id=16, title='Soul', director='Pete Docter', year=2020, rating=8.0 into `movies`.",
-                id: "Sisipkan record film baru dengan id=16, title='Soul', director='Pete Docter', year=2020, rating=8.0 ke dalam tabel `movies`."
+                en: "Add a new movie to `movies`: `id` 16, `title` 'Soul', `director` 'Pete Docter', `year` 2020, `rating` 8.0.",
+                id: "Tambahkan film baru ke `movies`: `id` 16, `title` 'Soul', `director` 'Pete Docter', `year` 2020, `rating` 8.0."
             },
             seed_sql: mod1Seed,
             expected_query: "INSERT INTO movies (id, title, director, year, rating) VALUES (16, 'Soul', 'Pete Docter', 2020, 8.0);",
@@ -3275,8 +3275,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Update the `movies` table to set `rating = 8.4` where `id = 14`.",
-                id: "Perbarui tabel `movies` untuk mengubah nilai `rating = 8.4` pada data dengan `id = 14`."
+                en: "Change the `rating` of the movie with `id` 14 to 8.4.",
+                id: "Ubah `rating` film dengan `id` 14 menjadi 8.4."
             },
             seed_sql: mod1Seed,
             expected_query: "UPDATE movies SET rating = 8.4 WHERE id = 14;",
@@ -3308,8 +3308,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Adjust the `movies` table: increment `rating` by `0.2` (`rating = rating + 0.2`) for movies where `year >= 2009`.",
-                id: "Perbarui tabel `movies`: naikkan nilai `rating` sebesar `0.2` (`rating = rating + 0.2`) untuk film dengan kondisi `year >= 2009`."
+                en: "Add 0.2 to the `rating` of every movie released in 2009 or later.",
+                id: "Tambahkan 0.2 ke `rating` setiap film yang rilis tahun 2009 ke atas."
             },
             seed_sql: mod1Seed,
             expected_query: "UPDATE movies SET rating = rating + 0.2 WHERE year >= 2009;",
@@ -3341,8 +3341,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Delete all records from the `movies` table where `rating < 8.0`.",
-                id: "Hapus seluruh data dari tabel `movies` yang memenuhi kriteria `rating < 8.0`."
+                en: "Remove all movies with a `rating` below 8.0.",
+                id: "Hapus semua film dengan `rating` di bawah 8.0."
             },
             seed_sql: mod1Seed,
             expected_query: "DELETE FROM movies WHERE rating < 8.0;",
@@ -3374,8 +3374,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Rename column `rating` to `score` in `movies`.",
-                id: "Ubah nama kolom `rating` menjadi `score` pada tabel `movies`."
+                en: "Rename the `rating` column in `movies` to `score`.",
+                id: "Ubah nama kolom `rating` di tabel `movies` menjadi `score`."
             },
             seed_sql: mod1Seed,
             expected_query: "ALTER TABLE movies RENAME COLUMN rating TO score;",
@@ -3407,8 +3407,8 @@ function generateModule1(): Question[] {
                 }
             ],
             instructions: {
-                en: "Empty all records from the `movies` table instantly using `TRUNCATE TABLE`.",
-                id: "Kosongkan seluruh data dari tabel `movies` secara instan menggunakan perintah `TRUNCATE TABLE`."
+                en: "Clear all data from the `movies` table.",
+                id: "Kosongkan semua data dari tabel `movies`."
             },
             seed_sql: mod1Seed,
             expected_query: "TRUNCATE TABLE movies;",
@@ -3445,8 +3445,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all items from `items` with `price > 100`.",
-                id: "Ambil seluruh data barang dari tabel `items` yang memiliki harga lebih dari 100 (`price > 100`)."
+                en: "Show items priced above 100.",
+                id: "Tampilkan barang dengan harga di atas 100."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE price > 100;",
@@ -3477,8 +3477,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find all items in `items` with `price BETWEEN 50 AND 300`.",
-                id: "Cari seluruh barang di tabel `items` yang berada pada rentang harga 50 hingga 300 (`price BETWEEN 50 AND 300`)."
+                en: "Show items priced between 50 and 300.",
+                id: "Tampilkan barang dengan harga antara 50 dan 300."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE price BETWEEN 50 AND 300;",
@@ -3509,8 +3509,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find all items in `items` where `name LIKE 'Desk%'`.",
-                id: "Temukan seluruh data pada tabel `items` yang memiliki nama berawalan 'Desk' (`name LIKE 'Desk%'`)."
+                en: "Show items whose name starts with 'Desk'.",
+                id: "Tampilkan barang yang namanya diawali 'Desk'."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE name LIKE 'Desk%';",
@@ -3541,8 +3541,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select items where `category = 'Electronics'` AND `price < 100`.",
-                id: "Ambil data barang yang masuk kategori 'Electronics' dan harganya di bawah 100 (`category = 'Electronics' AND price < 100`)."
+                en: "Show Electronics items priced under 100.",
+                id: "Tampilkan barang kategori Electronics dengan harga di bawah 100."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE category = 'Electronics' AND price < 100;",
@@ -3573,8 +3573,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select all items in `items` where `stock = 0`.",
-                id: "Ambil seluruh data barang dari tabel `items` yang stoknya habis (`stock = 0`)."
+                en: "Show items that are out of stock.",
+                id: "Tampilkan barang yang stoknya habis."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE stock = 0;",
@@ -3605,8 +3605,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all items from `items`, ordered by `price DESC`.",
-                id: "Ambil seluruh data barang dari tabel `items`, diurutkan dari harga termahal ke termurah (`ORDER BY price DESC`)."
+                en: "Show all items sorted from most to least expensive.",
+                id: "Tampilkan semua barang, urut dari yang termahal ke termurah."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items ORDER BY price DESC;",
@@ -3637,8 +3637,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all unique `category` values from `items`, ordered alphabetically.",
-                id: "Ambil seluruh nilai unik kolom `category` dari tabel `items`, diurutkan secara alfabetis."
+                en: "Show each unique category, sorted alphabetically.",
+                id: "Tampilkan setiap kategori unik, urut sesuai abjad."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT DISTINCT category FROM items ORDER BY category;",
@@ -3669,8 +3669,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `id`, `name`, and `price` from `items`, ordered by `id`, skipping 3 rows and fetching 3 (`LIMIT 3 OFFSET 3`).",
-                id: "Ambil kolom `id`, `name`, dan `price` dari tabel `items`, terurut berdasarkan `id`, lewati 3 baris pertama dan ambil 3 baris berikutnya (`LIMIT 3 OFFSET 3`)."
+                en: "Show `id`, `name`, and `price`, sorted by `id`, skipping the first 3 rows and showing the next 3.",
+                id: "Tampilkan `id`, `name`, dan `price`, urut berdasarkan `id`, lewati 3 baris pertama lalu tampilkan 3 baris berikutnya."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT id, name, price FROM items ORDER BY id LIMIT 3 OFFSET 3;",
@@ -3701,8 +3701,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all items from `items` with `price > 100`.",
-                id: "Ambil seluruh data barang dari tabel `items` yang memiliki harga lebih dari 100 (`price > 100`)."
+                en: "Show items priced above 100.",
+                id: "Tampilkan barang dengan harga di atas 100."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE price > 100;",
@@ -3733,8 +3733,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find all items in `items` with `price BETWEEN 50 AND 300`.",
-                id: "Cari seluruh barang di tabel `items` yang berada pada rentang harga 50 hingga 300 (`price BETWEEN 50 AND 300`)."
+                en: "Show items priced between 50 and 300.",
+                id: "Tampilkan barang dengan harga antara 50 dan 300."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE price BETWEEN 50 AND 300;",
@@ -3765,8 +3765,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find all items in `items` where `name LIKE 'Desk%'`.",
-                id: "Temukan seluruh data pada tabel `items` yang memiliki nama berawalan 'Desk' (`name LIKE 'Desk%'`)."
+                en: "Show items whose name starts with 'Desk'.",
+                id: "Tampilkan barang yang namanya diawali 'Desk'."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE name LIKE 'Desk%';",
@@ -3797,8 +3797,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select items where `category = 'Electronics'` AND `price < 100`.",
-                id: "Ambil data barang yang masuk kategori 'Electronics' dan harganya di bawah 100 (`category = 'Electronics' AND price < 100`)."
+                en: "Show Electronics items priced under 100.",
+                id: "Tampilkan barang kategori Electronics dengan harga di bawah 100."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE category = 'Electronics' AND price < 100;",
@@ -3829,8 +3829,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select all items in `items` where `stock = 0`.",
-                id: "Ambil seluruh data barang dari tabel `items` yang stoknya habis (`stock = 0`)."
+                en: "Show items that are out of stock.",
+                id: "Tampilkan barang yang stoknya habis."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE stock = 0;",
@@ -3861,8 +3861,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all items from `items`, ordered by `price DESC`.",
-                id: "Ambil seluruh data barang dari tabel `items`, diurutkan dari harga termahal ke termurah (`ORDER BY price DESC`)."
+                en: "Show all items sorted from most to least expensive.",
+                id: "Tampilkan semua barang, urut dari yang termahal ke termurah."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items ORDER BY price DESC;",
@@ -3893,8 +3893,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all unique status values from items, ordered alphabetically.",
-                id: "Ambil seluruh nilai unik kolom status dari tabel items, diurutkan secara alfabetis."
+                en: "Show each unique status, sorted alphabetically.",
+                id: "Tampilkan setiap status unik, urut sesuai abjad."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT DISTINCT status FROM items ORDER BY status;",
@@ -3925,8 +3925,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `id`, `name`, and `price` from `items`, ordered by `id`, skipping 4 rows and fetching 4 (`LIMIT 4 OFFSET 4`).",
-                id: "Ambil kolom `id`, `name`, dan `price` dari tabel `items`, terurut berdasarkan `id`, lewati 4 baris pertama dan ambil 4 baris berikutnya (`LIMIT 4 OFFSET 4`)."
+                en: "Show `id`, `name`, and `price`, sorted by `id`, skipping the first 4 rows and showing the next 4.",
+                id: "Tampilkan `id`, `name`, dan `price`, urut berdasarkan `id`, lewati 4 baris pertama lalu tampilkan 4 baris berikutnya."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT id, name, price FROM items ORDER BY id LIMIT 4 OFFSET 4;",
@@ -3957,8 +3957,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all items from `items` with `price > 100`.",
-                id: "Ambil seluruh data barang dari tabel `items` yang memiliki harga lebih dari 100 (`price > 100`)."
+                en: "Show items priced above 100.",
+                id: "Tampilkan barang dengan harga di atas 100."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE price > 100;",
@@ -3989,8 +3989,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find all items in `items` with `price BETWEEN 50 AND 300`.",
-                id: "Cari seluruh barang di tabel `items` yang berada pada rentang harga 50 hingga 300 (`price BETWEEN 50 AND 300`)."
+                en: "Show items priced between 50 and 300.",
+                id: "Tampilkan barang dengan harga antara 50 dan 300."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE price BETWEEN 50 AND 300;",
@@ -4021,8 +4021,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find all items in `items` where `name LIKE 'Desk%'`.",
-                id: "Temukan seluruh data pada tabel `items` yang memiliki nama berawalan 'Desk' (`name LIKE 'Desk%'`)."
+                en: "Show items whose name starts with 'Desk'.",
+                id: "Tampilkan barang yang namanya diawali 'Desk'."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE name LIKE 'Desk%';",
@@ -4053,8 +4053,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select items where `category = 'Electronics'` AND `price < 100`.",
-                id: "Ambil data barang yang masuk kategori 'Electronics' dan harganya di bawah 100 (`category = 'Electronics' AND price < 100`)."
+                en: "Show Electronics items priced under 100.",
+                id: "Tampilkan barang kategori Electronics dengan harga di bawah 100."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE category = 'Electronics' AND price < 100;",
@@ -4085,8 +4085,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select all items in `items` where `stock = 0`.",
-                id: "Ambil seluruh data barang dari tabel `items` yang stoknya habis (`stock = 0`)."
+                en: "Show items that are out of stock.",
+                id: "Tampilkan barang yang stoknya habis."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE stock = 0;",
@@ -4117,8 +4117,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all items from `items`, ordered by `price DESC`.",
-                id: "Ambil seluruh data barang dari tabel `items`, diurutkan dari harga termahal ke termurah (`ORDER BY price DESC`)."
+                en: "Show all items sorted from most to least expensive.",
+                id: "Tampilkan semua barang, urut dari yang termahal ke termurah."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items ORDER BY price DESC;",
@@ -4149,8 +4149,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve unique combinations of `category` and `status` from `items`, ordered by `category, status`.",
-                id: "Ambil kombinasi unik kolom `category` dan `status` dari tabel `items`, diurutkan berdasarkan `category, status`."
+                en: "Show each unique combination of `category` and `status`, sorted alphabetically.",
+                id: "Tampilkan setiap kombinasi unik `category` dan `status`, urut sesuai abjad."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT DISTINCT category, status FROM items ORDER BY category, status;",
@@ -4181,8 +4181,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `id`, `name`, and `price` from `items`, ordered by `id`, skipping 5 rows and fetching 5 (`LIMIT 5 OFFSET 5`).",
-                id: "Ambil kolom `id`, `name`, dan `price` dari tabel `items`, terurut berdasarkan `id`, lewati 5 baris pertama dan ambil 5 baris berikutnya (`LIMIT 5 OFFSET 5`)."
+                en: "Show `id`, `name`, and `price`, sorted by `id`, skipping the first 5 rows and showing the next 5.",
+                id: "Tampilkan `id`, `name`, dan `price`, urut berdasarkan `id`, lewati 5 baris pertama lalu tampilkan 5 baris berikutnya."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT id, name, price FROM items ORDER BY id LIMIT 5 OFFSET 5;",
@@ -4213,8 +4213,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all items from `items` with `price > 100`.",
-                id: "Ambil seluruh data barang dari tabel `items` yang memiliki harga lebih dari 100 (`price > 100`)."
+                en: "Show items priced above 100.",
+                id: "Tampilkan barang dengan harga di atas 100."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE price > 100;",
@@ -4245,8 +4245,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find all items in `items` with `price BETWEEN 50 AND 300`.",
-                id: "Cari seluruh barang di tabel `items` yang berada pada rentang harga 50 hingga 300 (`price BETWEEN 50 AND 300`)."
+                en: "Show items priced between 50 and 300.",
+                id: "Tampilkan barang dengan harga antara 50 dan 300."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE price BETWEEN 50 AND 300;",
@@ -4277,8 +4277,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find all items in `items` where `name LIKE 'Desk%'`.",
-                id: "Temukan seluruh data pada tabel `items` yang memiliki nama berawalan 'Desk' (`name LIKE 'Desk%'`)."
+                en: "Show items whose name starts with 'Desk'.",
+                id: "Tampilkan barang yang namanya diawali 'Desk'."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE name LIKE 'Desk%';",
@@ -4309,8 +4309,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select items where `category = 'Electronics'` AND `price < 100`.",
-                id: "Ambil data barang yang masuk kategori 'Electronics' dan harganya di bawah 100 (`category = 'Electronics' AND price < 100`)."
+                en: "Show Electronics items priced under 100.",
+                id: "Tampilkan barang kategori Electronics dengan harga di bawah 100."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE category = 'Electronics' AND price < 100;",
@@ -4341,8 +4341,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select all items in `items` where `stock = 0`.",
-                id: "Ambil seluruh data barang dari tabel `items` yang stoknya habis (`stock = 0`)."
+                en: "Show items that are out of stock.",
+                id: "Tampilkan barang yang stoknya habis."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE stock = 0;",
@@ -4373,8 +4373,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all items from `items`, ordered by `price DESC`.",
-                id: "Ambil seluruh data barang dari tabel `items`, diurutkan dari harga termahal ke termurah (`ORDER BY price DESC`)."
+                en: "Show all items sorted from most to least expensive.",
+                id: "Tampilkan semua barang, urut dari yang termahal ke termurah."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items ORDER BY price DESC;",
@@ -4405,8 +4405,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve unique `category` values for items where `price > 50`, ordered alphabetically.",
-                id: "Ambil nilai unik `category` untuk barang dengan `price > 50`, diurutkan secara alfabetis."
+                en: "Show each unique category among items priced above 50, sorted alphabetically.",
+                id: "Tampilkan setiap kategori unik dari barang berharga di atas 50, urut sesuai abjad."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT DISTINCT category FROM items WHERE price > 50 ORDER BY category;",
@@ -4437,8 +4437,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `id`, `name`, and `price` from `items`, ordered by `price DESC, id ASC`, with `LIMIT 3 OFFSET 3`.",
-                id: "Ambil `id`, `name`, dan `price` dari tabel `items`, diurutkan `price DESC, id ASC`, menggunakan `LIMIT 3 OFFSET 3`."
+                en: "Show `id`, `name`, and `price`, sorted by `price` (highest first) then `id`, skipping the top 3 and showing the next 3.",
+                id: "Tampilkan `id`, `name`, dan `price`, urut berdasarkan `price` tertinggi lalu `id`, lewati 3 teratas dan tampilkan 3 berikutnya."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT id, name, price FROM items ORDER BY price DESC, id ASC LIMIT 3 OFFSET 3;",
@@ -4469,8 +4469,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all items from `items` with `price > 100`.",
-                id: "Ambil seluruh data barang dari tabel `items` yang memiliki harga lebih dari 100 (`price > 100`)."
+                en: "Show items priced above 100.",
+                id: "Tampilkan barang dengan harga di atas 100."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE price > 100;",
@@ -4501,8 +4501,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find all items in `items` with `price BETWEEN 50 AND 300`.",
-                id: "Cari seluruh barang di tabel `items` yang berada pada rentang harga 50 hingga 300 (`price BETWEEN 50 AND 300`)."
+                en: "Show items priced between 50 and 300.",
+                id: "Tampilkan barang dengan harga antara 50 dan 300."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE price BETWEEN 50 AND 300;",
@@ -4533,8 +4533,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find all items in `items` where `name LIKE 'Desk%'`.",
-                id: "Temukan seluruh data pada tabel `items` yang memiliki nama berawalan 'Desk' (`name LIKE 'Desk%'`)."
+                en: "Show items whose name starts with 'Desk'.",
+                id: "Tampilkan barang yang namanya diawali 'Desk'."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE name LIKE 'Desk%';",
@@ -4565,8 +4565,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select items where `category = 'Electronics'` AND `price < 100`.",
-                id: "Ambil data barang yang masuk kategori 'Electronics' dan harganya di bawah 100 (`category = 'Electronics' AND price < 100`)."
+                en: "Show Electronics items priced under 100.",
+                id: "Tampilkan barang kategori Electronics dengan harga di bawah 100."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE category = 'Electronics' AND price < 100;",
@@ -4597,8 +4597,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select all items in `items` where `stock = 0`.",
-                id: "Ambil seluruh data barang dari tabel `items` yang stoknya habis (`stock = 0`)."
+                en: "Show items that are out of stock.",
+                id: "Tampilkan barang yang stoknya habis."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items WHERE stock = 0;",
@@ -4629,8 +4629,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve all items from `items`, ordered by `price DESC`.",
-                id: "Ambil seluruh data barang dari tabel `items`, diurutkan dari harga termahal ke termurah (`ORDER BY price DESC`)."
+                en: "Show all items sorted from most to least expensive.",
+                id: "Tampilkan semua barang, urut dari yang termahal ke termurah."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT * FROM items ORDER BY price DESC;",
@@ -4661,8 +4661,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Retrieve unique `status` values for items in category 'Furniture', ordered alphabetically.",
-                id: "Ambil nilai unik `status` untuk barang pada kategori 'Furniture', diurutkan secara alfabetis."
+                en: "Show each unique status within the Furniture category, sorted alphabetically.",
+                id: "Tampilkan setiap status unik pada kategori Furniture, urut sesuai abjad."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT DISTINCT status FROM items WHERE category = 'Furniture' ORDER BY status;",
@@ -4693,8 +4693,8 @@ function generateModule2(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `id`, `name`, and `price` from `items`, ordered by `id`, skipping 6 rows and fetching 2 (`LIMIT 2 OFFSET 6`).",
-                id: "Ambil kolom `id`, `name`, dan `price` dari tabel `items`, terurut berdasarkan `id`, lewati 6 baris pertama dan ambil 2 baris berikutnya (`LIMIT 2 OFFSET 6`)."
+                en: "Show `id`, `name`, and `price`, sorted by `id`, skipping the first 6 rows and showing the next 2.",
+                id: "Tampilkan `id`, `name`, dan `price`, urut berdasarkan `id`, lewati 6 baris pertama lalu tampilkan 2 baris berikutnya."
             },
             seed_sql: mod2Seed,
             expected_query: "SELECT id, name, price FROM items ORDER BY id LIMIT 2 OFFSET 6;",
@@ -4730,8 +4730,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Calculate total count of sales, total `SUM(amount)`, and average `AVG(amount)` across `sales`.",
-                id: "Hitung jumlah total transaksi, total penjualan (`SUM(amount)`), dan rata-rata penjualan (`AVG(amount)`) pada tabel `sales`."
+                en: "Show the total number of sales, total revenue, and average sale amount.",
+                id: "Tampilkan jumlah total penjualan, total pendapatan, dan rata-rata nilai penjualan."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT COUNT(*), SUM(amount), AVG(amount) FROM sales;",
@@ -4762,8 +4762,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Display each `category` and its `SUM(amount)` from `sales`.",
-                id: "Tampilkan setiap `category` beserta total `SUM(amount)` dari tabel `sales`."
+                en: "Show total revenue per `category`.",
+                id: "Tampilkan total pendapatan per `category`."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT category, SUM(amount) FROM sales GROUP BY category;",
@@ -4794,8 +4794,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `region`, `category`, and `SUM(amount)` grouped by `region` and `category`.",
-                id: "Ambil kolom `region`, `category`, dan `SUM(amount)` yang dikelompokkan berdasarkan `region` dan `category`."
+                en: "Show total revenue for each combination of `region` and `category`.",
+                id: "Tampilkan total pendapatan untuk setiap kombinasi `region` dan `category`."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT region, category, SUM(amount) FROM sales GROUP BY region, category;",
@@ -4826,8 +4826,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Calculate total `amount` per `region` for sales where `amount > 500`.",
-                id: "Hitung total nilai `amount` per `region` untuk transaksi dengan kondisi `amount > 500`."
+                en: "Show total revenue per `region`, counting only sales above 500.",
+                id: "Tampilkan total pendapatan per `region`, hanya untuk penjualan di atas 500."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT region, SUM(amount) FROM sales WHERE amount > 500 GROUP BY region;",
@@ -4858,8 +4858,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `category` and `SUM(amount)` having `SUM(amount) > 3000`.",
-                id: "Ambil kolom `category` dan `SUM(amount)` dengan kondisi hasil agregasi `SUM(amount) > 3000`."
+                en: "Show categories whose total revenue is above 3,000.",
+                id: "Tampilkan kategori yang total pendapatannya di atas 3.000."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT category, SUM(amount) FROM sales GROUP BY category HAVING SUM(amount) > 3000;",
@@ -4890,8 +4890,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `seller` and `SUM(amount)` as `total`, grouped by `seller` and ordered by `total` descending.",
-                id: "Ambil `seller` dan `SUM(amount)` dengan alias `total`, kelompokkan per `seller`, lalu urutkan berdasarkan `total` secara descending."
+                en: "Show each `seller`'s total revenue (`total`), highest first.",
+                id: "Tampilkan total pendapatan (`total`) tiap `seller`, urut dari yang tertinggi."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT seller, SUM(amount) AS total FROM sales GROUP BY seller ORDER BY total DESC;",
@@ -4922,8 +4922,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Calculate total count of sales, total `SUM(amount)`, and average `AVG(amount)` across `sales`.",
-                id: "Hitung jumlah total transaksi, total penjualan (`SUM(amount)`), dan rata-rata penjualan (`AVG(amount)`) pada tabel `sales`."
+                en: "Show the total number of sales, total revenue, and average sale amount.",
+                id: "Tampilkan jumlah total penjualan, total pendapatan, dan rata-rata nilai penjualan."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT COUNT(*), SUM(amount), AVG(amount) FROM sales;",
@@ -4954,8 +4954,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Display each `category` and its `SUM(amount)` from `sales`.",
-                id: "Tampilkan setiap `category` beserta total `SUM(amount)` dari tabel `sales`."
+                en: "Show total revenue per `category`.",
+                id: "Tampilkan total pendapatan per `category`."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT category, SUM(amount) FROM sales GROUP BY category;",
@@ -4986,8 +4986,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `region`, `category`, and `SUM(amount)` grouped by `region` and `category`.",
-                id: "Ambil kolom `region`, `category`, dan `SUM(amount)` yang dikelompokkan berdasarkan `region` dan `category`."
+                en: "Show total revenue for each combination of `region` and `category`.",
+                id: "Tampilkan total pendapatan untuk setiap kombinasi `region` dan `category`."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT region, category, SUM(amount) FROM sales GROUP BY region, category;",
@@ -5018,8 +5018,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Calculate total `amount` per `region` for sales where `amount > 500`.",
-                id: "Hitung total nilai `amount` per `region` untuk transaksi dengan kondisi `amount > 500`."
+                en: "Show total revenue per `region`, counting only sales above 500.",
+                id: "Tampilkan total pendapatan per `region`, hanya untuk penjualan di atas 500."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT region, SUM(amount) FROM sales WHERE amount > 500 GROUP BY region;",
@@ -5050,8 +5050,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `category` and `SUM(amount)` having `SUM(amount) > 3000`.",
-                id: "Ambil kolom `category` dan `SUM(amount)` dengan kondisi hasil agregasi `SUM(amount) > 3000`."
+                en: "Show categories whose total revenue is above 3,000.",
+                id: "Tampilkan kategori yang total pendapatannya di atas 3.000."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT category, SUM(amount) FROM sales GROUP BY category HAVING SUM(amount) > 3000;",
@@ -5082,8 +5082,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `seller` and `SUM(amount)` as `total`, grouped by `seller` and ordered by `total` descending.",
-                id: "Ambil `seller` dan `SUM(amount)` dengan alias `total`, kelompokkan per `seller`, lalu urutkan berdasarkan `total` secara descending."
+                en: "Show each `seller`'s total revenue (`total`), highest first.",
+                id: "Tampilkan total pendapatan (`total`) tiap `seller`, urut dari yang tertinggi."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT seller, SUM(amount) AS total FROM sales GROUP BY seller ORDER BY total DESC;",
@@ -5114,8 +5114,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Calculate total count of sales, total `SUM(amount)`, and average `AVG(amount)` across `sales`.",
-                id: "Hitung jumlah total transaksi, total penjualan (`SUM(amount)`), dan rata-rata penjualan (`AVG(amount)`) pada tabel `sales`."
+                en: "Show the total number of sales, total revenue, and average sale amount.",
+                id: "Tampilkan jumlah total penjualan, total pendapatan, dan rata-rata nilai penjualan."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT COUNT(*), SUM(amount), AVG(amount) FROM sales;",
@@ -5146,8 +5146,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Display each `category` and its `SUM(amount)` from `sales`.",
-                id: "Tampilkan setiap `category` beserta total `SUM(amount)` dari tabel `sales`."
+                en: "Show total revenue per `category`.",
+                id: "Tampilkan total pendapatan per `category`."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT category, SUM(amount) FROM sales GROUP BY category;",
@@ -5178,8 +5178,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `region`, `category`, and `SUM(amount)` grouped by `region` and `category`.",
-                id: "Ambil kolom `region`, `category`, dan `SUM(amount)` yang dikelompokkan berdasarkan `region` dan `category`."
+                en: "Show total revenue for each combination of `region` and `category`.",
+                id: "Tampilkan total pendapatan untuk setiap kombinasi `region` dan `category`."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT region, category, SUM(amount) FROM sales GROUP BY region, category;",
@@ -5210,8 +5210,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Calculate total `amount` per `region` for sales where `amount > 500`.",
-                id: "Hitung total nilai `amount` per `region` untuk transaksi dengan kondisi `amount > 500`."
+                en: "Show total revenue per `region`, counting only sales above 500.",
+                id: "Tampilkan total pendapatan per `region`, hanya untuk penjualan di atas 500."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT region, SUM(amount) FROM sales WHERE amount > 500 GROUP BY region;",
@@ -5242,8 +5242,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `category` and `SUM(amount)` having `SUM(amount) > 3000`.",
-                id: "Ambil kolom `category` dan `SUM(amount)` dengan kondisi hasil agregasi `SUM(amount) > 3000`."
+                en: "Show categories whose total revenue is above 3,000.",
+                id: "Tampilkan kategori yang total pendapatannya di atas 3.000."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT category, SUM(amount) FROM sales GROUP BY category HAVING SUM(amount) > 3000;",
@@ -5274,8 +5274,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `seller` and `SUM(amount)` as `total`, grouped by `seller` and ordered by `total` descending.",
-                id: "Ambil `seller` dan `SUM(amount)` dengan alias `total`, kelompokkan per `seller`, lalu urutkan berdasarkan `total` secara descending."
+                en: "Show each `seller`'s total revenue (`total`), highest first.",
+                id: "Tampilkan total pendapatan (`total`) tiap `seller`, urut dari yang tertinggi."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT seller, SUM(amount) AS total FROM sales GROUP BY seller ORDER BY total DESC;",
@@ -5306,8 +5306,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Calculate total count of sales, total `SUM(amount)`, and average `AVG(amount)` across `sales`.",
-                id: "Hitung jumlah total transaksi, total penjualan (`SUM(amount)`), dan rata-rata penjualan (`AVG(amount)`) pada tabel `sales`."
+                en: "Show the total number of sales, total revenue, and average sale amount.",
+                id: "Tampilkan jumlah total penjualan, total pendapatan, dan rata-rata nilai penjualan."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT COUNT(*), SUM(amount), AVG(amount) FROM sales;",
@@ -5338,8 +5338,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Display each `category` and its `SUM(amount)` from `sales`.",
-                id: "Tampilkan setiap `category` beserta total `SUM(amount)` dari tabel `sales`."
+                en: "Show total revenue per `category`.",
+                id: "Tampilkan total pendapatan per `category`."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT category, SUM(amount) FROM sales GROUP BY category;",
@@ -5370,8 +5370,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `region`, `category`, and `SUM(amount)` grouped by `region` and `category`.",
-                id: "Ambil kolom `region`, `category`, dan `SUM(amount)` yang dikelompokkan berdasarkan `region` dan `category`."
+                en: "Show total revenue for each combination of `region` and `category`.",
+                id: "Tampilkan total pendapatan untuk setiap kombinasi `region` dan `category`."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT region, category, SUM(amount) FROM sales GROUP BY region, category;",
@@ -5402,8 +5402,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Calculate total `amount` per `region` for sales where `amount > 500`.",
-                id: "Hitung total nilai `amount` per `region` untuk transaksi dengan kondisi `amount > 500`."
+                en: "Show total revenue per `region`, counting only sales above 500.",
+                id: "Tampilkan total pendapatan per `region`, hanya untuk penjualan di atas 500."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT region, SUM(amount) FROM sales WHERE amount > 500 GROUP BY region;",
@@ -5434,8 +5434,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `category` and `SUM(amount)` having `SUM(amount) > 3000`.",
-                id: "Ambil kolom `category` dan `SUM(amount)` dengan kondisi hasil agregasi `SUM(amount) > 3000`."
+                en: "Show categories whose total revenue is above 3,000.",
+                id: "Tampilkan kategori yang total pendapatannya di atas 3.000."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT category, SUM(amount) FROM sales GROUP BY category HAVING SUM(amount) > 3000;",
@@ -5466,8 +5466,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `seller` and `SUM(amount)` as `total`, grouped by `seller` and ordered by `total` descending.",
-                id: "Ambil `seller` dan `SUM(amount)` dengan alias `total`, kelompokkan per `seller`, lalu urutkan berdasarkan `total` secara descending."
+                en: "Show each `seller`'s total revenue (`total`), highest first.",
+                id: "Tampilkan total pendapatan (`total`) tiap `seller`, urut dari yang tertinggi."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT seller, SUM(amount) AS total FROM sales GROUP BY seller ORDER BY total DESC;",
@@ -5498,8 +5498,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Calculate total count of sales, total `SUM(amount)`, and average `AVG(amount)` across `sales`.",
-                id: "Hitung jumlah total transaksi, total penjualan (`SUM(amount)`), dan rata-rata penjualan (`AVG(amount)`) pada tabel `sales`."
+                en: "Show the total number of sales, total revenue, and average sale amount.",
+                id: "Tampilkan jumlah total penjualan, total pendapatan, dan rata-rata nilai penjualan."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT COUNT(*), SUM(amount), AVG(amount) FROM sales;",
@@ -5530,8 +5530,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Display each `category` and its `SUM(amount)` from `sales`.",
-                id: "Tampilkan setiap `category` beserta total `SUM(amount)` dari tabel `sales`."
+                en: "Show total revenue per `category`.",
+                id: "Tampilkan total pendapatan per `category`."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT category, SUM(amount) FROM sales GROUP BY category;",
@@ -5562,8 +5562,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `region`, `category`, and `SUM(amount)` grouped by `region` and `category`.",
-                id: "Ambil kolom `region`, `category`, dan `SUM(amount)` yang dikelompokkan berdasarkan `region` dan `category`."
+                en: "Show total revenue for each combination of `region` and `category`.",
+                id: "Tampilkan total pendapatan untuk setiap kombinasi `region` dan `category`."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT region, category, SUM(amount) FROM sales GROUP BY region, category;",
@@ -5594,8 +5594,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Calculate total `amount` per `region` for sales where `amount > 500`.",
-                id: "Hitung total nilai `amount` per `region` untuk transaksi dengan kondisi `amount > 500`."
+                en: "Show total revenue per `region`, counting only sales above 500.",
+                id: "Tampilkan total pendapatan per `region`, hanya untuk penjualan di atas 500."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT region, SUM(amount) FROM sales WHERE amount > 500 GROUP BY region;",
@@ -5626,8 +5626,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `category` and `SUM(amount)` having `SUM(amount) > 3000`.",
-                id: "Ambil kolom `category` dan `SUM(amount)` dengan kondisi hasil agregasi `SUM(amount) > 3000`."
+                en: "Show categories whose total revenue is above 3,000.",
+                id: "Tampilkan kategori yang total pendapatannya di atas 3.000."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT category, SUM(amount) FROM sales GROUP BY category HAVING SUM(amount) > 3000;",
@@ -5658,8 +5658,8 @@ function generateModule3(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `seller` and `SUM(amount)` as `total`, grouped by `seller` and ordered by `total` descending.",
-                id: "Ambil `seller` dan `SUM(amount)` dengan alias `total`, kelompokkan per `seller`, lalu urutkan berdasarkan `total` secara descending."
+                en: "Show each `seller`'s total revenue (`total`), highest first.",
+                id: "Tampilkan total pendapatan (`total`) tiap `seller`, urut dari yang tertinggi."
             },
             seed_sql: mod3Seed,
             expected_query: "SELECT seller, SUM(amount) AS total FROM sales GROUP BY seller ORDER BY total DESC;",
@@ -5690,9 +5690,9 @@ function generateModule3(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Calculate the total number of items as 'total_items' and the count of items with price > 500 as 'premium_items' grouped by 'category' using the FILTER (WHERE ...) clause.",
-                "id": "Hitung total seluruh barang sebagai 'total_items' dan jumlah barang dengan harga > 500 sebagai 'premium_items' yang dikelompokkan berdasarkan 'category' menggunakan klausa FILTER (WHERE ...)."
-        },
+		"en": "Show each `category`'s total item count (`total_items`) and how many are priced above 500 (`premium_items`).",
+		"id": "Tampilkan jumlah barang (`total_items`) per `category` beserta jumlah yang berharga di atas 500 (`premium_items`)."
+	},
         "seed_sql": mod3Seed,
         "expected_query": "SELECT category, COUNT(*) AS total_items, COUNT(*) FILTER (WHERE price > 500) AS premium_items FROM items GROUP BY category;",
         "starterQuery": "SELECT category, COUNT(*) AS total_items FROM items GROUP BY category;",
@@ -5715,9 +5715,9 @@ function generateModule3(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Calculate 'total_items' and 'premium_items' (price > 500) grouped by 'category' using SUM(CASE WHEN price > 500 THEN 1 ELSE 0 END).",
-                                "id": "Hitung 'total_items' dan 'premium_items' (harga > 500) per 'category' menggunakan SUM(CASE WHEN price > 500 THEN 1 ELSE 0 END)."
-                        },
+				"en": "Break down product inventory metrics by `category`, calculating the overall inventory volume (`total_items`) alongside the number of premium goods priced above 500 labeled as `premium_items`.",
+				"id": "Buat rincian metrik inventaris produk berdasarkan kategori (`category`), dengan menghitung volume barang keseluruhan (`total_items`) serta jumlah produk premium dengan harga di atas 500 berlabel `premium_items`."
+			},
                         "expected_query": "SELECT category, COUNT(*) AS total_items, SUM(CASE WHEN price > 500 THEN 1 ELSE 0 END) AS premium_items FROM items GROUP BY category;"
                 }
         }
@@ -5744,9 +5744,9 @@ function generateModule3(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Group by 'region' and calculate 'total_sales' (COUNT(*)) alongside 'high_value_sum' (SUM(amount) FILTER (WHERE amount >= 1000)).",
-                "id": "Kelompokkan data berdasarkan 'region', lalu hitung 'total_sales' (COUNT(*)) serta 'high_value_sum' (SUM(amount) FILTER (WHERE amount >= 1000))."
-        },
+		"en": "Show each `region`'s total sales count (`total_sales`) and total revenue from orders worth 1,000 or more (`high_value_sum`).",
+		"id": "Tampilkan jumlah penjualan (`total_sales`) per `region` beserta total pendapatan dari pesanan senilai 1.000 ke atas (`high_value_sum`)."
+	},
         "seed_sql": mod3Seed,
         "expected_query": "SELECT region, COUNT(*) AS total_sales, SUM(amount) FILTER (WHERE amount >= 1000) AS high_value_sum FROM sales GROUP BY region;",
         "starterQuery": "SELECT region, COUNT(*) AS total_sales FROM sales GROUP BY region;",
@@ -5769,9 +5769,9 @@ function generateModule3(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Group by 'region' and calculate 'total_sales' (COUNT(*)) alongside 'high_value_sum' using SUM(CASE WHEN amount >= 1000 THEN amount ELSE 0 END).",
-                                "id": "Kelompokkan data berdasarkan 'region' dan hitung 'total_sales' serta 'high_value_sum' menggunakan SUM(CASE WHEN amount >= 1000 THEN amount ELSE 0 END)."
-                        },
+				"en": "Generate a regional sales summary displaying each `region`, the total transaction volume (`total_sales`), and the cumulative revenue generated exclusively from high-value orders worth 1,000 or more labeled as `high_value_sum`.",
+				"id": "Buat ringkasan penjualan per wilayah yang menyajikan setiap `region`, total volume transaksi (`total_sales`), serta akumulasi pendapatan khusus dari pesanan bernilai tinggi sebesar 1.000 ke atas berlabel `high_value_sum`."
+			},
                         "expected_query": "SELECT region, COUNT(*) AS total_sales, SUM(CASE WHEN amount >= 1000 THEN amount ELSE 0 END) AS high_value_sum FROM sales GROUP BY region;"
                 }
         }
@@ -5798,9 +5798,9 @@ function generateModule3(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Group by 'seller' and return 'total_orders' (COUNT(*)) and 'tech_orders' (COUNT(*) FILTER (WHERE category = 'Tech')).",
-                "id": "Kelompokkan berdasarkan 'seller' dan tampilkan 'total_orders' (COUNT(*)) serta 'tech_orders' (COUNT(*) FILTER (WHERE category = 'Tech'))."
-        },
+		"en": "Show each `seller`'s total order count (`total_orders`) and how many were in the 'Tech' category (`tech_orders`).",
+		"id": "Tampilkan jumlah pesanan (`total_orders`) per `seller` beserta jumlah yang berkategori 'Tech' (`tech_orders`)."
+	},
         "seed_sql": mod3Seed,
         "expected_query": "SELECT seller, COUNT(*) AS total_orders, COUNT(*) FILTER (WHERE category = 'Tech') AS tech_orders FROM sales GROUP BY seller;",
         "starterQuery": "SELECT seller, COUNT(*) AS total_orders FROM sales GROUP BY seller;",
@@ -5823,9 +5823,9 @@ function generateModule3(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Group by 'seller' and return 'total_orders' and 'tech_orders' using SUM(CASE WHEN category = 'Tech' THEN 1 ELSE 0 END).",
-                                "id": "Kelompokkan berdasarkan 'seller' dan tampilkan 'total_orders' serta 'tech_orders' menggunakan SUM(CASE WHEN category = 'Tech' THEN 1 ELSE 0 END)."
-                        },
+				"en": "Evaluate sales representative performance by displaying each `seller`, their aggregate deal count (`total_orders`), and the volume of sales in the 'Tech' category labeled as `tech_orders`.",
+				"id": "Evaluasi performa tenaga penjual dengan menampilkan setiap perwakilan `seller`, total transaksi yang ditangani (`total_orders`), serta volume penjualan untuk kategori 'Tech' berlabel `tech_orders`."
+			},
                         "expected_query": "SELECT seller, COUNT(*) AS total_orders, SUM(CASE WHEN category = 'Tech' THEN 1 ELSE 0 END) AS tech_orders FROM sales GROUP BY seller;"
                 }
         }
@@ -5852,9 +5852,9 @@ function generateModule3(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Group 'employees' by 'department_id' and concatenate their names alphabetically into a comma-separated string 'employee_names' using STRING_AGG.",
-                "id": "Kelompokkan data 'employees' berdasarkan 'department_id' dan gabungkan nama karyawan secara alfabetis menjadi satu string terpisah koma sebagai 'employee_names' menggunakan STRING_AGG."
-        },
+		"en": "Show each `department_id` with its employee names combined into one comma-separated list (`employee_names`).",
+		"id": "Tampilkan setiap `department_id` beserta nama-nama karyawannya digabung jadi satu daftar dipisah koma (`employee_names`)."
+	},
         "seed_sql": mod3Seed,
         "expected_query": "SELECT department_id, STRING_AGG(name, ', ' ORDER BY name) AS employee_names FROM employees GROUP BY department_id;",
         "starterQuery": "SELECT department_id FROM employees GROUP BY department_id;",
@@ -5877,9 +5877,9 @@ function generateModule3(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Group 'employees' by 'department_id' and concatenate names alphabetically into 'employee_names' using GROUP_CONCAT(name ORDER BY name SEPARATOR ', ').",
-                                "id": "Kelompokkan 'employees' berdasarkan 'department_id' dan gabungkan nama karyawan terurut alfabetis ke 'employee_names' menggunakan GROUP_CONCAT(name ORDER BY name SEPARATOR ', ')."
-                        },
+				"en": "Compile a personnel directory by `department_id`, listing staff names alphabetically in a single comma-separated text field aliased as `employee_names`.",
+				"id": "Susun direktori staf per divisi (`department_id`), dengan menggabungkan nama-nama karyawan secara alfabetis ke dalam satu teks terpisah koma berlabel `employee_names`."
+			},
                         "expected_query": "SELECT department_id, GROUP_CONCAT(name ORDER BY name SEPARATOR ', ') AS employee_names FROM employees GROUP BY department_id;"
                 }
         }
@@ -5906,9 +5906,9 @@ function generateModule3(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Group 'sales' by 'region' and produce a deduplicated, alphabetically ordered list of sellers as 'seller_list' using STRING_AGG(DISTINCT seller, ', ' ORDER BY seller).",
-                "id": "Kelompokkan tabel 'sales' per 'region' dan buat daftar nama penjual unik yang terurut alfabetis sebagai 'seller_list' menggunakan STRING_AGG(DISTINCT seller, ', ' ORDER BY seller)."
-        },
+		"en": "Show each `region` with its unique sellers combined into one comma-separated list (`seller_list`).",
+		"id": "Tampilkan setiap `region` beserta nama-nama seller unik digabung jadi satu daftar dipisah koma (`seller_list`)."
+	},
         "seed_sql": mod3Seed,
         "expected_query": "SELECT region, STRING_AGG(DISTINCT seller, ', ' ORDER BY seller) AS seller_list FROM sales GROUP BY region;",
         "starterQuery": "SELECT region FROM sales GROUP BY region;",
@@ -5931,9 +5931,9 @@ function generateModule3(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Group by 'region' and produce a deduplicated list of sellers as 'seller_list' using GROUP_CONCAT(DISTINCT seller ORDER BY seller SEPARATOR ', ').",
-                                "id": "Kelompokkan per 'region' dan buat daftar nama penjual unik sebagai 'seller_list' menggunakan GROUP_CONCAT(DISTINCT seller ORDER BY seller SEPARATOR ', ')."
-                        },
+				"en": "Generate a regional roster showing each `region` alongside a distinct, alphabetically sorted list of sales representatives combined into a comma-separated string labeled as `seller_list`.",
+				"id": "Buat daftar perwakilan wilayah yang menampilkan setiap `region` beserta nama-nama unik staf penjualan yang tersusun menurut abjad dalam satu teks terpisah koma berlabel `seller_list`."
+			},
                         "expected_query": "SELECT region, GROUP_CONCAT(DISTINCT seller ORDER BY seller SEPARATOR ', ') AS seller_list FROM sales GROUP BY region;"
                 }
         }
@@ -5960,9 +5960,9 @@ function generateModule3(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Group 'items' by 'category' and concatenate 'name' ordered by price DESC with delimiter ' | ' as 'item_catalog'.",
-                "id": "Kelompokkan 'items' berdasarkan 'category' dan gabungkan 'name' yang diurutkan berdasarkan harga tertinggi (price DESC) dengan pemisah ' | ' sebagai 'item_catalog'."
-        },
+		"en": "Show each `category` with its item names (highest priced first) combined into one text list separated by ' | ' (`item_catalog`).",
+		"id": "Tampilkan setiap `category` beserta nama barangnya (harga tertinggi lebih dulu) digabung jadi satu teks dipisah ' | ' (`item_catalog`)."
+	},
         "seed_sql": mod3Seed,
         "expected_query": "SELECT category, STRING_AGG(name, ' | ' ORDER BY price DESC) AS item_catalog FROM items GROUP BY category;",
         "starterQuery": "SELECT category FROM items GROUP BY category;",
@@ -5985,9 +5985,9 @@ function generateModule3(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Group 'items' by 'category' and concatenate 'name' ordered by price DESC with SEPARATOR ' | ' as 'item_catalog'.",
-                                "id": "Kelompokkan 'items' berdasarkan 'category' dan gabungkan 'name' terurut harga tertinggi dengan SEPARATOR ' | ' sebagai 'item_catalog'."
-                        },
+				"en": "Create a merchandising catalog overview by product `category`, assembling item names ranked from most to least expensive into a single text string delimited by ' | ' labeled as `item_catalog`.",
+				"id": "Buat ikhtisar katalog produk per kategori (`category`), dengan merangkai nama-nama barang yang disusun dari harga tertinggi ke terendah ke dalam satu teks berpemisah ' | ' berlabel `item_catalog`."
+			},
                         "expected_query": "SELECT category, GROUP_CONCAT(name ORDER BY price DESC SEPARATOR ' | ') AS item_catalog FROM items GROUP BY category;"
                 }
         }
@@ -6019,8 +6019,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `UPPER(first_name)` and `UPPER(last_name)` from `customers`.",
-                id: "Ambil kolom `first_name` dan `last_name` dalam format huruf kapital menggunakan `UPPER` dari tabel `customers`."
+                en: "Show `first_name` and `last_name` in uppercase.",
+                id: "Tampilkan `first_name` dan `last_name` dalam huruf kapital."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT UPPER(first_name), UPPER(last_name) FROM customers;",
@@ -6051,8 +6051,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Display `first_name` and `score / 10` as `score_tier` from `customers`.",
-                id: "Tampilkan `first_name` dan hasil perhitungan `score / 10` dengan alias `score_tier` dari tabel `customers`."
+                en: "Show `first_name` and `score` divided by 10 (`score_tier`).",
+                id: "Tampilkan `first_name` dan `score` yang dibagi 10 (`score_tier`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, score / 10 AS score_tier FROM customers;",
@@ -6083,8 +6083,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `first_name` and `EXTRACT(YEAR FROM join_date)` as `join_year` from `customers`.",
-                id: "Ambil `first_name` dan nilai tahun dari `join_date` menggunakan `EXTRACT(YEAR FROM join_date)` sebagai `join_year` dari tabel `customers`."
+                en: "Show `first_name` and the year from `join_date` (`join_year`).",
+                id: "Tampilkan `first_name` dan tahun dari `join_date` (`join_year`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, EXTRACT(YEAR FROM join_date) AS join_year FROM customers;",
@@ -6115,8 +6115,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `first_name`, `score`, and `CASE WHEN score >= 80 THEN 'VIP' ELSE 'Regular' END` as `tier`.",
-                id: "Ambil `first_name`, `score`, dan ekspresi `CASE WHEN score >= 80 THEN 'VIP' ELSE 'Regular' END` dengan alias `tier` dari tabel `customers`."
+                en: "Show each customer's `first_name` and `score`, labeling them 'VIP' if `score` is 80 or higher, otherwise 'Regular' (`tier`).",
+                id: "Tampilkan `first_name` dan `score` tiap pelanggan, beri label 'VIP' jika `score` minimal 80, selain itu 'Regular' (`tier`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, score, CASE WHEN score >= 80 THEN 'VIP' ELSE 'Regular' END AS tier FROM customers;",
@@ -6144,8 +6144,8 @@ function generateModule4(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Select `first_name`, `score`, and `IF(score >= 80, 'VIP', 'Regular')` as `tier` from `customers`.",
-                        id: "Ambil `first_name`, `score`, dan gunakan fungsi kondisional MySQL `IF(score >= 80, 'VIP', 'Regular')` sebagai `tier` dari tabel `customers`."
+                        en: "Display each customer's `first_name` and loyalty `score`, along with a calculated membership `tier`: label them as 'VIP' if their score is 80 or higher, otherwise mark them as 'Regular'.",
+                        id: "Tampilkan nama depan (`first_name`) dan skor loyalitas (`score`) setiap pelanggan, lalu tentukan kategori tingkatannya (`tier`): beri label 'VIP' jika nilainya minimal 80, dan 'Regular' untuk pelanggan lainnya."
                     },
                     expected_query: "SELECT first_name, score, IF(score >= 80, 'VIP', 'Regular') AS tier FROM customers;",
                     starterQuery: "SELECT * FROM customers;"
@@ -6174,8 +6174,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `first_name` and `COALESCE(discount_code, 'NONE')` as `promo` from `customers`.",
-                id: "Ambil `first_name` dan nilai `COALESCE(discount_code, 'NONE')` dengan alias `promo` dari tabel `customers`."
+                en: "Show `first_name` and `discount_code`, replacing empty values with 'NONE' (`promo`).",
+                id: "Tampilkan `first_name` dan `discount_code`, ganti nilai kosong dengan 'NONE' (`promo`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, COALESCE(discount_code, 'NONE') AS promo FROM customers;",
@@ -6203,8 +6203,8 @@ function generateModule4(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Select `first_name` and `IFNULL(discount_code, 'NONE')` as `promo` from `customers`.",
-                        id: "Ambil `first_name` dan gunakan fungsi MySQL `IFNULL(discount_code, 'NONE')` sebagai `promo` dari tabel `customers`."
+                        en: "Display `first_name` and `discount_code` aliased as `promo` from `customers`, replacing any missing discount code with 'NONE'.",
+                        id: "Tampilkan `first_name` dan `discount_code` dengan alias `promo` dari `customers`, dengan mengganti kode diskon yang bernilai null menjadi 'NONE'."
                     },
                     expected_query: "SELECT first_name, IFNULL(discount_code, 'NONE') AS promo FROM customers;",
                     starterQuery: "SELECT * FROM customers;"
@@ -6233,8 +6233,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `UPPER(first_name)` and `UPPER(last_name)` from `customers`.",
-                id: "Ambil kolom `first_name` dan `last_name` dalam format huruf kapital menggunakan `UPPER` dari tabel `customers`."
+                en: "Show `first_name` and `last_name` in uppercase.",
+                id: "Tampilkan `first_name` dan `last_name` dalam huruf kapital."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT UPPER(first_name), UPPER(last_name) FROM customers;",
@@ -6265,8 +6265,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Display `first_name` and `score / 10` as `score_tier` from `customers`.",
-                id: "Tampilkan `first_name` dan hasil perhitungan `score / 10` dengan alias `score_tier` dari tabel `customers`."
+                en: "Show `first_name` and `score` divided by 10 (`score_tier`).",
+                id: "Tampilkan `first_name` dan `score` yang dibagi 10 (`score_tier`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, score / 10 AS score_tier FROM customers;",
@@ -6297,8 +6297,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `first_name` and `EXTRACT(YEAR FROM join_date)` as `join_year` from `customers`.",
-                id: "Ambil `first_name` dan nilai tahun dari `join_date` menggunakan `EXTRACT(YEAR FROM join_date)` sebagai `join_year` dari tabel `customers`."
+                en: "Show `first_name` and the year from `join_date` (`join_year`).",
+                id: "Tampilkan `first_name` dan tahun dari `join_date` (`join_year`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, EXTRACT(YEAR FROM join_date) AS join_year FROM customers;",
@@ -6329,8 +6329,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `first_name`, `score`, and `CASE WHEN score >= 80 THEN 'VIP' ELSE 'Regular' END` as `tier`.",
-                id: "Ambil `first_name`, `score`, dan ekspresi `CASE WHEN score >= 80 THEN 'VIP' ELSE 'Regular' END` dengan alias `tier` dari tabel `customers`."
+                en: "Show each customer's `first_name` and `score`, labeling them 'VIP' if `score` is 80 or higher, otherwise 'Regular' (`tier`).",
+                id: "Tampilkan `first_name` dan `score` tiap pelanggan, beri label 'VIP' jika `score` minimal 80, selain itu 'Regular' (`tier`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, score, CASE WHEN score >= 80 THEN 'VIP' ELSE 'Regular' END AS tier FROM customers;",
@@ -6358,8 +6358,8 @@ function generateModule4(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Select `first_name`, `score`, and `IF(score >= 80, 'VIP', 'Regular')` as `tier` from `customers`.",
-                        id: "Ambil `first_name`, `score`, dan gunakan fungsi kondisional MySQL `IF(score >= 80, 'VIP', 'Regular')` sebagai `tier` dari tabel `customers`."
+                        en: "Display each customer's `first_name` and loyalty `score`, along with a calculated membership `tier`: label them as 'VIP' if their score is 80 or higher, otherwise mark them as 'Regular'.",
+                        id: "Tampilkan nama depan (`first_name`) dan skor loyalitas (`score`) setiap pelanggan, lalu tentukan kategori tingkatannya (`tier`): beri label 'VIP' jika nilainya minimal 80, dan 'Regular' untuk pelanggan lainnya."
                     },
                     expected_query: "SELECT first_name, score, IF(score >= 80, 'VIP', 'Regular') AS tier FROM customers;",
                     starterQuery: "SELECT * FROM customers;"
@@ -6388,8 +6388,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `first_name` and `COALESCE(discount_code, 'NONE')` as `promo` from `customers`.",
-                id: "Ambil `first_name` dan nilai `COALESCE(discount_code, 'NONE')` dengan alias `promo` dari tabel `customers`."
+                en: "Show `first_name` and `discount_code`, replacing empty values with 'NONE' (`promo`).",
+                id: "Tampilkan `first_name` dan `discount_code`, ganti nilai kosong dengan 'NONE' (`promo`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, COALESCE(discount_code, 'NONE') AS promo FROM customers;",
@@ -6417,8 +6417,8 @@ function generateModule4(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Select `first_name` and `IFNULL(discount_code, 'NONE')` as `promo` from `customers`.",
-                        id: "Ambil `first_name` dan gunakan fungsi MySQL `IFNULL(discount_code, 'NONE')` sebagai `promo` dari tabel `customers`."
+                        en: "Display `first_name` and `discount_code` aliased as `promo` from `customers`, replacing any missing discount code with 'NONE'.",
+                        id: "Tampilkan `first_name` dan `discount_code` dengan alias `promo` dari `customers`, dengan mengganti kode diskon yang bernilai null menjadi 'NONE'."
                     },
                     expected_query: "SELECT first_name, IFNULL(discount_code, 'NONE') AS promo FROM customers;",
                     starterQuery: "SELECT * FROM customers;"
@@ -6447,8 +6447,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `UPPER(first_name)` and `UPPER(last_name)` from `customers`.",
-                id: "Ambil kolom `first_name` dan `last_name` dalam format huruf kapital menggunakan `UPPER` dari tabel `customers`."
+                en: "Show `first_name` and `last_name` in uppercase.",
+                id: "Tampilkan `first_name` dan `last_name` dalam huruf kapital."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT UPPER(first_name), UPPER(last_name) FROM customers;",
@@ -6479,8 +6479,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Display `first_name` and `score / 10` as `score_tier` from `customers`.",
-                id: "Tampilkan `first_name` dan hasil perhitungan `score / 10` dengan alias `score_tier` dari tabel `customers`."
+                en: "Show `first_name` and `score` divided by 10 (`score_tier`).",
+                id: "Tampilkan `first_name` dan `score` yang dibagi 10 (`score_tier`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, score / 10 AS score_tier FROM customers;",
@@ -6511,8 +6511,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `first_name` and `EXTRACT(YEAR FROM join_date)` as `join_year` from `customers`.",
-                id: "Ambil `first_name` dan nilai tahun dari `join_date` menggunakan `EXTRACT(YEAR FROM join_date)` sebagai `join_year` dari tabel `customers`."
+                en: "Show `first_name` and the year from `join_date` (`join_year`).",
+                id: "Tampilkan `first_name` dan tahun dari `join_date` (`join_year`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, EXTRACT(YEAR FROM join_date) AS join_year FROM customers;",
@@ -6543,8 +6543,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `first_name`, `score`, and `CASE WHEN score >= 80 THEN 'VIP' ELSE 'Regular' END` as `tier`.",
-                id: "Ambil `first_name`, `score`, dan ekspresi `CASE WHEN score >= 80 THEN 'VIP' ELSE 'Regular' END` dengan alias `tier` dari tabel `customers`."
+                en: "Show each customer's `first_name` and `score`, labeling them 'VIP' if `score` is 80 or higher, otherwise 'Regular' (`tier`).",
+                id: "Tampilkan `first_name` dan `score` tiap pelanggan, beri label 'VIP' jika `score` minimal 80, selain itu 'Regular' (`tier`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, score, CASE WHEN score >= 80 THEN 'VIP' ELSE 'Regular' END AS tier FROM customers;",
@@ -6572,8 +6572,8 @@ function generateModule4(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Select `first_name`, `score`, and `IF(score >= 80, 'VIP', 'Regular')` as `tier` from `customers`.",
-                        id: "Ambil `first_name`, `score`, dan gunakan fungsi kondisional MySQL `IF(score >= 80, 'VIP', 'Regular')` sebagai `tier` dari tabel `customers`."
+                        en: "Display each customer's `first_name` and loyalty `score`, along with a calculated membership `tier`: label them as 'VIP' if their score is 80 or higher, otherwise mark them as 'Regular'.",
+                        id: "Tampilkan nama depan (`first_name`) dan skor loyalitas (`score`) setiap pelanggan, lalu tentukan kategori tingkatannya (`tier`): beri label 'VIP' jika nilainya minimal 80, dan 'Regular' untuk pelanggan lainnya."
                     },
                     expected_query: "SELECT first_name, score, IF(score >= 80, 'VIP', 'Regular') AS tier FROM customers;",
                     starterQuery: "SELECT * FROM customers;"
@@ -6602,8 +6602,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `first_name` and `COALESCE(discount_code, 'NONE')` as `promo` from `customers`.",
-                id: "Ambil `first_name` dan nilai `COALESCE(discount_code, 'NONE')` dengan alias `promo` dari tabel `customers`."
+                en: "Show `first_name` and `discount_code`, replacing empty values with 'NONE' (`promo`).",
+                id: "Tampilkan `first_name` dan `discount_code`, ganti nilai kosong dengan 'NONE' (`promo`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, COALESCE(discount_code, 'NONE') AS promo FROM customers;",
@@ -6631,8 +6631,8 @@ function generateModule4(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Select `first_name` and `IFNULL(discount_code, 'NONE')` as `promo` from `customers`.",
-                        id: "Ambil `first_name` dan gunakan fungsi MySQL `IFNULL(discount_code, 'NONE')` sebagai `promo` dari tabel `customers`."
+                        en: "Display `first_name` and `discount_code` aliased as `promo` from `customers`, replacing any missing discount code with 'NONE'.",
+                        id: "Tampilkan `first_name` dan `discount_code` dengan alias `promo` dari `customers`, dengan mengganti kode diskon yang bernilai null menjadi 'NONE'."
                     },
                     expected_query: "SELECT first_name, IFNULL(discount_code, 'NONE') AS promo FROM customers;",
                     starterQuery: "SELECT * FROM customers;"
@@ -6661,8 +6661,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `UPPER(first_name)` and `UPPER(last_name)` from `customers`.",
-                id: "Ambil kolom `first_name` dan `last_name` dalam format huruf kapital menggunakan `UPPER` dari tabel `customers`."
+                en: "Show `first_name` and `last_name` in uppercase.",
+                id: "Tampilkan `first_name` dan `last_name` dalam huruf kapital."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT UPPER(first_name), UPPER(last_name) FROM customers;",
@@ -6693,8 +6693,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Display `first_name` and `score / 10` as `score_tier` from `customers`.",
-                id: "Tampilkan `first_name` dan hasil perhitungan `score / 10` dengan alias `score_tier` dari tabel `customers`."
+                en: "Show `first_name` and `score` divided by 10 (`score_tier`).",
+                id: "Tampilkan `first_name` dan `score` yang dibagi 10 (`score_tier`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, score / 10 AS score_tier FROM customers;",
@@ -6725,8 +6725,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `first_name` and `EXTRACT(YEAR FROM join_date)` as `join_year` from `customers`.",
-                id: "Ambil `first_name` dan nilai tahun dari `join_date` menggunakan `EXTRACT(YEAR FROM join_date)` sebagai `join_year` dari tabel `customers`."
+                en: "Show `first_name` and the year from `join_date` (`join_year`).",
+                id: "Tampilkan `first_name` dan tahun dari `join_date` (`join_year`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, EXTRACT(YEAR FROM join_date) AS join_year FROM customers;",
@@ -6757,8 +6757,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `first_name`, `score`, and `CASE WHEN score >= 80 THEN 'VIP' ELSE 'Regular' END` as `tier`.",
-                id: "Ambil `first_name`, `score`, dan ekspresi `CASE WHEN score >= 80 THEN 'VIP' ELSE 'Regular' END` dengan alias `tier` dari tabel `customers`."
+                en: "Show each customer's `first_name` and `score`, labeling them 'VIP' if `score` is 80 or higher, otherwise 'Regular' (`tier`).",
+                id: "Tampilkan `first_name` dan `score` tiap pelanggan, beri label 'VIP' jika `score` minimal 80, selain itu 'Regular' (`tier`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, score, CASE WHEN score >= 80 THEN 'VIP' ELSE 'Regular' END AS tier FROM customers;",
@@ -6786,8 +6786,8 @@ function generateModule4(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Select `first_name`, `score`, and `IF(score >= 80, 'VIP', 'Regular')` as `tier` from `customers`.",
-                        id: "Ambil `first_name`, `score`, dan gunakan fungsi kondisional MySQL `IF(score >= 80, 'VIP', 'Regular')` sebagai `tier` dari tabel `customers`."
+                        en: "Display each customer's `first_name` and loyalty `score`, along with a calculated membership `tier`: label them as 'VIP' if their score is 80 or higher, otherwise mark them as 'Regular'.",
+                        id: "Tampilkan nama depan (`first_name`) dan skor loyalitas (`score`) setiap pelanggan, lalu tentukan kategori tingkatannya (`tier`): beri label 'VIP' jika nilainya minimal 80, dan 'Regular' untuk pelanggan lainnya."
                     },
                     expected_query: "SELECT first_name, score, IF(score >= 80, 'VIP', 'Regular') AS tier FROM customers;",
                     starterQuery: "SELECT * FROM customers;"
@@ -6816,8 +6816,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `first_name` and `COALESCE(discount_code, 'NONE')` as `promo` from `customers`.",
-                id: "Ambil `first_name` dan nilai `COALESCE(discount_code, 'NONE')` dengan alias `promo` dari tabel `customers`."
+                en: "Show `first_name` and `discount_code`, replacing empty values with 'NONE' (`promo`).",
+                id: "Tampilkan `first_name` dan `discount_code`, ganti nilai kosong dengan 'NONE' (`promo`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, COALESCE(discount_code, 'NONE') AS promo FROM customers;",
@@ -6845,8 +6845,8 @@ function generateModule4(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Select `first_name` and `IFNULL(discount_code, 'NONE')` as `promo` from `customers`.",
-                        id: "Ambil `first_name` dan gunakan fungsi MySQL `IFNULL(discount_code, 'NONE')` sebagai `promo` dari tabel `customers`."
+                        en: "Display `first_name` and `discount_code` aliased as `promo` from `customers`, replacing any missing discount code with 'NONE'.",
+                        id: "Tampilkan `first_name` dan `discount_code` dengan alias `promo` dari `customers`, dengan mengganti kode diskon yang bernilai null menjadi 'NONE'."
                     },
                     expected_query: "SELECT first_name, IFNULL(discount_code, 'NONE') AS promo FROM customers;",
                     starterQuery: "SELECT * FROM customers;"
@@ -6875,8 +6875,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `UPPER(first_name)` and `UPPER(last_name)` from `customers`.",
-                id: "Ambil kolom `first_name` dan `last_name` dalam format huruf kapital menggunakan `UPPER` dari tabel `customers`."
+                en: "Show `first_name` and `last_name` in uppercase.",
+                id: "Tampilkan `first_name` dan `last_name` dalam huruf kapital."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT UPPER(first_name), UPPER(last_name) FROM customers;",
@@ -6907,8 +6907,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Display `first_name` and `score / 10` as `score_tier` from `customers`.",
-                id: "Tampilkan `first_name` dan hasil perhitungan `score / 10` dengan alias `score_tier` dari tabel `customers`."
+                en: "Show `first_name` and `score` divided by 10 (`score_tier`).",
+                id: "Tampilkan `first_name` dan `score` yang dibagi 10 (`score_tier`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, score / 10 AS score_tier FROM customers;",
@@ -6939,8 +6939,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `first_name` and `EXTRACT(YEAR FROM join_date)` as `join_year` from `customers`.",
-                id: "Ambil `first_name` dan nilai tahun dari `join_date` menggunakan `EXTRACT(YEAR FROM join_date)` sebagai `join_year` dari tabel `customers`."
+                en: "Show `first_name` and the year from `join_date` (`join_year`).",
+                id: "Tampilkan `first_name` dan tahun dari `join_date` (`join_year`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, EXTRACT(YEAR FROM join_date) AS join_year FROM customers;",
@@ -6971,8 +6971,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `first_name`, `score`, and `CASE WHEN score >= 80 THEN 'VIP' ELSE 'Regular' END` as `tier`.",
-                id: "Ambil `first_name`, `score`, dan ekspresi `CASE WHEN score >= 80 THEN 'VIP' ELSE 'Regular' END` dengan alias `tier` dari tabel `customers`."
+                en: "Show each customer's `first_name` and `score`, labeling them 'VIP' if `score` is 80 or higher, otherwise 'Regular' (`tier`).",
+                id: "Tampilkan `first_name` dan `score` tiap pelanggan, beri label 'VIP' jika `score` minimal 80, selain itu 'Regular' (`tier`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, score, CASE WHEN score >= 80 THEN 'VIP' ELSE 'Regular' END AS tier FROM customers;",
@@ -7000,8 +7000,8 @@ function generateModule4(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Select `first_name`, `score`, and `IF(score >= 80, 'VIP', 'Regular')` as `tier` from `customers`.",
-                        id: "Ambil `first_name`, `score`, dan gunakan fungsi kondisional MySQL `IF(score >= 80, 'VIP', 'Regular')` sebagai `tier` dari tabel `customers`."
+                        en: "Display each customer's `first_name` and loyalty `score`, along with a calculated membership `tier`: label them as 'VIP' if their score is 80 or higher, otherwise mark them as 'Regular'.",
+                        id: "Tampilkan nama depan (`first_name`) dan skor loyalitas (`score`) setiap pelanggan, lalu tentukan kategori tingkatannya (`tier`): beri label 'VIP' jika nilainya minimal 80, dan 'Regular' untuk pelanggan lainnya."
                     },
                     expected_query: "SELECT first_name, score, IF(score >= 80, 'VIP', 'Regular') AS tier FROM customers;",
                     starterQuery: "SELECT * FROM customers;"
@@ -7030,8 +7030,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `first_name` and `COALESCE(discount_code, 'NONE')` as `promo` from `customers`.",
-                id: "Ambil `first_name` dan nilai `COALESCE(discount_code, 'NONE')` dengan alias `promo` dari tabel `customers`."
+                en: "Show `first_name` and `discount_code`, replacing empty values with 'NONE' (`promo`).",
+                id: "Tampilkan `first_name` dan `discount_code`, ganti nilai kosong dengan 'NONE' (`promo`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, COALESCE(discount_code, 'NONE') AS promo FROM customers;",
@@ -7059,8 +7059,8 @@ function generateModule4(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Select `first_name` and `IFNULL(discount_code, 'NONE')` as `promo` from `customers`.",
-                        id: "Ambil `first_name` dan gunakan fungsi MySQL `IFNULL(discount_code, 'NONE')` sebagai `promo` dari tabel `customers`."
+                        en: "Display `first_name` and `discount_code` aliased as `promo` from `customers`, replacing any missing discount code with 'NONE'.",
+                        id: "Tampilkan `first_name` dan `discount_code` dengan alias `promo` dari `customers`, dengan mengganti kode diskon yang bernilai null menjadi 'NONE'."
                     },
                     expected_query: "SELECT first_name, IFNULL(discount_code, 'NONE') AS promo FROM customers;",
                     starterQuery: "SELECT * FROM customers;"
@@ -7089,8 +7089,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `UPPER(first_name)` and `UPPER(last_name)` from `customers`.",
-                id: "Ambil kolom `first_name` dan `last_name` dalam format huruf kapital menggunakan `UPPER` dari tabel `customers`."
+                en: "Show `first_name` and `last_name` in uppercase.",
+                id: "Tampilkan `first_name` dan `last_name` dalam huruf kapital."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT UPPER(first_name), UPPER(last_name) FROM customers;",
@@ -7121,8 +7121,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Display `first_name` and `score / 10` as `score_tier` from `customers`.",
-                id: "Tampilkan `first_name` dan hasil perhitungan `score / 10` dengan alias `score_tier` dari tabel `customers`."
+                en: "Show `first_name` and `score` divided by 10 (`score_tier`).",
+                id: "Tampilkan `first_name` dan `score` yang dibagi 10 (`score_tier`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, score / 10 AS score_tier FROM customers;",
@@ -7153,8 +7153,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `first_name` and `EXTRACT(YEAR FROM join_date)` as `join_year` from `customers`.",
-                id: "Ambil `first_name` dan nilai tahun dari `join_date` menggunakan `EXTRACT(YEAR FROM join_date)` sebagai `join_year` dari tabel `customers`."
+                en: "Show `first_name` and the year from `join_date` (`join_year`).",
+                id: "Tampilkan `first_name` dan tahun dari `join_date` (`join_year`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, EXTRACT(YEAR FROM join_date) AS join_year FROM customers;",
@@ -7185,8 +7185,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `first_name`, `score`, and `CASE WHEN score >= 80 THEN 'VIP' ELSE 'Regular' END` as `tier`.",
-                id: "Ambil `first_name`, `score`, dan ekspresi `CASE WHEN score >= 80 THEN 'VIP' ELSE 'Regular' END` dengan alias `tier` dari tabel `customers`."
+                en: "Show each customer's `first_name` and `score`, labeling them 'VIP' if `score` is 80 or higher, otherwise 'Regular' (`tier`).",
+                id: "Tampilkan `first_name` dan `score` tiap pelanggan, beri label 'VIP' jika `score` minimal 80, selain itu 'Regular' (`tier`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, score, CASE WHEN score >= 80 THEN 'VIP' ELSE 'Regular' END AS tier FROM customers;",
@@ -7214,8 +7214,8 @@ function generateModule4(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Select `first_name`, `score`, and `IF(score >= 80, 'VIP', 'Regular')` as `tier` from `customers`.",
-                        id: "Ambil `first_name`, `score`, dan gunakan fungsi kondisional MySQL `IF(score >= 80, 'VIP', 'Regular')` sebagai `tier` dari tabel `customers`."
+                        en: "Display each customer's `first_name` and loyalty `score`, along with a calculated membership `tier`: label them as 'VIP' if their score is 80 or higher, otherwise mark them as 'Regular'.",
+                        id: "Tampilkan nama depan (`first_name`) dan skor loyalitas (`score`) setiap pelanggan, lalu tentukan kategori tingkatannya (`tier`): beri label 'VIP' jika nilainya minimal 80, dan 'Regular' untuk pelanggan lainnya."
                     },
                     expected_query: "SELECT first_name, score, IF(score >= 80, 'VIP', 'Regular') AS tier FROM customers;",
                     starterQuery: "SELECT * FROM customers;"
@@ -7244,8 +7244,8 @@ function generateModule4(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `first_name` and `COALESCE(discount_code, 'NONE')` as `promo` from `customers`.",
-                id: "Ambil `first_name` dan nilai `COALESCE(discount_code, 'NONE')` dengan alias `promo` dari tabel `customers`."
+                en: "Show `first_name` and `discount_code`, replacing empty values with 'NONE' (`promo`).",
+                id: "Tampilkan `first_name` dan `discount_code`, ganti nilai kosong dengan 'NONE' (`promo`)."
             },
             seed_sql: mod4Seed,
             expected_query: "SELECT first_name, COALESCE(discount_code, 'NONE') AS promo FROM customers;",
@@ -7273,8 +7273,8 @@ function generateModule4(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Select `first_name` and `IFNULL(discount_code, 'NONE')` as `promo` from `customers`.",
-                        id: "Ambil `first_name` dan gunakan fungsi MySQL `IFNULL(discount_code, 'NONE')` sebagai `promo` dari tabel `customers`."
+                        en: "Display `first_name` and `discount_code` aliased as `promo` from `customers`, replacing any missing discount code with 'NONE'.",
+                        id: "Tampilkan `first_name` dan `discount_code` dengan alias `promo` dari `customers`, dengan mengganti kode diskon yang bernilai null menjadi 'NONE'."
                     },
                     expected_query: "SELECT first_name, IFNULL(discount_code, 'NONE') AS promo FROM customers;",
                     starterQuery: "SELECT * FROM customers;"
@@ -7308,8 +7308,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Join `employees` with `departments` on `department_id = departments.id`. Select employee `name` and `dept_name`.",
-                id: "Gabungkan tabel `employees` dengan `departments` berdasarkan kondisi `department_id = departments.id`, lalu tampilkan `name` karyawan dan `dept_name`."
+                en: "Show each employee's `name` with their department's `dept_name`.",
+                id: "Tampilkan `name` tiap karyawan beserta `dept_name` departemennya."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name, departments.dept_name FROM employees INNER JOIN departments ON employees.department_id = departments.id;",
@@ -7341,8 +7341,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Perform a `LEFT JOIN` from `employees` to `departments`. Output employee `name` and `dept_name`.",
-                id: "Lakukan `LEFT JOIN` dari tabel `employees` ke `departments` pada kondisi `department_id = departments.id`, lalu tampilkan `name` karyawan dan `dept_name`."
+                en: "Show each employee's `name` and `dept_name`, including employees without a department.",
+                id: "Tampilkan `name` dan `dept_name` tiap karyawan, termasuk yang belum punya departemen."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name, departments.dept_name FROM employees LEFT JOIN departments ON employees.department_id = departments.id;",
@@ -7374,8 +7374,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Perform a `FULL JOIN` between `employees` and `departments` on `department_id = departments.id`. Select `e.name` and `d.dept_name`.",
-                id: "Lakukan `FULL JOIN` antara tabel `employees` dan `departments` pada kondisi `department_id = departments.id`. Ambil `e.name` dan `d.dept_name`."
+                en: "Show `name` and `dept_name` for all employees and all departments, matched or not.",
+                id: "Tampilkan `name` dan `dept_name` untuk semua karyawan dan semua departemen, baik yang cocok maupun tidak."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name, departments.dept_name FROM employees FULL JOIN departments ON employees.department_id = departments.id;",
@@ -7404,8 +7404,8 @@ function generateModule5(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Perform a `CROSS JOIN` between `employees` and `departments` to generate a Cartesian product grid, selecting employee `name` and `dept_name` ordered by `employees.name, departments.dept_name`.",
-                        id: "Lakukan operasi `CROSS JOIN` antara tabel `employees` dan `departments` untuk menghasilkan matriks kombinasi (Cartesian product), tampilkan `name` karyawan dan `dept_name` terurut berdasarkan `employees.name, departments.dept_name`."
+                        en: "Generate every possible combination of employee `name` and department `dept_name`, sorted by `employees.name` and then `departments.dept_name`.",
+                        id: "Tampilkan seluruh kombinasi yang mungkin antara nama karyawan (`name`) dan nama departemen (`dept_name`), diurutkan berdasarkan `employees.name` lalu `departments.dept_name`."
                     },
                     expected_query: "SELECT employees.name, departments.dept_name FROM employees CROSS JOIN departments ORDER BY employees.name, departments.dept_name;",
                     starterQuery: "SELECT * FROM employees;"
@@ -7434,8 +7434,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Join `employees` AS `emp` with `employees` AS `mgr` on `emp.manager_id = mgr.id`. Select `emp.name` AS `employee` and `mgr.name` AS `manager`.",
-                id: "Hubungkan tabel `employees` sebagai `emp` dengan `employees` sebagai `mgr` pada kondisi `emp.manager_id = mgr.id`. Ambil `emp.name` sebagai `employee` dan `mgr.name` sebagai `manager`."
+                en: "Show each employee's name (`employee`) next to their manager's name (`manager`).",
+                id: "Tampilkan nama tiap karyawan (`employee`) berdampingan dengan nama atasannya (`manager`)."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT emp.name AS employee, mgr.name AS manager FROM employees emp JOIN employees mgr ON emp.manager_id = mgr.id;",
@@ -7466,8 +7466,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find names of all employees who have no department match (`departments.id IS NULL`).",
-                id: "Cari nama seluruh karyawan yang belum memiliki relasi departemen (`departments.id IS NULL`)."
+                en: "Show the names of employees who don't have a department.",
+                id: "Tampilkan nama karyawan yang belum memiliki departemen."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name FROM employees LEFT JOIN departments ON employees.department_id = departments.id WHERE departments.id IS NULL;",
@@ -7499,8 +7499,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Join `employees e` with `departments d` on `department_id = d.id`. Select `e.name` and `d.dept_name` for `e.salary > 70000`.",
-                id: "Gabungkan `employees e` dengan `departments d` pada kondisi `department_id = d.id`. Ambil `e.name` dan `d.dept_name` untuk kondisi `e.salary > 70000`."
+                en: "Show `name` and `dept_name` for employees earning more than 70,000.",
+                id: "Tampilkan `name` dan `dept_name` karyawan yang gajinya di atas 70.000."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT e.name, d.dept_name FROM employees e JOIN departments d ON e.department_id = d.id WHERE e.salary > 70000;",
@@ -7532,8 +7532,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table `products` with `id` INT PRIMARY KEY, `name` TEXT NOT NULL, and `price` INT CHECK (`price > 0`).",
-                id: "Buat tabel `products` dengan kolom `id` INT PRIMARY KEY, `name` TEXT NOT NULL, dan `price` INT CHECK (`price > 0`)."
+                en: "Create a `products` table with `id`, `name` (required), and `price` (must be greater than 0).",
+                id: "Buat tabel `products` dengan `id`, `name` (wajib diisi), dan `price` (harus lebih besar dari 0)."
             },
             seed_sql: "",
             expected_query: "CREATE TABLE products (id INT PRIMARY KEY, name TEXT NOT NULL, price INT CHECK (price > 0));",
@@ -7590,8 +7590,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table `users` with `id` INT PRIMARY KEY, `email` TEXT UNIQUE, and `username` TEXT NOT NULL.",
-                id: "Buat tabel `users` dengan `id` INT PRIMARY KEY, `email` TEXT UNIQUE, dan `username` TEXT NOT NULL."
+                en: "Create a `users` table with `id`, a unique `email`, and a required `username`.",
+                id: "Buat tabel `users` dengan `id`, `email` yang unik, dan `username` yang wajib diisi."
             },
             seed_sql: "",
             expected_query: "CREATE TABLE users (id INT PRIMARY KEY, email TEXT UNIQUE, username TEXT NOT NULL);",
@@ -7691,8 +7691,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table `project_tasks` with `id` INT PRIMARY KEY, `department_id` INT, `task_name` TEXT NOT NULL, and `FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE`.",
-                id: "Buat tabel `project_tasks` dengan kolom `id` INT PRIMARY KEY, `department_id` INT, `task_name` TEXT NOT NULL, dan relasi `FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE`."
+                en: "Create a `project_tasks` table with `id`, `department_id`, and `task_name`, linked to `departments` so deleting a department also deletes its tasks.",
+                id: "Buat tabel `project_tasks` dengan `id`, `department_id`, dan `task_name`, terhubung ke `departments` sehingga menghapus departemen otomatis menghapus tugas terkait."
             },
             seed_sql: mod5Seed,
             expected_query: "CREATE TABLE project_tasks (id INT PRIMARY KEY, department_id INT, task_name TEXT NOT NULL, FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE);",
@@ -7750,8 +7750,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Join `employees` with `departments` on `department_id = departments.id`. Select employee `name` and `dept_name`.",
-                id: "Gabungkan tabel `employees` dengan `departments` berdasarkan kondisi `department_id = departments.id`, lalu tampilkan `name` karyawan dan `dept_name`."
+                en: "Show each employee's `name` with their department's `dept_name`.",
+                id: "Tampilkan `name` tiap karyawan beserta `dept_name` departemennya."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name, departments.dept_name FROM employees INNER JOIN departments ON employees.department_id = departments.id;",
@@ -7783,8 +7783,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Perform a `LEFT JOIN` from `employees` to `departments`. Output employee `name` and `dept_name`.",
-                id: "Lakukan `LEFT JOIN` dari tabel `employees` ke `departments` pada kondisi `department_id = departments.id`, lalu tampilkan `name` karyawan dan `dept_name`."
+                en: "Show each employee's `name` and `dept_name`, including employees without a department.",
+                id: "Tampilkan `name` dan `dept_name` tiap karyawan, termasuk yang belum punya departemen."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name, departments.dept_name FROM employees LEFT JOIN departments ON employees.department_id = departments.id;",
@@ -7816,8 +7816,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Perform a `FULL JOIN` between `employees` and `departments` on `department_id = departments.id`. Select `e.name` and `d.dept_name`.",
-                id: "Lakukan `FULL JOIN` antara tabel `employees` dan `departments` pada kondisi `department_id = departments.id`. Ambil `e.name` dan `d.dept_name`."
+                en: "Show `name` and `dept_name` for all employees and all departments, matched or not.",
+                id: "Tampilkan `name` dan `dept_name` untuk semua karyawan dan semua departemen, baik yang cocok maupun tidak."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name, departments.dept_name FROM employees FULL JOIN departments ON employees.department_id = departments.id;",
@@ -7846,8 +7846,8 @@ function generateModule5(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Perform a `CROSS JOIN` between `employees` and `departments` to generate a Cartesian product grid, selecting employee `name` and `dept_name` ordered by `employees.name, departments.dept_name`.",
-                        id: "Lakukan operasi `CROSS JOIN` antara tabel `employees` dan `departments` untuk menghasilkan matriks kombinasi (Cartesian product), tampilkan `name` karyawan dan `dept_name` terurut berdasarkan `employees.name, departments.dept_name`."
+                        en: "Generate every possible combination of employee `name` and department `dept_name`, sorted by `employees.name` and then `departments.dept_name`.",
+                        id: "Tampilkan seluruh kombinasi yang mungkin antara nama karyawan (`name`) dan nama departemen (`dept_name`), diurutkan berdasarkan `employees.name` lalu `departments.dept_name`."
                     },
                     expected_query: "SELECT employees.name, departments.dept_name FROM employees CROSS JOIN departments ORDER BY employees.name, departments.dept_name;",
                     starterQuery: "SELECT * FROM employees;"
@@ -7876,8 +7876,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Join `employees` AS `emp` with `employees` AS `mgr` on `emp.manager_id = mgr.id`. Select `emp.name` AS `employee` and `mgr.name` AS `manager`.",
-                id: "Hubungkan tabel `employees` sebagai `emp` dengan `employees` sebagai `mgr` pada kondisi `emp.manager_id = mgr.id`. Ambil `emp.name` sebagai `employee` dan `mgr.name` sebagai `manager`."
+                en: "Show each employee's name (`employee`) next to their manager's name (`manager`).",
+                id: "Tampilkan nama tiap karyawan (`employee`) berdampingan dengan nama atasannya (`manager`)."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT emp.name AS employee, mgr.name AS manager FROM employees emp JOIN employees mgr ON emp.manager_id = mgr.id;",
@@ -7908,8 +7908,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find names of all employees who have no department match (`departments.id IS NULL`).",
-                id: "Cari nama seluruh karyawan yang belum memiliki relasi departemen (`departments.id IS NULL`)."
+                en: "Show the names of employees who don't have a department.",
+                id: "Tampilkan nama karyawan yang belum memiliki departemen."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name FROM employees LEFT JOIN departments ON employees.department_id = departments.id WHERE departments.id IS NULL;",
@@ -7941,8 +7941,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Join `employees e` with `departments d` on `department_id = d.id`. Select `e.name` and `d.dept_name` for `e.salary > 70000`.",
-                id: "Gabungkan `employees e` dengan `departments d` pada kondisi `department_id = d.id`. Ambil `e.name` dan `d.dept_name` untuk kondisi `e.salary > 70000`."
+                en: "Show `name` and `dept_name` for employees earning more than 70,000.",
+                id: "Tampilkan `name` dan `dept_name` karyawan yang gajinya di atas 70.000."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT e.name, d.dept_name FROM employees e JOIN departments d ON e.department_id = d.id WHERE e.salary > 70000;",
@@ -7974,8 +7974,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table `accounts_check` with `id` INT PRIMARY KEY, `owner` TEXT NOT NULL, and `balance` INT CHECK (`balance >= 0`).",
-                id: "Buat tabel `accounts_check` dengan `id` INT PRIMARY KEY, `owner` TEXT NOT NULL, dan `balance` INT CHECK (`balance >= 0`)."
+                en: "Create an `accounts_check` table with `id`, a required `owner`, and `balance` (must be 0 or more).",
+                id: "Buat tabel `accounts_check` dengan `id`, `owner` wajib diisi, dan `balance` (harus 0 atau lebih)."
             },
             seed_sql: "",
             expected_query: "CREATE TABLE accounts_check (id INT PRIMARY KEY, owner TEXT NOT NULL, balance INT CHECK (balance >= 0));",
@@ -8032,8 +8032,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table `company_departments` with `id` INT PRIMARY KEY, `code` TEXT UNIQUE, and `name` TEXT NOT NULL.",
-                id: "Buat tabel `company_departments` dengan `id` INT PRIMARY KEY, `code` TEXT UNIQUE, dan `name` TEXT NOT NULL."
+                en: "Create a `company_departments` table with `id`, a unique `code`, and a required `name`.",
+                id: "Buat tabel `company_departments` dengan `id`, `code` yang unik, dan `name` yang wajib diisi."
             },
             seed_sql: "",
             expected_query: "CREATE TABLE company_departments (id INT PRIMARY KEY, code TEXT UNIQUE, name TEXT NOT NULL);",
@@ -8133,8 +8133,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table `employee_badges` with `id` INT PRIMARY KEY, `employee_id` INT, `badge_number` TEXT NOT NULL, and `FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE`.",
-                id: "Buat tabel `employee_badges` dengan `id` INT PRIMARY KEY, `employee_id` INT, `badge_number` TEXT NOT NULL, dan relasi `FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE`."
+                en: "Create an `employee_badges` table with `id`, `employee_id`, and `badge_number`, linked to `employees` so deleting an employee also deletes their badges.",
+                id: "Buat tabel `employee_badges` dengan `id`, `employee_id`, dan `badge_number`, terhubung ke `employees` sehingga menghapus karyawan otomatis menghapus lencananya."
             },
             seed_sql: mod5Seed,
             expected_query: "CREATE TABLE employee_badges (id INT PRIMARY KEY, employee_id INT, badge_number TEXT NOT NULL, FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE);",
@@ -8192,8 +8192,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Join `employees` with `departments` on `department_id = departments.id`. Select employee `name` and `dept_name`.",
-                id: "Gabungkan tabel `employees` dengan `departments` berdasarkan kondisi `department_id = departments.id`, lalu tampilkan `name` karyawan dan `dept_name`."
+                en: "Show each employee's `name` with their department's `dept_name`.",
+                id: "Tampilkan `name` tiap karyawan beserta `dept_name` departemennya."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name, departments.dept_name FROM employees INNER JOIN departments ON employees.department_id = departments.id;",
@@ -8225,8 +8225,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Perform a `LEFT JOIN` from `employees` to `departments`. Output employee `name` and `dept_name`.",
-                id: "Lakukan `LEFT JOIN` dari tabel `employees` ke `departments` pada kondisi `department_id = departments.id`, lalu tampilkan `name` karyawan dan `dept_name`."
+                en: "Show each employee's `name` and `dept_name`, including employees without a department.",
+                id: "Tampilkan `name` dan `dept_name` tiap karyawan, termasuk yang belum punya departemen."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name, departments.dept_name FROM employees LEFT JOIN departments ON employees.department_id = departments.id;",
@@ -8258,8 +8258,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Perform a `FULL JOIN` between `employees` and `departments` on `department_id = departments.id`. Select `e.name` and `d.dept_name`.",
-                id: "Lakukan `FULL JOIN` antara tabel `employees` dan `departments` pada kondisi `department_id = departments.id`. Ambil `e.name` dan `d.dept_name`."
+                en: "Show `name` and `dept_name` for all employees and all departments, matched or not.",
+                id: "Tampilkan `name` dan `dept_name` untuk semua karyawan dan semua departemen, baik yang cocok maupun tidak."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name, departments.dept_name FROM employees FULL JOIN departments ON employees.department_id = departments.id;",
@@ -8288,8 +8288,8 @@ function generateModule5(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Perform a `CROSS JOIN` between `employees` and `departments` to generate a Cartesian product grid, selecting employee `name` and `dept_name` ordered by `employees.name, departments.dept_name`.",
-                        id: "Lakukan operasi `CROSS JOIN` antara tabel `employees` dan `departments` untuk menghasilkan matriks kombinasi (Cartesian product), tampilkan `name` karyawan dan `dept_name` terurut berdasarkan `employees.name, departments.dept_name`."
+                        en: "Generate every possible combination of employee `name` and department `dept_name`, sorted by `employees.name` and then `departments.dept_name`.",
+                        id: "Tampilkan seluruh kombinasi yang mungkin antara nama karyawan (`name`) dan nama departemen (`dept_name`), diurutkan berdasarkan `employees.name` lalu `departments.dept_name`."
                     },
                     expected_query: "SELECT employees.name, departments.dept_name FROM employees CROSS JOIN departments ORDER BY employees.name, departments.dept_name;",
                     starterQuery: "SELECT * FROM employees;"
@@ -8318,8 +8318,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Join `employees` AS `emp` with `employees` AS `mgr` on `emp.manager_id = mgr.id`. Select `emp.name` AS `employee` and `mgr.name` AS `manager`.",
-                id: "Hubungkan tabel `employees` sebagai `emp` dengan `employees` sebagai `mgr` pada kondisi `emp.manager_id = mgr.id`. Ambil `emp.name` sebagai `employee` dan `mgr.name` sebagai `manager`."
+                en: "Show each employee's name (`employee`) next to their manager's name (`manager`).",
+                id: "Tampilkan nama tiap karyawan (`employee`) berdampingan dengan nama atasannya (`manager`)."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT emp.name AS employee, mgr.name AS manager FROM employees emp JOIN employees mgr ON emp.manager_id = mgr.id;",
@@ -8350,8 +8350,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find names of all employees who have no department match (`departments.id IS NULL`).",
-                id: "Cari nama seluruh karyawan yang belum memiliki relasi departemen (`departments.id IS NULL`)."
+                en: "Show the names of employees who don't have a department.",
+                id: "Tampilkan nama karyawan yang belum memiliki departemen."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name FROM employees LEFT JOIN departments ON employees.department_id = departments.id WHERE departments.id IS NULL;",
@@ -8383,8 +8383,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Join `employees e` with `departments d` on `department_id = d.id`. Select `e.name` and `d.dept_name` for `e.salary > 70000`.",
-                id: "Gabungkan `employees e` dengan `departments d` pada kondisi `department_id = d.id`. Ambil `e.name` dan `d.dept_name` untuk kondisi `e.salary > 70000`."
+                en: "Show `name` and `dept_name` for employees earning more than 70,000.",
+                id: "Tampilkan `name` dan `dept_name` karyawan yang gajinya di atas 70.000."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT e.name, d.dept_name FROM employees e JOIN departments d ON e.department_id = d.id WHERE e.salary > 70000;",
@@ -8416,8 +8416,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table `members` with `id` INT PRIMARY KEY, `name` TEXT NOT NULL, and `score` INT CHECK (`score BETWEEN 0 AND 100`).",
-                id: "Buat tabel `members` dengan `id` INT PRIMARY KEY, `name` TEXT NOT NULL, dan `score` INT CHECK (`score BETWEEN 0 AND 100`)."
+                en: "Create a `members` table with `id`, a required `name`, and `score` (must be between 0 and 100).",
+                id: "Buat tabel `members` dengan `id`, `name` wajib diisi, dan `score` (harus antara 0 hingga 100)."
             },
             seed_sql: "",
             expected_query: "CREATE TABLE members (id INT PRIMARY KEY, name TEXT NOT NULL, score INT CHECK (score BETWEEN 0 AND 100));",
@@ -8474,8 +8474,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table `product_barcodes` with `id` INT PRIMARY KEY, `barcode` TEXT UNIQUE, and `title` TEXT NOT NULL.",
-                id: "Buat tabel `product_barcodes` dengan `id` INT PRIMARY KEY, `barcode` TEXT UNIQUE, dan `title` TEXT NOT NULL."
+                en: "Create a `product_barcodes` table with `id`, a unique `barcode`, and a required `title`.",
+                id: "Buat tabel `product_barcodes` dengan `id`, `barcode` yang unik, dan `title` yang wajib diisi."
             },
             seed_sql: "",
             expected_query: "CREATE TABLE product_barcodes (id INT PRIMARY KEY, barcode TEXT UNIQUE, title TEXT NOT NULL);",
@@ -8575,8 +8575,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table `department_logs` with `id` INT PRIMARY KEY, `department_id` INT, `note` TEXT NOT NULL, and `FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE`.",
-                id: "Buat tabel `department_logs` dengan `id` INT PRIMARY KEY, `department_id` INT, `note` TEXT NOT NULL, dan relasi `FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE`."
+                en: "Create a `department_logs` table with `id`, `department_id`, and `note`, linked to `departments` so deleting a department also deletes its logs.",
+                id: "Buat tabel `department_logs` dengan `id`, `department_id`, dan `note`, terhubung ke `departments` sehingga menghapus departemen otomatis menghapus catatan terkait."
             },
             seed_sql: mod5Seed,
             expected_query: "CREATE TABLE department_logs (id INT PRIMARY KEY, department_id INT, note TEXT NOT NULL, FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE);",
@@ -8634,8 +8634,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Join `employees` with `departments` on `department_id = departments.id`. Select employee `name` and `dept_name`.",
-                id: "Gabungkan tabel `employees` dengan `departments` berdasarkan kondisi `department_id = departments.id`, lalu tampilkan `name` karyawan dan `dept_name`."
+                en: "Show each employee's `name` with their department's `dept_name`.",
+                id: "Tampilkan `name` tiap karyawan beserta `dept_name` departemennya."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name, departments.dept_name FROM employees INNER JOIN departments ON employees.department_id = departments.id;",
@@ -8667,8 +8667,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Perform a `LEFT JOIN` from `employees` to `departments`. Output employee `name` and `dept_name`.",
-                id: "Lakukan `LEFT JOIN` dari tabel `employees` ke `departments` pada kondisi `department_id = departments.id`, lalu tampilkan `name` karyawan dan `dept_name`."
+                en: "Show each employee's `name` and `dept_name`, including employees without a department.",
+                id: "Tampilkan `name` dan `dept_name` tiap karyawan, termasuk yang belum punya departemen."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name, departments.dept_name FROM employees LEFT JOIN departments ON employees.department_id = departments.id;",
@@ -8700,8 +8700,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Perform a `FULL JOIN` between `employees` and `departments` on `department_id = departments.id`. Select `e.name` and `d.dept_name`.",
-                id: "Lakukan `FULL JOIN` antara tabel `employees` dan `departments` pada kondisi `department_id = departments.id`. Ambil `e.name` dan `d.dept_name`."
+                en: "Show `name` and `dept_name` for all employees and all departments, matched or not.",
+                id: "Tampilkan `name` dan `dept_name` untuk semua karyawan dan semua departemen, baik yang cocok maupun tidak."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name, departments.dept_name FROM employees FULL JOIN departments ON employees.department_id = departments.id;",
@@ -8730,8 +8730,8 @@ function generateModule5(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Perform a `CROSS JOIN` between `employees` and `departments` to generate a Cartesian product grid, selecting employee `name` and `dept_name` ordered by `employees.name, departments.dept_name`.",
-                        id: "Lakukan operasi `CROSS JOIN` antara tabel `employees` dan `departments` untuk menghasilkan matriks kombinasi (Cartesian product), tampilkan `name` karyawan dan `dept_name` terurut berdasarkan `employees.name, departments.dept_name`."
+                        en: "Generate every possible combination of employee `name` and department `dept_name`, sorted by `employees.name` and then `departments.dept_name`.",
+                        id: "Tampilkan seluruh kombinasi yang mungkin antara nama karyawan (`name`) dan nama departemen (`dept_name`), diurutkan berdasarkan `employees.name` lalu `departments.dept_name`."
                     },
                     expected_query: "SELECT employees.name, departments.dept_name FROM employees CROSS JOIN departments ORDER BY employees.name, departments.dept_name;",
                     starterQuery: "SELECT * FROM employees;"
@@ -8760,8 +8760,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Join `employees` AS `emp` with `employees` AS `mgr` on `emp.manager_id = mgr.id`. Select `emp.name` AS `employee` and `mgr.name` AS `manager`.",
-                id: "Hubungkan tabel `employees` sebagai `emp` dengan `employees` sebagai `mgr` pada kondisi `emp.manager_id = mgr.id`. Ambil `emp.name` sebagai `employee` dan `mgr.name` sebagai `manager`."
+                en: "Show each employee's name (`employee`) next to their manager's name (`manager`).",
+                id: "Tampilkan nama tiap karyawan (`employee`) berdampingan dengan nama atasannya (`manager`)."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT emp.name AS employee, mgr.name AS manager FROM employees emp JOIN employees mgr ON emp.manager_id = mgr.id;",
@@ -8792,8 +8792,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find names of all employees who have no department match (`departments.id IS NULL`).",
-                id: "Cari nama seluruh karyawan yang belum memiliki relasi departemen (`departments.id IS NULL`)."
+                en: "Show the names of employees who don't have a department.",
+                id: "Tampilkan nama karyawan yang belum memiliki departemen."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name FROM employees LEFT JOIN departments ON employees.department_id = departments.id WHERE departments.id IS NULL;",
@@ -8825,8 +8825,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Join `employees e` with `departments d` on `department_id = d.id`. Select `e.name` and `d.dept_name` for `e.salary > 70000`.",
-                id: "Gabungkan `employees e` dengan `departments d` pada kondisi `department_id = d.id`. Ambil `e.name` dan `d.dept_name` untuk kondisi `e.salary > 70000`."
+                en: "Show `name` and `dept_name` for employees earning more than 70,000.",
+                id: "Tampilkan `name` dan `dept_name` karyawan yang gajinya di atas 70.000."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT e.name, d.dept_name FROM employees e JOIN departments d ON e.department_id = d.id WHERE e.salary > 70000;",
@@ -8858,8 +8858,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table `inventory` with `id` INT PRIMARY KEY, `item_name` TEXT NOT NULL, and `stock` INT CHECK (`stock >= 0`).",
-                id: "Buat tabel `inventory` dengan `id` INT PRIMARY KEY, `item_name` TEXT NOT NULL, dan `stock` INT CHECK (`stock >= 0`)."
+                en: "Create an `inventory` table with `id`, a required `item_name`, and `stock` (must be 0 or more).",
+                id: "Buat tabel `inventory` dengan `id`, `item_name` wajib diisi, dan `stock` (harus 0 atau lebih)."
             },
             seed_sql: "",
             expected_query: "CREATE TABLE inventory (id INT PRIMARY KEY, item_name TEXT NOT NULL, stock INT CHECK (stock >= 0));",
@@ -8916,8 +8916,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table `passports` with `id` INT PRIMARY KEY, `passport_number` TEXT UNIQUE, and `holder_name` TEXT NOT NULL.",
-                id: "Buat tabel `passports` dengan `id` INT PRIMARY KEY, `passport_number` TEXT UNIQUE, dan `holder_name` TEXT NOT NULL."
+                en: "Create a `passports` table with `id`, a unique `passport_number`, and a required `holder_name`.",
+                id: "Buat tabel `passports` dengan `id`, `passport_number` yang unik, dan `holder_name` yang wajib diisi."
             },
             seed_sql: "",
             expected_query: "CREATE TABLE passports (id INT PRIMARY KEY, passport_number TEXT UNIQUE, holder_name TEXT NOT NULL);",
@@ -9017,8 +9017,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table `payroll_records` with `id` INT PRIMARY KEY, `employee_id` INT, `salary_month` TEXT NOT NULL, and `FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE`.",
-                id: "Buat tabel `payroll_records` dengan `id` INT PRIMARY KEY, `employee_id` INT, `salary_month` TEXT NOT NULL, dan relasi `FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE`."
+                en: "Create a `payroll_records` table with `id`, `employee_id`, and `salary_month`, linked to `employees` so deleting an employee also deletes their payroll records.",
+                id: "Buat tabel `payroll_records` dengan `id`, `employee_id`, dan `salary_month`, terhubung ke `employees` sehingga menghapus karyawan otomatis menghapus catatan gajinya."
             },
             seed_sql: mod5Seed,
             expected_query: "CREATE TABLE payroll_records (id INT PRIMARY KEY, employee_id INT, salary_month TEXT NOT NULL, FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE);",
@@ -9076,8 +9076,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Join `employees` with `departments` on `department_id = departments.id`. Select employee `name` and `dept_name`.",
-                id: "Gabungkan tabel `employees` dengan `departments` berdasarkan kondisi `department_id = departments.id`, lalu tampilkan `name` karyawan dan `dept_name`."
+                en: "Show each employee's `name` with their department's `dept_name`.",
+                id: "Tampilkan `name` tiap karyawan beserta `dept_name` departemennya."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name, departments.dept_name FROM employees INNER JOIN departments ON employees.department_id = departments.id;",
@@ -9109,8 +9109,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Perform a `LEFT JOIN` from `employees` to `departments`. Output employee `name` and `dept_name`.",
-                id: "Lakukan `LEFT JOIN` dari tabel `employees` ke `departments` pada kondisi `department_id = departments.id`, lalu tampilkan `name` karyawan dan `dept_name`."
+                en: "Show each employee's `name` and `dept_name`, including employees without a department.",
+                id: "Tampilkan `name` dan `dept_name` tiap karyawan, termasuk yang belum punya departemen."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name, departments.dept_name FROM employees LEFT JOIN departments ON employees.department_id = departments.id;",
@@ -9142,8 +9142,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Perform a `FULL JOIN` between `employees` and `departments` on `department_id = departments.id`. Select `e.name` and `d.dept_name`.",
-                id: "Lakukan `FULL JOIN` antara tabel `employees` dan `departments` pada kondisi `department_id = departments.id`. Ambil `e.name` dan `d.dept_name`."
+                en: "Show `name` and `dept_name` for all employees and all departments, matched or not.",
+                id: "Tampilkan `name` dan `dept_name` untuk semua karyawan dan semua departemen, baik yang cocok maupun tidak."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name, departments.dept_name FROM employees FULL JOIN departments ON employees.department_id = departments.id;",
@@ -9172,8 +9172,8 @@ function generateModule5(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Perform a `CROSS JOIN` between `employees` and `departments` to generate a Cartesian product grid, selecting employee `name` and `dept_name` ordered by `employees.name, departments.dept_name`.",
-                        id: "Lakukan operasi `CROSS JOIN` antara tabel `employees` dan `departments` untuk menghasilkan matriks kombinasi (Cartesian product), tampilkan `name` karyawan dan `dept_name` terurut berdasarkan `employees.name, departments.dept_name`."
+                        en: "Generate every possible combination of employee `name` and department `dept_name`, sorted by `employees.name` and then `departments.dept_name`.",
+                        id: "Tampilkan seluruh kombinasi yang mungkin antara nama karyawan (`name`) dan nama departemen (`dept_name`), diurutkan berdasarkan `employees.name` lalu `departments.dept_name`."
                     },
                     expected_query: "SELECT employees.name, departments.dept_name FROM employees CROSS JOIN departments ORDER BY employees.name, departments.dept_name;",
                     starterQuery: "SELECT * FROM employees;"
@@ -9202,8 +9202,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Join `employees` AS `emp` with `employees` AS `mgr` on `emp.manager_id = mgr.id`. Select `emp.name` AS `employee` and `mgr.name` AS `manager`.",
-                id: "Hubungkan tabel `employees` sebagai `emp` dengan `employees` sebagai `mgr` pada kondisi `emp.manager_id = mgr.id`. Ambil `emp.name` sebagai `employee` dan `mgr.name` sebagai `manager`."
+                en: "Show each employee's name (`employee`) next to their manager's name (`manager`).",
+                id: "Tampilkan nama tiap karyawan (`employee`) berdampingan dengan nama atasannya (`manager`)."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT emp.name AS employee, mgr.name AS manager FROM employees emp JOIN employees mgr ON emp.manager_id = mgr.id;",
@@ -9234,8 +9234,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find names of all employees who have no department match (`departments.id IS NULL`).",
-                id: "Cari nama seluruh karyawan yang belum memiliki relasi departemen (`departments.id IS NULL`)."
+                en: "Show the names of employees who don't have a department.",
+                id: "Tampilkan nama karyawan yang belum memiliki departemen."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT employees.name FROM employees LEFT JOIN departments ON employees.department_id = departments.id WHERE departments.id IS NULL;",
@@ -9267,8 +9267,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Join `employees e` with `departments d` on `department_id = d.id`. Select `e.name` and `d.dept_name` for `e.salary > 70000`.",
-                id: "Gabungkan `employees e` dengan `departments d` pada kondisi `department_id = d.id`. Ambil `e.name` dan `d.dept_name` untuk kondisi `e.salary > 70000`."
+                en: "Show `name` and `dept_name` for employees earning more than 70,000.",
+                id: "Tampilkan `name` dan `dept_name` karyawan yang gajinya di atas 70.000."
             },
             seed_sql: mod5Seed,
             expected_query: "SELECT e.name, d.dept_name FROM employees e JOIN departments d ON e.department_id = d.id WHERE e.salary > 70000;",
@@ -9300,8 +9300,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table `vouchers` with `id` INT PRIMARY KEY, `code` TEXT NOT NULL, and `discount` INT CHECK (`discount > 0 AND discount <= 50`).",
-                id: "Buat tabel `vouchers` dengan `id` INT PRIMARY KEY, `code` TEXT NOT NULL, dan `discount` INT CHECK (`discount > 0 AND discount <= 50`)."
+                en: "Create a `vouchers` table with `id`, a required `code`, and `discount` (must be more than 0 and at most 50).",
+                id: "Buat tabel `vouchers` dengan `id`, `code` wajib diisi, dan `discount` (harus lebih dari 0 dan maksimal 50)."
             },
             seed_sql: "",
             expected_query: "CREATE TABLE vouchers (id INT PRIMARY KEY, code TEXT NOT NULL, discount INT CHECK (discount > 0 AND discount <= 50));",
@@ -9358,8 +9358,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table `tax_records` with `id` INT PRIMARY KEY, `tax_id` TEXT UNIQUE, and `taxpayer` TEXT NOT NULL.",
-                id: "Buat tabel `tax_records` dengan `id` INT PRIMARY KEY, `tax_id` TEXT UNIQUE, dan `taxpayer` TEXT NOT NULL."
+                en: "Create a `tax_records` table with `id`, a unique `tax_id`, and a required `taxpayer`.",
+                id: "Buat tabel `tax_records` dengan `id`, `tax_id` yang unik, dan `taxpayer` yang wajib diisi."
             },
             seed_sql: "",
             expected_query: "CREATE TABLE tax_records (id INT PRIMARY KEY, tax_id TEXT UNIQUE, taxpayer TEXT NOT NULL);",
@@ -9459,8 +9459,8 @@ function generateModule5(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a table `team_assignments` with `id` INT PRIMARY KEY, `department_id` INT, `role_title` TEXT NOT NULL, and `FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE`.",
-                id: "Buat tabel `team_assignments` dengan `id` INT PRIMARY KEY, `department_id` INT, `role_title` TEXT NOT NULL, dan relasi `FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE`."
+                en: "Create a `team_assignments` table with `id`, `department_id`, and `role_title`, linked to `departments` so deleting a department also deletes its assignments.",
+                id: "Buat tabel `team_assignments` dengan `id`, `department_id`, dan `role_title`, terhubung ke `departments` sehingga menghapus departemen otomatis menghapus penugasan terkait."
             },
             seed_sql: mod5Seed,
             expected_query: "CREATE TABLE team_assignments (id INT PRIMARY KEY, department_id INT, role_title TEXT NOT NULL, FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE);",
@@ -9518,8 +9518,8 @@ function generateModule5(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Insert a record into 'cart' with user_id = 1, product_id = 101, and quantity = 1. If a duplicate key conflict occurs on (user_id, product_id), increment the existing quantity by the incoming quantity using EXCLUDED.quantity.",
-                "id": "Masukkan data ke tabel 'cart' dengan user_id = 1, product_id = 101, dan quantity = 1. Jika terjadi konflik primary key pada (user_id, product_id), tambahkan quantity lama dengan kuantitas yang baru masuk menggunakan EXCLUDED.quantity."
+                "en": "Add `user_id` 1, `product_id` 101, `quantity` 1 to `cart`. If that user/product combo already exists, add the new quantity to the existing one.",
+                "id": "Tambahkan `user_id` 1, `product_id` 101, `quantity` 1 ke `cart`. Jika kombinasi user/produk itu sudah ada, tambahkan kuantitas baru ke kuantitas yang sudah ada."
         },
         "seed_sql": mod5Seed,
         "expected_query": "INSERT INTO cart (user_id, product_id, quantity)\nVALUES (1, 101, 1)\nON CONFLICT (user_id, product_id)\nDO UPDATE SET quantity = cart.quantity + EXCLUDED.quantity;",
@@ -9544,8 +9544,8 @@ function generateModule5(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Insert user_id = 1, product_id = 101, quantity = 1 into 'cart'. On duplicate key conflict, update quantity = cart.quantity + VALUES(quantity).",
-                                "id": "Masukkan user_id = 1, product_id = 101, quantity = 1 ke tabel 'cart'. Saat terjadi duplikasi kunci, lakukan update quantity = cart.quantity + VALUES(quantity)."
+                                "en": "Insert a record into `cart` with `user_id` 1, `product_id` 101, and `quantity` 1. If a duplicate key conflict occurs on `(user_id, product_id)`, increment the existing quantity by the incoming quantity.",
+                                "id": "Masukkan data ke tabel `cart` dengan `user_id` 1, `product_id` 101, dan `quantity` 1. Jika terjadi konflik primary key pada `(user_id, product_id)`, tambahkan kuantitas yang sudah ada dengan kuantitas yang baru dimasukkan."
                         },
                         "expected_query": "INSERT INTO cart (user_id, product_id, quantity)\nVALUES (1, 101, 1)\nON DUPLICATE KEY UPDATE quantity = cart.quantity + VALUES(quantity);",
                         "starterQuery": "INSERT INTO cart (user_id, product_id, quantity)\nVALUES (1, 101, 1);"
@@ -9574,8 +9574,8 @@ function generateModule5(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Insert (user_id = 1, product_id = 102, quantity = 3) into 'cart'. On conflict, overwrite 'quantity' with the new value (EXCLUDED.quantity).",
-                "id": "Masukkan data (user_id = 1, product_id = 102, quantity = 3) ke tabel 'cart'. Jika terjadi konflik, timpa 'quantity' dengan nilai baru (EXCLUDED.quantity)."
+                "en": "Add `user_id` 1, `product_id` 102, `quantity` 3 to `cart`. If that user/product combo already exists, replace the existing quantity with this new value.",
+                "id": "Tambahkan `user_id` 1, `product_id` 102, `quantity` 3 ke `cart`. Jika kombinasi user/produk itu sudah ada, ganti kuantitas yang lama dengan nilai baru ini."
         },
         "seed_sql": mod5Seed,
         "expected_query": "INSERT INTO cart (user_id, product_id, quantity)\nVALUES (1, 102, 3)\nON CONFLICT (user_id, product_id)\nDO UPDATE SET quantity = EXCLUDED.quantity;",
@@ -9600,8 +9600,8 @@ function generateModule5(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Insert (1, 102, 3) into 'cart'. On duplicate key, update quantity = VALUES(quantity).",
-                                "id": "Masukkan (1, 102, 3) ke 'cart'. Jika duplikat, lakukan update quantity = VALUES(quantity)."
+                                "en": "Insert a record into `cart` with `user_id` 1, `product_id` 102, and `quantity` 3. If a duplicate key conflict occurs on `(user_id, product_id)`, overwrite the existing quantity with the new value.",
+                                "id": "Masukkan data ke tabel `cart` dengan `user_id` 1, `product_id` 102, dan `quantity` 3. Jika terjadi konflik primary key pada `(user_id, product_id)`, perbarui kuantitas yang sudah ada dengan nilai kuantitas yang baru."
                         },
                         "expected_query": "INSERT INTO cart (user_id, product_id, quantity)\nVALUES (1, 102, 3)\nON DUPLICATE KEY UPDATE quantity = VALUES(quantity);",
                         "starterQuery": "INSERT INTO cart (user_id, product_id, quantity)\nVALUES (1, 102, 3);"
@@ -9630,8 +9630,8 @@ function generateModule5(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Insert (user_id = 2, product_id = 101, quantity = 2) into 'cart'. On conflict, add EXCLUDED.quantity to existing cart.quantity.",
-                "id": "Masukkan data (user_id = 2, product_id = 101, quantity = 2) ke tabel 'cart'. Jika konflik, tambahkan EXCLUDED.quantity ke kuantitas lama."
+                "en": "Add `user_id` 2, `product_id` 101, `quantity` 2 to `cart`. If that user/product combo already exists, add the new quantity to the existing one.",
+                "id": "Tambahkan `user_id` 2, `product_id` 101, `quantity` 2 ke `cart`. Jika kombinasi user/produk itu sudah ada, tambahkan kuantitas baru ke kuantitas yang sudah ada."
         },
         "seed_sql": mod5Seed,
         "expected_query": "INSERT INTO cart (user_id, product_id, quantity)\nVALUES (2, 101, 2)\nON CONFLICT (user_id, product_id)\nDO UPDATE SET quantity = cart.quantity + EXCLUDED.quantity;",
@@ -9656,8 +9656,8 @@ function generateModule5(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Insert (2, 101, 2) into 'cart'. On duplicate key, update quantity = cart.quantity + VALUES(quantity).",
-                                "id": "Masukkan (2, 101, 2) ke 'cart'. Jika duplikat, lakukan update quantity = cart.quantity + VALUES(quantity)."
+                                "en": "Insert a record into `cart` with `user_id` 2, `product_id` 101, and `quantity` 2. If a duplicate key conflict occurs on `(user_id, product_id)`, add the incoming quantity to the existing quantity.",
+                                "id": "Masukkan data ke tabel `cart` dengan `user_id` 2, `product_id` 101, dan `quantity` 2. Jika terjadi konflik primary key pada `(user_id, product_id)`, tambahkan kuantitas baru ke kuantitas yang sudah ada."
                         },
                         "expected_query": "INSERT INTO cart (user_id, product_id, quantity)\nVALUES (2, 101, 2)\nON DUPLICATE KEY UPDATE quantity = cart.quantity + VALUES(quantity);",
                         "starterQuery": "INSERT INTO cart (user_id, product_id, quantity)\nVALUES (2, 101, 2);"
@@ -9691,8 +9691,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find `member_name` and `score` from `project_a` with `score > (SELECT AVG(score) FROM project_a)`.",
-                id: "Cari `member_name` dan `score` dari `project_a` yang memiliki nilai `score > (SELECT AVG(score) FROM project_a)`."
+                en: "Show `member_name` and `score` for members whose score is above the average in `project_a`.",
+                id: "Tampilkan `member_name` dan `score` anggota yang skornya di atas rata-rata di `project_a`."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name, score FROM project_a WHERE score > (SELECT AVG(score) FROM project_a);",
@@ -9723,8 +9723,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `member_name` from `project_a` where `member_name IN (SELECT member_name FROM project_b)`.",
-                id: "Ambil kolom `member_name` dari `project_a` yang namanya ada di `project_b` (`member_name IN (SELECT member_name FROM project_b)`)."
+                en: "Show `member_name` from `project_a` for members who are also in `project_b`.",
+                id: "Tampilkan `member_name` dari `project_a` untuk anggota yang juga ada di `project_b`."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_a WHERE member_name IN (SELECT member_name FROM project_b);",
@@ -9756,8 +9756,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `sub.role` and `AVG(sub.score)` as `avg_score` from `(SELECT * FROM project_a WHERE score >= 80) AS sub` grouped by `sub.role`.",
-                id: "Ambil `sub.role` dan `AVG(sub.score)` sebagai `avg_score` dari derived table `(SELECT * FROM project_a WHERE score >= 80) AS sub`, dikelompokkan berdasarkan `sub.role`."
+                en: "Show the average score (`avg_score`) per `role`, using only members with a score of 80 or higher.",
+                id: "Tampilkan rata-rata skor (`avg_score`) per `role`, hanya untuk anggota dengan skor 80 ke atas."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT sub.role, AVG(sub.score) AS avg_score FROM (SELECT * FROM project_a WHERE score >= 80) AS sub GROUP BY sub.role;",
@@ -9788,8 +9788,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find `a.member_name` from `project_a a` where `EXISTS (SELECT 1 FROM project_b b WHERE b.member_name = a.member_name)`.",
-                id: "Cari `a.member_name` dari `project_a a` dengan kondisi `EXISTS (SELECT 1 FROM project_b b WHERE b.member_name = a.member_name)`."
+                en: "Show the names of members in `project_a` who are also in `project_b`.",
+                id: "Tampilkan nama anggota di `project_a` yang juga ada di `project_b`."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT a.member_name FROM project_a a WHERE EXISTS (SELECT 1 FROM project_b b WHERE b.member_name = a.member_name);",
@@ -9821,8 +9821,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Combine all `member_name` rows from `project_a` and `project_b` using `UNION ALL`.",
-                id: "Gabungkan seluruh row `member_name` dari `project_a` dan `project_b` menggunakan operator `UNION ALL`."
+                en: "Combine `member_name` from `project_a` and `project_b`, keeping duplicates.",
+                id: "Gabungkan `member_name` dari `project_a` dan `project_b`, termasuk data yang duplikat."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_a UNION ALL SELECT member_name FROM project_b;",
@@ -9854,8 +9854,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Combine unique `member_name` values from `project_a` and `project_b` using `UNION`, ordered alphabetically.",
-                id: "Gabungkan nama unik `member_name` dari `project_a` dan `project_b` menggunakan operator `UNION` (tanpa duplikat), diurutkan secara alfabetis."
+                en: "Combine unique `member_name` values from `project_a` and `project_b`, sorted alphabetically.",
+                id: "Gabungkan `member_name` unik dari `project_a` dan `project_b`, urut sesuai abjad."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_a UNION SELECT member_name FROM project_b ORDER BY member_name;",
@@ -9887,8 +9887,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find all `member_name` values that exist in both `project_a` and `project_b` using `INTERSECT`, ordered alphabetically.",
-                id: "Cari seluruh `member_name` yang terdaftar di kedua tabel (`project_a` dan `project_b`) menggunakan `INTERSECT`, diurutkan secara alfabetis."
+                en: "Show `member_name` values that appear in both `project_a` and `project_b`, sorted alphabetically.",
+                id: "Tampilkan `member_name` yang ada di `project_a` maupun `project_b`, urut sesuai abjad."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_a INTERSECT SELECT member_name FROM project_b ORDER BY member_name;",
@@ -9917,8 +9917,8 @@ function generateModule6(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Find all `member_name` values that exist in both `project_a` and `project_b` using an `INNER JOIN` with `DISTINCT` (MySQL workaround for `INTERSECT`), ordered alphabetically.",
-                        id: "Cari seluruh `member_name` yang terdaftar di kedua tabel (`project_a` dan `project_b`) menggunakan `INNER JOIN` dengan `DISTINCT` (solusi MySQL untuk `INTERSECT`), diurutkan secara alfabetis."
+                        en: "Find all distinct `member_name` values that exist in both `project_a` and `project_b`, ordered alphabetically.",
+                        id: "Cari seluruh nama unik `member_name` yang terdaftar di kedua proyek (`project_a` dan `project_b`), diurutkan secara alfabetis."
                     },
                     expected_query: "SELECT DISTINCT a.member_name FROM project_a a INNER JOIN project_b b ON a.member_name = b.member_name ORDER BY a.member_name;",
                     starterQuery: "SELECT DISTINCT a.member_name FROM project_a a;"
@@ -9947,8 +9947,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find `member_name` rows in `project_a` that do NOT exist in `project_b` using `EXCEPT`, ordered alphabetically.",
-                id: "Cari nama `member_name` yang terdaftar di `project_a` tetapi TIDAK ADA di `project_b` menggunakan `EXCEPT`, diurutkan secara alfabetis."
+                en: "Show `member_name` values that are in `project_a` but not in `project_b`, sorted alphabetically.",
+                id: "Tampilkan `member_name` yang ada di `project_a` tapi tidak di `project_b`, urut sesuai abjad."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_a EXCEPT SELECT member_name FROM project_b ORDER BY member_name;",
@@ -9977,8 +9977,8 @@ function generateModule6(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Find `member_name` rows in `project_a` that do NOT exist in `project_b` using a `LEFT JOIN ... WHERE b.member_name IS NULL` with `DISTINCT` (MySQL workaround for `EXCEPT`), ordered alphabetically.",
-                        id: "Cari nama `member_name` yang terdaftar di `project_a` tetapi TIDAK ADA di `project_b` menggunakan `LEFT JOIN ... WHERE b.member_name IS NULL` dengan `DISTINCT` (solusi MySQL untuk `EXCEPT`), diurutkan secara alfabetis."
+                        en: "Find distinct `member_name` records that exist in `project_a` but not in `project_b`, ordered alphabetically.",
+                        id: "Cari nama unik `member_name` yang terdaftar di `project_a` tetapi tidak ada di `project_b`, diurutkan secara alfabetis."
                     },
                     expected_query: "SELECT DISTINCT a.member_name FROM project_a a LEFT JOIN project_b b ON a.member_name = b.member_name WHERE b.member_name IS NULL ORDER BY a.member_name;",
                     starterQuery: "SELECT DISTINCT a.member_name FROM project_a a;"
@@ -10007,8 +10007,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find `member_name` and `score` from `project_a` with `score > (SELECT AVG(score) FROM project_a)`.",
-                id: "Cari `member_name` dan `score` dari `project_a` yang memiliki nilai `score > (SELECT AVG(score) FROM project_a)`."
+                en: "Show `member_name` and `score` for members whose score is above the average in `project_a`.",
+                id: "Tampilkan `member_name` dan `score` anggota yang skornya di atas rata-rata di `project_a`."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name, score FROM project_a WHERE score > (SELECT AVG(score) FROM project_a);",
@@ -10039,8 +10039,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `member_name` from `project_a` where `member_name IN (SELECT member_name FROM project_b)`.",
-                id: "Ambil kolom `member_name` dari `project_a` yang namanya ada di `project_b` (`member_name IN (SELECT member_name FROM project_b)`)."
+                en: "Show `member_name` from `project_a` for members who are also in `project_b`.",
+                id: "Tampilkan `member_name` dari `project_a` untuk anggota yang juga ada di `project_b`."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_a WHERE member_name IN (SELECT member_name FROM project_b);",
@@ -10072,8 +10072,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `sub.role` and `AVG(sub.score)` as `avg_score` from `(SELECT * FROM project_a WHERE score >= 80) AS sub` grouped by `sub.role`.",
-                id: "Ambil `sub.role` dan `AVG(sub.score)` sebagai `avg_score` dari derived table `(SELECT * FROM project_a WHERE score >= 80) AS sub`, dikelompokkan berdasarkan `sub.role`."
+                en: "Show the average score (`avg_score`) per `role`, using only members with a score of 80 or higher.",
+                id: "Tampilkan rata-rata skor (`avg_score`) per `role`, hanya untuk anggota dengan skor 80 ke atas."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT sub.role, AVG(sub.score) AS avg_score FROM (SELECT * FROM project_a WHERE score >= 80) AS sub GROUP BY sub.role;",
@@ -10104,8 +10104,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find `a.member_name` from `project_a a` where `EXISTS (SELECT 1 FROM project_b b WHERE b.member_name = a.member_name)`.",
-                id: "Cari `a.member_name` dari `project_a a` dengan kondisi `EXISTS (SELECT 1 FROM project_b b WHERE b.member_name = a.member_name)`."
+                en: "Show the names of members in `project_a` who are also in `project_b`.",
+                id: "Tampilkan nama anggota di `project_a` yang juga ada di `project_b`."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT a.member_name FROM project_a a WHERE EXISTS (SELECT 1 FROM project_b b WHERE b.member_name = a.member_name);",
@@ -10137,8 +10137,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Combine all `member_name` rows from `project_a` and `project_b` using `UNION ALL`.",
-                id: "Gabungkan seluruh row `member_name` dari `project_a` dan `project_b` menggunakan operator `UNION ALL`."
+                en: "Combine `member_name` from `project_a` and `project_b`, keeping duplicates.",
+                id: "Gabungkan `member_name` dari `project_a` dan `project_b`, termasuk data yang duplikat."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_a UNION ALL SELECT member_name FROM project_b;",
@@ -10170,8 +10170,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Combine unique `role` values from `project_a` and `project_b` using `UNION`, ordered alphabetically.",
-                id: "Gabungkan nilai unik `role` dari `project_a` dan `project_b` menggunakan operator `UNION`, diurutkan secara alfabetis."
+                en: "Combine unique `role` values from `project_a` and `project_b`, sorted alphabetically.",
+                id: "Gabungkan `role` unik dari `project_a` dan `project_b`, urut sesuai abjad."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT role FROM project_a UNION SELECT role FROM project_b ORDER BY role;",
@@ -10203,8 +10203,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find all `role` values that exist in both projects using `INTERSECT`, ordered alphabetically.",
-                id: "Cari seluruh nilai `role` yang ada di kedua proyek menggunakan `INTERSECT`, diurutkan secara alfabetis."
+                en: "Show `role` values that appear in both projects, sorted alphabetically.",
+                id: "Tampilkan `role` yang ada di kedua proyek, urut sesuai abjad."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT role FROM project_a INTERSECT SELECT role FROM project_b ORDER BY role;",
@@ -10233,8 +10233,8 @@ function generateModule6(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Find all `role` values that exist in both projects using an `INNER JOIN` with `DISTINCT` (MySQL workaround for `INTERSECT`), ordered alphabetically.",
-                        id: "Cari seluruh nilai `role` yang ada di kedua proyek menggunakan `INNER JOIN` dengan `DISTINCT` (solusi MySQL untuk `INTERSECT`), diurutkan secara alfabetis."
+                        en: "Find all distinct `role` values that exist in both projects, ordered alphabetically.",
+                        id: "Cari seluruh peran unik `role` yang ada di kedua proyek, diurutkan secara alfabetis."
                     },
                     expected_query: "SELECT DISTINCT a.role FROM project_a a INNER JOIN project_b b ON a.role = b.role ORDER BY a.role;",
                     starterQuery: "SELECT DISTINCT a.role FROM project_a a;"
@@ -10263,8 +10263,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find `member_name` rows in `project_b` that do NOT exist in `project_a` using `EXCEPT`, ordered alphabetically.",
-                id: "Cari nama `member_name` yang terdaftar di `project_b` tetapi TIDAK ADA di `project_a` menggunakan `EXCEPT`, diurutkan secara alfabetis."
+                en: "Show `member_name` values that are in `project_b` but not in `project_a`, sorted alphabetically.",
+                id: "Tampilkan `member_name` yang ada di `project_b` tapi tidak di `project_a`, urut sesuai abjad."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_b EXCEPT SELECT member_name FROM project_a ORDER BY member_name;",
@@ -10293,8 +10293,8 @@ function generateModule6(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Find `member_name` rows in `project_b` that do NOT exist in `project_a` using a `LEFT JOIN ... WHERE a.member_name IS NULL` with `DISTINCT` (MySQL workaround for `EXCEPT`), ordered alphabetically.",
-                        id: "Cari nama `member_name` yang terdaftar di `project_b` tetapi TIDAK ADA di `project_a` menggunakan `LEFT JOIN ... WHERE a.member_name IS NULL` dengan `DISTINCT` (solusi MySQL untuk `EXCEPT`), diurutkan secara alfabetis."
+                        en: "Find distinct `member_name` records that exist in `project_b` but not in `project_a`, ordered alphabetically.",
+                        id: "Cari nama unik `member_name` yang terdaftar di `project_b` tetapi tidak ada di `project_a`, diurutkan secara alfabetis."
                     },
                     expected_query: "SELECT DISTINCT b.member_name FROM project_b b LEFT JOIN project_a a ON b.member_name = a.member_name WHERE a.member_name IS NULL ORDER BY b.member_name;",
                     starterQuery: "SELECT DISTINCT b.member_name FROM project_b b;"
@@ -10323,8 +10323,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find `member_name` and `score` from `project_a` with `score > (SELECT AVG(score) FROM project_a)`.",
-                id: "Cari `member_name` dan `score` dari `project_a` yang memiliki nilai `score > (SELECT AVG(score) FROM project_a)`."
+                en: "Show `member_name` and `score` for members whose score is above the average in `project_a`.",
+                id: "Tampilkan `member_name` dan `score` anggota yang skornya di atas rata-rata di `project_a`."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name, score FROM project_a WHERE score > (SELECT AVG(score) FROM project_a);",
@@ -10355,8 +10355,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `member_name` from `project_a` where `member_name IN (SELECT member_name FROM project_b)`.",
-                id: "Ambil kolom `member_name` dari `project_a` yang namanya ada di `project_b` (`member_name IN (SELECT member_name FROM project_b)`)."
+                en: "Show `member_name` from `project_a` for members who are also in `project_b`.",
+                id: "Tampilkan `member_name` dari `project_a` untuk anggota yang juga ada di `project_b`."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_a WHERE member_name IN (SELECT member_name FROM project_b);",
@@ -10388,8 +10388,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `sub.role` and `AVG(sub.score)` as `avg_score` from `(SELECT * FROM project_a WHERE score >= 80) AS sub` grouped by `sub.role`.",
-                id: "Ambil `sub.role` dan `AVG(sub.score)` sebagai `avg_score` dari derived table `(SELECT * FROM project_a WHERE score >= 80) AS sub`, dikelompokkan berdasarkan `sub.role`."
+                en: "Show the average score (`avg_score`) per `role`, using only members with a score of 80 or higher.",
+                id: "Tampilkan rata-rata skor (`avg_score`) per `role`, hanya untuk anggota dengan skor 80 ke atas."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT sub.role, AVG(sub.score) AS avg_score FROM (SELECT * FROM project_a WHERE score >= 80) AS sub GROUP BY sub.role;",
@@ -10420,8 +10420,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find `a.member_name` from `project_a a` where `EXISTS (SELECT 1 FROM project_b b WHERE b.member_name = a.member_name)`.",
-                id: "Cari `a.member_name` dari `project_a a` dengan kondisi `EXISTS (SELECT 1 FROM project_b b WHERE b.member_name = a.member_name)`."
+                en: "Show the names of members in `project_a` who are also in `project_b`.",
+                id: "Tampilkan nama anggota di `project_a` yang juga ada di `project_b`."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT a.member_name FROM project_a a WHERE EXISTS (SELECT 1 FROM project_b b WHERE b.member_name = a.member_name);",
@@ -10453,8 +10453,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Combine all `member_name` rows from `project_a` and `project_b` using `UNION ALL`.",
-                id: "Gabungkan seluruh row `member_name` dari `project_a` dan `project_b` menggunakan operator `UNION ALL`."
+                en: "Combine `member_name` from `project_a` and `project_b`, keeping duplicates.",
+                id: "Gabungkan `member_name` dari `project_a` dan `project_b`, termasuk data yang duplikat."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_a UNION ALL SELECT member_name FROM project_b;",
@@ -10486,8 +10486,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Combine unique combinations of `member_name, role` from both tables using `UNION`, ordered by `member_name, role`.",
-                id: "Gabungkan pasangan unik `member_name, role` dari kedua tabel menggunakan `UNION`, diurutkan berdasarkan `member_name, role`."
+                en: "Combine unique `member_name`-`role` pairs from both tables, sorted by `member_name` and `role`.",
+                id: "Gabungkan pasangan `member_name` dan `role` unik dari kedua tabel, urut berdasarkan `member_name` dan `role`."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name, role FROM project_a UNION SELECT member_name, role FROM project_b ORDER BY member_name, role;",
@@ -10519,8 +10519,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find matching `(member_name, role)` pairs present in both projects using `INTERSECT`, ordered by `member_name, role`.",
-                id: "Cari pasangan `(member_name, role)` yang identik di kedua proyek menggunakan `INTERSECT`, diurutkan berdasarkan `member_name, role`."
+                en: "Show `member_name`-`role` pairs that appear in both projects, sorted by `member_name` and `role`.",
+                id: "Tampilkan pasangan `member_name` dan `role` yang ada di kedua proyek, urut berdasarkan `member_name` dan `role`."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name, role FROM project_a INTERSECT SELECT member_name, role FROM project_b ORDER BY member_name, role;",
@@ -10549,8 +10549,8 @@ function generateModule6(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Find matching `(member_name, role)` pairs present in both projects using an `INNER JOIN` with `DISTINCT` (MySQL workaround for `INTERSECT`), ordered by `member_name, role`.",
-                        id: "Cari pasangan `(member_name, role)` yang identik di kedua proyek menggunakan `INNER JOIN` dengan `DISTINCT` (solusi MySQL untuk `INTERSECT`), diurutkan berdasarkan `member_name, role`."
+                        en: "Find matching pairs of `member_name` and `role` present in both projects, ordered by `member_name` and `role`.",
+                        id: "Cari pasangan unik `member_name` dan `role` yang identik di kedua proyek, diurutkan berdasarkan `member_name` dan `role`."
                     },
                     expected_query: "SELECT DISTINCT a.member_name, a.role FROM project_a a INNER JOIN project_b b ON a.member_name = b.member_name AND a.role = b.role ORDER BY a.member_name, a.role;",
                     starterQuery: "SELECT DISTINCT a.member_name, a.role FROM project_a a;"
@@ -10579,8 +10579,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find roles in `project_a` that are NOT in `project_b` using `EXCEPT`, ordered alphabetically.",
-                id: "Cari peran `role` yang ada di `project_a` namun TIDAK ADA di `project_b` menggunakan `EXCEPT`, diurutkan secara alfabetis."
+                en: "Show `role` values that are in `project_a` but not in `project_b`, sorted alphabetically.",
+                id: "Tampilkan `role` yang ada di `project_a` tapi tidak di `project_b`, urut sesuai abjad."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT role FROM project_a EXCEPT SELECT role FROM project_b ORDER BY role;",
@@ -10609,8 +10609,8 @@ function generateModule6(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Find roles in `project_a` that are NOT in `project_b` using a `LEFT JOIN ... WHERE b.role IS NULL` with `DISTINCT` (MySQL workaround for `EXCEPT`), ordered alphabetically.",
-                        id: "Cari peran `role` yang ada di `project_a` namun TIDAK ADA di `project_b` menggunakan `LEFT JOIN ... WHERE b.role IS NULL` dengan `DISTINCT` (solusi MySQL untuk `EXCEPT`), diurutkan secara alfabetis."
+                        en: "Find distinct `role` values that exist in `project_a` but not in `project_b`, ordered alphabetically.",
+                        id: "Cari peran unik `role` yang ada di `project_a` namun tidak ada di `project_b`, diurutkan secara alfabetis."
                     },
                     expected_query: "SELECT DISTINCT a.role FROM project_a a LEFT JOIN project_b b ON a.role = b.role WHERE b.role IS NULL ORDER BY a.role;",
                     starterQuery: "SELECT DISTINCT a.role FROM project_a a;"
@@ -10639,8 +10639,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find `member_name` and `score` from `project_a` with `score > (SELECT AVG(score) FROM project_a)`.",
-                id: "Cari `member_name` dan `score` dari `project_a` yang memiliki nilai `score > (SELECT AVG(score) FROM project_a)`."
+                en: "Show `member_name` and `score` for members whose score is above the average in `project_a`.",
+                id: "Tampilkan `member_name` dan `score` anggota yang skornya di atas rata-rata di `project_a`."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name, score FROM project_a WHERE score > (SELECT AVG(score) FROM project_a);",
@@ -10671,8 +10671,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `member_name` from `project_a` where `member_name IN (SELECT member_name FROM project_b)`.",
-                id: "Ambil kolom `member_name` dari `project_a` yang namanya ada di `project_b` (`member_name IN (SELECT member_name FROM project_b)`)."
+                en: "Show `member_name` from `project_a` for members who are also in `project_b`.",
+                id: "Tampilkan `member_name` dari `project_a` untuk anggota yang juga ada di `project_b`."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_a WHERE member_name IN (SELECT member_name FROM project_b);",
@@ -10704,8 +10704,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `sub.role` and `AVG(sub.score)` as `avg_score` from `(SELECT * FROM project_a WHERE score >= 80) AS sub` grouped by `sub.role`.",
-                id: "Ambil `sub.role` dan `AVG(sub.score)` sebagai `avg_score` dari derived table `(SELECT * FROM project_a WHERE score >= 80) AS sub`, dikelompokkan berdasarkan `sub.role`."
+                en: "Show the average score (`avg_score`) per `role`, using only members with a score of 80 or higher.",
+                id: "Tampilkan rata-rata skor (`avg_score`) per `role`, hanya untuk anggota dengan skor 80 ke atas."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT sub.role, AVG(sub.score) AS avg_score FROM (SELECT * FROM project_a WHERE score >= 80) AS sub GROUP BY sub.role;",
@@ -10736,8 +10736,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find `a.member_name` from `project_a a` where `EXISTS (SELECT 1 FROM project_b b WHERE b.member_name = a.member_name)`.",
-                id: "Cari `a.member_name` dari `project_a a` dengan kondisi `EXISTS (SELECT 1 FROM project_b b WHERE b.member_name = a.member_name)`."
+                en: "Show the names of members in `project_a` who are also in `project_b`.",
+                id: "Tampilkan nama anggota di `project_a` yang juga ada di `project_b`."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT a.member_name FROM project_a a WHERE EXISTS (SELECT 1 FROM project_b b WHERE b.member_name = a.member_name);",
@@ -10769,8 +10769,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Combine all `member_name` rows from `project_a` and `project_b` using `UNION ALL`.",
-                id: "Gabungkan seluruh row `member_name` dari `project_a` dan `project_b` menggunakan operator `UNION ALL`."
+                en: "Combine `member_name` from `project_a` and `project_b`, keeping duplicates.",
+                id: "Gabungkan `member_name` dari `project_a` dan `project_b`, termasuk data yang duplikat."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_a UNION ALL SELECT member_name FROM project_b;",
@@ -10802,8 +10802,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Combine unique `member_name` where `score >= 80` from both tables using `UNION`, ordered alphabetically.",
-                id: "Gabungkan `member_name` unik dengan kriteria `score >= 80` dari kedua tabel menggunakan `UNION`, diurutkan secara alfabetis."
+                en: "Combine unique `member_name` values with a score of 80 or higher from both tables, sorted alphabetically.",
+                id: "Gabungkan `member_name` unik dengan skor minimal 80 dari kedua tabel, urut sesuai abjad."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_a WHERE score >= 80 UNION SELECT member_name FROM project_b WHERE score >= 80 ORDER BY member_name;",
@@ -10835,8 +10835,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find `member_name` values with `score >= 75` in both projects using `INTERSECT`, ordered alphabetically.",
-                id: "Cari `member_name` dengan `score >= 75` yang ada di kedua tabel menggunakan `INTERSECT`, diurutkan secara alfabetis."
+                en: "Show `member_name` values with a score of 75 or higher that appear in both projects, sorted alphabetically.",
+                id: "Tampilkan `member_name` dengan skor minimal 75 yang ada di kedua proyek, urut sesuai abjad."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_a WHERE score >= 75 INTERSECT SELECT member_name FROM project_b WHERE score >= 75 ORDER BY member_name;",
@@ -10865,8 +10865,8 @@ function generateModule6(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Find `member_name` values with `score >= 75` in both projects using an `INNER JOIN` with `DISTINCT` (MySQL workaround for `INTERSECT`), ordered alphabetically.",
-                        id: "Cari `member_name` dengan `score >= 75` yang ada di kedua tabel menggunakan `INNER JOIN` dengan `DISTINCT` (solusi MySQL untuk `INTERSECT`), diurutkan secara alfabetis."
+                        en: "Find distinct `member_name` values with a score of 75 or higher in both projects, ordered alphabetically.",
+                        id: "Cari nama unik `member_name` dengan skor minimal 75 yang ada di kedua proyek, diurutkan secara alfabetis."
                     },
                     expected_query: "SELECT DISTINCT a.member_name FROM project_a a INNER JOIN project_b b ON a.member_name = b.member_name WHERE a.score >= 75 AND b.score >= 75 ORDER BY a.member_name;",
                     starterQuery: "SELECT DISTINCT a.member_name FROM project_a a;"
@@ -10895,8 +10895,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find roles in `project_b` that are NOT in `project_a` using `EXCEPT`, ordered alphabetically.",
-                id: "Cari peran `role` yang ada di `project_b` namun TIDAK ADA di `project_a` menggunakan `EXCEPT`, diurutkan secara alfabetis."
+                en: "Show `role` values that are in `project_b` but not in `project_a`, sorted alphabetically.",
+                id: "Tampilkan `role` yang ada di `project_b` tapi tidak di `project_a`, urut sesuai abjad."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT role FROM project_b EXCEPT SELECT role FROM project_a ORDER BY role;",
@@ -10925,8 +10925,8 @@ function generateModule6(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Find roles in `project_b` that are NOT in `project_a` using a `LEFT JOIN ... WHERE a.role IS NULL` with `DISTINCT` (MySQL workaround for `EXCEPT`), ordered alphabetically.",
-                        id: "Cari peran `role` yang ada di `project_b` namun TIDAK ADA di `project_a` menggunakan `LEFT JOIN ... WHERE a.role IS NULL` dengan `DISTINCT` (solusi MySQL untuk `EXCEPT`), diurutkan secara alfabetis."
+                        en: "Find distinct `role` values that exist in `project_b` but not in `project_a`, ordered alphabetically.",
+                        id: "Cari peran unik `role` yang ada di `project_b` namun tidak ada di `project_a`, diurutkan secara alfabetis."
                     },
                     expected_query: "SELECT DISTINCT b.role FROM project_b b LEFT JOIN project_a a ON b.role = a.role WHERE a.role IS NULL ORDER BY b.role;",
                     starterQuery: "SELECT DISTINCT b.role FROM project_b b;"
@@ -10955,8 +10955,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find `member_name` and `score` from `project_a` with `score > (SELECT AVG(score) FROM project_a)`.",
-                id: "Cari `member_name` dan `score` dari `project_a` yang memiliki nilai `score > (SELECT AVG(score) FROM project_a)`."
+                en: "Show `member_name` and `score` for members whose score is above the average in `project_a`.",
+                id: "Tampilkan `member_name` dan `score` anggota yang skornya di atas rata-rata di `project_a`."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name, score FROM project_a WHERE score > (SELECT AVG(score) FROM project_a);",
@@ -10987,8 +10987,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `member_name` from `project_a` where `member_name IN (SELECT member_name FROM project_b)`.",
-                id: "Ambil kolom `member_name` dari `project_a` yang namanya ada di `project_b` (`member_name IN (SELECT member_name FROM project_b)`)."
+                en: "Show `member_name` from `project_a` for members who are also in `project_b`.",
+                id: "Tampilkan `member_name` dari `project_a` untuk anggota yang juga ada di `project_b`."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_a WHERE member_name IN (SELECT member_name FROM project_b);",
@@ -11020,8 +11020,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `sub.role` and `AVG(sub.score)` as `avg_score` from `(SELECT * FROM project_a WHERE score >= 80) AS sub` grouped by `sub.role`.",
-                id: "Ambil `sub.role` dan `AVG(sub.score)` sebagai `avg_score` dari derived table `(SELECT * FROM project_a WHERE score >= 80) AS sub`, dikelompokkan berdasarkan `sub.role`."
+                en: "Show the average score (`avg_score`) per `role`, using only members with a score of 80 or higher.",
+                id: "Tampilkan rata-rata skor (`avg_score`) per `role`, hanya untuk anggota dengan skor 80 ke atas."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT sub.role, AVG(sub.score) AS avg_score FROM (SELECT * FROM project_a WHERE score >= 80) AS sub GROUP BY sub.role;",
@@ -11052,8 +11052,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find `a.member_name` from `project_a a` where `EXISTS (SELECT 1 FROM project_b b WHERE b.member_name = a.member_name)`.",
-                id: "Cari `a.member_name` dari `project_a a` dengan kondisi `EXISTS (SELECT 1 FROM project_b b WHERE b.member_name = a.member_name)`."
+                en: "Show the names of members in `project_a` who are also in `project_b`.",
+                id: "Tampilkan nama anggota di `project_a` yang juga ada di `project_b`."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT a.member_name FROM project_a a WHERE EXISTS (SELECT 1 FROM project_b b WHERE b.member_name = a.member_name);",
@@ -11085,8 +11085,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Combine all `member_name` rows from `project_a` and `project_b` using `UNION ALL`.",
-                id: "Gabungkan seluruh row `member_name` dari `project_a` dan `project_b` menggunakan operator `UNION ALL`."
+                en: "Combine `member_name` from `project_a` and `project_b`, keeping duplicates.",
+                id: "Gabungkan `member_name` dari `project_a` dan `project_b`, termasuk data yang duplikat."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_a UNION ALL SELECT member_name FROM project_b;",
@@ -11118,8 +11118,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Combine unique `member_name` with `role = 'Dev'` from both tables using `UNION`, ordered alphabetically.",
-                id: "Gabungkan `member_name` unik dengan `role = 'Dev'` dari kedua tabel menggunakan `UNION`, diurutkan secara alfabetis."
+                en: "Combine unique `member_name` values with the 'Dev' role from both tables, sorted alphabetically.",
+                id: "Gabungkan `member_name` unik dengan peran 'Dev' dari kedua tabel, urut sesuai abjad."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_a WHERE role = 'Dev' UNION SELECT member_name FROM project_b WHERE role = 'Dev' ORDER BY member_name;",
@@ -11151,8 +11151,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find members who are `Dev` in both projects using `INTERSECT`, ordered alphabetically.",
-                id: "Cari anggota dengan peran `Dev` di kedua proyek menggunakan `INTERSECT`, diurutkan secara alfabetis."
+                en: "Show members with the 'Dev' role who appear in both projects, sorted alphabetically.",
+                id: "Tampilkan anggota berperan 'Dev' yang ada di kedua proyek, urut sesuai abjad."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_a WHERE role = 'Dev' INTERSECT SELECT member_name FROM project_b WHERE role = 'Dev' ORDER BY member_name;",
@@ -11181,8 +11181,8 @@ function generateModule6(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Find members who are `Dev` in both projects using an `INNER JOIN` with `DISTINCT` (MySQL workaround for `INTERSECT`), ordered alphabetically.",
-                        id: "Cari anggota dengan peran `Dev` di kedua proyek menggunakan `INNER JOIN` dengan `DISTINCT` (solusi MySQL untuk `INTERSECT`), diurutkan secara alfabetis."
+                        en: "Find distinct members who hold the 'Dev' role in both projects, ordered alphabetically.",
+                        id: "Cari anggota unik dengan peran 'Dev' di kedua proyek, diurutkan secara alfabetis."
                     },
                     expected_query: "SELECT DISTINCT a.member_name FROM project_a a INNER JOIN project_b b ON a.member_name = b.member_name WHERE a.role = 'Dev' AND b.role = 'Dev' ORDER BY a.member_name;",
                     starterQuery: "SELECT DISTINCT a.member_name FROM project_a a;"
@@ -11211,8 +11211,8 @@ function generateModule6(): Question[] {
                 }
             ],
             instructions: {
-                en: "Find members in `project_a` with `score >= 80` who are NOT in `project_b` with `score >= 80` using `EXCEPT`.",
-                id: "Cari anggota di `project_a` dengan `score >= 80` yang TIDAK ADA di `project_b` dengan `score >= 80` menggunakan `EXCEPT`."
+                en: "Show members in `project_a` with a score of 80 or higher who aren't in `project_b` with a score of 80 or higher, sorted alphabetically.",
+                id: "Tampilkan anggota di `project_a` berskor 80 ke atas yang tidak ada di `project_b` dengan skor 80 ke atas, urut sesuai abjad."
             },
             seed_sql: mod6Seed,
             expected_query: "SELECT member_name FROM project_a WHERE score >= 80 EXCEPT SELECT member_name FROM project_b WHERE score >= 80 ORDER BY member_name;",
@@ -11241,8 +11241,8 @@ function generateModule6(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Find members in `project_a` with `score >= 80` who are NOT in `project_b` with `score >= 80` using a `LEFT JOIN ... IS NULL` with `DISTINCT` (MySQL workaround for `EXCEPT`), ordered alphabetically.",
-                        id: "Cari anggota di `project_a` dengan `score >= 80` yang TIDAK ADA di `project_b` dengan `score >= 80` menggunakan `LEFT JOIN ... IS NULL` dengan `DISTINCT` (solusi MySQL untuk `EXCEPT`), diurutkan secara alfabetis."
+                        en: "Find distinct members in `project_a` with a score of 80 or higher who are not present in `project_b` with a score of 80 or higher, ordered alphabetically.",
+                        id: "Cari anggota unik di `project_a` dengan skor minimal 80 yang tidak ada di `project_b` dengan skor minimal 80, diurutkan secara alfabetis."
                     },
                     expected_query: "SELECT DISTINCT a.member_name FROM project_a a LEFT JOIN project_b b ON a.member_name = b.member_name AND b.score >= 80 WHERE a.score >= 80 AND b.member_name IS NULL ORDER BY a.member_name;",
                     starterQuery: "SELECT DISTINCT a.member_name FROM project_a a;"
@@ -11271,8 +11271,8 @@ function generateModule6(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Create a CTE named 'HighSalaryEmployees' selecting department_id, name, salary from 'employees' where salary > 70000. Then group the CTE by department_id to calculate 'high_earner_count' (COUNT(*)) and 'max_salary' (MAX(salary)).",
-                "id": "Buat CTE bernama 'HighSalaryEmployees' yang memilih department_id, name, salary dari 'employees' dengan salary > 70000. Kemudian kelompokkan CTE tersebut per department_id untuk menghitung 'high_earner_count' (COUNT(*)) dan 'max_salary' (MAX(salary))."
+                "en": "Using a temporary result of employees earning above 70,000, show each `department_id` with its high-earner count (`high_earner_count`) and highest salary (`max_salary`).",
+                "id": "Menggunakan data sementara karyawan bergaji di atas 70.000, tampilkan tiap `department_id` beserta jumlah karyawan bergaji tinggi (`high_earner_count`) dan gaji tertingginya (`max_salary`)."
         },
         "seed_sql": mod6Seed,
         "expected_query": "WITH HighSalaryEmployees AS (\n    SELECT department_id, name, salary\n    FROM employees\n    WHERE salary > 70000\n)\nSELECT department_id, COUNT(*) AS high_earner_count, MAX(salary) AS max_salary\nFROM HighSalaryEmployees\nGROUP BY department_id;",
@@ -11303,8 +11303,8 @@ function generateModule6(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Define a CTE 'TopScorers' selecting member_name, role, score from 'project_a' where score >= 85. Then select 'role', 'member_count' (COUNT(*)), and 'avg_score' (AVG(score)) grouped by role.",
-                "id": "Definisikan CTE 'TopScorers' yang mengambil member_name, role, score dari 'project_a' dengan score >= 85. Kemudian pilih 'role', 'member_count' (COUNT(*)), dan 'avg_score' (AVG(score)) dikelompokkan per role."
+                "en": "Using a temporary result of `project_a` members scoring 85 or higher, show each `role` with its member count (`member_count`) and average score (`avg_score`).",
+                "id": "Menggunakan data sementara anggota `project_a` berskor 85 ke atas, tampilkan tiap `role` beserta jumlah anggotanya (`member_count`) dan rata-rata skornya (`avg_score`)."
         },
         "seed_sql": mod6Seed,
         "expected_query": "WITH TopScorers AS (\n    SELECT member_name, role, score\n    FROM project_a\n    WHERE score >= 85\n)\nSELECT role, COUNT(*) AS member_count, AVG(score) AS avg_score\nFROM TopScorers\nGROUP BY role;",
@@ -11335,8 +11335,8 @@ function generateModule6(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Define a CTE 'DeptSummary' grouping 'employees' by department_id with AVG(salary) AS avg_dept_salary. Then select department_id and ROUND(avg_dept_salary) AS rounded_avg from the CTE where avg_dept_salary > 65000.",
-                "id": "Definisikan CTE 'DeptSummary' yang mengelompokkan 'employees' berdasarkan department_id dengan AVG(salary) AS avg_dept_salary. Kemudian ambil department_id dan ROUND(avg_dept_salary) AS rounded_avg dari CTE untuk avg_dept_salary > 65000."
+                "en": "Using a temporary result of each department's average salary, show `department_id` and its rounded average salary (`rounded_avg`) for departments averaging above 65,000.",
+                "id": "Menggunakan data sementara rata-rata gaji tiap departemen, tampilkan `department_id` beserta rata-rata gaji yang dibulatkan (`rounded_avg`) untuk departemen yang rata-ratanya di atas 65.000."
         },
         "seed_sql": mod6Seed,
         "expected_query": "WITH DeptSummary AS (\n    SELECT department_id, AVG(salary) AS avg_dept_salary\n    FROM employees\n    GROUP BY department_id\n)\nSELECT department_id, ROUND(avg_dept_salary) AS rounded_avg\nFROM DeptSummary\nWHERE avg_dept_salary > 65000;",
@@ -11372,8 +11372,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Display `owner`, `balance`, and `ROW_NUMBER() OVER (ORDER BY balance DESC)` as `pos` from `accounts`.",
-                id: "Tampilkan `owner`, `balance`, dan nomor urut peringkat saldo tertinggi menggunakan `ROW_NUMBER() OVER (ORDER BY balance DESC)` sebagai `pos` dari tabel `accounts`."
+                en: "Show `owner`, `balance`, and each account's rank when sorted by balance, highest first (`pos`).",
+                id: "Tampilkan `owner`, `balance`, dan urutan peringkat tiap akun berdasarkan saldo tertinggi (`pos`)."
             },
             seed_sql: mod7Seed,
             expected_query: "SELECT owner, balance, ROW_NUMBER() OVER (ORDER BY balance DESC) AS pos FROM accounts;",
@@ -11404,8 +11404,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `owner`, `category`, `balance`, and `AVG(balance) OVER (PARTITION BY category)` as `cat_avg` from `accounts`.",
-                id: "Ambil kolom `owner`, `category`, `balance`, dan `AVG(balance) OVER (PARTITION BY category)` sebagai `cat_avg` dari tabel `accounts`."
+                en: "Show `owner`, `category`, `balance`, and the average balance for that account's category (`cat_avg`).",
+                id: "Tampilkan `owner`, `category`, `balance`, beserta rata-rata saldo untuk kategori akun tersebut (`cat_avg`)."
             },
             seed_sql: mod7Seed,
             expected_query: "SELECT owner, category, balance, AVG(balance) OVER (PARTITION BY category) AS cat_avg FROM accounts;",
@@ -11436,8 +11436,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `owner`, `balance`, and `LAG(balance, 1) OVER (ORDER BY balance ASC)` as `prev_bal` from `accounts`.",
-                id: "Ambil kolom `owner`, `balance`, dan `LAG(balance, 1) OVER (ORDER BY balance ASC)` sebagai `prev_bal` dari tabel `accounts`."
+                en: "Show `owner` and `balance`, along with the balance of the account just before it when sorted by balance ascending (`prev_bal`).",
+                id: "Tampilkan `owner` dan `balance`, beserta saldo akun sebelumnya saat diurutkan dari saldo terkecil (`prev_bal`)."
             },
             seed_sql: mod7Seed,
             expected_query: "SELECT owner, balance, LAG(balance, 1) OVER (ORDER BY balance ASC) AS prev_bal FROM accounts;",
@@ -11468,8 +11468,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Delete accounts from `accounts` where `balance < 1000`, returning their `owner` and `balance`.",
-                id: "Hapus data dari `accounts` dengan kondisi `balance < 1000`, lalu kembalikan kolom `owner` dan `balance` dari row yang terhapus."
+                en: "Delete accounts with a `balance` below 1000, and return the `owner` and `balance` of each deleted row.",
+                id: "Hapus akun dengan `balance` di bawah 1000, lalu tampilkan `owner` dan `balance` dari baris yang terhapus."
             },
             seed_sql: mod7Seed,
             expected_query: "DELETE FROM accounts WHERE balance < 1000 RETURNING owner, balance;",
@@ -11500,8 +11500,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a view named `high_balances` defined as `SELECT owner, balance FROM accounts WHERE balance > 3000`.",
-                id: "Buat view bernama `high_balances` dengan definisi query `SELECT owner, balance FROM accounts WHERE balance > 3000`."
+                en: "Create a view called `high_balances` showing `owner` and `balance` for accounts with a balance above 3000.",
+                id: "Buat view bernama `high_balances` yang menampilkan `owner` dan `balance` untuk akun bersaldo di atas 3000."
             },
             seed_sql: mod7Seed,
             expected_query: "CREATE VIEW high_balances AS SELECT owner, balance FROM accounts WHERE balance > 3000;",
@@ -11532,8 +11532,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Display `owner`, `balance`, and `ROW_NUMBER() OVER (ORDER BY balance DESC)` as `pos` from `accounts`.",
-                id: "Tampilkan `owner`, `balance`, dan nomor urut peringkat saldo tertinggi menggunakan `ROW_NUMBER() OVER (ORDER BY balance DESC)` sebagai `pos` dari tabel `accounts`."
+                en: "Show `owner`, `balance`, and each account's rank when sorted by balance, highest first (`pos`).",
+                id: "Tampilkan `owner`, `balance`, dan urutan peringkat tiap akun berdasarkan saldo tertinggi (`pos`)."
             },
             seed_sql: mod7Seed,
             expected_query: "SELECT owner, balance, ROW_NUMBER() OVER (ORDER BY balance DESC) AS pos FROM accounts;",
@@ -11564,8 +11564,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `owner`, `category`, `balance`, and `AVG(balance) OVER (PARTITION BY category)` as `cat_avg` from `accounts`.",
-                id: "Ambil kolom `owner`, `category`, `balance`, dan `AVG(balance) OVER (PARTITION BY category)` sebagai `cat_avg` dari tabel `accounts`."
+                en: "Show `owner`, `category`, `balance`, and the average balance for that account's category (`cat_avg`).",
+                id: "Tampilkan `owner`, `category`, `balance`, beserta rata-rata saldo untuk kategori akun tersebut (`cat_avg`)."
             },
             seed_sql: mod7Seed,
             expected_query: "SELECT owner, category, balance, AVG(balance) OVER (PARTITION BY category) AS cat_avg FROM accounts;",
@@ -11596,8 +11596,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `owner`, `balance`, and `LAG(balance, 1) OVER (ORDER BY balance ASC)` as `prev_bal` from `accounts`.",
-                id: "Ambil kolom `owner`, `balance`, dan `LAG(balance, 1) OVER (ORDER BY balance ASC)` sebagai `prev_bal` dari tabel `accounts`."
+                en: "Show `owner` and `balance`, along with the balance of the account just before it when sorted by balance ascending (`prev_bal`).",
+                id: "Tampilkan `owner` dan `balance`, beserta saldo akun sebelumnya saat diurutkan dari saldo terkecil (`prev_bal`)."
             },
             seed_sql: mod7Seed,
             expected_query: "SELECT owner, balance, LAG(balance, 1) OVER (ORDER BY balance ASC) AS prev_bal FROM accounts;",
@@ -11628,8 +11628,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Delete accounts from `accounts` where `balance < 1000`, returning their `owner` and `balance`.",
-                id: "Hapus data dari `accounts` dengan kondisi `balance < 1000`, lalu kembalikan kolom `owner` dan `balance` dari row yang terhapus."
+                en: "Delete accounts with a `balance` below 1000, and return the `owner` and `balance` of each deleted row.",
+                id: "Hapus akun dengan `balance` di bawah 1000, lalu tampilkan `owner` dan `balance` dari baris yang terhapus."
             },
             seed_sql: mod7Seed,
             expected_query: "DELETE FROM accounts WHERE balance < 1000 RETURNING owner, balance;",
@@ -11660,8 +11660,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a view named `high_balances` defined as `SELECT owner, balance FROM accounts WHERE balance > 3000`.",
-                id: "Buat view bernama `high_balances` dengan definisi query `SELECT owner, balance FROM accounts WHERE balance > 3000`."
+                en: "Create a view called `high_balances` showing `owner` and `balance` for accounts with a balance above 3000.",
+                id: "Buat view bernama `high_balances` yang menampilkan `owner` dan `balance` untuk akun bersaldo di atas 3000."
             },
             seed_sql: mod7Seed,
             expected_query: "CREATE VIEW high_balances AS SELECT owner, balance FROM accounts WHERE balance > 3000;",
@@ -11692,8 +11692,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Display `owner`, `balance`, and `ROW_NUMBER() OVER (ORDER BY balance DESC)` as `pos` from `accounts`.",
-                id: "Tampilkan `owner`, `balance`, dan nomor urut peringkat saldo tertinggi menggunakan `ROW_NUMBER() OVER (ORDER BY balance DESC)` sebagai `pos` dari tabel `accounts`."
+                en: "Show `owner`, `balance`, and each account's rank when sorted by balance, highest first (`pos`).",
+                id: "Tampilkan `owner`, `balance`, dan urutan peringkat tiap akun berdasarkan saldo tertinggi (`pos`)."
             },
             seed_sql: mod7Seed,
             expected_query: "SELECT owner, balance, ROW_NUMBER() OVER (ORDER BY balance DESC) AS pos FROM accounts;",
@@ -11724,8 +11724,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `owner`, `category`, `balance`, and `AVG(balance) OVER (PARTITION BY category)` as `cat_avg` from `accounts`.",
-                id: "Ambil kolom `owner`, `category`, `balance`, dan `AVG(balance) OVER (PARTITION BY category)` sebagai `cat_avg` dari tabel `accounts`."
+                en: "Show `owner`, `category`, `balance`, and the average balance for that account's category (`cat_avg`).",
+                id: "Tampilkan `owner`, `category`, `balance`, beserta rata-rata saldo untuk kategori akun tersebut (`cat_avg`)."
             },
             seed_sql: mod7Seed,
             expected_query: "SELECT owner, category, balance, AVG(balance) OVER (PARTITION BY category) AS cat_avg FROM accounts;",
@@ -11756,8 +11756,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `owner`, `balance`, and `LAG(balance, 1) OVER (ORDER BY balance ASC)` as `prev_bal` from `accounts`.",
-                id: "Ambil kolom `owner`, `balance`, dan `LAG(balance, 1) OVER (ORDER BY balance ASC)` sebagai `prev_bal` dari tabel `accounts`."
+                en: "Show `owner` and `balance`, along with the balance of the account just before it when sorted by balance ascending (`prev_bal`).",
+                id: "Tampilkan `owner` dan `balance`, beserta saldo akun sebelumnya saat diurutkan dari saldo terkecil (`prev_bal`)."
             },
             seed_sql: mod7Seed,
             expected_query: "SELECT owner, balance, LAG(balance, 1) OVER (ORDER BY balance ASC) AS prev_bal FROM accounts;",
@@ -11788,8 +11788,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Delete accounts from `accounts` where `balance < 1000`, returning their `owner` and `balance`.",
-                id: "Hapus data dari `accounts` dengan kondisi `balance < 1000`, lalu kembalikan kolom `owner` dan `balance` dari row yang terhapus."
+                en: "Delete accounts with a `balance` below 1000, and return the `owner` and `balance` of each deleted row.",
+                id: "Hapus akun dengan `balance` di bawah 1000, lalu tampilkan `owner` dan `balance` dari baris yang terhapus."
             },
             seed_sql: mod7Seed,
             expected_query: "DELETE FROM accounts WHERE balance < 1000 RETURNING owner, balance;",
@@ -11820,8 +11820,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a view named `high_balances` defined as `SELECT owner, balance FROM accounts WHERE balance > 3000`.",
-                id: "Buat view bernama `high_balances` dengan definisi query `SELECT owner, balance FROM accounts WHERE balance > 3000`."
+                en: "Create a view called `high_balances` showing `owner` and `balance` for accounts with a balance above 3000.",
+                id: "Buat view bernama `high_balances` yang menampilkan `owner` dan `balance` untuk akun bersaldo di atas 3000."
             },
             seed_sql: mod7Seed,
             expected_query: "CREATE VIEW high_balances AS SELECT owner, balance FROM accounts WHERE balance > 3000;",
@@ -11852,8 +11852,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Display `owner`, `balance`, and `ROW_NUMBER() OVER (ORDER BY balance DESC)` as `pos` from `accounts`.",
-                id: "Tampilkan `owner`, `balance`, dan nomor urut peringkat saldo tertinggi menggunakan `ROW_NUMBER() OVER (ORDER BY balance DESC)` sebagai `pos` dari tabel `accounts`."
+                en: "Show `owner`, `balance`, and each account's rank when sorted by balance, highest first (`pos`).",
+                id: "Tampilkan `owner`, `balance`, dan urutan peringkat tiap akun berdasarkan saldo tertinggi (`pos`)."
             },
             seed_sql: mod7Seed,
             expected_query: "SELECT owner, balance, ROW_NUMBER() OVER (ORDER BY balance DESC) AS pos FROM accounts;",
@@ -11884,8 +11884,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `owner`, `category`, `balance`, and `AVG(balance) OVER (PARTITION BY category)` as `cat_avg` from `accounts`.",
-                id: "Ambil kolom `owner`, `category`, `balance`, dan `AVG(balance) OVER (PARTITION BY category)` sebagai `cat_avg` dari tabel `accounts`."
+                en: "Show `owner`, `category`, `balance`, and the average balance for that account's category (`cat_avg`).",
+                id: "Tampilkan `owner`, `category`, `balance`, beserta rata-rata saldo untuk kategori akun tersebut (`cat_avg`)."
             },
             seed_sql: mod7Seed,
             expected_query: "SELECT owner, category, balance, AVG(balance) OVER (PARTITION BY category) AS cat_avg FROM accounts;",
@@ -11916,8 +11916,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `owner`, `balance`, and `LAG(balance, 1) OVER (ORDER BY balance ASC)` as `prev_bal` from `accounts`.",
-                id: "Ambil kolom `owner`, `balance`, dan `LAG(balance, 1) OVER (ORDER BY balance ASC)` sebagai `prev_bal` dari tabel `accounts`."
+                en: "Show `owner` and `balance`, along with the balance of the account just before it when sorted by balance ascending (`prev_bal`).",
+                id: "Tampilkan `owner` dan `balance`, beserta saldo akun sebelumnya saat diurutkan dari saldo terkecil (`prev_bal`)."
             },
             seed_sql: mod7Seed,
             expected_query: "SELECT owner, balance, LAG(balance, 1) OVER (ORDER BY balance ASC) AS prev_bal FROM accounts;",
@@ -11948,8 +11948,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Delete accounts from `accounts` where `balance < 1000`, returning their `owner` and `balance`.",
-                id: "Hapus data dari `accounts` dengan kondisi `balance < 1000`, lalu kembalikan kolom `owner` dan `balance` dari row yang terhapus."
+                en: "Delete accounts with a `balance` below 1000, and return the `owner` and `balance` of each deleted row.",
+                id: "Hapus akun dengan `balance` di bawah 1000, lalu tampilkan `owner` dan `balance` dari baris yang terhapus."
             },
             seed_sql: mod7Seed,
             expected_query: "DELETE FROM accounts WHERE balance < 1000 RETURNING owner, balance;",
@@ -11980,8 +11980,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a view named `high_balances` defined as `SELECT owner, balance FROM accounts WHERE balance > 3000`.",
-                id: "Buat view bernama `high_balances` dengan definisi query `SELECT owner, balance FROM accounts WHERE balance > 3000`."
+                en: "Create a view called `high_balances` showing `owner` and `balance` for accounts with a balance above 3000.",
+                id: "Buat view bernama `high_balances` yang menampilkan `owner` dan `balance` untuk akun bersaldo di atas 3000."
             },
             seed_sql: mod7Seed,
             expected_query: "CREATE VIEW high_balances AS SELECT owner, balance FROM accounts WHERE balance > 3000;",
@@ -12012,8 +12012,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Display `owner`, `balance`, and `ROW_NUMBER() OVER (ORDER BY balance DESC)` as `pos` from `accounts`.",
-                id: "Tampilkan `owner`, `balance`, dan nomor urut peringkat saldo tertinggi menggunakan `ROW_NUMBER() OVER (ORDER BY balance DESC)` sebagai `pos` dari tabel `accounts`."
+                en: "Show `owner`, `balance`, and each account's rank when sorted by balance, highest first (`pos`).",
+                id: "Tampilkan `owner`, `balance`, dan urutan peringkat tiap akun berdasarkan saldo tertinggi (`pos`)."
             },
             seed_sql: mod7Seed,
             expected_query: "SELECT owner, balance, ROW_NUMBER() OVER (ORDER BY balance DESC) AS pos FROM accounts;",
@@ -12044,8 +12044,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `owner`, `category`, `balance`, and `AVG(balance) OVER (PARTITION BY category)` as `cat_avg` from `accounts`.",
-                id: "Ambil kolom `owner`, `category`, `balance`, dan `AVG(balance) OVER (PARTITION BY category)` sebagai `cat_avg` dari tabel `accounts`."
+                en: "Show `owner`, `category`, `balance`, and the average balance for that account's category (`cat_avg`).",
+                id: "Tampilkan `owner`, `category`, `balance`, beserta rata-rata saldo untuk kategori akun tersebut (`cat_avg`)."
             },
             seed_sql: mod7Seed,
             expected_query: "SELECT owner, category, balance, AVG(balance) OVER (PARTITION BY category) AS cat_avg FROM accounts;",
@@ -12076,8 +12076,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `owner`, `balance`, and `LAG(balance, 1) OVER (ORDER BY balance ASC)` as `prev_bal` from `accounts`.",
-                id: "Ambil kolom `owner`, `balance`, dan `LAG(balance, 1) OVER (ORDER BY balance ASC)` sebagai `prev_bal` dari tabel `accounts`."
+                en: "Show `owner` and `balance`, along with the balance of the account just before it when sorted by balance ascending (`prev_bal`).",
+                id: "Tampilkan `owner` dan `balance`, beserta saldo akun sebelumnya saat diurutkan dari saldo terkecil (`prev_bal`)."
             },
             seed_sql: mod7Seed,
             expected_query: "SELECT owner, balance, LAG(balance, 1) OVER (ORDER BY balance ASC) AS prev_bal FROM accounts;",
@@ -12108,8 +12108,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Delete accounts from `accounts` where `balance < 1000`, returning their `owner` and `balance`.",
-                id: "Hapus data dari `accounts` dengan kondisi `balance < 1000`, lalu kembalikan kolom `owner` dan `balance` dari row yang terhapus."
+                en: "Delete accounts with a `balance` below 1000, and return the `owner` and `balance` of each deleted row.",
+                id: "Hapus akun dengan `balance` di bawah 1000, lalu tampilkan `owner` dan `balance` dari baris yang terhapus."
             },
             seed_sql: mod7Seed,
             expected_query: "DELETE FROM accounts WHERE balance < 1000 RETURNING owner, balance;",
@@ -12140,8 +12140,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a view named `high_balances` defined as `SELECT owner, balance FROM accounts WHERE balance > 3000`.",
-                id: "Buat view bernama `high_balances` dengan definisi query `SELECT owner, balance FROM accounts WHERE balance > 3000`."
+                en: "Create a view called `high_balances` showing `owner` and `balance` for accounts with a balance above 3000.",
+                id: "Buat view bernama `high_balances` yang menampilkan `owner` dan `balance` untuk akun bersaldo di atas 3000."
             },
             seed_sql: mod7Seed,
             expected_query: "CREATE VIEW high_balances AS SELECT owner, balance FROM accounts WHERE balance > 3000;",
@@ -12172,8 +12172,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Display `owner`, `balance`, and `ROW_NUMBER() OVER (ORDER BY balance DESC)` as `pos` from `accounts`.",
-                id: "Tampilkan `owner`, `balance`, dan nomor urut peringkat saldo tertinggi menggunakan `ROW_NUMBER() OVER (ORDER BY balance DESC)` sebagai `pos` dari tabel `accounts`."
+                en: "Show `owner`, `balance`, and each account's rank when sorted by balance, highest first (`pos`).",
+                id: "Tampilkan `owner`, `balance`, dan urutan peringkat tiap akun berdasarkan saldo tertinggi (`pos`)."
             },
             seed_sql: mod7Seed,
             expected_query: "SELECT owner, balance, ROW_NUMBER() OVER (ORDER BY balance DESC) AS pos FROM accounts;",
@@ -12204,8 +12204,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `owner`, `category`, `balance`, and `AVG(balance) OVER (PARTITION BY category)` as `cat_avg` from `accounts`.",
-                id: "Ambil kolom `owner`, `category`, `balance`, dan `AVG(balance) OVER (PARTITION BY category)` sebagai `cat_avg` dari tabel `accounts`."
+                en: "Show `owner`, `category`, `balance`, and the average balance for that account's category (`cat_avg`).",
+                id: "Tampilkan `owner`, `category`, `balance`, beserta rata-rata saldo untuk kategori akun tersebut (`cat_avg`)."
             },
             seed_sql: mod7Seed,
             expected_query: "SELECT owner, category, balance, AVG(balance) OVER (PARTITION BY category) AS cat_avg FROM accounts;",
@@ -12236,8 +12236,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Select `owner`, `balance`, and `LAG(balance, 1) OVER (ORDER BY balance ASC)` as `prev_bal` from `accounts`.",
-                id: "Ambil kolom `owner`, `balance`, dan `LAG(balance, 1) OVER (ORDER BY balance ASC)` sebagai `prev_bal` dari tabel `accounts`."
+                en: "Show `owner` and `balance`, along with the balance of the account just before it when sorted by balance ascending (`prev_bal`).",
+                id: "Tampilkan `owner` dan `balance`, beserta saldo akun sebelumnya saat diurutkan dari saldo terkecil (`prev_bal`)."
             },
             seed_sql: mod7Seed,
             expected_query: "SELECT owner, balance, LAG(balance, 1) OVER (ORDER BY balance ASC) AS prev_bal FROM accounts;",
@@ -12268,8 +12268,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Delete accounts from `accounts` where `balance < 1000`, returning their `owner` and `balance`.",
-                id: "Hapus data dari `accounts` dengan kondisi `balance < 1000`, lalu kembalikan kolom `owner` dan `balance` dari row yang terhapus."
+                en: "Delete accounts with a `balance` below 1000, and return the `owner` and `balance` of each deleted row.",
+                id: "Hapus akun dengan `balance` di bawah 1000, lalu tampilkan `owner` dan `balance` dari baris yang terhapus."
             },
             seed_sql: mod7Seed,
             expected_query: "DELETE FROM accounts WHERE balance < 1000 RETURNING owner, balance;",
@@ -12300,8 +12300,8 @@ function generateModule7(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a view named `high_balances` defined as `SELECT owner, balance FROM accounts WHERE balance > 3000`.",
-                id: "Buat view bernama `high_balances` dengan definisi query `SELECT owner, balance FROM accounts WHERE balance > 3000`."
+                en: "Create a view called `high_balances` showing `owner` and `balance` for accounts with a balance above 3000.",
+                id: "Buat view bernama `high_balances` yang menampilkan `owner` dan `balance` untuk akun bersaldo di atas 3000."
             },
             seed_sql: mod7Seed,
             expected_query: "CREATE VIEW high_balances AS SELECT owner, balance FROM accounts WHERE balance > 3000;",
@@ -12332,8 +12332,8 @@ function generateModule7(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Retrieve the single latest order for each customer (columns: customer_id, order_date, amount) using PostgreSQL's DISTINCT ON (customer_id) ordered by customer_id and order_date DESC.",
-                "id": "Ambil satu data order paling akhir untuk setiap customer (kolom: customer_id, order_date, amount) menggunakan klausa khas PostgreSQL DISTINCT ON (customer_id) yang diurutkan berdasarkan customer_id dan order_date DESC."
+                "en": "Show each customer's most recent order: `customer_id`, `order_date`, and `amount`.",
+                "id": "Tampilkan pesanan paling baru tiap pelanggan: `customer_id`, `order_date`, dan `amount`."
         },
         "seed_sql": mod7Seed,
         "expected_query": "SELECT DISTINCT ON (customer_id) customer_id, order_date, amount\nFROM orders\nORDER BY customer_id, order_date DESC;",
@@ -12357,8 +12357,8 @@ function generateModule7(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Retrieve the latest order per customer (customer_id, order_date, amount) using a CTE with ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date DESC) WHERE rn = 1.",
-                                "id": "Ambil order paling baru per customer (customer_id, order_date, amount) menggunakan CTE dengan ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date DESC) WHERE rn = 1."
+                                "en": "Retrieve the latest order for each customer, displaying `customer_id`, `order_date`, and `amount` ordered by `customer_id` and newest `order_date` first.",
+                                "id": "Ambil satu data pesanan paling akhir untuk setiap pelanggan, menampilkan kolom `customer_id`, `order_date`, dan `amount` yang diurutkan berdasarkan `customer_id` dan `order_date` terbaru."
                         },
                         "expected_query": "WITH ranked_orders AS (\n    SELECT customer_id, order_date, amount,\n           ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date DESC) AS rn\n    FROM orders\n)\nSELECT customer_id, order_date, amount\nFROM ranked_orders\nWHERE rn = 1;"
                 }
@@ -12386,8 +12386,8 @@ function generateModule7(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Select the highest-amount order for each customer (customer_id, order_date, amount) using DISTINCT ON (customer_id) ordered by customer_id, amount DESC.",
-                "id": "Pilih order dengan nilai amount tertinggi untuk setiap customer (customer_id, order_date, amount) menggunakan DISTINCT ON (customer_id) terurut customer_id, amount DESC."
+                "en": "Show each customer's highest-value order: `customer_id`, `order_date`, and `amount`.",
+                "id": "Tampilkan pesanan bernilai tertinggi tiap pelanggan: `customer_id`, `order_date`, dan `amount`."
         },
         "seed_sql": mod7Seed,
         "expected_query": "SELECT DISTINCT ON (customer_id) customer_id, order_date, amount\nFROM orders\nORDER BY customer_id, amount DESC;",
@@ -12411,8 +12411,8 @@ function generateModule7(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Retrieve each customer's highest-value order (customer_id, order_date, amount) using a CTE with ROW_NUMBER() ordered by amount DESC WHERE rn = 1.",
-                                "id": "Ambil order bernilai tertinggi per customer menggunakan CTE dengan ROW_NUMBER() terurut amount DESC WHERE rn = 1."
+                                "en": "Retrieve the highest-amount order for each customer, displaying `customer_id`, `order_date`, and `amount` ordered by `customer_id` and highest `amount` first.",
+                                "id": "Ambil satu pesanan dengan nilai jumlah (`amount`) tertinggi untuk setiap pelanggan, menampilkan kolom `customer_id`, `order_date`, dan `amount` yang diurutkan berdasarkan `customer_id` dan `amount` terbesar."
                         },
                         "expected_query": "WITH ranked_orders AS (\n    SELECT customer_id, order_date, amount,\n           ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY amount DESC) AS rn\n    FROM orders\n)\nSELECT customer_id, order_date, amount\nFROM ranked_orders\nWHERE rn = 1;"
                 }
@@ -12440,8 +12440,8 @@ function generateModule7(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Retrieve each customer's first order (customer_id, order_date, amount) using DISTINCT ON (customer_id) ordered by customer_id, order_date ASC.",
-                "id": "Ambil transaksi pertama setiap customer (customer_id, order_date, amount) menggunakan DISTINCT ON (customer_id) terurut customer_id, order_date ASC."
+                "en": "Show each customer's earliest order: `customer_id`, `order_date`, and `amount`.",
+                "id": "Tampilkan pesanan paling awal tiap pelanggan: `customer_id`, `order_date`, dan `amount`."
         },
         "seed_sql": mod7Seed,
         "expected_query": "SELECT DISTINCT ON (customer_id) customer_id, order_date, amount\nFROM orders\nORDER BY customer_id, order_date ASC;",
@@ -12465,8 +12465,8 @@ function generateModule7(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Retrieve each customer's first order using a CTE with ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date ASC) WHERE rn = 1.",
-                                "id": "Ambil order pertama tiap customer menggunakan CTE dengan ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date ASC) WHERE rn = 1."
+                                "en": "Retrieve the earliest order for each customer, displaying `customer_id`, `order_date`, and `amount` ordered by `customer_id` and earliest `order_date` first.",
+                                "id": "Ambil pesanan pertama untuk setiap pelanggan, menampilkan kolom `customer_id`, `order_date`, dan `amount` yang diurutkan berdasarkan `customer_id` dan `order_date` terawal."
                         },
                         "expected_query": "WITH ranked_orders AS (\n    SELECT customer_id, order_date, amount,\n           ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date ASC) AS rn\n    FROM orders\n)\nSELECT customer_id, order_date, amount\nFROM ranked_orders\nWHERE rn = 1;"
                 }
@@ -12499,8 +12499,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "Perform an atomic transfer in a transaction: debit 200 from `id = 1` and credit 200 to `id = 2`, then `COMMIT;`.",
-                id: "Lakukan transfer saldo secara atomik di dalam transaksi: kurangi 200 dari rekening `id = 1` dan tambahkan 200 ke rekening `id = 2`, lalu akhiri dengan `COMMIT;`."
+                en: "Transfer 200 from account 1 to account 2 as a single all-or-nothing operation, then make it permanent.",
+                id: "Transfer 200 dari akun 1 ke akun 2 sebagai satu operasi yang aman (semua berhasil atau semua batal), lalu simpan secara permanen."
             },
             seed_sql: mod8Seed,
             expected_query: "BEGIN; UPDATE accounts SET balance = balance - 200 WHERE id = 1; UPDATE accounts SET balance = balance + 200 WHERE id = 2; COMMIT;",
@@ -12558,8 +12558,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "Start a transaction, set `balance = 0` for `id = 1`, and immediately `ROLLBACK;` to discard changes.",
-                id: "Buka transaksi, ubah `balance = 0` untuk akun `id = 1`, lalu segera panggil `ROLLBACK;` untuk membatalkan mutasi."
+                en: "Set account 1's balance to 0, then undo the change so it's never actually saved.",
+                id: "Ubah saldo akun 1 menjadi 0, lalu batalkan perubahan itu supaya tidak benar-benar tersimpan."
             },
             seed_sql: mod8Seed,
             expected_query: "BEGIN; UPDATE accounts SET balance = 0 WHERE id = 1; ROLLBACK;",
@@ -12617,8 +12617,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "Lock the account row with `id = 1` for exclusive update using `FOR UPDATE`.",
-                id: "Kunci baris rekening dengan `id = 1` secara eksklusif menggunakan klausa `FOR UPDATE`."
+                en: "Select account 1 and lock it so no one else can change it at the same time.",
+                id: "Pilih akun 1 dan kunci baris tersebut agar tidak bisa diubah pihak lain secara bersamaan."
             },
             seed_sql: mod8Seed,
             expected_query: "SELECT * FROM accounts WHERE id = 1 FOR UPDATE;",
@@ -12649,8 +12649,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "In a transaction: decrement balance by 100 on `id = 1`, create `SAVEPOINT sp1`, decrement balance by 500, `ROLLBACK TO SAVEPOINT sp1`, and `COMMIT;`.",
-                id: "Dalam sebuah transaksi: kurangi balance sebesar 100 pada `id = 1`, buat `SAVEPOINT sp1`, kurangi lagi balance sebesar 500, jalankan `ROLLBACK TO SAVEPOINT sp1`, lalu akhiri dengan `COMMIT;`."
+                en: "Reduce account 1's balance by 100, mark a checkpoint (`sp1`), reduce it by another 500, undo back to that checkpoint, then save the whole thing.",
+                id: "Kurangi saldo akun 1 sebesar 100, buat titik checkpoint (`sp1`), kurangi lagi 500, batalkan sampai ke checkpoint tadi, lalu simpan semuanya."
             },
             seed_sql: mod8Seed,
             expected_query: "BEGIN; UPDATE accounts SET balance = balance - 100 WHERE id = 1; SAVEPOINT sp1; UPDATE accounts SET balance = balance - 500 WHERE id = 1; ROLLBACK TO SAVEPOINT sp1; COMMIT;",
@@ -12708,8 +12708,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "Perform an atomic transfer in a transaction: debit 300 from `id = 2` and credit 300 to `id = 3`, then `COMMIT;`.",
-                id: "Lakukan transfer saldo secara atomik di dalam transaksi: kurangi 300 dari rekening `id = 2` dan tambahkan 300 ke rekening `id = 3`, lalu akhiri dengan `COMMIT;`."
+                en: "Transfer 300 from account 2 to account 3 as a single all-or-nothing operation, then make it permanent.",
+                id: "Transfer 300 dari akun 2 ke akun 3 sebagai satu operasi yang aman (semua berhasil atau semua batal), lalu simpan secara permanen."
             },
             seed_sql: mod8Seed,
             expected_query: "BEGIN; UPDATE accounts SET balance = balance - 300 WHERE id = 2; UPDATE accounts SET balance = balance + 300 WHERE id = 3; COMMIT;",
@@ -12767,8 +12767,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "Start a transaction, set `balance = 0` for `id = 2`, and immediately `ROLLBACK;` to discard changes.",
-                id: "Buka transaksi, ubah `balance = 0` untuk akun `id = 2`, lalu segera panggil `ROLLBACK;` untuk membatalkan mutasi."
+                en: "Set account 2's balance to 0, then undo the change so it's never actually saved.",
+                id: "Ubah saldo akun 2 menjadi 0, lalu batalkan perubahan itu supaya tidak benar-benar tersimpan."
             },
             seed_sql: mod8Seed,
             expected_query: "BEGIN; UPDATE accounts SET balance = 0 WHERE id = 2; ROLLBACK;",
@@ -12826,8 +12826,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "Lock the account row with `id = 2` for exclusive update using `FOR UPDATE`.",
-                id: "Kunci baris rekening dengan `id = 2` secara eksklusif menggunakan klausa `FOR UPDATE`."
+                en: "Select account 2 and lock it so no one else can change it at the same time.",
+                id: "Pilih akun 2 dan kunci baris tersebut agar tidak bisa diubah pihak lain secara bersamaan."
             },
             seed_sql: mod8Seed,
             expected_query: "SELECT * FROM accounts WHERE id = 2 FOR UPDATE;",
@@ -12855,8 +12855,8 @@ function generateModule8(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Lock the `accounts` table exclusively with `LOCK TABLES accounts WRITE;`, then release the lock using `UNLOCK TABLES;`.",
-                        id: "Kunci tabel `accounts` secara eksklusif menggunakan `LOCK TABLES accounts WRITE;`, lalu lepaskan kunci tabel dengan `UNLOCK TABLES;`."
+                        en: "Exclusively lock the `accounts` table for writing, and then release all table locks.",
+                        id: "Kunci tabel `accounts` secara eksklusif untuk penulisan, lalu lepaskan seluruh kunci tabel."
                     },
                     expected_query: "LOCK TABLES accounts WRITE; UNLOCK TABLES;",
                     starterQuery: "-- Lock and unlock accounts table"
@@ -12885,8 +12885,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "In a transaction: decrement balance by 100 on `id = 2`, create `SAVEPOINT sp1`, decrement balance by 500, `ROLLBACK TO SAVEPOINT sp1`, and `COMMIT;`.",
-                id: "Dalam sebuah transaksi: kurangi balance sebesar 100 pada `id = 2`, buat `SAVEPOINT sp1`, kurangi lagi balance sebesar 500, jalankan `ROLLBACK TO SAVEPOINT sp1`, lalu akhiri dengan `COMMIT;`."
+                en: "Reduce account 2's balance by 100, mark a checkpoint (`sp1`), reduce it by another 500, undo back to that checkpoint, then save the whole thing.",
+                id: "Kurangi saldo akun 2 sebesar 100, buat titik checkpoint (`sp1`), kurangi lagi 500, batalkan sampai ke checkpoint tadi, lalu simpan semuanya."
             },
             seed_sql: mod8Seed,
             expected_query: "BEGIN; UPDATE accounts SET balance = balance - 100 WHERE id = 2; SAVEPOINT sp1; UPDATE accounts SET balance = balance - 500 WHERE id = 2; ROLLBACK TO SAVEPOINT sp1; COMMIT;",
@@ -12944,8 +12944,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "Perform an atomic transfer in a transaction: debit 150 from `id = 3` and credit 150 to `id = 4`, then `COMMIT;`.",
-                id: "Lakukan transfer saldo secara atomik di dalam transaksi: kurangi 150 dari rekening `id = 3` dan tambahkan 150 ke rekening `id = 4`, lalu akhiri dengan `COMMIT;`."
+                en: "Transfer 150 from account 3 to account 4 as a single all-or-nothing operation, then make it permanent.",
+                id: "Transfer 150 dari akun 3 ke akun 4 sebagai satu operasi yang aman (semua berhasil atau semua batal), lalu simpan secara permanen."
             },
             seed_sql: mod8Seed,
             expected_query: "BEGIN; UPDATE accounts SET balance = balance - 150 WHERE id = 3; UPDATE accounts SET balance = balance + 150 WHERE id = 4; COMMIT;",
@@ -13003,8 +13003,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "Start a transaction, set `balance = 0` for `id = 3`, and immediately `ROLLBACK;` to discard changes.",
-                id: "Buka transaksi, ubah `balance = 0` untuk akun `id = 3`, lalu segera panggil `ROLLBACK;` untuk membatalkan mutasi."
+                en: "Set account 3's balance to 0, then undo the change so it's never actually saved.",
+                id: "Ubah saldo akun 3 menjadi 0, lalu batalkan perubahan itu supaya tidak benar-benar tersimpan."
             },
             seed_sql: mod8Seed,
             expected_query: "BEGIN; UPDATE accounts SET balance = 0 WHERE id = 3; ROLLBACK;",
@@ -13062,8 +13062,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "Lock the account row with `id = 3` for exclusive update using `FOR UPDATE`.",
-                id: "Kunci baris rekening dengan `id = 3` secara eksklusif menggunakan klausa `FOR UPDATE`."
+                en: "Select account 3 and lock it so no one else can change it at the same time.",
+                id: "Pilih akun 3 dan kunci baris tersebut agar tidak bisa diubah pihak lain secara bersamaan."
             },
             seed_sql: mod8Seed,
             expected_query: "SELECT * FROM accounts WHERE id = 3 FOR UPDATE;",
@@ -13091,8 +13091,8 @@ function generateModule8(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Lock the `accounts` table for shared reading using `LOCK TABLES accounts READ;`, then release the lock with `UNLOCK TABLES;`.",
-                        id: "Kunci tabel `accounts` untuk pembacaan bersama menggunakan `LOCK TABLES accounts READ;`, lalu lepaskan kunci dengan `UNLOCK TABLES;`."
+                        en: "Acquire a shared read lock on the `accounts` table, and then release all table locks.",
+                        id: "Kunci tabel `accounts` untuk pembacaan bersama, lalu lepaskan seluruh kunci tabel."
                     },
                     expected_query: "LOCK TABLES accounts READ; UNLOCK TABLES;",
                     starterQuery: "-- Lock and unlock accounts table for reading"
@@ -13121,8 +13121,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "In a transaction: decrement balance by 100 on `id = 3`, create `SAVEPOINT sp1`, decrement balance by 500, `ROLLBACK TO SAVEPOINT sp1`, and `COMMIT;`.",
-                id: "Dalam sebuah transaksi: kurangi balance sebesar 100 pada `id = 3`, buat `SAVEPOINT sp1`, kurangi lagi balance sebesar 500, jalankan `ROLLBACK TO SAVEPOINT sp1`, lalu akhiri dengan `COMMIT;`."
+                en: "Reduce account 3's balance by 100, mark a checkpoint (`sp1`), reduce it by another 500, undo back to that checkpoint, then save the whole thing.",
+                id: "Kurangi saldo akun 3 sebesar 100, buat titik checkpoint (`sp1`), kurangi lagi 500, batalkan sampai ke checkpoint tadi, lalu simpan semuanya."
             },
             seed_sql: mod8Seed,
             expected_query: "BEGIN; UPDATE accounts SET balance = balance - 100 WHERE id = 3; SAVEPOINT sp1; UPDATE accounts SET balance = balance - 500 WHERE id = 3; ROLLBACK TO SAVEPOINT sp1; COMMIT;",
@@ -13180,8 +13180,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "Perform an atomic transfer in a transaction: debit 500 from `id = 4` and credit 500 to `id = 5`, then `COMMIT;`.",
-                id: "Lakukan transfer saldo secara atomik di dalam transaksi: kurangi 500 dari rekening `id = 4` dan tambahkan 500 ke rekening `id = 5`, lalu akhiri dengan `COMMIT;`."
+                en: "Transfer 500 from account 4 to account 5 as a single all-or-nothing operation, then make it permanent.",
+                id: "Transfer 500 dari akun 4 ke akun 5 sebagai satu operasi yang aman (semua berhasil atau semua batal), lalu simpan secara permanen."
             },
             seed_sql: mod8Seed,
             expected_query: "BEGIN; UPDATE accounts SET balance = balance - 500 WHERE id = 4; UPDATE accounts SET balance = balance + 500 WHERE id = 5; COMMIT;",
@@ -13239,8 +13239,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "Start a transaction, set `balance = 0` for `id = 4`, and immediately `ROLLBACK;` to discard changes.",
-                id: "Buka transaksi, ubah `balance = 0` untuk akun `id = 4`, lalu segera panggil `ROLLBACK;` untuk membatalkan mutasi."
+                en: "Set account 4's balance to 0, then undo the change so it's never actually saved.",
+                id: "Ubah saldo akun 4 menjadi 0, lalu batalkan perubahan itu supaya tidak benar-benar tersimpan."
             },
             seed_sql: mod8Seed,
             expected_query: "BEGIN; UPDATE accounts SET balance = 0 WHERE id = 4; ROLLBACK;",
@@ -13298,8 +13298,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "Lock the account row with `id = 4` for exclusive update using `FOR UPDATE`.",
-                id: "Kunci baris rekening dengan `id = 4` secara eksklusif menggunakan klausa `FOR UPDATE`."
+                en: "Select account 4 and lock it so no one else can change it at the same time.",
+                id: "Pilih akun 4 dan kunci baris tersebut agar tidak bisa diubah pihak lain secara bersamaan."
             },
             seed_sql: mod8Seed,
             expected_query: "SELECT * FROM accounts WHERE id = 4 FOR UPDATE;",
@@ -13327,8 +13327,8 @@ function generateModule8(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Acquire an instance-level backup lock with `LOCK INSTANCE FOR BACKUP;`, then release it with `UNLOCK INSTANCE;`.",
-                        id: "Kunci instans MySQL untuk kebutuhan backup fisik dengan `LOCK INSTANCE FOR BACKUP;`, lalu lepaskan kunci instans menggunakan `UNLOCK INSTANCE;`."
+                        en: "Acquire an instance-level backup lock, and then release the instance lock.",
+                        id: "Pasang kunci tingkat instans untuk keperluan pencadangan, lalu lepaskan kembali kunci instans tersebut."
                     },
                     expected_query: "LOCK INSTANCE FOR BACKUP; UNLOCK INSTANCE;",
                     starterQuery: "-- Lock and unlock instance for backup"
@@ -13357,8 +13357,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "In a transaction: decrement balance by 100 on `id = 4`, create `SAVEPOINT sp1`, decrement balance by 500, `ROLLBACK TO SAVEPOINT sp1`, and `COMMIT;`.",
-                id: "Dalam sebuah transaksi: kurangi balance sebesar 100 pada `id = 4`, buat `SAVEPOINT sp1`, kurangi lagi balance sebesar 500, jalankan `ROLLBACK TO SAVEPOINT sp1`, lalu akhiri dengan `COMMIT;`."
+                en: "Reduce account 4's balance by 100, mark a checkpoint (`sp1`), reduce it by another 500, undo back to that checkpoint, then save the whole thing.",
+                id: "Kurangi saldo akun 4 sebesar 100, buat titik checkpoint (`sp1`), kurangi lagi 500, batalkan sampai ke checkpoint tadi, lalu simpan semuanya."
             },
             seed_sql: mod8Seed,
             expected_query: "BEGIN; UPDATE accounts SET balance = balance - 100 WHERE id = 4; SAVEPOINT sp1; UPDATE accounts SET balance = balance - 500 WHERE id = 4; ROLLBACK TO SAVEPOINT sp1; COMMIT;",
@@ -13416,8 +13416,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "Perform an atomic transfer in a transaction: debit 250 from `id = 5` and credit 250 to `id = 6`, then `COMMIT;`.",
-                id: "Lakukan transfer saldo secara atomik di dalam transaksi: kurangi 250 dari rekening `id = 5` dan tambahkan 250 ke rekening `id = 6`, lalu akhiri dengan `COMMIT;`."
+                en: "Transfer 250 from account 5 to account 6 as a single all-or-nothing operation, then make it permanent.",
+                id: "Transfer 250 dari akun 5 ke akun 6 sebagai satu operasi yang aman (semua berhasil atau semua batal), lalu simpan secara permanen."
             },
             seed_sql: mod8Seed,
             expected_query: "BEGIN; UPDATE accounts SET balance = balance - 250 WHERE id = 5; UPDATE accounts SET balance = balance + 250 WHERE id = 6; COMMIT;",
@@ -13475,8 +13475,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "Start a transaction, set `balance = 0` for `id = 5`, and immediately `ROLLBACK;` to discard changes.",
-                id: "Buka transaksi, ubah `balance = 0` untuk akun `id = 5`, lalu segera panggil `ROLLBACK;` untuk membatalkan mutasi."
+                en: "Set account 5's balance to 0, then undo the change so it's never actually saved.",
+                id: "Ubah saldo akun 5 menjadi 0, lalu batalkan perubahan itu supaya tidak benar-benar tersimpan."
             },
             seed_sql: mod8Seed,
             expected_query: "BEGIN; UPDATE accounts SET balance = 0 WHERE id = 5; ROLLBACK;",
@@ -13534,8 +13534,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "Lock the account row with `id = 5` for exclusive update using `FOR UPDATE`.",
-                id: "Kunci baris rekening dengan `id = 5` secara eksklusif menggunakan klausa `FOR UPDATE`."
+                en: "Select account 5 and lock it so no one else can change it at the same time.",
+                id: "Pilih akun 5 dan kunci baris tersebut agar tidak bisa diubah pihak lain secara bersamaan."
             },
             seed_sql: mod8Seed,
             expected_query: "SELECT * FROM accounts WHERE id = 5 FOR UPDATE;",
@@ -13566,8 +13566,8 @@ function generateModule8(): Question[] {
                 }
             ],
             instructions: {
-                en: "In a transaction: decrement balance by 100 on `id = 5`, create `SAVEPOINT sp1`, decrement balance by 500, `ROLLBACK TO SAVEPOINT sp1`, and `COMMIT;`.",
-                id: "Dalam sebuah transaksi: kurangi balance sebesar 100 pada `id = 5`, buat `SAVEPOINT sp1`, kurangi lagi balance sebesar 500, jalankan `ROLLBACK TO SAVEPOINT sp1`, lalu akhiri dengan `COMMIT;`."
+                en: "Reduce account 5's balance by 100, mark a checkpoint (`sp1`), reduce it by another 500, undo back to that checkpoint, then save the whole thing.",
+                id: "Kurangi saldo akun 5 sebesar 100, buat titik checkpoint (`sp1`), kurangi lagi 500, batalkan sampai ke checkpoint tadi, lalu simpan semuanya."
             },
             seed_sql: mod8Seed,
             expected_query: "BEGIN; UPDATE accounts SET balance = balance - 100 WHERE id = 5; SAVEPOINT sp1; UPDATE accounts SET balance = balance - 500 WHERE id = 5; ROLLBACK TO SAVEPOINT sp1; COMMIT;",
@@ -13630,8 +13630,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a B-Tree index named `idx_products_category` on the `category` column of `products`.",
-                id: "Buat B-Tree index bernama `idx_products_category` pada kolom `category` di tabel `products`."
+                en: "Create an index named `idx_products_category` on the `category` column of `products`.",
+                id: "Buat index bernama `idx_products_category` pada kolom `category` di tabel `products`."
             },
             seed_sql: mod9Seed,
             expected_query: "CREATE INDEX idx_products_category ON products (category);",
@@ -13663,8 +13663,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create an ENUM type `order_status` with values: `'pending'`, `'shipped'`, `'delivered'`.",
-                id: "Buat tipe data ENUM kustom `order_status` dengan pilihan nilai: `'pending'`, `'shipped'`, `'delivered'`."
+                en: "Create an ENUM type `order_status` with the values 'pending', 'shipped', 'delivered'.",
+                id: "Buat tipe ENUM `order_status` dengan pilihan 'pending', 'shipped', 'delivered'."
             },
             seed_sql: "",
             expected_query: "CREATE TYPE order_status AS ENUM ('pending', 'shipped', 'delivered');",
@@ -13702,8 +13702,8 @@ function generateModule9(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Create a table `orders` with `id` INT AUTO_INCREMENT PRIMARY KEY and `status` ENUM('pending', 'shipped', 'delivered').",
-                        id: "Buat tabel `orders` dengan kolom `id` INT AUTO_INCREMENT PRIMARY KEY dan `status` ENUM('pending', 'shipped', 'delivered')."
+                        en: "Create a table named `orders` with an auto-incrementing primary key `id` and an enumeration column `status` accepting 'pending', 'shipped', or 'delivered'.",
+                        id: "Buat tabel bernama `orders` dengan primary key berurut otomatis `id` dan kolom enumerasi `status` yang menerima nilai 'pending', 'shipped', atau 'delivered'."
                     }
                 }
             }
@@ -13730,8 +13730,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Search products with `description` matching `'wireless'` using Full-Text Search, selecting `id, name` ordered by `id`.",
-                id: "Cari produk dengan `description` yang memuat kata `'wireless'` menggunakan Full-Text Search, tampilkan `id, name` terurut berdasarkan `id`."
+                en: "Show `id` and `name` of products whose description mentions 'wireless', sorted by `id`.",
+                id: "Tampilkan `id` dan `name` produk yang deskripsinya menyebut 'wireless', urut berdasarkan `id`."
             },
             seed_sql: mod9Seed,
             expected_query: "SELECT id, name FROM products WHERE to_tsvector('english', description) @@ to_tsquery('english', 'wireless') ORDER BY id;",
@@ -13788,8 +13788,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a new schema namespace named `sales`.",
-                id: "Buat namespace skema baru bernama `sales` menggunakan perintah `CREATE SCHEMA`."
+                en: "Create a new schema named `sales`.",
+                id: "Buat skema baru bernama `sales`."
             },
             seed_sql: mod9Seed,
             expected_query: "CREATE SCHEMA sales;",
@@ -13824,7 +13824,7 @@ function generateModule9(): Question[] {
                     ],
                     instructions: {
                         en: "Create a database schema namespace named `sales`.",
-                        id: "Buat namespace skema database bernama `sales` menggunakan `CREATE DATABASE`."
+                        id: "Buat namespace skema database bernama `sales`."
                     }
                 }
             }
@@ -13851,8 +13851,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a composite index named `idx_products_cat_price` on `(category, price)` of `products`.",
-                id: "Buat composite index bernama `idx_products_cat_price` pada kolom `(category, price)` di tabel `products`."
+                en: "Create a composite index named `idx_products_cat_price` on `category` and `price` of `products`.",
+                id: "Buat composite index bernama `idx_products_cat_price` pada kolom `category` dan `price` di tabel `products`."
             },
             seed_sql: mod9Seed,
             expected_query: "CREATE INDEX idx_products_cat_price ON products (category, price);",
@@ -13884,8 +13884,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a B-Tree index named `idx_products_price` on the `price` column of `products`.",
-                id: "Buat B-Tree index bernama `idx_products_price` pada kolom `price` di tabel `products`."
+                en: "Create an index named `idx_products_price` on the `price` column of `products`.",
+                id: "Buat index bernama `idx_products_price` pada kolom `price` di tabel `products`."
             },
             seed_sql: mod9Seed,
             expected_query: "CREATE INDEX idx_products_price ON products (price);",
@@ -13917,8 +13917,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create an ENUM type `user_role` with values: `'admin'`, `'member'`, `'guest'`.",
-                id: "Buat tipe data ENUM kustom `user_role` dengan pilihan nilai: `'admin'`, `'member'`, `'guest'`."
+                en: "Create an ENUM type `user_role` with the values 'admin', 'member', 'guest'.",
+                id: "Buat tipe ENUM `user_role` dengan pilihan 'admin', 'member', 'guest'."
             },
             seed_sql: "",
             expected_query: "CREATE TYPE user_role AS ENUM ('admin', 'member', 'guest');",
@@ -13956,8 +13956,8 @@ function generateModule9(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Create a table `app_users` with `id` INT AUTO_INCREMENT PRIMARY KEY and `role` ENUM('admin', 'member', 'guest').",
-                        id: "Buat tabel `app_users` dengan kolom `id` INT AUTO_INCREMENT PRIMARY KEY dan `role` ENUM('admin', 'member', 'guest')."
+                        en: "Create a table named `app_users` with an auto-incrementing primary key `id` and an enumeration column `role` accepting 'admin', 'member', or 'guest'.",
+                        id: "Buat tabel bernama `app_users` dengan primary key berurut otomatis `id` dan kolom enumerasi `role` yang menerima nilai 'admin', 'member', atau 'guest'."
                     }
                 }
             }
@@ -13984,8 +13984,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Search products with `description` matching `'ergonomic'` using Full-Text Search, selecting `id, name` ordered by `id`.",
-                id: "Cari produk dengan `description` yang memuat kata `'ergonomic'` menggunakan Full-Text Search, tampilkan `id, name` terurut berdasarkan `id`."
+                en: "Show `id` and `name` of products whose description mentions 'ergonomic', sorted by `id`.",
+                id: "Tampilkan `id` dan `name` produk yang deskripsinya menyebut 'ergonomic', urut berdasarkan `id`."
             },
             seed_sql: mod9Seed,
             expected_query: "SELECT id, name FROM products WHERE to_tsvector('english', description) @@ to_tsquery('english', 'ergonomic') ORDER BY id;",
@@ -14025,8 +14025,8 @@ function generateModule9(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Search products where name or description contains `'wireless'` but excludes `'cable'` using `MATCH(name, description) AGAINST('+wireless -cable' IN BOOLEAN MODE)`, selecting `id, name` ordered by `id`.",
-                        id: "Cari produk yang mengandung kata `'wireless'` tetapi tidak mengandung kata `'cable'` menggunakan `MATCH(name, description) AGAINST('+wireless -cable' IN BOOLEAN MODE)`, tampilkan `id, name` terurut berdasarkan `id`."
+                        en: "Search products where name or description contains 'wireless' but excludes 'cable', displaying `id` and `name` ordered by `id`.",
+                        id: "Cari produk dengan nama atau deskripsi memuat 'wireless' tetapi tidak memuat 'cable', lalu tampilkan `id` dan `name` terurut `id`."
                     },
                     expected_query: "SELECT id, name FROM products WHERE MATCH(name, description) AGAINST('+wireless -cable' IN BOOLEAN MODE) ORDER BY id;",
                     starterQuery: "SELECT * FROM products;"
@@ -14055,8 +14055,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a new schema namespace named `analytics`.",
-                id: "Buat namespace skema baru bernama `analytics` menggunakan perintah `CREATE SCHEMA`."
+                en: "Create a new schema named `analytics`.",
+                id: "Buat skema baru bernama `analytics`."
             },
             seed_sql: mod9Seed,
             expected_query: "CREATE SCHEMA analytics;",
@@ -14097,8 +14097,8 @@ function generateModule9(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Create a user `'reporting_user'@'localhost'` with password `'SecretPass123!'`, then grant global read-only `SELECT` privileges using `CREATE USER 'reporting_user'@'localhost' IDENTIFIED BY 'SecretPass123!'; GRANT SELECT ON *.* TO 'reporting_user'@'localhost';`.",
-                        id: "Buat akun pengguna `'reporting_user'@'localhost'` dengan password `'SecretPass123!'`, lalu berikan hak akses baca global `SELECT` menggunakan `CREATE USER 'reporting_user'@'localhost' IDENTIFIED BY 'SecretPass123!'; GRANT SELECT ON *.* TO 'reporting_user'@'localhost';`."
+                        en: "Create a user `'reporting_user'@'localhost'` with password `'SecretPass123!'`, and grant them global read-only privileges across all tables.",
+                        id: "Buat akun pengguna `'reporting_user'@'localhost'` dengan password `'SecretPass123!'`, lalu berikan hak akses baca global ke seluruh tabel."
                     },
                     expected_query: "CREATE USER 'reporting_user'@'localhost' IDENTIFIED BY 'SecretPass123!'; GRANT SELECT ON *.* TO 'reporting_user'@'localhost';",
                     starterQuery: "-- Create user and grant SELECT permissions"
@@ -14127,8 +14127,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a composite index named `idx_products_cat_name` on `(category, name)` of `products`.",
-                id: "Buat composite index bernama `idx_products_cat_name` pada kolom `(category, name)` di tabel `products`."
+                en: "Create a composite index named `idx_products_cat_name` on `category` and `name` of `products`.",
+                id: "Buat composite index bernama `idx_products_cat_name` pada kolom `category` dan `name` di tabel `products`."
             },
             seed_sql: mod9Seed,
             expected_query: "CREATE INDEX idx_products_cat_name ON products (category, name);",
@@ -14160,8 +14160,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a B-Tree index named `idx_products_name` on the `name` column of `products`.",
-                id: "Buat B-Tree index bernama `idx_products_name` pada kolom `name` di tabel `products`."
+                en: "Create an index named `idx_products_name` on the `name` column of `products`.",
+                id: "Buat index bernama `idx_products_name` pada kolom `name` di tabel `products`."
             },
             seed_sql: mod9Seed,
             expected_query: "CREATE INDEX idx_products_name ON products (name);",
@@ -14193,8 +14193,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create an ENUM type `ticket_priority` with values: `'low'`, `'medium'`, `'high'`, `'critical'`.",
-                id: "Buat tipe data ENUM kustom `ticket_priority` dengan pilihan nilai: `'low'`, `'medium'`, `'high'`, `'critical'`."
+                en: "Create an ENUM type `ticket_priority` with the values 'low', 'medium', 'high', 'critical'.",
+                id: "Buat tipe ENUM `ticket_priority` dengan pilihan 'low', 'medium', 'high', 'critical'."
             },
             seed_sql: "",
             expected_query: "CREATE TYPE ticket_priority AS ENUM ('low', 'medium', 'high', 'critical');",
@@ -14232,8 +14232,8 @@ function generateModule9(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Create a table `tickets` with `id` INT AUTO_INCREMENT PRIMARY KEY and `priority` ENUM('low', 'medium', 'high', 'critical').",
-                        id: "Buat tabel `tickets` dengan kolom `id` INT AUTO_INCREMENT PRIMARY KEY dan `priority` ENUM('low', 'medium', 'high', 'critical')."
+                        en: "Create a table named `tickets` with an auto-incrementing primary key `id` and an enumeration column `priority` accepting 'low', 'medium', 'high', or 'critical'.",
+                        id: "Buat tabel bernama `tickets` dengan primary key berurut otomatis `id` dan kolom enumerasi `priority` yang menerima nilai 'low', 'medium', 'high', atau 'critical'."
                     }
                 }
             }
@@ -14260,8 +14260,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Search products with `description` matching `'desk'` using Full-Text Search, selecting `id, name` ordered by `id`.",
-                id: "Cari produk dengan `description` yang memuat kata `'desk'` menggunakan Full-Text Search, tampilkan `id, name` terurut berdasarkan `id`."
+                en: "Show `id` and `name` of products whose description mentions 'desk', sorted by `id`.",
+                id: "Tampilkan `id` dan `name` produk yang deskripsinya menyebut 'desk', urut berdasarkan `id`."
             },
             seed_sql: mod9Seed,
             expected_query: "SELECT id, name FROM products WHERE to_tsvector('english', description) @@ to_tsquery('english', 'desk') ORDER BY id;",
@@ -14318,8 +14318,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a new schema namespace named `inventory`.",
-                id: "Buat namespace skema baru bernama `inventory` menggunakan perintah `CREATE SCHEMA`."
+                en: "Create a new schema named `inventory`.",
+                id: "Buat skema baru bernama `inventory`."
             },
             seed_sql: mod9Seed,
             expected_query: "CREATE SCHEMA inventory;",
@@ -14360,8 +14360,8 @@ function generateModule9(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Revoke global `SELECT` privileges from `'reporting_user'@'localhost'` using `REVOKE SELECT ON *.* FROM 'reporting_user'@'localhost';`.",
-                        id: "Cabut hak akses baca global `SELECT` dari akun `'reporting_user'@'localhost'` menggunakan perintah `REVOKE SELECT ON *.* FROM 'reporting_user'@'localhost';`."
+                        en: "Revoke global read-only privileges across all tables from `'reporting_user'@'localhost'`.",
+                        id: "Cabut hak akses baca global pada seluruh tabel dari akun `'reporting_user'@'localhost'`."
                     },
                     expected_query: "REVOKE SELECT ON *.* FROM 'reporting_user'@'localhost';",
                     starterQuery: "-- Revoke SELECT privileges from reporting_user"
@@ -14390,8 +14390,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a composite index named `idx_products_price_cat` on `(price, category)` of `products`.",
-                id: "Buat composite index bernama `idx_products_price_cat` pada kolom `(price, category)` di tabel `products`."
+                en: "Create a composite index named `idx_products_price_cat` on `price` and `category` of `products`.",
+                id: "Buat composite index bernama `idx_products_price_cat` pada kolom `price` dan `category` di tabel `products`."
             },
             seed_sql: mod9Seed,
             expected_query: "CREATE INDEX idx_products_price_cat ON products (price, category);",
@@ -14423,8 +14423,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a B-Tree index named `idx_products_cat` on the `category` column of `products`.",
-                id: "Buat B-Tree index bernama `idx_products_cat` pada kolom `category` di tabel `products`."
+                en: "Create an index named `idx_products_cat` on the `category` column of `products`.",
+                id: "Buat index bernama `idx_products_cat` pada kolom `category` di tabel `products`."
             },
             seed_sql: mod9Seed,
             expected_query: "CREATE INDEX idx_products_cat ON products (category);",
@@ -14456,8 +14456,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create an ENUM type `payment_status` with values: `'unpaid'`, `'paid'`, `'refunded'`.",
-                id: "Buat tipe data ENUM kustom `payment_status` dengan pilihan nilai: `'unpaid'`, `'paid'`, `'refunded'`."
+                en: "Create an ENUM type `payment_status` with the values 'unpaid', 'paid', 'refunded'.",
+                id: "Buat tipe ENUM `payment_status` dengan pilihan 'unpaid', 'paid', 'refunded'."
             },
             seed_sql: "",
             expected_query: "CREATE TYPE payment_status AS ENUM ('unpaid', 'paid', 'refunded');",
@@ -14495,8 +14495,8 @@ function generateModule9(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Create a table `payments` with `id` INT AUTO_INCREMENT PRIMARY KEY and `status` ENUM('unpaid', 'paid', 'refunded').",
-                        id: "Buat tabel `payments` dengan kolom `id` INT AUTO_INCREMENT PRIMARY KEY dan `status` ENUM('unpaid', 'paid', 'refunded')."
+                        en: "Create a table named `payments` with an auto-incrementing primary key `id` and an enumeration column `status` accepting 'unpaid', 'paid', or 'refunded'.",
+                        id: "Buat tabel bernama `payments` dengan primary key berurut otomatis `id` dan kolom enumerasi `status` yang menerima nilai 'unpaid', 'paid', atau 'refunded'."
                     }
                 }
             }
@@ -14523,8 +14523,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Search products with `description` matching `'chair'` using Full-Text Search, selecting `id, name` ordered by `id`.",
-                id: "Cari produk dengan `description` yang memuat kata `'chair'` menggunakan Full-Text Search, tampilkan `id, name` terurut berdasarkan `id`."
+                en: "Show `id` and `name` of products whose description mentions 'chair', sorted by `id`.",
+                id: "Tampilkan `id` dan `name` produk yang deskripsinya menyebut 'chair', urut berdasarkan `id`."
             },
             seed_sql: mod9Seed,
             expected_query: "SELECT id, name FROM products WHERE to_tsvector('english', description) @@ to_tsquery('english', 'chair') ORDER BY id;",
@@ -14581,8 +14581,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a new schema namespace named `billing`.",
-                id: "Buat namespace skema baru bernama `billing` menggunakan perintah `CREATE SCHEMA`."
+                en: "Create a new schema named `billing`.",
+                id: "Buat skema baru bernama `billing`."
             },
             seed_sql: mod9Seed,
             expected_query: "CREATE SCHEMA billing;",
@@ -14617,7 +14617,7 @@ function generateModule9(): Question[] {
                     ],
                     instructions: {
                         en: "Create a database schema namespace named `billing`.",
-                        id: "Buat namespace skema database bernama `billing` menggunakan `CREATE DATABASE`."
+                        id: "Buat namespace skema database bernama `billing`."
                     }
                 }
             }
@@ -14644,8 +14644,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a composite index named `idx_products_name_cat` on `(name, category)` of `products`.",
-                id: "Buat composite index bernama `idx_products_name_cat` pada kolom `(name, category)` di tabel `products`."
+                en: "Create a composite index named `idx_products_name_cat` on `name` and `category` of `products`.",
+                id: "Buat composite index bernama `idx_products_name_cat` pada kolom `name` dan `category` di tabel `products`."
             },
             seed_sql: mod9Seed,
             expected_query: "CREATE INDEX idx_products_name_cat ON products (name, category);",
@@ -14677,8 +14677,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a B-Tree index named `idx_products_pricing` on the `price` column of `products`.",
-                id: "Buat B-Tree index bernama `idx_products_pricing` pada kolom `price` di tabel `products`."
+                en: "Create an index named `idx_products_pricing` on the `price` column of `products`.",
+                id: "Buat index bernama `idx_products_pricing` pada kolom `price` di tabel `products`."
             },
             seed_sql: mod9Seed,
             expected_query: "CREATE INDEX idx_products_pricing ON products (price);",
@@ -14710,8 +14710,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create an ENUM type `shipment_state` with values: `'in_transit'`, `'out_for_delivery'`, `'delivered'`.",
-                id: "Buat tipe data ENUM kustom `shipment_state` dengan pilihan nilai: `'in_transit'`, `'out_for_delivery'`, `'delivered'`."
+                en: "Create an ENUM type `shipment_state` with the values 'in_transit', 'out_for_delivery', 'delivered'.",
+                id: "Buat tipe ENUM `shipment_state` dengan pilihan 'in_transit', 'out_for_delivery', 'delivered'."
             },
             seed_sql: "",
             expected_query: "CREATE TYPE shipment_state AS ENUM ('in_transit', 'out_for_delivery', 'delivered');",
@@ -14749,8 +14749,8 @@ function generateModule9(): Question[] {
                         }
                     ],
                     instructions: {
-                        en: "Create a table `shipments` with `id` INT AUTO_INCREMENT PRIMARY KEY and `state` ENUM('in_transit', 'out_for_delivery', 'delivered').",
-                        id: "Buat tabel `shipments` dengan kolom `id` INT AUTO_INCREMENT PRIMARY KEY dan `state` ENUM('in_transit', 'out_for_delivery', 'delivered')."
+                        en: "Create a table named `shipments` with an auto-incrementing primary key `id` and an enumeration column `state` accepting 'in_transit', 'out_for_delivery', or 'delivered'.",
+                        id: "Buat tabel bernama `shipments` dengan primary key berurut otomatis `id` dan kolom enumerasi `state` yang menerima nilai 'in_transit', 'out_for_delivery', atau 'delivered'."
                     }
                 }
             }
@@ -14777,8 +14777,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Search products with `description` matching `'headphones'` using Full-Text Search, selecting `id, name` ordered by `id`.",
-                id: "Cari produk dengan `description` yang memuat kata `'headphones'` menggunakan Full-Text Search, tampilkan `id, name` terurut berdasarkan `id`."
+                en: "Show `id` and `name` of products whose description mentions 'headphones', sorted by `id`.",
+                id: "Tampilkan `id` dan `name` produk yang deskripsinya menyebut 'headphones', urut berdasarkan `id`."
             },
             seed_sql: mod9Seed,
             expected_query: "SELECT id, name FROM products WHERE to_tsvector('english', description) @@ to_tsquery('english', 'headphones') ORDER BY id;",
@@ -14835,8 +14835,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a new schema namespace named `reporting`.",
-                id: "Buat namespace skema baru bernama `reporting` menggunakan perintah `CREATE SCHEMA`."
+                en: "Create a new schema named `reporting`.",
+                id: "Buat skema baru bernama `reporting`."
             },
             seed_sql: mod9Seed,
             expected_query: "CREATE SCHEMA reporting;",
@@ -14871,7 +14871,7 @@ function generateModule9(): Question[] {
                     ],
                     instructions: {
                         en: "Create a database schema namespace named `reporting`.",
-                        id: "Buat namespace skema database bernama `reporting` menggunakan `CREATE DATABASE`."
+                        id: "Buat namespace skema database bernama `reporting`."
                     }
                 }
             }
@@ -14898,8 +14898,8 @@ function generateModule9(): Question[] {
                 }
             ],
             instructions: {
-                en: "Create a composite index named `idx_products_multi` on `(category, price)` of `products`.",
-                id: "Buat composite index bernama `idx_products_multi` pada kolom `(category, price)` di tabel `products`."
+                en: "Create a composite index named `idx_products_multi` on `category` and `price` of `products`.",
+                id: "Buat composite index bernama `idx_products_multi` pada kolom `category` dan `price` di tabel `products`."
             },
             seed_sql: mod9Seed,
             expected_query: "CREATE INDEX idx_products_multi ON products (category, price);",
@@ -14931,8 +14931,8 @@ function generateModule9(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Retrieve 'name' and extract the 'brand' attribute from the 'metadata' JSONB column as text with alias 'brand' using the ->> operator.",
-                "id": "Ambil kolom 'name' dan ekstrak atribut 'brand' dari kolom JSONB 'metadata' sebagai teks dengan alias 'brand' menggunakan operator ->>."
+                "en": "Show `name` and each product's 'brand' from `metadata` as plain text (`brand`).",
+                "id": "Tampilkan `name` dan nilai 'brand' dari `metadata` tiap produk sebagai teks biasa (`brand`)."
         },
         "seed_sql": mod9Seed,
         "expected_query": "SELECT name, metadata->>'brand' AS brand FROM products;",
@@ -14956,8 +14956,8 @@ function generateModule9(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Select 'name' and extract 'brand' from 'metadata' as text using JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.brand')) AS brand.",
-                                "id": "Pilih 'name' dan ekstrak 'brand' dari 'metadata' sebagai teks menggunakan JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.brand')) AS brand."
+                                "en": "Display `name` and extract the 'brand' attribute from `metadata` as unquoted text aliased as `brand`.",
+                                "id": "Tampilkan `name` dan ekstrak atribut 'brand' dari `metadata` sebagai teks tanpa tanda kutip dengan alias `brand`."
                         },
                         "expected_query": "SELECT name, JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.brand')) AS brand FROM products;"
                 }
@@ -14985,8 +14985,8 @@ function generateModule9(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Select 'name' and extracted 'color' (via ->>'color') from 'products' for all rows where metadata->>'color' IS NOT NULL.",
-                "id": "Pilih 'name' dan ekstraksi 'color' (via ->>'color') dari 'products' untuk semua baris yang metadata->>'color'-nya TIDAK bernilai NULL."
+                "en": "Show `name` and 'color' from `metadata` for products that have a color set.",
+                "id": "Tampilkan `name` dan nilai 'color' dari `metadata` untuk produk yang punya warnanya."
         },
         "seed_sql": mod9Seed,
         "expected_query": "SELECT name, metadata->>'color' AS color FROM products WHERE metadata->>'color' IS NOT NULL;",
@@ -15010,8 +15010,8 @@ function generateModule9(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Select 'name' and JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.color')) AS color from 'products' WHERE JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.color')) IS NOT NULL.",
-                                "id": "Pilih 'name' dan JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.color')) AS color dari 'products' WHERE JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.color')) IS NOT NULL."
+                                "en": "Display `name` and extract the 'color' attribute from `metadata` as text for all products where a color attribute exists.",
+                                "id": "Tampilkan `name` dan ekstrak atribut 'color' dari `metadata` sebagai teks untuk seluruh produk yang memiliki atribut warna."
                         },
                         "expected_query": "SELECT name, JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.color')) AS color FROM products WHERE JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.color')) IS NOT NULL;"
                 }
@@ -15039,8 +15039,8 @@ function generateModule9(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Select 'name', 'price', and 'brand' (via ->>'brand') from 'products' where metadata->>'brand' = 'Logitech'.",
-                "id": "Pilih 'name', 'price', dan 'brand' (via ->>'brand') dari 'products' untuk produk dengan metadata->>'brand' = 'Logitech'."
+                "en": "Show `name`, `price`, and 'brand' from `metadata` for products where the brand is 'Logitech'.",
+                "id": "Tampilkan `name`, `price`, dan nilai 'brand' dari `metadata` untuk produk bermerek 'Logitech'."
         },
         "seed_sql": mod9Seed,
         "expected_query": "SELECT name, price, metadata->>'brand' AS brand FROM products WHERE metadata->>'brand' = 'Logitech';",
@@ -15064,8 +15064,8 @@ function generateModule9(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Select 'name', 'price', and extracted 'brand' where JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.brand')) = 'Logitech'.",
-                                "id": "Pilih 'name', 'price', dan ekstraksi 'brand' di mana JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.brand')) = 'Logitech'."
+                                "en": "Display `name`, `price`, and the extracted 'brand' attribute from `metadata` for all products where the brand is 'Logitech'.",
+                                "id": "Tampilkan `name`, `price`, serta ekstrak atribut 'brand' dari `metadata` untuk seluruh produk yang memiliki merek 'Logitech'."
                         },
                         "expected_query": "SELECT name, price, JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.brand')) AS brand FROM products WHERE JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.brand')) = 'Logitech';"
                 }
@@ -15093,8 +15093,8 @@ function generateModule9(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Select 'name' and extracted 'brand' (via ->>'brand') from 'products' for all rows where the 'metadata' JSONB contains the key 'color' using the '?' operator.",
-                "id": "Pilih 'name' dan ekstraksi 'brand' (via ->>'brand') dari tabel 'products' untuk semua produk yang memiliki key 'color' di dalam JSONB 'metadata' menggunakan operator '?'."
+                "en": "Show `name` and 'brand' from `metadata` for products whose metadata has a 'color' key.",
+                "id": "Tampilkan `name` dan nilai 'brand' dari `metadata` untuk produk yang metadatanya punya kunci 'color'."
         },
         "seed_sql": mod9Seed,
         "expected_query": "SELECT name, metadata->>'brand' AS brand FROM products WHERE metadata ? 'color';",
@@ -15118,8 +15118,8 @@ function generateModule9(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Select 'name' and 'brand' from 'products' WHERE JSON_CONTAINS_PATH(metadata, 'one', '$.color').",
-                                "id": "Pilih 'name' dan 'brand' dari 'products' WHERE JSON_CONTAINS_PATH(metadata, 'one', '$.color')."
+                                "en": "Display `name` and the extracted 'brand' attribute from `products` for all rows where the `metadata` JSON document contains the top-level key 'color'.",
+                                "id": "Tampilkan `name` dan ekstrak atribut 'brand' dari `products` untuk seluruh baris yang dokumen JSON `metadata`-nya memiliki kunci tingkat atas 'color'."
                         },
                         "expected_query": "SELECT name, JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.brand')) AS brand FROM products WHERE JSON_CONTAINS_PATH(metadata, 'one', '$.color');"
                 }
@@ -15147,8 +15147,8 @@ function generateModule9(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Select 'name' and 'category' from 'products' for all rows where 'metadata' contains the key 'material' using '?'.",
-                "id": "Pilih 'name' dan 'category' dari 'products' untuk semua produk yang metadatanya memiliki key 'material' menggunakan operator '?'."
+                "en": "Show `name` and `category` for products whose metadata has a 'material' key.",
+                "id": "Tampilkan `name` dan `category` untuk produk yang metadatanya punya kunci 'material'."
         },
         "seed_sql": mod9Seed,
         "expected_query": "SELECT name, category FROM products WHERE metadata ? 'material';",
@@ -15172,8 +15172,8 @@ function generateModule9(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Select 'name' and 'category' from 'products' WHERE JSON_CONTAINS_PATH(metadata, 'one', '$.material').",
-                                "id": "Pilih 'name' dan 'category' dari 'products' WHERE JSON_CONTAINS_PATH(metadata, 'one', '$.material')."
+                                "en": "Display `name` and `category` from `products` for all rows where `metadata` contains the key 'material'.",
+                                "id": "Tampilkan `name` dan `category` dari `products` untuk seluruh baris yang metadatanya memiliki kunci 'material'."
                         },
                         "expected_query": "SELECT name, category FROM products WHERE JSON_CONTAINS_PATH(metadata, 'one', '$.material');"
                 }
@@ -15201,8 +15201,8 @@ function generateModule9(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Select 'name' and 'price' from 'products' for all rows where 'metadata' contains the key 'in_stock' using '?'.",
-                "id": "Pilih 'name' dan 'price' dari 'products' untuk semua produk yang memiliki key 'in_stock' pada metadatanya menggunakan operator '?'."
+                "en": "Show `name` and `price` for products whose metadata has an 'in_stock' key.",
+                "id": "Tampilkan `name` dan `price` untuk produk yang metadatanya punya kunci 'in_stock'."
         },
         "seed_sql": mod9Seed,
         "expected_query": "SELECT name, price FROM products WHERE metadata ? 'in_stock';",
@@ -15226,8 +15226,8 @@ function generateModule9(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Select 'name' and 'price' from 'products' WHERE JSON_CONTAINS_PATH(metadata, 'one', '$.in_stock').",
-                                "id": "Pilih 'name' dan 'price' dari 'products' WHERE JSON_CONTAINS_PATH(metadata, 'one', '$.in_stock')."
+                                "en": "Display `name` and `price` from `products` for all rows where `metadata` contains the key 'in_stock'.",
+                                "id": "Tampilkan `name` dan `price` dari `products` untuk seluruh baris yang metadatanya memiliki kunci 'in_stock'."
                         },
                         "expected_query": "SELECT name, price FROM products WHERE JSON_CONTAINS_PATH(metadata, 'one', '$.in_stock');"
                 }
@@ -15255,8 +15255,8 @@ function generateModule9(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Select 'name' and 'price' from 'products' for all rows where the 'metadata' JSONB document contains '{\"in_stock\": true}' using the '@>' operator.",
-                "id": "Pilih 'name' dan 'price' dari 'products' untuk semua produk yang dokumen JSONB 'metadata'-nya memuat '{\"in_stock\": true}' menggunakan operator '@>'."
+                "en": "Show `name` and `price` for products whose metadata marks them as in stock.",
+                "id": "Tampilkan `name` dan `price` untuk produk yang metadatanya menandakan stok tersedia."
         },
         "seed_sql": mod9Seed,
         "expected_query": "SELECT name, price FROM products WHERE metadata @> '{\"in_stock\": true}';",
@@ -15280,8 +15280,8 @@ function generateModule9(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Select 'name' and 'price' from 'products' WHERE JSON_CONTAINS(metadata, 'true', '$.in_stock').",
-                                "id": "Pilih 'name' dan 'price' dari 'products' WHERE JSON_CONTAINS(metadata, 'true', '$.in_stock')."
+                                "en": "Select `name` and `price` from `products` for all products whose `metadata` contains '{\"in_stock\": true}'.",
+                                "id": "Tampilkan `name` dan `price` dari `products` untuk seluruh produk yang metadatanya memuat '{\"in_stock\": true}'."
                         },
                         "expected_query": "SELECT name, price FROM products WHERE JSON_CONTAINS(metadata, 'true', '$.in_stock');"
                 }
@@ -15309,8 +15309,8 @@ function generateModule9(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Select 'name' and 'price' from 'products' for items containing '{\"brand\": \"Logitech\"}' in their metadata using '@>'.",
-                "id": "Pilih 'name' dan 'price' dari 'products' untuk item yang memuat '{\"brand\": \"Logitech\"}' pada metadatanya menggunakan operator '@>'."
+                "en": "Show `name` and `price` for products whose metadata shows the brand as 'Logitech'.",
+                "id": "Tampilkan `name` dan `price` untuk produk yang metadatanya menunjukkan merek 'Logitech'."
         },
         "seed_sql": mod9Seed,
         "expected_query": "SELECT name, price FROM products WHERE metadata @> '{\"brand\": \"Logitech\"}';",
@@ -15334,8 +15334,8 @@ function generateModule9(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Select 'name' and 'price' WHERE JSON_CONTAINS(metadata, '\"Logitech\"', '$.brand').",
-                                "id": "Pilih 'name' dan 'price' WHERE JSON_CONTAINS(metadata, '\"Logitech\"', '$.brand')."
+                                "en": "Select `name` and `price` from `products` for all items whose `metadata` contains '{\"brand\": \"Logitech\"}'.",
+                                "id": "Tampilkan `name` dan `price` dari `products` untuk seluruh item yang metadatanya memuat '{\"brand\": \"Logitech\"}'."
                         },
                         "expected_query": "SELECT name, price FROM products WHERE JSON_CONTAINS(metadata, '\"Logitech\"', '$.brand');"
                 }
@@ -15363,8 +15363,8 @@ function generateModule9(): Question[] {
                 }
         ],
         "instructions": {
-                "en": "Select 'name', 'category', and 'price' from 'products' for items where metadata @> '{\"color\": \"black\", \"in_stock\": true}'.",
-                "id": "Pilih 'name', 'category', dan 'price' dari 'products' untuk produk di mana metadata @> '{\"color\": \"black\", \"in_stock\": true}'."
+                "en": "Show `name`, `category`, and `price` for products whose metadata shows color 'black' and in stock.",
+                "id": "Tampilkan `name`, `category`, dan `price` untuk produk yang metadatanya menunjukkan warna 'black' dan stok tersedia."
         },
         "seed_sql": mod9Seed,
         "expected_query": "SELECT name, category, price FROM products WHERE metadata @> '{\"color\": \"black\", \"in_stock\": true}';",
@@ -15388,13 +15388,324 @@ function generateModule9(): Question[] {
                                 }
                         ],
                         "instructions": {
-                                "en": "Select 'name', 'category', 'price' WHERE JSON_CONTAINS(metadata, '\"black\"', '$.color') AND JSON_CONTAINS(metadata, 'true', '$.in_stock').",
-                                "id": "Pilih 'name', 'category', 'price' WHERE JSON_CONTAINS(metadata, '\"black\"', '$.color') AND JSON_CONTAINS(metadata, 'true', '$.in_stock')."
+                                "en": "Select `name`, `category`, and `price` from `products` for all items whose `metadata` contains '{\"color\": \"black\", \"in_stock\": true}'.",
+                                "id": "Tampilkan `name`, `category`, dan `price` dari `products` untuk seluruh produk yang metadatanya memuat '{\"color\": \"black\", \"in_stock\": true}'."
                         },
                         "expected_query": "SELECT name, category, price FROM products WHERE JSON_CONTAINS(metadata, '\"black\"', '$.color') AND JSON_CONTAINS(metadata, 'true', '$.in_stock');"
                 }
         }
-}
+},
+        {
+            id: 935,
+            moduleId: 9,
+            categorySlot: 9,
+            title: {
+                en: "Create a Role (Var #1)",
+                id: "Membuat Role (Latihan #1)"
+            },
+            conceptExplanation: {
+                en: "Conceptual Analogy: A ROLE is like an ID badge you can create before deciding what doors it opens. CREATE ROLE just mints the badge — it grants no access by itself.\n\nEngine Processing Behavior: PostgreSQL inserts a new row into the pg_authid / pg_roles system catalog with no login or privileges by default. In this sandbox there is only a single connection, so the role's actual access cannot be demonstrated by switching users — we instead confirm the role was registered by querying pg_roles directly.\n\nBest Practices & Gotchas: A role created with CREATE ROLE has no LOGIN privilege unless explicitly granted (see ALTER ROLE ... LOGIN). Never grant broad privileges to a role you haven't scoped yet.",
+                id: "Analogi Konseptual: ROLE ibarat kartu identitas yang kamu buat dulu sebelum menentukan pintu mana saja yang bisa dibuka. CREATE ROLE hanya mencetak kartunya — belum memberi akses apa pun.\n\nCara Kerja Database Engine: PostgreSQL menambahkan baris baru ke katalog sistem pg_roles tanpa hak login atau privilege apa pun secara default. Karena sandbox ini hanya punya satu koneksi, kita tidak bisa membuktikan akses role dengan cara pindah user — sebagai gantinya kita cek langsung ke pg_roles.\n\nBest Practices & Catatan Penting: Role yang dibuat dengan CREATE ROLE tidak punya hak LOGIN sampai ditambahkan lewat ALTER ROLE ... LOGIN. Jangan pernah memberi privilege luas ke role yang belum jelas cakupannya."
+            },
+            syntaxPatterns: [
+                {
+                    label: { en: "Create a role", id: "Membuat role" },
+                    code: "CREATE ROLE role_name;"
+                }
+            ],
+            instructions: {
+                en: "Create a new role named `eko`.",
+                id: "Buat role baru bernama `eko`."
+            },
+            seed_sql: mod9Seed,
+            expected_query: "CREATE ROLE eko;",
+            verification_query: "SELECT rolname FROM pg_roles WHERE rolname = 'eko';",
+            starterQuery: "-- Write your CREATE ROLE statement here",
+            table_names: [
+                "products"
+            ],
+            engineOverrides: {
+                mysql: {
+                    expected_query: "CREATE USER 'eko'@'localhost' IDENTIFIED BY 'changeme';",
+                    verification_query: "SELECT 1 AS ok;",
+                    starterQuery: "-- Create MySQL user here",
+                    instructions: {
+                        en: "Create a new MySQL user `'eko'@'localhost'` with password `'changeme'`.",
+                        id: "Buat user MySQL baru `'eko'@'localhost'` dengan password `'changeme'`."
+                    },
+                    syntaxPatterns: [
+                        {
+                            label: { en: "Create MySQL user", id: "Membuat user MySQL" },
+                            code: "CREATE USER 'user'@'host' IDENTIFIED BY 'password';"
+                        }
+                    ],
+                    conceptExplanation: {
+                        en: "Conceptual Analogy: Creating a MySQL user is like provisioning a new account credential with login authority.\n\nEngine Processing Behavior: MySQL registers user credentials in the internal mysql.user dictionary, validating connection host constraints.\n\nBest Practices & Gotchas: Always specify a strong password and restrict the host mask to localhost or specific network CIDRs.",
+                        id: "Analogi Konseptual: Membuat akun pengguna MySQL ibarat menerbitkan kredensial login baru untuk otorisasi sistem.\n\nCara Kerja Database Engine: MySQL mendaftarkan kredensial akun ke tabel katalog internal mysql.user dan memvalidasi batasan host koneksi.\n\nBest Practices & Catatan Penting: Selalu gunakan password yang kuat dan batasi host ke localhost atau CIDR jaringan tertentu."
+                    }
+                }
+            }
+        },
+        {
+            id: 936,
+            moduleId: 9,
+            categorySlot: 9,
+            title: {
+                en: "Alter Role with Login and Password (Var #2)",
+                id: "Mengatur Izin Login dan Password Role (Latihan #2)"
+            },
+            conceptExplanation: {
+                en: "Conceptual Analogy: Minting an ID badge isn't enough to enter the building if the turnstile requires an activated PIN. ALTER ROLE ... WITH LOGIN PASSWORD configures the badge so the user can authenticate at the entrance.\n\nEngine Processing Behavior: PostgreSQL updates the rolcanlogin boolean flag and records the password hash in the pg_authid catalog table. In our single-connection browser sandbox, verification inspects the pg_roles catalog attributes directly.\n\nBest Practices & Gotchas: Never use plain text or default passwords in production. In PostgreSQL, a role with LOGIN is conceptually equivalent to a user account.",
+                id: "Analogi Konseptual: Mencetak kartu identitas belum cukup jika pintu gerbang memerlukan PIN sandi. ALTER ROLE ... WITH LOGIN PASSWORD mengonfigurasi kartu tersebut agar pemiliknya dapat melakukan autentikasi di pintu masuk.\n\nCara Kerja Database Engine: PostgreSQL memperbarui kolom rolcanlogin menjadi TRUE dan menyimpan hash sandi ke tabel katalog pg_authid. Di sandbox browser dengan koneksi tunggal ini, verifikasi dilakukan dengan membaca atribut pada katalog pg_roles.\n\nBest Practices & Catatan Penting: Jangan pernah menggunakan password sederhana di lingkungan produksi. Di PostgreSQL, role yang memiliki izin LOGIN secara konsep setara dengan akun pengguna (user)."
+            },
+            syntaxPatterns: [
+                {
+                    label: { en: "Alter role with login and password", id: "Ubah role dengan login dan password" },
+                    code: "ALTER ROLE role_name WITH LOGIN PASSWORD 'password';"
+                }
+            ],
+            instructions: {
+                en: "Give the role `eko` login access with the password 'rahasia'.",
+                id: "Berikan role `eko` akses login dengan password 'rahasia'."
+            },
+            seed_sql: mod9Seed + "\nCREATE ROLE eko;",
+            expected_query: "ALTER ROLE eko WITH LOGIN PASSWORD 'rahasia';",
+            verification_query: "SELECT rolname, rolcanlogin FROM pg_roles WHERE rolname = 'eko';",
+            starterQuery: "-- Alter role eko with LOGIN and PASSWORD",
+            table_names: [
+                "products"
+            ],
+            engineOverrides: {
+                mysql: {
+                    seed_sql: mod9Seed,
+                    expected_query: "ALTER USER 'eko'@'localhost' IDENTIFIED BY 'rahasia';",
+                    verification_query: "SELECT 1 AS ok;",
+                    starterQuery: "-- Alter user password",
+                    instructions: {
+                        en: "Update the password for user `'eko'@'localhost'` to `'rahasia'`.",
+                        id: "Perbarui kata sandi untuk user `'eko'@'localhost'` menjadi `'rahasia'`."
+                    },
+                    syntaxPatterns: [
+                        {
+                            label: { en: "Alter MySQL user password", id: "Ubah password user MySQL" },
+                            code: "ALTER USER 'user'@'host' IDENTIFIED BY 'new_password';"
+                        }
+                    ],
+                    conceptExplanation: {
+                        en: "Conceptual Analogy: Updating an employee's access keycode when policies require periodic credential rotation.\n\nEngine Processing Behavior: MySQL re-hashes the new authentication string and flushes privilege cache memory.\n\nBest Practices & Gotchas: Rotate database credentials periodically and enforce TLS encrypted transport.",
+                        id: "Analogi Konseptual: Memperbarui kode akses karyawan secara berkala sesuai kebijakan rotasi keamanan.\n\nCara Kerja Database Engine: MySQL menghitung ulang hash autentikasi baru dan memperbarui cache izin server.\n\nBest Practices & Catatan Penting: Lakukan rotasi kredensial secara terjadwal dan wajibkan enkripsi koneksi TLS."
+                    }
+                }
+            }
+        },
+        {
+            id: 937,
+            moduleId: 9,
+            categorySlot: 9,
+            title: {
+                en: "Grant Table Privileges to Role (Var #3)",
+                id: "Memberikan Hak Akses Tabel ke Role (Latihan #3)"
+            },
+            conceptExplanation: {
+                en: "Conceptual Analogy: Granting privileges is like programming an access badge with keys to specific rooms (e.g. read catalog documents and insert new inventory orders).\n\nEngine Processing Behavior: PostgreSQL updates access control lists (ACLs) in pg_class (relacl column) and registers authorization entries in information_schema.role_table_grants. In this WASM sandbox, verification inspects role_table_grants to ensure the authorization entries match.\n\nBest Practices & Gotchas: Follow the principle of least privilege. Grant only the exact permissions (such as SELECT or INSERT) required for the role's purpose, rather than ALL PRIVILEGES.",
+                id: "Analogi Konseptual: Memberikan hak akses (GRANT) ibarat memprogram kartu akses dengan izin masuk ke ruangan tertentu (misalnya membaca dokumen katalog dan menambahkan pesanan inventaris baru).\n\nCara Kerja Database Engine: PostgreSQL memperbarui access control list (ACL) pada pg_class (kolom relacl) dan mencatat entri otorisasi di information_schema.role_table_grants. Pada sandbox WASM ini, verifikasi memeriksa role_table_grants untuk memastikan kesesuaian izin.\n\nBest Practices & Catatan Penting: Terapkan prinsip least privilege. Berikan hanya hak akses yang benar-benar dibutuhkan (seperti SELECT atau INSERT) daripada memberikan ALL PRIVILEGES."
+            },
+            syntaxPatterns: [
+                {
+                    label: { en: "Grant table privileges", id: "Memberikan hak akses tabel" },
+                    code: "GRANT SELECT, INSERT ON table_name TO role_name;"
+                }
+            ],
+            instructions: {
+                en: "Give role `eko` permission to read and add data in the `products` table.",
+                id: "Berikan role `eko` izin untuk membaca dan menambah data di tabel `products`."
+            },
+            seed_sql: mod9Seed + "\nCREATE ROLE eko;",
+            expected_query: "GRANT SELECT, INSERT ON products TO eko;",
+            verification_query: "SELECT grantee, privilege_type FROM information_schema.role_table_grants WHERE grantee = 'eko' AND table_name = 'products' ORDER BY privilege_type;",
+            starterQuery: "-- Grant SELECT, INSERT on products to eko",
+            table_names: [
+                "products"
+            ],
+            engineOverrides: {
+                mysql: {
+                    seed_sql: mod9Seed,
+                    expected_query: "GRANT SELECT, INSERT ON products TO 'eko'@'localhost';",
+                    verification_query: "SELECT 1 AS ok;",
+                    starterQuery: "-- Grant privileges to user",
+                    instructions: {
+                        en: "Grant read and insert privileges on the `products` table to user `'eko'@'localhost'`.",
+                        id: "Berikan hak akses baca dan tambah data pada tabel `products` kepada user `'eko'@'localhost'`."
+                    },
+                    syntaxPatterns: [
+                        {
+                            label: { en: "Grant MySQL privileges", id: "Berikan izin MySQL" },
+                            code: "GRANT SELECT, INSERT ON table_name TO 'user'@'host';"
+                        }
+                    ],
+                    conceptExplanation: {
+                        en: "Conceptual Analogy: Giving read and write keys to a departmental database folder.\n\nEngine Processing Behavior: MySQL flags table-level privilege bits in mysql.tables_priv and refreshes in-memory authorization maps.\n\nBest Practices & Gotchas: Avoid granting global wildcard privileges *.* when table-level grants suffice.",
+                        id: "Analogi Konseptual: Memberikan kunci baca dan tulis untuk folder database departemen tertentu.\n\nCara Kerja Database Engine: MySQL menandai bit izin tingkat tabel pada mysql.tables_priv dan menyegarkan peta otorisasi di memori.\n\nBest Practices & Catatan Penting: Hindari memberikan hak akses global wildcard *.* jika otorisasi tingkat tabel sudah mencukupi."
+                    }
+                }
+            }
+        },
+        {
+            id: 938,
+            moduleId: 9,
+            categorySlot: 9,
+            title: {
+                en: "Revoke Table Privilege from Role (Var #4)",
+                id: "Mencabut Hak Akses Tabel dari Role (Latihan #4)"
+            },
+            conceptExplanation: {
+                en: "Conceptual Analogy: Revoking a privilege is like taking back the key to the warehouse when a team member transfers to an advisory role, ensuring they can still inspect records without modifying data.\n\nEngine Processing Behavior: PostgreSQL alters the relation ACL in pg_class, removing the revoked privilege mask for that grantee. In this WASM sandbox, verification inspects information_schema.role_table_grants to confirm that only SELECT remains active.\n\nBest Practices & Gotchas: Conduct regular security reviews to identify and revoke obsolete permissions. Never leave write privileges active on deprecated roles.",
+                id: "Analogi Konseptual: Mencabut hak akses (REVOKE) ibarat menarik kembali kunci gudang saat anggota tim beralih tugas, memastikan mereka tetap bisa membaca data tanpa bisa melakukan penambahan barang.\n\nCara Kerja Database Engine: PostgreSQL memperbarui ACL relasi di pg_class, menghapus bit izin yang dicabut untuk grantee tersebut. Pada sandbox WASM ini, verifikasi memeriksa katalog information_schema.role_table_grants untuk memastikan hanya izin SELECT yang tersisa.\n\nBest Practices & Catatan Penting: Lakukan audit keamanan secara berkala untuk mencabut hak akses yang sudah usang. Jangan biarkan izin modifikasi data tetap aktif pada role yang tidak lagi memerlukannya."
+            },
+            syntaxPatterns: [
+                {
+                    label: { en: "Revoke table privilege", id: "Mencabut hak akses tabel" },
+                    code: "REVOKE privilege_name ON table_name FROM role_name;"
+                }
+            ],
+            instructions: {
+                en: "Take away role `eko`'s permission to add data in the `products` table.",
+                id: "Cabut izin role `eko` untuk menambah data di tabel `products`."
+            },
+            seed_sql: mod9Seed + "\nCREATE ROLE eko;\nGRANT SELECT, INSERT ON products TO eko;",
+            expected_query: "REVOKE INSERT ON products FROM eko;",
+            verification_query: "SELECT grantee, privilege_type FROM information_schema.role_table_grants WHERE grantee = 'eko' AND table_name = 'products' ORDER BY privilege_type;",
+            starterQuery: "-- Revoke INSERT on products from eko",
+            table_names: [
+                "products"
+            ],
+            engineOverrides: {
+                mysql: {
+                    seed_sql: mod9Seed,
+                    expected_query: "REVOKE INSERT ON products FROM 'eko'@'localhost';",
+                    verification_query: "SELECT 1 AS ok;",
+                    starterQuery: "-- Revoke privilege from user",
+                    instructions: {
+                        en: "Revoke the insert privilege on the `products` table from user `'eko'@'localhost'`.",
+                        id: "Cabut hak akses tambah data pada tabel `products` dari user `'eko'@'localhost'`."
+                    },
+                    syntaxPatterns: [
+                        {
+                            label: { en: "Revoke MySQL privilege", id: "Cabut izin MySQL" },
+                            code: "REVOKE INSERT ON table_name FROM 'user'@'host';"
+                        }
+                    ],
+                    conceptExplanation: {
+                        en: "Conceptual Analogy: Removing modification permissions when an account transitions to read-only reporting.\n\nEngine Processing Behavior: Clears the INSERT flag in mysql.tables_priv and updates authorization state.\n\nBest Practices & Gotchas: Run SHOW GRANTS FOR 'user'@'host' after revoking to verify the remaining permission set.",
+                        id: "Analogi Konseptual: Menghapus izin modifikasi saat sebuah akun dialihkan fungsinya menjadi hanya untuk pelaporan data.\n\nCara Kerja Database Engine: Menghapus flag INSERT pada tabel mysql.tables_priv dan memperbarui status otorisasi.\n\nBest Practices & Catatan Penting: Jalankan SHOW GRANTS FOR 'user'@'host' setelah melakukan revoke untuk memverifikasi sisa izin akun."
+                    }
+                }
+            }
+        },
+        {
+            id: 939,
+            moduleId: 9,
+            categorySlot: 9,
+            title: {
+                en: "Create Role with Direct Login (Var #5)",
+                id: "Membuat Role dengan Akses Login Langsung (Latihan #5)"
+            },
+            conceptExplanation: {
+                en: "Conceptual Analogy: Instead of minting an unassigned badge and activating it later, you can issue an active user badge with door entry rights at the moment of creation.\n\nEngine Processing Behavior: PostgreSQL creates the pg_authid / pg_roles record with rolcanlogin set to TRUE immediately. While full client authentication typically uses passwords, creating a role with LOGIN flags it as an interactive account rather than a group. Verification queries pg_roles for rolname and rolcanlogin.\n\nBest Practices & Gotchas: In PostgreSQL, the distinction between a 'user' and a 'group' is simply whether the role possesses the LOGIN attribute. Use non-login roles for permission groups, and grant them to login roles.",
+                id: "Analogi Konseptual: Daripada mencetak kartu identitas pasif lalu mengaktifkannya belakangan, kamu bisa langsung menerbitkan kartu yang sudah aktif dan memiliki izin masuk sejak awal.\n\nCara Kerja Database Engine: PostgreSQL menambahkan entri ke pg_roles dengan atribut rolcanlogin langsung bernilai TRUE. Di PostgreSQL, perbedaan antara 'user' dan 'group' hanyalah kepemilikan atribut LOGIN. Verifikasi memeriksa rolname dan status rolcanlogin pada pg_roles.\n\nBest Practices & Catatan Penting: Di PostgreSQL, user dan group disatukan dalam konsep ROLE. Manfaatkan role tanpa LOGIN sebagai grup izin (permission group), lalu berikan (GRANT) role grup tersebut kepada role individu yang memiliki LOGIN."
+            },
+            syntaxPatterns: [
+                {
+                    label: { en: "Create role with login", id: "Membuat role dengan izin login" },
+                    code: "CREATE ROLE role_name WITH LOGIN;"
+                }
+            ],
+            instructions: {
+                en: "Create a new role named `intern` that can log in directly.",
+                id: "Buat role baru bernama `intern` yang bisa langsung login."
+            },
+            seed_sql: mod9Seed,
+            expected_query: "CREATE ROLE intern WITH LOGIN;",
+            verification_query: "SELECT rolname, rolcanlogin FROM pg_roles WHERE rolname = 'intern';",
+            starterQuery: "-- Create role intern with LOGIN",
+            table_names: [
+                "products"
+            ],
+            engineOverrides: {
+                mysql: {
+                    seed_sql: mod9Seed,
+                    expected_query: "CREATE USER 'intern'@'localhost' IDENTIFIED BY 'intern123';",
+                    verification_query: "SELECT 1 AS ok;",
+                    starterQuery: "-- Create MySQL user intern",
+                    instructions: {
+                        en: "Create a new MySQL user `'intern'@'localhost'` with password `'intern123'`.",
+                        id: "Buat user MySQL baru `'intern'@'localhost'` dengan password `'intern123'`."
+                    },
+                    syntaxPatterns: [
+                        {
+                            label: { en: "Create MySQL user", id: "Membuat user MySQL" },
+                            code: "CREATE USER 'user'@'host' IDENTIFIED BY 'password';"
+                        }
+                    ],
+                    conceptExplanation: {
+                        en: "Conceptual Analogy: Setting up a junior developer or intern credential with dedicated login access.\n\nEngine Processing Behavior: Registers user credentials in mysql.user with empty initial privileges.\n\nBest Practices & Gotchas: Never share user credentials across multiple people or teams.",
+                        id: "Analogi Konseptual: Menyiapkan kredensial akses login tersendiri untuk staf magang atau pengembang baru.\n\nCara Kerja Database Engine: Mendaftarkan kredensial akun di mysql.user tanpa hak akses tabel apa pun secara default.\n\nBest Practices & Catatan Penting: Jangan pernah berbagi kredensial user kepada banyak orang atau tim yang berbeda."
+                    }
+                }
+            }
+        },
+        {
+            id: 940,
+            moduleId: 9,
+            categorySlot: 10,
+            title: {
+                en: "Database Namespace Creation (Var #1)",
+                id: "Membuat Database Baru dengan CREATE DATABASE (Latihan #1)"
+            },
+            conceptExplanation: {
+                en: "Conceptual Analogy: A database is an entire library building containing its own schemas, tables, and indexes. Creating a database establishes a completely isolated physical data container.\n\nEngine Processing Behavior: PostgreSQL creates a new database cluster catalog entry in pg_database, copying initial template structures from template1. In a production multi-user PostgreSQL environment, client applications disconnect from the current database and reconnect to the new one (e.g. \\c belajar_sql in psql). In this single-connection browser sandbox, switching active database connections is not possible, so this exercise confirms understanding by verifying the catalog record in pg_database.\n\nBest Practices & Gotchas: In PostgreSQL, prefer organizing application microservices or multi-tenant domains within a single shared database using CREATE SCHEMA whenever possible, because cross-database queries require foreign data wrappers (postgres_fdw) and separate connection pools.",
+                id: "Analogi Konseptual: Database ibarat seluruh bangunan perpustakaan tersendiri yang menampung skema, tabel, dan indeksnya masing-masing. Membuat database baru membentuk wadah data yang terisolasi total.\n\nCara Kerja Database Engine: PostgreSQL menambahkan entri katalog cluster baru di pg_database dan menyalin struktur awal dari template1. Pada server PostgreSQL multi-user sesungguhnya, klien memutuskan koneksi lalu menghubungkan ulang ke database baru (misalnya dengan perintah \\c belajar_sql di psql). Karena sandbox browser WASM ini berjalan dengan satu koneksi, pergantian database aktif tidak dapat dilakukan, sehingga pemahaman diuji dengan memverifikasi entri pada katalog pg_database.\n\nBest Practices & Catatan Penting: Di PostgreSQL, prioritaskan pemisahan namespace menggunakan CREATE SCHEMA di dalam satu database bersama daripada membuat banyak database terpisah, karena query lintas database di PostgreSQL memerlukan ekstensi khusus (postgres_fdw) dan connection pool terpisah."
+            },
+            syntaxPatterns: [
+                {
+                    label: { en: "Create database", id: "Membuat database baru" },
+                    code: "CREATE DATABASE database_name;"
+                }
+            ],
+            instructions: {
+                en: "Create a new database named `belajar_sql`.",
+                id: "Buat database baru bernama `belajar_sql`."
+            },
+            seed_sql: mod9Seed,
+            expected_query: "CREATE DATABASE belajar_sql;",
+            verification_query: "SELECT datname FROM pg_database WHERE datname = 'belajar_sql';",
+            starterQuery: "-- Write CREATE DATABASE statement here",
+            table_names: [
+                "products"
+            ],
+            engineOverrides: {
+                mysql: {
+                    seed_sql: mod9Seed,
+                    expected_query: "CREATE DATABASE belajar_sql;",
+                    verification_query: "SELECT 1 AS ok;",
+                    starterQuery: "-- Create database in MySQL",
+                    instructions: {
+                        en: "Create a new database named `belajar_sql`.",
+                        id: "Buat database baru bernama `belajar_sql`."
+                    },
+                    syntaxPatterns: [
+                        {
+                            label: { en: "MySQL CREATE DATABASE", id: "MySQL CREATE DATABASE" },
+                            code: "CREATE DATABASE database_name;"
+                        }
+                    ],
+                    conceptExplanation: {
+                        en: "Conceptual Analogy: Creating a new schema container in MySQL.\n\nEngine Processing Behavior: In MySQL, CREATE DATABASE and CREATE SCHEMA are synonyms creating a dictionary directory namespace.\n\nBest Practices & Gotchas: In MySQL, character set and collation defaults can be configured per database.",
+                        id: "Analogi Konseptual: Membuat wadah skema database baru di MySQL.\n\nCara Kerja Database Engine: Di MySQL, CREATE DATABASE dan CREATE SCHEMA adalah sinonim yang membuat namespace direktori kamus terpisah.\n\nBest Practices & Catatan Penting: Di MySQL, set karakter dan collation default dapat dikonfigurasi per database."
+                    }
+                }
+            }
+        }
     ];
 }
 
@@ -15473,10 +15784,10 @@ export const MODULES: Module[] = [
     },
     {
         id: 9,
-        title: { en: "Module 9: Indexing, Full-Text Search & Schemas", id: "Modul 9: Indexing, Full-Text Search & Manajemen Skema" },
+        title: { en: "Module 9: Indexing, Full-Text Search & Administration", id: "Modul 9: Indexing, Full-Text Search & Administrasi" },
         description: {
-            en: "Optimize execution with B-Tree/GIN indexes, Full-Text Search, schemas, and semi-structured JSONB operators (->>, ?, @>).",
-            id: "Optimalkan query dengan index B-Tree/GIN, Full-Text Search, schema namespace, serta manipulasi dokumen semi-terstruktur JSONB (->>, ?, @>)."
+            en: "Optimize execution with B-Tree/GIN indexes, Full-Text Search, JSONB, schemas, roles, privileges, and database creation.",
+            id: "Optimalkan query dengan index B-Tree/GIN, Full-Text Search, JSONB, skema, role, hak akses, dan pembuatan database."
         },
         questions: generateModule9()
     }

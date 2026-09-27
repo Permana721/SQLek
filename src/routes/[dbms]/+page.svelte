@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { MODULES } from '$lib/data/questions';
-	import { getProgress, clearProgress, isModuleUnlocked, isExamUnlocked, isAdminMode } from '$lib/data/progress';
+	import { getProgress, clearProgress, isModuleUnlocked, isExamUnlocked, isAdminMode, resolveResumePath } from '$lib/data/progress';
 	import UserMenu from '$lib/components/UserMenu.svelte';
 	import LanguageToggle from '$lib/components/LanguageToggle.svelte';
 	import Logo from '$lib/components/Logo.svelte';
@@ -68,13 +69,29 @@
 	</header>
 
 	<main class="max-w-5xl mx-auto px-4 sm:px-6 py-10 w-full flex-1">
-		<div class="mb-8">
-			<div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 text-xs font-mono mb-2">
-				<span>{dbms === 'postgres' ? 'PGlite WASM' : 'sql.js WASM'}</span>
+		<div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+			<div>
+				<div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 text-xs font-mono mb-2">
+					<span>{dbms === 'postgres' ? 'PGlite WASM' : 'sql.js WASM'}</span>
+				</div>
+				<h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-white capitalize">
+					{dbmsTitle} {t[$locale].modulesTitle}
+				</h1>
 			</div>
-			<h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-white capitalize">
-				{dbmsTitle} {t[$locale].modulesTitle}
-			</h1>
+
+			<button
+				onclick={() => {
+					let resumeUrl = resolveResumePath(page.params.dbms || dbms);
+					if (page.params.dbms && page.params.dbms.toLowerCase() === 'postgresql') {
+						resumeUrl = resumeUrl.replace(/^\/postgres\b/, '/postgresql');
+					}
+					goto(resumeUrl);
+				}}
+				class="px-4 py-2 bg-white text-black font-semibold text-xs sm:text-sm rounded-lg hover:bg-zinc-200 transition-colors inline-flex items-center gap-1.5 cursor-pointer self-start sm:self-auto shadow-sm"
+			>
+				<span>{t[$locale].continueLearning}</span>
+				<span>&rarr;</span>
+			</button>
 		</div>
 
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-4">

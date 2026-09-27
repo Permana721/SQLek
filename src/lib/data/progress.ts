@@ -1,4 +1,11 @@
 import { writable } from 'svelte/store';
+import { MODULES } from '$lib/data/questions';
+
+export interface LastActiveState {
+	moduleId: string; // e.g., 'module-2'
+	taskIndex: number; // 0-based index or taskId
+	engine: string;   // 'postgresql' | 'mysql'
+}
 
 export interface ModuleProgress {
 	questionIds: number[];
@@ -99,22 +106,147 @@ export function getProgress(dbms: string): LearningProgress {
 	return { completedModules: [], modules: {} };
 }
 
+export interface ProgressStoreState {
+	postgres: LearningProgress;
+	mysql: LearningProgress;
+}
+
+const internalProgressStore = writable<ProgressStoreState>({
+	postgres: getProgress('postgres'),
+	mysql: getProgress('mysql')
+});
+
+function refreshProgressStore() {
+	internalProgressStore.set({
+		postgres: getProgress('postgres'),
+		mysql: getProgress('mysql')
+	});
+}
+
+if (typeof window !== 'undefined') {
+	window.addEventListener('storage', (event) => {
+		if (event.key?.startsWith('sql_') || event.key?.startsWith('sqlek_')) {
+			refreshProgressStore();
+		}
+	});
+}
+
 export function saveProgress(dbms: string, progress: LearningProgress): void {
 	if (typeof window === 'undefined') return;
 	try {
 		localStorage.setItem(`sql_learning_progress_${dbms}`, JSON.stringify(progress));
+		refreshProgressStore();
 	} catch (e) {
 		console.error('Failed to save progress to localStorage', e);
+	}
+}
+
+export function normalizeEngine(engine: string): 'postgres' | 'mysql' {
+	return engine && engine.toLowerCase() === 'mysql' ? 'mysql' : 'postgres';
+}
+
+export const lastActiveStore = writable<Record<string, LastActiveState | null>>({});
+
+export function getLastActiveState(engine: string): LastActiveState | null {
+	if (typeof window === 'undefined') return null;
+	const dbms = normalizeEngine(engine);
+	try {
+		const raw =
+			localStorage.getItem(`sqlek_last_active_${engine}`) ||
+			localStorage.getItem(`sqlek_last_active_${dbms}`) ||
+			localStorage.getItem(`sql_last_active_${engine}`) ||
+			localStorage.getItem(`sql_last_active_${dbms}`);
+		if (raw) {
+			const parsed = JSON.parse(raw);
+			if (parsed && typeof parsed === 'object') {
+				return {
+					moduleId: String(parsed.moduleId),
+					taskIndex: Number(parsed.taskIndex) || 0,
+					engine: parsed.engine || engine
+				};
+			}
+		}
+		const legacyMod = localStorage.getItem(`sql_active_module_${dbms}`);
+		const legacyTask = localStorage.getItem(`sql_active_task_${dbms}`);
+		if (legacyMod !== null) {
+			return {
+				moduleId: legacyMod,
+				taskIndex: legacyTask !== null ? Number(legacyTask) : 0,
+				engine: dbms
+			};
+		}
+	} catch (e) {
+		console.error('Failed to get last active state from localStorage', e);
+	}
+	return null;
+}
+
+export function saveLastActiveState(state: LastActiveState): void {
+	if (typeof window === 'undefined') return;
+	const dbms = normalizeEngine(state.engine);
+	try {
+		const serialized = JSON.stringify(state);
+		localStorage.setItem(`sqlek_last_active_${dbms}`, serialized);
+		localStorage.setItem(`sql_last_active_${dbms}`, serialized);
+		if (state.engine === 'postgresql' || dbms === 'postgres') {
+			localStorage.setItem('sqlek_last_active_postgresql', serialized);
+			localStorage.setItem('sql_last_active_postgresql', serialized);
+		}
+		const modNum = String(state.moduleId).replace(/^module-?/i, '');
+		localStorage.setItem(`sql_active_module_${dbms}`, modNum);
+		localStorage.setItem(`sql_active_task_${dbms}`, String(state.taskIndex));
+
+		lastActiveStore.update((curr) => ({
+			...curr,
+			[dbms]: state,
+			[state.engine]: state
+		}));
+	} catch (e) {
+		console.error('Failed to save last active state to localStorage', e);
+	}
+}
+
+export const setLastActiveState = saveLastActiveState;
+
+export function clearLastActiveState(engine: string): void {
+	if (typeof window === 'undefined') return;
+	const dbms = normalizeEngine(engine);
+	try {
+		localStorage.removeItem(`sqlek_last_active_${engine}`);
+		localStorage.removeItem(`sqlek_last_active_${dbms}`);
+		localStorage.removeItem(`sql_last_active_${engine}`);
+		localStorage.removeItem(`sql_last_active_${dbms}`);
+		localStorage.removeItem(`sql_active_module_${dbms}`);
+		localStorage.removeItem(`sql_active_task_${dbms}`);
+		if (dbms === 'postgres') {
+			localStorage.removeItem('sqlek_last_active_postgresql');
+			localStorage.removeItem('sql_last_active_postgresql');
+		}
+		lastActiveStore.update((curr) => {
+			const next = { ...curr };
+			delete next[dbms];
+			delete next[engine];
+			return next;
+		});
+	} catch (e) {
+		console.error('Failed to clear last active state from localStorage', e);
 	}
 }
 
 export function clearProgress(dbms: string): void {
 	if (typeof window === 'undefined') return;
 	try {
+		const normalized = normalizeEngine(dbms);
+		localStorage.removeItem(`sql_learning_progress_${normalized}`);
 		localStorage.removeItem(`sql_learning_progress_${dbms}`);
+		localStorage.removeItem(`sql_active_module_${normalized}`);
 		localStorage.removeItem(`sql_active_module_${dbms}`);
+		localStorage.removeItem(`sql_active_task_${normalized}`);
 		localStorage.removeItem(`sql_active_task_${dbms}`);
+		localStorage.removeItem(`sql_challenge_session_${normalized}`);
 		localStorage.removeItem(`sql_challenge_session_${dbms}`);
+		clearLastActiveState(dbms);
+		refreshProgressStore();
 	} catch (e) {
 		console.error('Failed to clear progress from localStorage', e);
 	}
@@ -150,6 +282,32 @@ export function isTaskUnlocked(
 		if (!completedTasks.includes(i)) return false;
 	}
 	return true;
+}
+
+export function isModulePassed(moduleId: number, engine: string): boolean {
+	const dbms = normalizeEngine(engine);
+	const prog = getProgress(dbms);
+	if (prog.completedModules.includes(moduleId)) return true;
+	const mod = MODULES.find((m) => m.id === moduleId);
+	if (!mod) return false;
+	const modState = prog.modules[moduleId];
+	if (!modState) return false;
+	const totalTasks =
+		modState.questionIds?.length ||
+		new Set(mod.questions.map((q) => q.categorySlot)).size ||
+		10;
+	return (
+		totalTasks > 0 &&
+		Array.from({ length: totalTasks }, (_, i) => i).every((idx) =>
+			modState.completedTasks?.includes(idx)
+		)
+	);
+}
+
+export function getEngineResumeUrl(engine: string): string {
+	const dbms = normalizeEngine(engine);
+	const targetModule = MODULES.find((m) => !isModulePassed(m.id, dbms)) || MODULES[0];
+	return `/${engine}/${targetModule.id}`;
 }
 
 export function markModuleCompleted(dbms: string, moduleId: number): void {
@@ -221,14 +379,41 @@ export function unmarkChallengeTaskCompleted(
 }
 
 export const progressStore = {
+	subscribe: internalProgressStore.subscribe,
+	refresh: refreshProgressStore,
 	getProgress,
-	saveProgress,
-	clearProgress,
-	markModuleCompleted,
-	unmarkTaskCompleted,
+	saveProgress: (dbms: string, progress: LearningProgress) => {
+		saveProgress(dbms, progress);
+		refreshProgressStore();
+	},
+	clearProgress: (dbms: string) => {
+		clearProgress(dbms);
+		refreshProgressStore();
+	},
+	markModuleCompleted: (dbms: string, moduleId: number) => {
+		markModuleCompleted(dbms, moduleId);
+		refreshProgressStore();
+	},
+	unmarkTaskCompleted: (dbms: string, moduleId: number, taskIndexOrId: number) => {
+		unmarkTaskCompleted(dbms, moduleId, taskIndexOrId);
+		refreshProgressStore();
+	},
 	getChallengeProgress,
-	saveChallengeProgress,
-	unmarkChallengeTaskCompleted
+	saveChallengeProgress: (dbms: string, challenge: ChallengeProgress) => {
+		saveChallengeProgress(dbms, challenge);
+		refreshProgressStore();
+	},
+	unmarkChallengeTaskCompleted: (dbms: string, taskIndexOrId: number) => {
+		unmarkChallengeTaskCompleted(dbms, taskIndexOrId);
+		refreshProgressStore();
+	},
+	getLastActiveState,
+	saveLastActiveState,
+	setLastActiveState,
+	clearLastActiveState,
+	resolveResumePath,
+	isModulePassed,
+	getEngineResumeUrl
 };
 
 export function getChallengeProgress(dbms: string): ChallengeProgress | null {
@@ -282,4 +467,57 @@ export function getNavigationLabel(
 	};
 	return labels[locale][action];
 }
+
+export function resolveResumePath(engine: string): string {
+	const dbms = normalizeEngine(engine);
+	const prog = getProgress(dbms);
+
+	// Scenario 3 (All Completed): Check if all curriculum modules are completed
+	const totalModulesCount = MODULES.length; // 9
+	const allCompleted = MODULES.every((mod) => isModulePassed(mod.id, dbms));
+
+	if (allCompleted) {
+		return `/${dbms}`;
+	}
+
+	// Scenario 1 (Saved Active Task):
+	// Must ensure the saved module is NOT already passed!
+	const saved = getLastActiveState(engine);
+	if (saved && saved.moduleId !== undefined && saved.taskIndex !== undefined) {
+		const modNum = Number(String(saved.moduleId).replace(/^module-?/i, ''));
+		if (
+			!isNaN(modNum) &&
+			modNum >= 1 &&
+			modNum <= totalModulesCount &&
+			saved.taskIndex >= 0 &&
+			!isModulePassed(modNum, dbms)
+		) {
+			return `/${dbms}/${saved.moduleId}?task=${saved.taskIndex}`;
+		}
+	}
+
+	// Scenario 2 (Find First Incomplete Task):
+	for (const mod of MODULES) {
+		if (isModulePassed(mod.id, dbms)) {
+			continue;
+		}
+
+		const modState = prog.modules[mod.id];
+		const totalTasks =
+			modState?.questionIds?.length ||
+			new Set(mod.questions.map((q) => q.categorySlot)).size ||
+			10;
+		const completedTasks = modState?.completedTasks || [];
+
+		for (let taskIdx = 0; taskIdx < totalTasks; taskIdx++) {
+			if (!completedTasks.includes(taskIdx)) {
+				return `/${dbms}/${mod.id}?task=${taskIdx}`;
+			}
+		}
+	}
+
+	// Scenario 3 (Brand New User / Fallback):
+	return `/${dbms}/1?task=0`;
+}
+
 

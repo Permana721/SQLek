@@ -23,10 +23,27 @@
 	} = $props();
 
 	let editorContainer: HTMLDivElement;
-	let view: EditorView | null = null;
+	let view = $state<EditorView | null>(null);
 	let lintTimeout: ReturnType<typeof setTimeout> | null = null;
 	const readOnlyCompartment = new Compartment();
 	const editableCompartment = new Compartment();
+
+	export function setValue(newVal: string) {
+		value = newVal;
+		if (view && newVal !== view.state.doc.toString()) {
+			view.dispatch({
+				changes: { from: 0, to: view.state.doc.length, insert: newVal }
+			});
+		}
+	}
+
+	export function clear() {
+		setValue('');
+	}
+
+	export function getView(): EditorView | null {
+		return view;
+	}
 
 	function createLinter() {
 		return linter(async (view) => {
@@ -122,19 +139,21 @@
 	});
 
 	$effect(() => {
-		if (view && value !== view.state.doc.toString()) {
+		const currentVal = value;
+		if (view && currentVal !== view.state.doc.toString()) {
 			view.dispatch({
-				changes: { from: 0, to: view.state.doc.length, insert: value }
+				changes: { from: 0, to: view.state.doc.length, insert: currentVal }
 			});
 		}
 	});
 
 	$effect(() => {
+		const currentReadOnly = readOnly;
 		if (view) {
 			view.dispatch({
 				effects: [
-					readOnlyCompartment.reconfigure(EditorState.readOnly.of(readOnly)),
-					editableCompartment.reconfigure(EditorView.editable.of(!readOnly))
+					readOnlyCompartment.reconfigure(EditorState.readOnly.of(currentReadOnly)),
+					editableCompartment.reconfigure(EditorView.editable.of(!currentReadOnly))
 				]
 			});
 		}

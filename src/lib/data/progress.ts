@@ -295,7 +295,7 @@ export function isModulePassed(moduleId: number, engine: string): boolean {
 	const totalTasks =
 		modState.questionIds?.length ||
 		new Set(mod.questions.map((q) => q.categorySlot)).size ||
-		10;
+		15;
 	return (
 		totalTasks > 0 &&
 		Array.from({ length: totalTasks }, (_, i) => i).every((idx) =>
@@ -506,7 +506,7 @@ export function resolveResumePath(engine: string): string {
 		const totalTasks =
 			modState?.questionIds?.length ||
 			new Set(mod.questions.map((q) => q.categorySlot)).size ||
-			10;
+			15;
 		const completedTasks = modState?.completedTasks || [];
 
 		for (let taskIdx = 0; taskIdx < totalTasks; taskIdx++) {

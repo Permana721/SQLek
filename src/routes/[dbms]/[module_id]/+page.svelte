@@ -12,9 +12,18 @@
 	import UserMenu from '$lib/components/UserMenu.svelte';
 	import LanguageToggle from '$lib/components/LanguageToggle.svelte';
 	import Logo from '$lib/components/Logo.svelte';
+	import ErDiagram from '$lib/components/ErDiagram.svelte';
+	import ExplainPlanVisualizer from '$lib/components/ExplainPlanVisualizer.svelte';
+	import { introspectDatabase, type DatabaseSchema } from '$lib/db/introspect';
+	import {
+		executeExplainJson,
+		extractExplainJson,
+		buildEnrichedPlanTree,
+		detectExplainQuery,
+		type PlanExecutionSummary
+	} from '$lib/exam/planVisualizer';
 	import { locale, t } from '$lib/data/locale';
 	import { hideSyntaxPattern } from '$lib/stores/preferences';
-	import BackupRestoreModal from '$lib/components/BackupRestoreModal.svelte';
 
 	const TOTAL_MODULES = MODULES.length;
 	const moduleId = $derived(Number(String(page.params.module_id || '').replace(/^module-?/i, '')) || 1);
@@ -70,12 +79,30 @@
 		return t[$locale].showingRowsInfo(shown, total);
 	});
 
-	// Persistent Database Engine instance per module session
-	let dbEngine: IDbEngine | null = null;
-	let activeDbms: string | null = null;
-	let isBackupModalOpen = $state(false);
-	let isRestoredFromBackup = $state(false);
+	// Visual ER Diagram & Schema Inspector State
+	let activeInspectorTab = $state<'data' | 'er'>('data');
+	let databaseSchema = $state<DatabaseSchema>({ tables: [], relationships: [] });
 
+	// Interactive Query Execution Plan Visualizer State
+	let activePlanViewMode = $state<'visual' | 'raw'>('visual');
+	let executionPlanSummary = $state<PlanExecutionSummary | null>(null);
+
+	async function updateDiagramSchema(engine: IDbEngine | null) {
+		if (!engine) {
+			databaseSchema = { tables: [], relationships: [] };
+			return;
+		}
+		try {
+			databaseSchema = await introspectDatabase(engine, dbmsParam);
+		} catch (e) {
+			console.warn('Failed to introspect schema for ER diagram:', e);
+		}
+	}
+
+	// Persistent Database Engine instance per module session
+	let dbEngine = $state<IDbEngine | null>(null);
+	let activeDbms: string | null = null;
+	let editorRef = $state<any>(null);
 	let userCode = $state('');
 	let queryResult = $state<DbResult | null>(null);
 	let queryError = $state<string | null>(null);
@@ -96,36 +123,26 @@
 			}
 			dbEngine = null;
 			activeDbms = null;
-			isRestoredFromBackup = false;
 		}
 	}
 
 	async function ensureModuleEngine(seedSql: string, dbms: 'mysql' | 'postgres'): Promise<IDbEngine> {
 		if (dbEngine && activeDbms === dbms) {
-			if (!isRestoredFromBackup) {
+			try {
 				await dbEngine.init(seedSql || '');
+				return dbEngine;
+			} catch (err) {
+				console.warn('Re-init of existing engine failed, recreating engine:', err);
+				await cleanupEngine();
 			}
-			return dbEngine;
 		}
 		await cleanupEngine();
-		isRestoredFromBackup = false;
 
 		const engine = createDbEngine(dbms);
 		await engine.init(seedSql || '');
 		dbEngine = engine;
 		activeDbms = dbms;
 		return dbEngine;
-	}
-
-	async function handleDatabaseRestored(restoredEngine: IDbEngine) {
-		dbEngine = restoredEngine;
-		isRestoredFromBackup = true;
-		queryError = null;
-		queryResult = null;
-		if (currentQuestion) {
-			const previews = await fetchAllDynamicPreviews(dbEngine, currentQuestion, previewLimit);
-			dynamicPreviews = previews;
-		}
 	}
 
 	async function initTaskEngineAndPreview(q: Question | null, dbms: 'mysql' | 'postgres', limit: number = previewLimit) {
@@ -141,6 +158,7 @@
 			} else {
 				dynamicPreviews = {};
 			}
+			await updateDiagramSchema(engine);
 		} catch (e) {
 			console.error('Failed to initialize engine and preview:', e);
 		}
@@ -156,16 +174,20 @@
 
 	async function handleResetDatabase() {
 		if (!currentQuestion) return;
-		isRestoredFromBackup = false;
 
-		// 1. Re-seed database instance
-		const seed = currentQuestion.seed_sql || '';
-		await ensureModuleEngine(seed, dbmsParam);
-
-		// 2. Clear query input and output state
+		// 1. Clear SQL Editor State immediately
 		userCode = '';
+		if (editorRef) {
+			try {
+				editorRef.clear();
+			} catch (e) {}
+		}
+
+		// 2. Clear Query Results State & errors
 		queryResult = null;
 		queryError = null;
+		executionPlanSummary = null;
+		isRunningQuery = false;
 
 		// 3. Clear draft cache for this specific task
 		if (rawCurrentQuestion) {
@@ -173,6 +195,10 @@
 			if (typeof window !== 'undefined') {
 				try {
 					localStorage.removeItem(`sqlek_draft_${rawCurrentQuestion.id}`);
+					localStorage.removeItem(`draft_${rawCurrentQuestion.id}`);
+					localStorage.removeItem(`draft_${rawCurrentQuestion.id}_${dbmsParam}`);
+					localStorage.removeItem(`draft_${rawCurrentQuestion.id}_mysql`);
+					localStorage.removeItem(`draft_${rawCurrentQuestion.id}_postgres`);
 				} catch (e) {
 					// Ignore storage error
 				}
@@ -183,15 +209,21 @@
 		completedIndices = completedIndices.filter((idx) => idx !== currentIndex);
 		unmarkTaskCompleted(dbmsParam, moduleId, currentIndex);
 
-		// 5. Refresh preview tables
+		// 5. Invalidate dynamic table preview immediately so it displays pristine seed data
+		dynamicPreviews = {};
 		activePreviewTable = currentQuestion.table_names?.[0] || 'Schema';
-		await initTaskEngineAndPreview(currentQuestion, dbmsParam, previewLimit);
+
+		// 6. Reload Database Engine & Table Previews
+		try {
+			await initTaskEngineAndPreview(currentQuestion, dbmsParam, previewLimit);
+		} catch (err) {
+			console.error('Failed to reload database and previews on reset:', err);
+		}
 	}
 
 	// Instant 0ms synchronous task switching with background WASM preview sync
 	function selectTask(idx: number) {
 		if (idx < 0 || idx >= sampledQuestions.length) return;
-		isRestoredFromBackup = false;
 
 		// Save draft of currently active question before switching
 		if (rawCurrentQuestion) {
@@ -215,6 +247,7 @@
 		currentIndex = idx;
 		queryResult = null;
 		queryError = null;
+		executionPlanSummary = null;
 
 		// Strictly default to empty string unless the user has actively typed a draft
 		const nextQ = sampledQuestions[idx];
@@ -337,12 +370,37 @@
 		isRunningQuery = true;
 		queryError = null;
 		queryResult = null;
+		executionPlanSummary = null;
 
 		try {
 			const seed = currentQuestion.seed_sql || '';
 			const engine = await ensureModuleEngine(seed, dbmsParam);
 			const uRes = await engine.query(userCode);
 			queryResult = uRes;
+			await updateDiagramSchema(engine);
+
+			// Extract execution plan for PostgreSQL if EXPLAIN is used or in Module 10
+			if (dbmsParam === 'postgres') {
+				const isExplain =
+					detectExplainQuery(userCode).isExplain ||
+					uRes.columns.some((c) => c.toUpperCase() === 'QUERY PLAN') ||
+					moduleId === 10;
+				if (isExplain) {
+					const directJson = extractExplainJson(uRes);
+					if (directJson) {
+						executionPlanSummary = buildEnrichedPlanTree(directJson);
+						activePlanViewMode = 'visual';
+					} else {
+						try {
+							const plan = await executeExplainJson(engine, userCode);
+							if (plan) {
+								executionPlanSummary = plan;
+								activePlanViewMode = 'visual';
+							}
+						} catch {}
+					}
+				}
+			}
 
 			if (currentQuestion.isDdlCreate) {
 				const primaryTable = currentQuestion.table_names && currentQuestion.table_names.length > 0 ? currentQuestion.table_names[0] : 'books';
@@ -398,21 +456,57 @@
 	}
 
 	async function handleResetSession() {
+		// 1. Clear SQL Editor State
+		userCode = '';
+		if (editorRef) {
+			try {
+				editorRef.clear();
+			} catch (e) {}
+		}
+
+		// 2. Clear Query Results State & errors
+		queryResult = null;
+		queryError = null;
+		executionPlanSummary = null;
+		isRunningQuery = false;
+
+		// 3. Clear Progress
 		clearProgress(dbmsParam);
 		completedModules = [];
 		completedIndices = [];
+
+		// 4. Wipe all Draft Caches from localStorage & in-memory cache
+		userDrafts.clear();
 		if (typeof window !== 'undefined') {
 			try {
-				sampledQuestions.forEach((q) => {
-					localStorage.removeItem(`sqlek_draft_${q.id}`);
-				});
+				if (currentModule?.questions) {
+					currentModule.questions.forEach((q) => {
+						localStorage.removeItem(`sqlek_draft_${q.id}`);
+						localStorage.removeItem(`draft_${q.id}`);
+						localStorage.removeItem(`draft_${q.id}_${dbmsParam}`);
+						localStorage.removeItem(`draft_${q.id}_mysql`);
+						localStorage.removeItem(`draft_${q.id}_postgres`);
+					});
+				}
+				localStorage.removeItem(`drafts_module_${moduleId}`);
+				const keysToRemove: string[] = [];
+				for (let i = 0; i < localStorage.length; i++) {
+					const k = localStorage.key(i);
+					if (k && (k.startsWith('sqlek_draft_') || k.startsWith('draft_'))) {
+						keysToRemove.push(k);
+					}
+				}
+				keysToRemove.forEach((k) => localStorage.removeItem(k));
 			} catch (e) {}
 		}
-		userDrafts.clear();
-		userCode = '';
+
+		// 5. Invalidate dynamic table preview & resample
+		dynamicPreviews = {};
 		currentIndex = 0;
 		sampledQuestions = sampleDiverseQuestions(currentModule.questions);
 		selectTask(0);
+
+		// 6. Reset Database instance
 		await handleResetDatabase();
 	}
 
@@ -426,6 +520,12 @@
 		}
 
 		const targetModule = MODULES.find((m) => m.id === modId) || MODULES[0];
+
+		// Identify all mandatory questions for this module (sorted by categorySlot)
+		const mandatoryQuestions = targetModule.questions
+			.filter((q: Question) => q.isMandatory === true)
+			.sort((a: Question, b: Question) => a.categorySlot - b.categorySlot);
+
 		const modState = prog.modules[modId];
 		if (modState && modState.questionIds && modState.questionIds.length > 0) {
 			const loadedQuestions = modState.questionIds
@@ -433,7 +533,29 @@
 				.filter((q): q is Question => q !== undefined);
 
 			if (loadedQuestions.length === modState.questionIds.length) {
-				sampledQuestions = loadedQuestions;
+				// Restore saved session — but also ensure all mandatory questions are present.
+				// If any mandatory question is missing (added after the session was first created),
+				// append them now so FTS tasks are never omitted from an existing session.
+				const savedIds = new Set(loadedQuestions.map((q: Question) => q.id));
+				const missingMandatory = mandatoryQuestions.filter((q: Question) => !savedIds.has(q.id));
+
+				if (missingMandatory.length > 0) {
+					// Merge: existing questions first (preserving completed indices), then missing mandatory ones
+					sampledQuestions = [...loadedQuestions, ...missingMandatory];
+					// Re-persist the updated question list (completedTasks indices stay the same; only new tasks appended)
+					saveProgress(dbms, {
+						completedModules,
+						modules: {
+							...prog.modules,
+							[modId]: {
+								questionIds: sampledQuestions.map((q: Question) => q.id),
+								completedTasks: modState.completedTasks || []
+							}
+						}
+					});
+				} else {
+					sampledQuestions = loadedQuestions;
+				}
 				completedIndices = modState.completedTasks || [];
 			} else {
 				sampledQuestions = sampleDiverseQuestions(targetModule.questions);
@@ -603,7 +725,9 @@
 								: 'bg-zinc-950 border border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:text-zinc-400'}"
 					>
 						{#if isDone}
-							✓
+							<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+								<polyline points="20 6 9 17 4 12"/>
+							</svg>
 						{:else}
 							{idx + 1}
 						{/if}
@@ -614,27 +738,11 @@
 			<div class="h-4 w-px bg-zinc-850"></div>
 
 			<div class="flex items-center gap-2 shrink-0">
-				{#if dbmsParam === 'postgres'}
-					<button
-						type="button"
-						onclick={() => { isBackupModalOpen = true; }}
-						title="{t[$locale].backupRestoreTitle} (pg_dump / psql)"
-						class="px-2.5 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-emerald-400 hover:border-emerald-500/30 flex items-center gap-1.5 text-xs font-mono transition-colors cursor-pointer"
-					>
-						<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-							<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-							<polyline points="7 10 12 15 17 10" />
-							<line x1="12" y1="15" x2="12" y2="3" />
-						</svg>
-						<span class="hidden sm:inline">{t[$locale].backupRestoreBtn}</span>
-					</button>
-				{/if}
 				<LanguageToggle />
 				<UserMenu
 					engine={dbmsParam}
 					onResetSession={handleResetSession}
 					onResetDatabase={handleResetDatabase}
-					onOpenBackupRestore={() => { isBackupModalOpen = true; }}
 				/>
 			</div>
 		</div>
@@ -706,13 +814,40 @@
 							</div>
 						{/if}
 
-						<!-- Middle Section: Live Preview Table of Seed Data / Target Schema Blueprint -->
+						<!-- Middle Section: Live Preview Table of Seed Data / Target Schema Blueprint & Visual ER Diagram -->
 						<div>
-							<div class="flex items-center justify-between mb-2 flex-wrap gap-2">
-								<h3 class="text-xs font-mono font-medium uppercase tracking-wider text-zinc-400">
-									{t[$locale].initialTablePreview(activePreviewTable || currentQuestion.table_names[0] || 'Schema', previewRowInfo)}
-								</h3>
-								{#if !currentQuestion.isDdlCreate && activePreviewData && activePreviewData.totalRowCount !== undefined && activePreviewData.totalRowCount > 10}
+							<!-- View Mode Toggle Tabs -->
+							<div class="flex items-center justify-between mb-2.5 pb-2 border-b border-zinc-850 flex-wrap gap-2">
+								<div class="flex items-center gap-1 bg-zinc-950 p-0.5 rounded-md border border-zinc-850">
+									<button
+										type="button"
+										onclick={() => activeInspectorTab = 'data'}
+										class="px-2.5 py-1 text-xs font-mono rounded transition-colors flex items-center gap-1.5 {activeInspectorTab === 'data' ? 'bg-zinc-850 text-zinc-100 font-medium shadow-sm' : 'text-zinc-400 hover:text-zinc-200'}"
+									>
+										<svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+											<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+											<line x1="3" y1="9" x2="21" y2="9"/>
+											<line x1="9" y1="21" x2="9" y2="9"/>
+										</svg>
+										<span>{t[$locale].tableViewTab}</span>
+									</button>
+									<button
+										type="button"
+										onclick={() => activeInspectorTab = 'er'}
+										class="px-2.5 py-1 text-xs font-mono rounded transition-colors flex items-center gap-1.5 {activeInspectorTab === 'er' ? 'bg-zinc-850 text-zinc-100 font-medium shadow-sm' : 'text-zinc-400 hover:text-zinc-200'}"
+									>
+										<svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+											<circle cx="18" cy="5" r="3"/>
+											<circle cx="6" cy="12" r="3"/>
+											<circle cx="18" cy="19" r="3"/>
+											<line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+											<line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+										</svg>
+										<span>{t[$locale].erDiagramTab}</span>
+									</button>
+								</div>
+
+								{#if activeInspectorTab === 'data' && !currentQuestion.isDdlCreate && activePreviewData && activePreviewData.totalRowCount !== undefined && activePreviewData.totalRowCount > 10}
 									<button
 										type="button"
 										onclick={togglePreviewLimit}
@@ -723,113 +858,123 @@
 								{/if}
 							</div>
 
-							{#if currentQuestion.table_names && currentQuestion.table_names.length > 1}
-								<div class="flex items-center gap-1.5 mb-2.5 flex-wrap">
-									{#each currentQuestion.table_names as tName}
-										<button
-											type="button"
-											onclick={() => activePreviewTable = tName}
-											class="px-2 py-0.5 text-xs font-mono rounded border transition-colors {activePreviewTable === tName ? 'bg-zinc-800 text-zinc-100 border-zinc-700 font-medium' : 'bg-zinc-950 text-zinc-400 border-zinc-850 hover:bg-zinc-900'}"
-										>
-											{tName}
-										</button>
-									{/each}
+							{#if activeInspectorTab === 'er'}
+								<ErDiagram schema={databaseSchema} dbms={dbmsParam} onRefresh={() => updateDiagramSchema(dbEngine)} />
+							{:else}
+								<div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+									<h3 class="text-xs font-mono font-medium uppercase tracking-wider text-zinc-400">
+										{t[$locale].initialTablePreview(activePreviewTable || currentQuestion.table_names[0] || 'Schema', previewRowInfo)}
+									</h3>
 								</div>
-							{/if}
 
-							{#if currentQuestion.targetSchemaBlueprint && currentQuestion.targetSchemaBlueprint.length > 0}
-								<div class="overflow-x-auto border border-zinc-850 rounded-md bg-zinc-950/40 mb-3">
-									<table class="w-full text-left text-xs font-mono border-collapse">
-										<thead class="bg-zinc-950/60 border-b border-zinc-850 text-zinc-400">
-											<tr>
-												<th class="p-2 border-r border-zinc-900 font-medium">{t[$locale].colNameHeader}</th>
-												<th class="p-2 border-r border-zinc-900 font-medium">{t[$locale].colTypeHeader}</th>
-												<th class="p-2 font-medium">{t[$locale].colConstraintHeader}</th>
-											</tr>
-										</thead>
-										<tbody>
-											{#each currentQuestion.targetSchemaBlueprint as col}
-												<tr class="border-b last:border-b-0 border-zinc-900 hover:bg-zinc-900/30 transition-colors">
-													<td class="p-2 border-r border-zinc-900 text-zinc-200 font-medium">{col.name}</td>
-													<td class="p-2 border-r border-zinc-900 text-amber-400/90">{col.type}</td>
-													<td class="p-2 text-zinc-400">{col.constraint || '—'}</td>
+								{#if currentQuestion.table_names && currentQuestion.table_names.length > 1}
+									<div class="flex items-center gap-1.5 mb-2.5 flex-wrap">
+										{#each currentQuestion.table_names as tName}
+											<button
+												type="button"
+												onclick={() => activePreviewTable = tName}
+												class="px-2 py-0.5 text-xs font-mono rounded border transition-colors {activePreviewTable === tName ? 'bg-zinc-800 text-zinc-100 border-zinc-700 font-medium' : 'bg-zinc-950 text-zinc-400 border-zinc-850 hover:bg-zinc-900'}"
+											>
+												{tName}
+											</button>
+										{/each}
+									</div>
+								{/if}
+
+								{#if currentQuestion.targetSchemaBlueprint && currentQuestion.targetSchemaBlueprint.length > 0}
+									<div class="overflow-x-auto border border-zinc-850 rounded-md bg-zinc-950/40 mb-3">
+										<table class="w-full text-left text-xs font-mono border-collapse">
+											<thead class="bg-zinc-950/60 border-b border-zinc-850 text-zinc-400">
+												<tr>
+													<th class="p-2 border-r border-zinc-900 font-medium">{t[$locale].colNameHeader}</th>
+													<th class="p-2 border-r border-zinc-900 font-medium">{t[$locale].colTypeHeader}</th>
+													<th class="p-2 font-medium">{t[$locale].colConstraintHeader}</th>
 												</tr>
-											{/each}
-										</tbody>
-									</table>
-								</div>
-							{/if}
-
-							{#if currentQuestion.mockPreviewData}
-								<div class="text-[11px] font-mono text-zinc-400 mb-1.5 flex items-center gap-1.5">
-									<span class="w-1.5 h-1.5 rounded-full bg-zinc-500"></span>
-									<span>{t[$locale].sampleRecordsExpected}</span>
-								</div>
-							{/if}
-
-							{#if activePreviewData && activePreviewData.rows.length > 0}
-								<div class="max-h-72 overflow-auto border border-zinc-850 rounded-md bg-zinc-950/40">
-									<table class="w-full text-left text-xs font-mono border-collapse">
-										<thead class="sticky top-0 bg-zinc-950 border-b border-zinc-850 text-zinc-400 z-10">
-											<tr>
-												{#each activePreviewData.columns as col}
-													<th class="p-2 border-r last:border-r-0 border-zinc-900 font-medium">{col}</th>
+											</thead>
+											<tbody>
+												{#each currentQuestion.targetSchemaBlueprint as col}
+													<tr class="border-b last:border-b-0 border-zinc-900 hover:bg-zinc-900/30 transition-colors">
+														<td class="p-2 border-r border-zinc-900 text-zinc-200 font-medium">{col.name}</td>
+														<td class="p-2 border-r border-zinc-900 text-amber-400/90">{col.type}</td>
+														<td class="p-2 text-zinc-400">{col.constraint || '—'}</td>
+													</tr>
 												{/each}
-											</tr>
-										</thead>
-										<tbody>
-											{#each activePreviewData.rows as row}
-												<tr class="border-b last:border-b-0 border-zinc-900 hover:bg-zinc-900/30 transition-colors">
+											</tbody>
+										</table>
+									</div>
+								{/if}
+
+								{#if currentQuestion.mockPreviewData}
+									<div class="text-[11px] font-mono text-zinc-400 mb-1.5 flex items-center gap-1.5">
+										<span class="w-1.5 h-1.5 rounded-full bg-zinc-500"></span>
+										<span>{t[$locale].sampleRecordsExpected}</span>
+									</div>
+								{/if}
+
+								{#if activePreviewData && activePreviewData.rows.length > 0}
+									<div class="max-h-72 overflow-auto border border-zinc-850 rounded-md bg-zinc-950/40">
+										<table class="w-full text-left text-xs font-mono border-collapse">
+											<thead class="sticky top-0 bg-zinc-950 border-b border-zinc-850 text-zinc-400 z-10">
+												<tr>
 													{#each activePreviewData.columns as col}
-														<td class="p-2 border-r last:border-r-0 border-zinc-900 text-zinc-300">
-															{row[col] !== null && row[col] !== undefined ? String(row[col]) : 'NULL'}
-														</td>
+														<th class="p-2 border-r last:border-r-0 border-zinc-900 font-medium">{col}</th>
 													{/each}
 												</tr>
-											{/each}
-										</tbody>
-									</table>
-								</div>
-							{:else if activePreviewData && activePreviewData.columns.length > 0}
-								<div class="overflow-x-auto border border-zinc-850 rounded-md bg-zinc-950/40">
-									<table class="w-full text-left text-xs font-mono border-collapse">
-										<thead class="bg-zinc-950/60 border-b border-zinc-850 text-zinc-400">
-											<tr>
-												{#each activePreviewData.columns as col}
-													<th class="p-2 border-r last:border-r-0 border-zinc-900 font-medium">{col}</th>
+											</thead>
+											<tbody>
+												{#each activePreviewData.rows as row}
+													<tr class="border-b last:border-b-0 border-zinc-900 hover:bg-zinc-900/30 transition-colors">
+														{#each activePreviewData.columns as col}
+															<td class="p-2 border-r last:border-r-0 border-zinc-900 text-zinc-300">
+																{row[col] !== null && row[col] !== undefined ? String(row[col]) : 'NULL'}
+															</td>
+														{/each}
+													</tr>
 												{/each}
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td colspan={activePreviewData.columns.length} class="p-3 text-center text-zinc-500 italic">
-													(0 rows)
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							{:else if !currentQuestion.isDdlCreate}
-								<div class="overflow-x-auto border border-zinc-850 rounded-md bg-zinc-950/40">
-									<table class="w-full text-left text-xs font-mono border-collapse">
-										<thead class="bg-zinc-950/60 border-b border-zinc-850 text-zinc-400">
-											<tr>
-												{#each activePreviewData?.columns || [] as col}
-													<th class="p-2 border-r last:border-r-0 border-zinc-900 font-medium">{col}</th>
-												{/each}
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td colspan={activePreviewData?.columns?.length || 1} class="p-3 text-center text-zinc-500 italic">
-													(0 rows)
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							{:else}
-								<p class="text-xs font-mono text-zinc-500 italic">{t[$locale].noTableSeeded}</p>
+											</tbody>
+										</table>
+									</div>
+								{:else if activePreviewData && activePreviewData.columns.length > 0}
+									<div class="overflow-x-auto border border-zinc-850 rounded-md bg-zinc-950/40">
+										<table class="w-full text-left text-xs font-mono border-collapse">
+											<thead class="bg-zinc-950/60 border-b border-zinc-850 text-zinc-400">
+												<tr>
+													{#each activePreviewData.columns as col}
+														<th class="p-2 border-r last:border-r-0 border-zinc-900 font-medium">{col}</th>
+													{/each}
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td colspan={activePreviewData.columns.length} class="p-3 text-center text-zinc-500 italic">
+														(0 rows)
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								{:else if !currentQuestion.isDdlCreate}
+									<div class="overflow-x-auto border border-zinc-850 rounded-md bg-zinc-950/40">
+										<table class="w-full text-left text-xs font-mono border-collapse">
+											<thead class="bg-zinc-950/60 border-b border-zinc-850 text-zinc-400">
+												<tr>
+													{#each activePreviewData?.columns || [] as col}
+														<th class="p-2 border-r last:border-r-0 border-zinc-900 font-medium">{col}</th>
+													{/each}
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td colspan={activePreviewData?.columns?.length || 1} class="p-3 text-center text-zinc-500 italic">
+														(0 rows)
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								{:else}
+									<p class="text-xs font-mono text-zinc-500 italic">{t[$locale].noTableSeeded}</p>
+								{/if}
 							{/if}
 						</div>
 
@@ -897,6 +1042,7 @@
 						</div>
 
 						<SqlEditor
+							bind:this={editorRef}
 							bind:value={userCode}
 							dbms={dbmsParam}
 							tableNames={currentQuestion.table_names}
@@ -934,8 +1080,37 @@
 
 					<!-- Result / Output Section -->
 					<div class="bg-black border border-zinc-850 rounded-xl p-4 sm:p-5 font-mono text-xs text-zinc-300 flex-1 min-h-[220px] flex flex-col">
-						<div class="flex items-center justify-between mb-3 border-b border-zinc-900 pb-2.5">
-							<h3 class="text-xs font-mono uppercase tracking-wider text-zinc-400">{t[$locale].queryOutput}</h3>
+						<div class="flex items-center justify-between mb-3 border-b border-zinc-900 pb-2.5 flex-wrap gap-2">
+							<div class="flex items-center gap-2">
+								<h3 class="text-xs font-mono uppercase tracking-wider text-zinc-400">{t[$locale].queryOutput}</h3>
+								{#if executionPlanSummary}
+									<div class="flex items-center gap-0.5 bg-zinc-950 p-0.5 rounded border border-zinc-800">
+										<button
+											type="button"
+											onclick={() => activePlanViewMode = 'visual'}
+											class="px-2 py-0.5 rounded text-[11px] font-mono transition-colors flex items-center gap-1.5 {activePlanViewMode === 'visual' ? 'bg-zinc-800 text-cyan-300 font-bold' : 'text-zinc-400 hover:text-zinc-200'}"
+										>
+											<svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-cyan-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+												<rect x="3" y="3" width="7" height="7" rx="1"/>
+												<rect x="14" y="3" width="7" height="7" rx="1"/>
+												<rect x="14" y="14" width="7" height="7" rx="1"/>
+												<path d="M10 6.5h4M6.5 10v7h7.5"/>
+											</svg>
+											<span>{t[$locale].visualPlanTab}</span>
+										</button>
+										<button
+											type="button"
+											onclick={() => activePlanViewMode = 'raw'}
+											class="px-2 py-0.5 rounded text-[11px] font-mono transition-colors flex items-center gap-1.5 {activePlanViewMode === 'raw' ? 'bg-zinc-800 text-zinc-100 font-bold' : 'text-zinc-400 hover:text-zinc-200'}"
+										>
+											<svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-zinc-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+												<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+											</svg>
+											<span>{t[$locale].rawOutputTab}</span>
+										</button>
+									</div>
+								{/if}
+							</div>
 							{#if queryResult && queryResult.rows}
 								<span class="text-[10px] text-zinc-500 font-mono">
 									{queryResult.rows.length} {queryResult.rows.length === 1 ? 'row' : 'rows'}
@@ -952,7 +1127,11 @@
 								{queryError}
 							</div>
 						{:else if queryResult}
-							{#if queryResult.rows.length === 0}
+							{#if executionPlanSummary && activePlanViewMode === 'visual'}
+								<div class="flex-1 min-h-[380px] flex flex-col">
+									<ExplainPlanVisualizer planSummary={executionPlanSummary} />
+								</div>
+							{:else if queryResult.rows.length === 0}
 								<div class="flex-1 flex items-center justify-center text-center p-6">
 									<p class="text-xs font-mono text-zinc-500 italic">{t[$locale].noRowsReturned}</p>
 								</div>
@@ -990,12 +1169,4 @@
 			</div>
 		</main>
 	{/if}
-
-	<BackupRestoreModal
-		isOpen={isBackupModalOpen}
-		engine={dbmsParam}
-		activeEngine={dbEngine}
-		onClose={() => { isBackupModalOpen = false; }}
-		onRestored={handleDatabaseRestored}
-	/>
 </div>

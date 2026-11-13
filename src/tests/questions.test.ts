@@ -1,15 +1,15 @@
 import { describe, it, expect } from 'vitest';
 import { MODULES, resolveQuestionForEngine, type Question } from '$lib/data/questions';
-import { getRandomizedExamPool } from '$lib/utils/shuffle';
+import { getRandomizedExamPool, sampleDiverseQuestions } from '$lib/utils/shuffle';
 
 describe('Curriculum & Question Bank Integrity', () => {
 	const allQuestions: Question[] = MODULES.flatMap((m) => m.questions);
 
 	describe('Curriculum Structure', () => {
-		it('contains exactly 9 curriculum modules', () => {
-			expect(MODULES.length).toBe(9);
+		it('contains exactly 11 curriculum modules', () => {
+			expect(MODULES.length).toBe(11);
 			const moduleIds = MODULES.map((m) => m.id);
-			expect(moduleIds).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+			expect(moduleIds).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
 		});
 
 		it('each module contains a valid non-empty questions pool', () => {
@@ -290,11 +290,9 @@ describe('Curriculum & Question Bank Integrity', () => {
 			expect(uniqueIds.size).toBe(30);
 		});
 
-		it('returns exactly 30 questions by default for mysql', () => {
+		it('returns empty array for mysql (exam is postgresql only)', () => {
 			const pool = getRandomizedExamPool('mysql');
-			expect(pool.length).toBe(30);
-			const uniqueIds = new Set(pool.map((q) => q.id));
-			expect(uniqueIds.size).toBe(30);
+			expect(pool.length).toBe(0);
 		});
 
 		it('supports custom questionCount when provided', () => {
@@ -303,7 +301,7 @@ describe('Curriculum & Question Bank Integrity', () => {
 		});
 
 		it('resolves questions for the requested engine (applying engine overrides)', () => {
-			const pool = getRandomizedExamPool('mysql', 30);
+			const pool = getRandomizedExamPool('postgres', 30);
 			for (const q of pool) {
 				expect(q.expected_query).toBeTruthy();
 				expect(q.instructions.en).toBeTruthy();
@@ -322,19 +320,75 @@ describe('Curriculum & Question Bank Integrity', () => {
 					expect(q.expected_query).toBe(
 						"SELECT DISTINCT status FROM items WHERE category = 'Furniture' ORDER BY status;"
 					);
-					expect(q.syntaxPatterns[0].code).toBe(
+					expect(q.syntaxPatterns?.[0]?.code).toBe(
 						"SELECT DISTINCT column_name FROM mytable WHERE filter_col = 'val' ORDER BY column_name;"
 					);
 				}
 				if (q.expected_query === 'SELECT DISTINCT status FROM items ORDER BY status;') {
 					expect(q.instructions.en).toBe(
-						'List all distinct inventory status values (`status`) currently tracked across `items`, sorted alphabetically.'
+						'Show each unique status, sorted alphabetically.'
 					);
 					expect(q.instructions.id).toBe(
-						'Tampilkan seluruh status inventaris unik (`status`) yang saat ini tercatat pada `items`, tersusun menurut abjad.'
+						'Tampilkan setiap status unik, urut sesuai abjad.'
 					);
 				}
 			}
 		});
 	});
+
+	describe('Module 9 Mandatory FTS Task Inclusion', () => {
+		const mod9 = MODULES.find((m) => m.id === 9)!;
+
+		it('question 941 (Create FTS GIN Index) is flagged isMandatory', () => {
+			const q941 = mod9.questions.find((q) => q.id === 941);
+			expect(q941).toBeDefined();
+			expect(q941!.isMandatory).toBe(true);
+			expect(q941!.categorySlot).toBe(12);
+		});
+
+		it('question 942 (Search using FTS Index) is flagged isMandatory', () => {
+			const q942 = mod9.questions.find((q) => q.id === 942);
+			expect(q942).toBeDefined();
+			expect(q942!.isMandatory).toBe(true);
+			expect(q942!.categorySlot).toBe(13);
+		});
+
+		it('sampleDiverseQuestions always includes both mandatory FTS tasks (941 and 942)', () => {
+			// Run 10 independent samples to confirm determinism of mandatory inclusion
+			for (let i = 0; i < 10; i++) {
+				const sampled = sampleDiverseQuestions(mod9.questions);
+				const ids = sampled.map((q: Question) => q.id);
+				expect(ids).toContain(941);
+				expect(ids).toContain(942);
+			}
+		});
+
+		it('mandatory FTS tasks appear sequentially: index creation (941) before querying (942)', () => {
+			const sampled = sampleDiverseQuestions(mod9.questions);
+			const idx941 = sampled.findIndex((q: Question) => q.id === 941);
+			const idx942 = sampled.findIndex((q: Question) => q.id === 942);
+			expect(idx941).toBeGreaterThanOrEqual(0);
+			expect(idx942).toBeGreaterThanOrEqual(0);
+			expect(idx941).toBeLessThan(idx942);
+		});
+
+		it('sampleDiverseQuestions for Module 9 returns at least 15 questions (13 diverse + 2 mandatory)', () => {
+			const sampled = sampleDiverseQuestions(mod9.questions);
+			// Non-mandatory unique slots: 1-11, 14, 15 → 13 questions; plus 2 mandatory (slots 12, 13)
+			expect(sampled.length).toBeGreaterThanOrEqual(15);
+		});
+
+		it('Module 9 question 941 MySQL override creates a FULLTEXT index', () => {
+			const q941 = mod9.questions.find((q) => q.id === 941)!;
+			const myQ = resolveQuestionForEngine(q941, 'mysql');
+			expect(myQ.expected_query).toMatch(/CREATE FULLTEXT INDEX idx_documents_body_fts ON documents\(body\)/i);
+		});
+
+		it('Module 9 question 942 MySQL override uses MATCH AGAINST BOOLEAN MODE', () => {
+			const q942 = mod9.questions.find((q) => q.id === 942)!;
+			const myQ = resolveQuestionForEngine(q942, 'mysql');
+			expect(myQ.expected_query).toMatch(/MATCH\(body\) AGAINST\('\+performance' IN BOOLEAN MODE\)/i);
+		});
+	});
 });
+

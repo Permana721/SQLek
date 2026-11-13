@@ -159,6 +159,70 @@ INSERT INTO products VALUES
 (6, 'Desk Pad', 'Accessories', 30, 'Large waterproof microfiber desk mat', '{"brand": "Generic", "color": "gray", "in_stock": true}'),
 (7, 'Monitor Arm', 'Accessories', 90, 'Heavy duty gas spring dual monitor mount arm', '{"brand": "Ergotron", "color": "black", "in_stock": false}');`;
 
+
+const mod4TemporalSeed = `CREATE TABLE subscriptions (id INT PRIMARY KEY, user_id INT, plan_name TEXT, started_at TIMESTAMP, monthly_fee NUMERIC(6,2));
+INSERT INTO subscriptions VALUES
+(1, 101, 'Pro', '2024-01-15 08:30:00', 29.99),
+(2, 102, 'Basic', '2024-01-28 14:10:00', 9.99),
+(3, 103, 'Enterprise', '2024-02-05 10:00:00', 99.99),
+(4, 104, 'Pro', '2024-02-20 16:45:00', 29.99),
+(5, 105, 'Basic', '2024-03-01 11:20:00', 9.99),
+(6, 106, 'Enterprise', '2024-03-15 13:00:00', 99.99);`;
+
+const mod4CastingSeed = `CREATE TABLE products_pricing (id INT PRIMARY KEY, product_code TEXT, raw_price TEXT, discount_rate TEXT, notes TEXT);
+INSERT INTO products_pricing VALUES
+(1, '  PROD-001  ', '199.95', '0.15', '  In stock  '),
+(2, '  PROD-002  ', '49.50', '0.10', '  Low inventory  '),
+(3, '  PROD-003  ', '899.00', '0.20', '  Flagship item  '),
+(4, '  PROD-004  ', '29.99', '0.05', '  Clearance  ');`;
+
+const mod5GradesSeed = mod5Seed + `
+CREATE TABLE salary_grades (id INT PRIMARY KEY, grade_level TEXT, min_salary INT, max_salary INT);
+INSERT INTO salary_grades VALUES (1, 'Junior', 40000, 65000), (2, 'Mid', 65001, 85000), (3, 'Senior', 85001, 110000), (4, 'Lead', 110001, 150000);
+CREATE TABLE stores (id INT PRIMARY KEY, store_name TEXT, city TEXT);
+INSERT INTO stores VALUES (1, 'Downtown Flagship', 'Seattle'), (2, 'Metro Center', 'Portland'), (3, 'Airport Hub', 'San Francisco');
+CREATE TABLE products (id INT PRIMARY KEY, name TEXT, price INT);
+INSERT INTO products VALUES (101, 'Laptop', 1200), (102, 'Phone', 800), (103, 'Headphones', 150);`;
+
+const mod6HierarchySeed = `CREATE TABLE org_hierarchy (id INT PRIMARY KEY, name TEXT, manager_id INT, role TEXT);
+INSERT INTO org_hierarchy VALUES
+(1, 'Sarah Chen', NULL, 'CEO'),
+(2, 'Marcus Brody', 1, 'VP Engineering'),
+(3, 'Elena Rostova', 1, 'VP Sales'),
+(4, 'Liam Vance', 2, 'Lead Architect'),
+(5, 'Aisha Patel', 2, 'Senior Engineer'),
+(6, 'Kenji Sato', 3, 'Account Director');`;
+
+const mod6ArchiveSeed = `CREATE TABLE active_tickets (id INT PRIMARY KEY, title TEXT, status TEXT, closed_at DATE);
+CREATE TABLE ticket_archive (id INT PRIMARY KEY, title TEXT, status TEXT, closed_at DATE, archived_at DATE);
+INSERT INTO active_tickets VALUES
+(1, 'Database connection timeout', 'closed', '2024-02-15'),
+(2, 'UI alignment glitch', 'open', NULL),
+(3, 'SSL certificate renewal', 'closed', '2024-02-18'),
+(4, 'Memory leak in worker', 'investigating', NULL);`;
+
+const mod8QueueSeed = `CREATE TABLE job_queue (id INT PRIMARY KEY, task_type TEXT, payload TEXT, status TEXT);
+INSERT INTO job_queue VALUES
+(1, 'email_alert', '{"to":"alice@example.com"}', 'queued'),
+(2, 'data_export', '{"report":"quarterly"}', 'queued'),
+(3, 'image_resize', '{"file":"avatar.png"}', 'processing'),
+(4, 'webhook_sync', '{"event":"user_signup"}', 'queued');`;
+
+const mod9ArraysSeed = `CREATE TABLE user_accounts (id INT PRIMARY KEY, email TEXT, is_active BOOLEAN, signup_date DATE);
+INSERT INTO user_accounts VALUES
+(1, 'ALICE@EXAMPLE.COM', true, '2023-01-15'),
+(2, 'bob.builder@acme.org', false, '2023-03-22'),
+(3, 'CHARLIE@DOMAIN.NET', true, '2023-05-10'),
+(4, 'diana.prince@themyscira.gov', true, '2023-07-04'),
+(5, 'evan.inactive@testing.io', false, '2023-09-18');
+
+CREATE TABLE article_tags (id INT PRIMARY KEY, title TEXT, tags TEXT[], view_count INT);
+INSERT INTO article_tags VALUES
+(1, 'Getting Started with Postgres', ARRAY['postgres', 'sql', 'tutorial'], 1420),
+(2, 'Deep Dive into B-Tree Indexes', ARRAY['postgres', 'indexing', 'performance'], 2890),
+(3, 'Modern Web Development with SvelteKit', ARRAY['frontend', 'javascript', 'svelte'], 950),
+(4, 'Database Concurrency and Locks', ARRAY['postgres', 'transactions', 'locking'], 3100);`;
+
 function generateModule1(): Question[] {
     return [
         {
@@ -664,7 +728,7 @@ function generateModule1(): Question[] {
         {
             id: 110,
             moduleId: 1,
-            categorySlot: 10,
+            categorySlot: 11,
             title: {
                 en: "High-Speed TRUNCATE TABLE (Var #1)",
                 id: "Pengosongan Tabel Cepat dengan TRUNCATE (Latihan #1)"
@@ -1195,7 +1259,7 @@ function generateModule1(): Question[] {
         {
             id: 119,
             moduleId: 1,
-            categorySlot: 9,
+            categorySlot: 10,
             title: {
                 en: "ALTER TABLE Schema Evolution (Var #2)",
                 id: "Evolusi Skema dengan ALTER TABLE (Latihan #2)"
@@ -1256,7 +1320,7 @@ function generateModule1(): Question[] {
         {
             id: 120,
             moduleId: 1,
-            categorySlot: 10,
+            categorySlot: 11,
             title: {
                 en: "High-Speed TRUNCATE TABLE (Var #2)",
                 id: "Pengosongan Tabel Cepat dengan TRUNCATE (Latihan #2)"
@@ -1789,7 +1853,7 @@ function generateModule1(): Question[] {
         {
             id: 130,
             moduleId: 1,
-            categorySlot: 10,
+            categorySlot: 11,
             title: {
                 en: "High-Speed TRUNCATE TABLE (Var #3)",
                 id: "Pengosongan Tabel Cepat dengan TRUNCATE (Latihan #3)"
@@ -2289,7 +2353,7 @@ function generateModule1(): Question[] {
         {
             id: 139,
             moduleId: 1,
-            categorySlot: 9,
+            categorySlot: 10,
             title: {
                 en: "ALTER TABLE Schema Evolution (Var #4)",
                 id: "Evolusi Skema dengan ALTER TABLE (Latihan #4)"
@@ -2322,7 +2386,7 @@ function generateModule1(): Question[] {
         {
             id: 140,
             moduleId: 1,
-            categorySlot: 10,
+            categorySlot: 11,
             title: {
                 en: "High-Speed TRUNCATE TABLE (Var #4)",
                 id: "Pengosongan Tabel Cepat dengan TRUNCATE (Latihan #4)"
@@ -2855,7 +2919,7 @@ function generateModule1(): Question[] {
         {
             id: 150,
             moduleId: 1,
-            categorySlot: 10,
+            categorySlot: 11,
             title: {
                 en: "High-Speed TRUNCATE TABLE (Var #5)",
                 id: "Pengosongan Tabel Cepat dengan TRUNCATE (Latihan #5)"
@@ -3355,7 +3419,7 @@ function generateModule1(): Question[] {
         {
             id: 159,
             moduleId: 1,
-            categorySlot: 9,
+            categorySlot: 10,
             title: {
                 en: "ALTER TABLE Schema Evolution (Var #6)",
                 id: "Evolusi Skema dengan ALTER TABLE (Latihan #6)"
@@ -3388,7 +3452,7 @@ function generateModule1(): Question[] {
         {
             id: 160,
             moduleId: 1,
-            categorySlot: 10,
+            categorySlot: 11,
             title: {
                 en: "High-Speed TRUNCATE TABLE (Var #6)",
                 id: "Pengosongan Tabel Cepat dengan TRUNCATE (Latihan #6)"
@@ -4702,6 +4766,166 @@ function generateModule2(): Question[] {
             table_names: [
                 "items"
             ]
+        },
+{
+                "id": 241,
+                "moduleId": 2,
+                "categorySlot": 9,
+                "title": {
+                        "en": "Discrete List Filter with IN (Var #1)",
+                        "id": "Penyaringan Daftar Nilai dengan IN (Latihan #1)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Imagine shopping at a grocery store with a handwritten shopping list. Rather than walking through every aisle checking every shelf one-by-one, you look exclusively for items that match your list.\n\nEngine Processing Behavior: The IN operator evaluates membership against a finite set of literal values. Database engines optimize IN lists by transforming them into discrete equality checks or building an internal hash set for fast O(1) membership probing during table and index scans.\n\nBest Practices & Gotchas: Avoid extremely long IN lists with thousands of constants, as they bloat query parse trees. Ensure all elements in the list match the column's data type to maintain index lookups.",
+                        "id": "Analogi Konseptual: Bayangkan kamu berbelanja di supermarket membawa catatan belanja. Alih-alih memeriksa setiap barang di seluruh rak satu per satu, kamu hanya mencari barang-barang yang namanya tercantum dalam daftar belanjaanmu.\n\nCara Kerja Database Engine: Operator IN mencocokkan nilai kolom dengan sekumpulan konstanta tertentu. Engine database mengoptimalkan list IN menjadi perbandingan kesetaraan jamak atau membangun struktur hash set internal untuk pencarian keanggotaan O(1) yang sangat cepat saat scan tabel maupun indeks.\n\nBest Practices & Catatan Penting: Hindari penggunaan ribuan konstanta di dalam klausa IN karena memperbesar ukuran parse tree query. Pastikan semua elemen di dalam list memiliki tipe data yang sesuai dengan kolom target agar indeks dapat digunakan optimal."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Filter with IN list",
+                                        "id": "Penyaringan nilai dengan list IN"
+                                },
+                                "code": "SELECT * FROM items WHERE category IN ('Furniture', 'Kitchen');"
+                        }
+                ],
+                "instructions": {
+                        "en": "Find all items belonging to either the Furniture or Kitchen categories.",
+                        "id": "Temukan semua barang yang termasuk dalam kategori Furniture atau Kitchen."
+                },
+                seed_sql: mod2Seed,
+                "expected_query": "SELECT * FROM items WHERE category IN ('Furniture', 'Kitchen');",
+                "starterQuery": "SELECT * FROM items;",
+                "table_names": [
+                        "items"
+                ]
+        },
+        {
+                "id": 242,
+                "moduleId": 2,
+                "categorySlot": 9,
+                "title": {
+                        "en": "Discrete List Filter with IN (Var #2)",
+                        "id": "Penyaringan Daftar Nilai dengan IN (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: A warehouse manager filtering stock inventory records for items requiring attention, specifically those marked as out of stock or discontinued.\n\nEngine Processing Behavior: IN (val1, val2) allows the query planner to employ index multi-range scans across B-tree index leaf nodes when an index on the column exists.\n\nBest Practices & Gotchas: IN is functionally equivalent to OR (status = 'OutOfStock' OR status = 'Discontinued'), but IN is more concise, readable, and optimizer-friendly.",
+                        "id": "Analogi Konseptual: Manajer gudang menyaring data stok barang untuk item yang memerlukan perhatian khusus, tepatnya yang berstatus habis atau dihentikan produksinya.\n\nCara Kerja Database Engine: Sintaks IN (val1, val2) memungkinkan query planner menjalankan multi-range scan pada leaf node B-tree index jika terdapat indeks pada kolom tersebut.\n\nBest Practices & Catatan Penting: Klausa IN secara logika setara dengan rangkaian OR (status = 'OutOfStock' OR status = 'Discontinued'), namun IN jauh lebih ringkas, mudah dibaca, dan lebih disukai query optimizer."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Status matching with IN",
+                                        "id": "Pencocokan status dengan IN"
+                                },
+                                "code": "SELECT * FROM items WHERE status IN ('OutOfStock', 'Discontinued');"
+                        }
+                ],
+                "instructions": {
+                        "en": "Find all items with a status of either OutOfStock or Discontinued.",
+                        "id": "Temukan semua barang yang memiliki status OutOfStock atau Discontinued."
+                },
+                seed_sql: mod2Seed,
+                "expected_query": "SELECT * FROM items WHERE status IN ('OutOfStock', 'Discontinued');",
+                "starterQuery": "SELECT * FROM items;",
+                "table_names": [
+                        "items"
+                ]
+        },
+        {
+                "id": 243,
+                "moduleId": 2,
+                "categorySlot": 9,
+                "title": {
+                        "en": "Discrete List Filter with IN (Var #3)",
+                        "id": "Penyaringan Daftar Nilai dengan IN (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Selecting specific product categories for a targeted marketing promotion while keeping results in ordered sequence.\n\nEngine Processing Behavior: The storage engine scans items matching the IN list predicates and channels them into the sorting pipeline ordered by the primary key.\n\nBest Practices & Gotchas: Combining IN list filtering with ORDER BY ensures deterministic output ordering across database engines.",
+                        "id": "Analogi Konseptual: Memilih kategori produk tertentu untuk promosi pemasaran bertarget sembari menjaga baris data tersusun rapi secara urut.\n\nCara Kerja Database Engine: Storage engine menyaring item yang sesuai dengan predikat list IN lalu menyalurkan baris hasil ke pipeline pengurutan berdasarkan primary key.\n\nBest Practices & Catatan Penting: Mengombinasikan filter list IN dengan ORDER BY menjamin urutan hasil query bersifat deterministik dan konsisten di setiap database engine."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Filter categories with IN and ORDER BY",
+                                        "id": "Penyaringan kategori dengan IN dan ORDER BY"
+                                },
+                                "code": "SELECT * FROM items WHERE category IN ('Electronics', 'Stationery') ORDER BY id;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Find all items belonging to either the Electronics or Stationery categories, ordered by id.",
+                        "id": "Temukan semua barang yang termasuk dalam kategori Electronics atau Stationery, urutkan berdasarkan id."
+                },
+                seed_sql: mod2Seed,
+                "expected_query": "SELECT * FROM items WHERE category IN ('Electronics', 'Stationery') ORDER BY id;",
+                "starterQuery": "SELECT * FROM items;",
+                "table_names": [
+                        "items"
+                ]
+        },
+        {
+                "id": 244,
+                "moduleId": 2,
+                "categorySlot": 9,
+                "title": {
+                        "en": "Discrete Exclusion with NOT IN (Var #4)",
+                        "id": "Pengecualian Nilai dengan NOT IN (Latihan #4)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Filtering out unwanted categories from an inventory report, keeping only the remaining niche departments.\n\nEngine Processing Behavior: NOT IN checks that a column value does not match any element in the set. Caution: if the set contains a NULL, NOT IN evaluates to UNKNOWN for all rows.\n\nBest Practices & Gotchas: Never use NOT IN against sets containing NULL values, as three-valued logic will cause the query to return zero rows. Use NOT EXISTS or ensure non-null sets.",
+                        "id": "Analogi Konseptual: Menyaring dan membuang kategori tertentu dari laporan inventaris, hanya menyisakan departemen pendukung lainnya.\n\nCara Kerja Database Engine: Operator NOT IN memastikan nilai kolom tidak cocok dengan satupun anggota himpunan. Perhatian: jika himpunan memuat nilai NULL, NOT IN bernilai UNKNOWN untuk seluruh baris.\n\nBest Practices & Catatan Penting: Jangan pernah menggunakan NOT IN pada himpunan yang berpotensi memuat nilai NULL karena logika ternary (three-valued logic) akan membuat query mengembalikan nol baris. Gunakan NOT EXISTS jika data memiliki nilai NULL."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Exclude categories with NOT IN",
+                                        "id": "Mengecualikan kategori dengan NOT IN"
+                                },
+                                "code": "SELECT id, name, price, category FROM items WHERE category NOT IN ('Electronics', 'Furniture') ORDER BY price ASC;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Display the id, name, price, and category of items that are not in the Electronics or Furniture categories, sorted by price ascending.",
+                        "id": "Tampilkan id, name, price, dan category dari barang yang tidak termasuk dalam kategori Electronics atau Furniture, urutkan berdasarkan harga menaik."
+                },
+                seed_sql: mod2Seed,
+                "expected_query": "SELECT id, name, price, category FROM items WHERE category NOT IN ('Electronics', 'Furniture') ORDER BY price ASC;",
+                "starterQuery": "SELECT id, name, price, category FROM items;",
+                "table_names": [
+                        "items"
+                ]
+        },
+        {
+                "id": 245,
+                "moduleId": 2,
+                "categorySlot": 9,
+                "title": {
+                        "en": "Primary Key List Filter with IN (Var #5)",
+                        "id": "Penyaringan Daftar Primary Key dengan IN (Latihan #5)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: A cashier entering specific invoice numbers from a dispatch sheet to retrieve exact line items instantly.\n\nEngine Processing Behavior: When the IN list targets a primary key or unique indexed column, the optimizer converts the query into multiple direct index seeks (one per key in the list), achieving near-instant execution.\n\nBest Practices & Gotchas: Fetching records by a list of primary keys via IN is the standard, most performant way ORMs and data loaders hydrate batches of entities.",
+                        "id": "Analogi Konseptual: Kasir memasukkan nomor-nomor faktur tertentu dari lembar pengiriman untuk langsung menampilkan rincian barang terkait secara instan.\n\nCara Kerja Database Engine: Ketika klausa IN menargetkan kolom primary key atau kolom berindeks unik, optimizer mengubah query menjadi serangkaian index seek langsung (satu pencarian per kunci dalam list) sehingga waktu eksekusi sangat cepat.\n\nBest Practices & Catatan Penting: Mengambil banyak data berdasarkan daftar primary key via operator IN adalah standar industri dengan performa tertinggi yang digunakan oleh ORM dan batch data loader."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Filter primary keys with IN",
+                                        "id": "Penyaringan primary key dengan IN"
+                                },
+                                "code": "SELECT * FROM items WHERE id IN (1, 4, 7, 10) ORDER BY id;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Retrieve all details for items whose id is 1, 4, 7, or 10, ordered by id.",
+                        "id": "Tampilkan seluruh detail barang yang memiliki id 1, 4, 7, atau 10, urutkan berdasarkan id."
+                },
+                seed_sql: mod2Seed,
+                "expected_query": "SELECT * FROM items WHERE id IN (1, 4, 7, 10) ORDER BY id;",
+                "starterQuery": "SELECT * FROM items;",
+                "table_names": [
+                        "items"
+                ]
         }
     ];
 }
@@ -6096,7 +6320,7 @@ function generateModule4(): Question[] {
         {
             id: 404,
             moduleId: 4,
-            categorySlot: 4,
+            categorySlot: 6,
             title: {
                 en: "CASE WHEN Customer Tiers (Var #1)",
                 id: "Klasifikasi Kategori dengan CASE WHEN (Latihan #1)"
@@ -6155,7 +6379,7 @@ function generateModule4(): Question[] {
         {
             id: 405,
             moduleId: 4,
-            categorySlot: 5,
+            categorySlot: 7,
             title: {
                 en: "COALESCE Discount Code Fallback (Var #1)",
                 id: "Menangani Nilai Cadangan dengan COALESCE (Latihan #1)"
@@ -6310,7 +6534,7 @@ function generateModule4(): Question[] {
         {
             id: 409,
             moduleId: 4,
-            categorySlot: 4,
+            categorySlot: 6,
             title: {
                 en: "CASE WHEN Customer Tiers (Var #2)",
                 id: "Klasifikasi Kategori dengan CASE WHEN (Latihan #2)"
@@ -6369,7 +6593,7 @@ function generateModule4(): Question[] {
         {
             id: 410,
             moduleId: 4,
-            categorySlot: 5,
+            categorySlot: 7,
             title: {
                 en: "COALESCE Discount Code Fallback (Var #2)",
                 id: "Menangani Nilai Cadangan dengan COALESCE (Latihan #2)"
@@ -6524,7 +6748,7 @@ function generateModule4(): Question[] {
         {
             id: 414,
             moduleId: 4,
-            categorySlot: 4,
+            categorySlot: 6,
             title: {
                 en: "CASE WHEN Customer Tiers (Var #3)",
                 id: "Klasifikasi Kategori dengan CASE WHEN (Latihan #3)"
@@ -6583,7 +6807,7 @@ function generateModule4(): Question[] {
         {
             id: 415,
             moduleId: 4,
-            categorySlot: 5,
+            categorySlot: 7,
             title: {
                 en: "COALESCE Discount Code Fallback (Var #3)",
                 id: "Menangani Nilai Cadangan dengan COALESCE (Latihan #3)"
@@ -6738,7 +6962,7 @@ function generateModule4(): Question[] {
         {
             id: 419,
             moduleId: 4,
-            categorySlot: 4,
+            categorySlot: 6,
             title: {
                 en: "CASE WHEN Customer Tiers (Var #4)",
                 id: "Klasifikasi Kategori dengan CASE WHEN (Latihan #4)"
@@ -6797,7 +7021,7 @@ function generateModule4(): Question[] {
         {
             id: 420,
             moduleId: 4,
-            categorySlot: 5,
+            categorySlot: 7,
             title: {
                 en: "COALESCE Discount Code Fallback (Var #4)",
                 id: "Menangani Nilai Cadangan dengan COALESCE (Latihan #4)"
@@ -6952,7 +7176,7 @@ function generateModule4(): Question[] {
         {
             id: 424,
             moduleId: 4,
-            categorySlot: 4,
+            categorySlot: 6,
             title: {
                 en: "CASE WHEN Customer Tiers (Var #5)",
                 id: "Klasifikasi Kategori dengan CASE WHEN (Latihan #5)"
@@ -7011,7 +7235,7 @@ function generateModule4(): Question[] {
         {
             id: 425,
             moduleId: 4,
-            categorySlot: 5,
+            categorySlot: 7,
             title: {
                 en: "COALESCE Discount Code Fallback (Var #5)",
                 id: "Menangani Nilai Cadangan dengan COALESCE (Latihan #5)"
@@ -7166,7 +7390,7 @@ function generateModule4(): Question[] {
         {
             id: 429,
             moduleId: 4,
-            categorySlot: 4,
+            categorySlot: 6,
             title: {
                 en: "CASE WHEN Customer Tiers (Var #6)",
                 id: "Klasifikasi Kategori dengan CASE WHEN (Latihan #6)"
@@ -7225,7 +7449,7 @@ function generateModule4(): Question[] {
         {
             id: 430,
             moduleId: 4,
-            categorySlot: 5,
+            categorySlot: 7,
             title: {
                 en: "COALESCE Discount Code Fallback (Var #6)",
                 id: "Menangani Nilai Cadangan dengan COALESCE (Latihan #6)"
@@ -7280,6 +7504,660 @@ function generateModule4(): Question[] {
                     starterQuery: "SELECT * FROM customers;"
                 }
             }
+        },
+{
+                "id": 431,
+                "moduleId": 4,
+                "categorySlot": 4,
+                "title": {
+                        "en": "Monthly Revenue Aggregation with Date Truncation (Var #1)",
+                        "id": "Agregasi Pendapatan Bulanan dengan Pemotongan Tanggal (Latihan #1)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Think of date truncation as snapping timestamps to a calendar grid (such as the first second of each month or week), grouping disparate dates into unified time buckets.\n\nEngine Processing Behavior: The date truncation scalar function clears lower-order date components, allowing the query engine to group temporal data efficiently in standard aggregation passes without string formatting overhead.\n\nBest Practices & Gotchas: Truncating indexed timestamp columns directly in WHERE filters causes sequential table scans; prefer explicit interval ranges over truncating the column.",
+                        "id": "Analogi Konseptual: Bayangkan pemotongan tanggal seperti menyelaraskan jam dan menit ke batas awal kalender (misalnya detik pertama setiap bulan atau minggu), sehingga data transaksi yang tersebar dapat dikelompokkan ke dalam wadah waktu yang seragam.\n\nCara Kerja Database Engine: Fungsi pemotongan tanggal mereset komponen waktu tingkat rendah ke nilai awal secara matematis, memungkinkan engine melakukan grouping data temporal secara efisien di pipeline agregasi tanpa konversi teks.\n\nBest Practices & Catatan Penting: Hindari memotong kolom timestamp berindeks di dalam filter pencarian karena dapat memicu sequential scan; gunakan perbandingan rentang tanggal langsung untuk mempertahankan efektivitas indeks."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Date truncation to month",
+                                        "id": "Pemotongan tanggal ke awal bulan"
+                                },
+                                "code": "SELECT DATE_TRUNC('month', started_at) AS month_start, SUM(monthly_fee) AS total_fee FROM subscriptions GROUP BY DATE_TRUNC('month', started_at) ORDER BY month_start;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Calculate the total monthly fee grouped by the month start date of `started_at` aliased as `month_start` from `subscriptions`, ordered chronologically.",
+                        "id": "Hitung total biaya bulanan yang dikelompokkan berdasarkan tanggal awal bulan dari `started_at` dengan alias `month_start` dari tabel `subscriptions`, diurutkan secara kronologis."
+                },
+                seed_sql: mod4TemporalSeed,
+                "expected_query": "SELECT DATE_TRUNC('month', started_at) AS month_start, SUM(monthly_fee) AS total_fee FROM subscriptions GROUP BY DATE_TRUNC('month', started_at) ORDER BY month_start;",
+                "starterQuery": "SELECT * FROM subscriptions;",
+                "table_names": [
+                        "subscriptions"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Monthly Revenue Aggregation with DATE_FORMAT (Var #1)",
+                                        "id": "Agregasi Pendapatan Bulanan dengan DATE_FORMAT (Latihan #1)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Formatting dates to month boundaries creates uniform buckets for grouping chronological metrics.\n\nEngine Processing Behavior: The engine formats the date string to month precision and hashes the formatted values for group aggregation.\n\nBest Practices & Gotchas: Format strings evaluate per row; ensure date columns contain valid temporal strings.",
+                                        "id": "Analogi Konseptual: Pemformatan tanggal ke batas awal bulan menciptakan wadah waktu yang seragam untuk mengelompokkan data metrik kronologis.\n\nCara Kerja Database Engine: Database engine memformat string tanggal hingga presisi bulan dan melakukan hash pada nilai tersebut untuk agregasi kelompok data.\n\nBest Practices & Catatan Penting: Format tanggal dievaluasi per baris; pastikan kolom tanggal memiliki format yang valid."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL monthly date format grouping",
+                                                        "id": "Pengelompokan tanggal bulanan MySQL"
+                                                },
+                                                "code": "SELECT DATE_FORMAT(started_at, '%Y-%m-01 00:00:00') AS month_start, SUM(monthly_fee) AS total_fee FROM subscriptions GROUP BY month_start ORDER BY month_start;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Calculate the total monthly fee grouped by the month start date of `started_at` aliased as `month_start` formatted to the first day of the month from `subscriptions`, ordered chronologically.",
+                                        "id": "Hitung total biaya bulanan yang dikelompokkan berdasarkan tanggal awal bulan dari `started_at` dengan format hari pertama setiap bulan beralias `month_start` dari tabel `subscriptions`, diurutkan secara kronologis."
+                                },
+                                "expected_query": "SELECT DATE_FORMAT(started_at, '%Y-%m-01 00:00:00') AS month_start, SUM(monthly_fee) AS total_fee FROM subscriptions GROUP BY month_start ORDER BY month_start;",
+                                "starterQuery": "SELECT * FROM subscriptions;"
+                        }
+                }
+        },
+        {
+                "id": 432,
+                "moduleId": 4,
+                "categorySlot": 4,
+                "title": {
+                        "en": "Daily Subscription Signup Counter (Var #2)",
+                        "id": "Penghitung Pendaftaran Langganan Harian (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Truncating to days strips away time-of-day fluctuations, creating a daily calendar bucket for counting daily user actions.\n\nEngine Processing Behavior: The planner zeroes the hours, minutes, and seconds from the timestamp, enabling straightforward bucket aggregation.\n\nBest Practices & Gotchas: Ensure timezones are normalized before truncating to days to prevent unexpected calendar shifts.",
+                        "id": "Analogi Konseptual: Pemotongan ke level hari membuang informasi jam dan menit, menghasilkan wadah tanggal harian untuk menghitung aktivitas pengguna setiap hari.\n\nCara Kerja Database Engine: Planner mengatur komponen jam, menit, dan detik menjadi nol pada setiap timestamp, memungkinkan agregasi hitungan per hari secara langsung.\n\nBest Practices & Catatan Penting: Pastikan timezone telah diselaraskan sebelum pemotongan tanggal untuk menghindari pergeseran hari yang tidak diinginkan."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Date truncation to day",
+                                        "id": "Pemotongan tanggal ke awal hari"
+                                },
+                                "code": "SELECT DATE_TRUNC('day', started_at) AS day_bucket, COUNT(*) AS new_subs FROM subscriptions GROUP BY DATE_TRUNC('day', started_at) ORDER BY day_bucket;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Count new subscriptions grouped by the day start date of `started_at` aliased as `day_bucket` and `new_subs` from `subscriptions`, ordered chronologically.",
+                        "id": "Hitung langganan baru yang dikelompokkan berdasarkan tanggal awal hari dari `started_at` beralias `day_bucket` dan total beralias `new_subs` dari tabel `subscriptions`, diurutkan secara kronologis."
+                },
+                seed_sql: mod4TemporalSeed,
+                "expected_query": "SELECT DATE_TRUNC('day', started_at) AS day_bucket, COUNT(*) AS new_subs FROM subscriptions GROUP BY DATE_TRUNC('day', started_at) ORDER BY day_bucket;",
+                "starterQuery": "SELECT * FROM subscriptions;",
+                "table_names": [
+                        "subscriptions"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Daily Subscription Signup Counter with DATE_FORMAT (Var #2)",
+                                        "id": "Penghitung Pendaftaran Langganan Harian dengan DATE_FORMAT (Latihan #2)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Formatting timestamps to daily midnight boundaries consolidates all intra-day events into a single daily bucket.\n\nEngine Processing Behavior: Converts the timestamp to a year-month-day string at midnight and aggregates the resulting rows.\n\nBest Practices & Gotchas: Using string representations of dates can hinder index utilization if used in search filters.",
+                                        "id": "Analogi Konseptual: Memformat timestamp ke batas tengah malam harian menggabungkan seluruh aktivitas dalam satu hari ke dalam satu wadah harian.\n\nCara Kerja Database Engine: Mengonversi timestamp ke string tahun-bulan-tanggal jam 00:00:00 dan mengelompokkan baris berdasarkan nilai tersebut.\n\nBest Practices & Catatan Penting: Representasi string dari tanggal dapat menghambat pemanfaatan indeks jika digunakan pada filter pencarian."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL daily date format grouping",
+                                                        "id": "Pengelompokan tanggal harian MySQL"
+                                                },
+                                                "code": "SELECT DATE_FORMAT(started_at, '%Y-%m-%d 00:00:00') AS day_bucket, COUNT(*) AS new_subs FROM subscriptions GROUP BY day_bucket ORDER BY day_bucket;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Count new subscriptions grouped by the day start date of `started_at` formatted to midnight aliased as `day_bucket` and `new_subs` from `subscriptions`, ordered chronologically.",
+                                        "id": "Hitung langganan baru yang dikelompokkan berdasarkan tanggal awal hari dari `started_at` dengan format jam 00:00:00 beralias `day_bucket` dan total beralias `new_subs` dari tabel `subscriptions`, diurutkan secara kronologis."
+                                },
+                                "expected_query": "SELECT DATE_FORMAT(started_at, '%Y-%m-%d 00:00:00') AS day_bucket, COUNT(*) AS new_subs FROM subscriptions GROUP BY day_bucket ORDER BY day_bucket;",
+                                "starterQuery": "SELECT * FROM subscriptions;"
+                        }
+                }
+        },
+        {
+                "id": 433,
+                "moduleId": 4,
+                "categorySlot": 5,
+                "title": {
+                        "en": "Filtering Recent Subscriptions with Interval Arithmetic (Var #3)",
+                        "id": "Filter Langganan Terbaru dengan Aritmatika Interval (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Interval arithmetic acts like subtracting a tape measure of time from a reference point to define an active rolling time window.\n\nEngine Processing Behavior: The engine calculates the cutoff timestamp once and scans rows comparing native timestamp values efficiently.\n\nBest Practices & Gotchas: Keeping the column on one side of the comparison operator preserves index usability on that column.",
+                        "id": "Analogi Konseptual: Aritmatika interval bekerja seperti mengurangi pita pengukur waktu dari titik acuan untuk mendefinisikan jendela waktu berjalan yang aktif.\n\nCara Kerja Database Engine: Engine menghitung batas waktu pemotongan satu kali dan membandingkan nilai timestamp secara efisien tanpa komputasi berulang.\n\nBest Practices & Catatan Penting: Pertahankan kolom target di satu sisi operator perbandingan agar index scan tetap dapat dimanfaatkan."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Timestamp interval subtraction",
+                                        "id": "Pengurangan interval pada timestamp"
+                                },
+                                "code": "SELECT id, user_id, plan_name, started_at FROM subscriptions WHERE started_at >= '2024-03-01'::timestamp - INTERVAL '30 days' ORDER BY started_at;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Find all `subscriptions` starting on or after thirty days prior to March 1, 2024, displaying `id`, `user_id`, `plan_name`, and `started_at`, ordered by `started_at`.",
+                        "id": "Cari semua data `subscriptions` yang dimulai pada atau setelah tiga puluh hari sebelum 1 Maret 2024, menampilkan kolom `id`, `user_id`, `plan_name`, dan `started_at`, diurutkan berdasarkan `started_at`."
+                },
+                seed_sql: mod4TemporalSeed,
+                "expected_query": "SELECT id, user_id, plan_name, started_at FROM subscriptions WHERE started_at >= '2024-03-01'::timestamp - INTERVAL '30 days' ORDER BY started_at;",
+                "starterQuery": "SELECT * FROM subscriptions;",
+                "table_names": [
+                        "subscriptions"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Filtering Recent Subscriptions with DATE_SUB (Var #3)",
+                                        "id": "Filter Langganan Terbaru dengan DATE_SUB (Latihan #3)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Subtracting interval days from a fixed date sets a dynamic boundary for filtering chronological records.\n\nEngine Processing Behavior: The date subtraction function computes the threshold at plan time and filters matching rows.\n\nBest Practices & Gotchas: Avoid wrapping the filtered column inside functions so range scans remain possible.",
+                                        "id": "Analogi Konseptual: Mengurangi interval hari dari tanggal referensi menetapkan batas waktu dinamis untuk menyaring catatan waktu.\n\nCara Kerja Database Engine: Fungsi pengurangan tanggal menghitung ambang batas pada tahap perencanaan dan memfilter baris yang memenuhi syarat.\n\nBest Practices & Catatan Penting: Hindari membungkus kolom yang difilter di dalam fungsi agar range scan tetap dapat berjalan optimal."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL date subtraction filter",
+                                                        "id": "Filter pengurangan tanggal MySQL"
+                                                },
+                                                "code": "SELECT id, user_id, plan_name, started_at FROM subscriptions WHERE started_at >= DATE_SUB('2024-03-01 00:00:00', INTERVAL 30 DAY) ORDER BY started_at;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Find all `subscriptions` starting on or after thirty days prior to March 1, 2024, displaying `id`, `user_id`, `plan_name`, and `started_at`, ordered by `started_at`.",
+                                        "id": "Cari semua data `subscriptions` yang dimulai pada atau setelah tiga puluh hari sebelum 1 Maret 2024, menampilkan kolom `id`, `user_id`, `plan_name`, dan `started_at`, diurutkan berdasarkan `started_at`."
+                                },
+                                "expected_query": "SELECT id, user_id, plan_name, started_at FROM subscriptions WHERE started_at >= DATE_SUB('2024-03-01 00:00:00', INTERVAL 30 DAY) ORDER BY started_at;",
+                                "starterQuery": "SELECT * FROM subscriptions;"
+                        }
+                }
+        },
+        {
+                "id": 434,
+                "moduleId": 4,
+                "categorySlot": 5,
+                "title": {
+                        "en": "Projecting Monthly Renewal Dates with Interval Addition (Var #4)",
+                        "id": "Memproyeksikan Tanggal Perpanjangan Bulanan dengan Penjumlahan Interval (Latihan #4)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Adding an interval to a start date projects forward to scheduled milestones, such as finding subscription renewal dates.\n\nEngine Processing Behavior: The engine executes calendar arithmetic on each row, taking month day boundaries and leap years into account.\n\nBest Practices & Gotchas: Adding calendar months adjusts to month-end limits automatically (such as Jan 31 + 1 month resolving to Feb 28/29).",
+                        "id": "Analogi Konseptual: Menambahkan interval ke tanggal mulai memproyeksikan jadwal berikutnya ke masa depan, seperti menentukan tanggal perpanjangan langganan.\n\nCara Kerja Database Engine: Engine menjalankan aritmatika kalender pada setiap baris, memperhitungkan batasan jumlah hari tiap bulan dan tahun kabisat.\n\nBest Practices & Catatan Penting: Penambahan bulan kalender secara otomatis menyesuaikan batas akhir bulan (seperti 31 Januari + 1 bulan menjadi 28/29 Februari)."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Timestamp interval addition",
+                                        "id": "Penambahan interval pada timestamp"
+                                },
+                                "code": "SELECT id, user_id, plan_name, started_at + INTERVAL '1 month' AS renewal_date FROM subscriptions ORDER BY id;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Project the renewal date exactly one month after `started_at` aliased as `renewal_date`, displaying `id`, `user_id`, `plan_name`, and `renewal_date` from `subscriptions`, ordered by `id`.",
+                        "id": "Proyeksikan tanggal perpanjangan tepat satu bulan setelah `started_at` beralias `renewal_date`, menampilkan kolom `id`, `user_id`, `plan_name`, dan `renewal_date` dari tabel `subscriptions`, diurutkan berdasarkan `id`."
+                },
+                seed_sql: mod4TemporalSeed,
+                "expected_query": "SELECT id, user_id, plan_name, started_at + INTERVAL '1 month' AS renewal_date FROM subscriptions ORDER BY id;",
+                "starterQuery": "SELECT * FROM subscriptions;",
+                "table_names": [
+                        "subscriptions"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Projecting Monthly Renewal Dates with DATE_ADD (Var #4)",
+                                        "id": "Memproyeksikan Tanggal Perpanjangan Bulanan dengan DATE_ADD (Latihan #4)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Calculating upcoming billing dates by pushing the signup timestamp forward by one calendar month.\n\nEngine Processing Behavior: The temporal addition function adds the interval unit to the timestamp and produces a new date string.\n\nBest Practices & Gotchas: Always store dates in standard format before performing date addition operations.",
+                                        "id": "Analogi Konseptual: Menghitung tanggal tagihan berikutnya dengan memajukan waktu pendaftaran sebesar satu bulan kalender.\n\nCara Kerja Database Engine: Fungsi penambahan temporal menambahkan unit interval ke timestamp dan menghasilkan string tanggal baru.\n\nBest Practices & Catatan Penting: Selalu simpan tanggal dalam format standar sebelum melakukan operasi penambahan tanggal."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL date addition projection",
+                                                        "id": "Proyeksi penambahan tanggal MySQL"
+                                                },
+                                                "code": "SELECT id, user_id, plan_name, DATE_ADD(started_at, INTERVAL 1 MONTH) AS renewal_date FROM subscriptions ORDER BY id;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Project the renewal date exactly one month after `started_at` aliased as `renewal_date`, displaying `id`, `user_id`, `plan_name`, and `renewal_date` from `subscriptions`, ordered by `id`.",
+                                        "id": "Proyeksikan tanggal perpanjangan tepat satu bulan setelah `started_at` beralias `renewal_date`, menampilkan kolom `id`, `user_id`, `plan_name`, dan `renewal_date` dari tabel `subscriptions`, diurutkan berdasarkan `id`."
+                                },
+                                "expected_query": "SELECT id, user_id, plan_name, DATE_ADD(started_at, INTERVAL 1 MONTH) AS renewal_date FROM subscriptions ORDER BY id;",
+                                "starterQuery": "SELECT * FROM subscriptions;"
+                        }
+                }
+        },
+        {
+                "id": 435,
+                "moduleId": 4,
+                "categorySlot": 4,
+                "title": {
+                        "en": "Hourly Traffic Granularity Truncation (Var #5)",
+                        "id": "Pemotongan Granularitas Lalu Lintas Per Jam (Latihan #5)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Snapping exact transaction times to the top of the hour to spot peak traffic periods across the day.\n\nEngine Processing Behavior: The date truncation function strips minutes and seconds while keeping the calendar hour intact for grouping.\n\nBest Practices & Gotchas: Hourly grouping works best when timestamps are recorded in coordinated universal time.",
+                        "id": "Analogi Konseptual: Menyelaraskan waktu transaksi ke awal setiap jam untuk menemukan periode puncak lalu lintas sepanjang hari.\n\nCara Kerja Database Engine: Fungsi pemotongan tanggal menghapus menit dan detik namun mempertahankan jam kalender untuk pengelompokan baris data.\n\nBest Practices & Catatan Penting: Pengelompokan per jam bekerja optimal saat timestamp dicatat dalam zona waktu terkoordinasi (UTC)."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Date truncation to hour",
+                                        "id": "Pemotongan tanggal ke awal jam"
+                                },
+                                "code": "SELECT DATE_TRUNC('hour', started_at) AS hour_window, COUNT(*) AS sub_count FROM subscriptions GROUP BY DATE_TRUNC('hour', started_at) ORDER BY hour_window;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Count subscriptions grouped by the start of each hour of `started_at` aliased as `hour_window` and `sub_count` from `subscriptions`, ordered chronologically.",
+                        "id": "Hitung langganan yang dikelompokkan berdasarkan awal setiap jam dari `started_at` beralias `hour_window` dan total beralias `sub_count` dari tabel `subscriptions`, diurutkan secara kronologis."
+                },
+                seed_sql: mod4TemporalSeed,
+                "expected_query": "SELECT DATE_TRUNC('hour', started_at) AS hour_window, COUNT(*) AS sub_count FROM subscriptions GROUP BY DATE_TRUNC('hour', started_at) ORDER BY hour_window;",
+                "starterQuery": "SELECT * FROM subscriptions;",
+                "table_names": [
+                        "subscriptions"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Hourly Traffic Granularity with DATE_FORMAT (Var #5)",
+                                        "id": "Granularitas Lalu Lintas Per Jam dengan DATE_FORMAT (Latihan #5)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Aligning timestamps to hour intervals to evaluate hourly system activity.\n\nEngine Processing Behavior: The formatting function converts timestamps to minute zero strings and aggregates matching rows.\n\nBest Practices & Gotchas: Hourly buckets provide fine-grained visibility into system load and operational throughput.",
+                                        "id": "Analogi Konseptual: Menyelaraskan timestamp ke interval jam untuk mengevaluasi aktivitas sistem setiap jam.\n\nCara Kerja Database Engine: Fungsi format mengonversi timestamp ke string dengan menit nol dan mengagregasi baris yang cocok.\n\nBest Practices & Catatan Penting: Wadah per jam memberikan visibilitas mendalam terhadap beban sistem dan throughput operasional."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL hourly format grouping",
+                                                        "id": "Pengelompokan format per jam MySQL"
+                                                },
+                                                "code": "SELECT DATE_FORMAT(started_at, '%Y-%m-%d %H:00:00') AS hour_window, COUNT(*) AS sub_count FROM subscriptions GROUP BY hour_window ORDER BY hour_window;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Count subscriptions grouped by the start of each hour of `started_at` formatted to the hour aliased as `hour_window` and `sub_count` from `subscriptions`, ordered chronologically.",
+                                        "id": "Hitung langganan yang dikelompokkan berdasarkan awal setiap jam dari `started_at` beralias `hour_window` dan total beralias `sub_count` dari tabel `subscriptions`, diurutkan secara kronologis."
+                                },
+                                "expected_query": "SELECT DATE_FORMAT(started_at, '%Y-%m-%d %H:00:00') AS hour_window, COUNT(*) AS sub_count FROM subscriptions GROUP BY hour_window ORDER BY hour_window;",
+                                "starterQuery": "SELECT * FROM subscriptions;"
+                        }
+                }
+        },
+        {
+                "id": 436,
+                "moduleId": 4,
+                "categorySlot": 5,
+                "title": {
+                        "en": "Free Trial Expiration Window with 14-Day Interval (Var #6)",
+                        "id": "Jendela Berakhirnya Uji Coba Gratis dengan Interval 14 Hari (Latihan #6)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Fast-forwarding a subscription calendar by a two-week trial window to determine when billing should commence.\n\nEngine Processing Behavior: The interval addition produces an exact timestamp exactly 14 calendar days after signup.\n\nBest Practices & Gotchas: Use interval arithmetic rather than integer second arithmetic to respect daylight saving time adjustments.",
+                        "id": "Analogi Konseptual: Memajukan kalender langganan sebesar masa percobaan dua minggu untuk menentukan kapan penagihan pertama harus dimulai.\n\nCara Kerja Database Engine: Penambahan interval menghasilkan timestamp yang tepat 14 hari kalender setelah waktu pendaftaran.\n\nBest Practices & Catatan Penting: Gunakan aritmatika interval alih-alih konversi detik manual agar penyesuaian waktu kalender tetap akurat."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "14-day interval projection",
+                                        "id": "Proyeksi interval 14 hari"
+                                },
+                                "code": "SELECT id, plan_name, started_at, started_at + INTERVAL '14 days' AS trial_end FROM subscriptions ORDER BY id;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Calculate the trial end timestamp exactly 14 days after `started_at` aliased as `trial_end`, displaying `id`, `plan_name`, `started_at`, and `trial_end` from `subscriptions`, ordered by `id`.",
+                        "id": "Hitung batas waktu akhir uji coba tepat 14 hari setelah `started_at` beralias `trial_end`, menampilkan kolom `id`, `plan_name`, `started_at`, dan `trial_end` dari tabel `subscriptions`, diurutkan berdasarkan `id`."
+                },
+                seed_sql: mod4TemporalSeed,
+                "expected_query": "SELECT id, plan_name, started_at, started_at + INTERVAL '14 days' AS trial_end FROM subscriptions ORDER BY id;",
+                "starterQuery": "SELECT * FROM subscriptions;",
+                "table_names": [
+                        "subscriptions"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Free Trial Expiration Window with DATE_ADD (Var #6)",
+                                        "id": "Jendela Berakhirnya Uji Coba Gratis dengan DATE_ADD (Latihan #6)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Pushing the signup timestamp forward by 14 days to compute free trial cutoff dates.\n\nEngine Processing Behavior: Computes the 14-day forward date for each subscription record.\n\nBest Practices & Gotchas: Date intervals preserve calendar day boundaries cleanly.",
+                                        "id": "Analogi Konseptual: Memajukan timestamp pendaftaran sebesar 14 hari untuk menghitung batas waktu berakhirnya uji coba gratis.\n\nCara Kerja Database Engine: Menghitung tanggal 14 hari ke depan untuk setiap baris data langganan.\n\nBest Practices & Catatan Penting: Interval tanggal menjaga konsistensi batas hari kalender secara rapi."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL 14-day date addition",
+                                                        "id": "Penambahan tanggal 14 hari MySQL"
+                                                },
+                                                "code": "SELECT id, plan_name, started_at, DATE_ADD(started_at, INTERVAL 14 DAY) AS trial_end FROM subscriptions ORDER BY id;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Calculate the trial end timestamp exactly 14 days after `started_at` aliased as `trial_end`, displaying `id`, `plan_name`, `started_at`, and `trial_end` from `subscriptions`, ordered by `id`.",
+                                        "id": "Hitung batas waktu akhir uji coba tepat 14 hari setelah `started_at` beralias `trial_end`, menampilkan kolom `id`, `plan_name`, `started_at`, dan `trial_end` dari tabel `subscriptions`, diurutkan berdasarkan `id`."
+                                },
+                                "expected_query": "SELECT id, plan_name, started_at, DATE_ADD(started_at, INTERVAL 14 DAY) AS trial_end FROM subscriptions ORDER BY id;",
+                                "starterQuery": "SELECT * FROM subscriptions;"
+                        }
+                }
+        },
+        {
+                "id": 437,
+                "moduleId": 4,
+                "categorySlot": 8,
+                "title": {
+                        "en": "Numeric Casting and Whitespace Trimming (Var #1)",
+                        "id": "Casting Numerik dan Pembersihan Spasi dengan TRIM (Latihan #1)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Trimming peels away unwanted whitespace like peeling fruit, while casting converts raw textual numbers into precise mathematical currency values.\n\nEngine Processing Behavior: The string trimming scalar function discards surrounding space bytes, and the casting operator transforms text characters into exact numeric binary representations.\n\nBest Practices & Gotchas: Always cast textual financial fields to fixed-precision numerics before performing monetary arithmetic to prevent floating-point inaccuracies.",
+                        "id": "Analogi Konseptual: Fungsi TRIM mengupas spasi liar di awal dan akhir teks seperti mengupas kulit buah, sedangkan casting mengubah teks angka mentah menjadi tipe data numerik presisi tinggi.\n\nCara Kerja Database Engine: Fungsi scalar TRIM membuang byte spasi di sekeliling teks, lalu operator casting memetakan string karakter ke format representasi biner numerik yang tepat.\n\nBest Practices & Catatan Penting: Selalu konversikan data finansial berbentuk teks ke tipe numeric dengan presisi tetap sebelum melakukan perhitungan aritmatika uang."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Numeric casting with TRIM",
+                                        "id": "Casting numerik dengan fungsi TRIM"
+                                },
+                                "code": "SELECT id, TRIM(product_code) AS clean_code, CAST(raw_price AS NUMERIC(10,2)) AS price FROM products_pricing ORDER BY id;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Trim whitespace from `product_code` aliased as `clean_code` and cast `raw_price` to a numeric with two decimal places aliased as `price`, displaying `id`, `clean_code`, and `price` from `products_pricing`, ordered by `id`.",
+                        "id": "Bersihkan spasi dari `product_code` beralias `clean_code` dan lakukan casting `raw_price` ke tipe numeric dengan dua desimal beralias `price`, menampilkan `id`, `clean_code`, dan `price` dari tabel `products_pricing`, diurutkan berdasarkan `id`."
+                },
+                seed_sql: mod4CastingSeed,
+                "expected_query": "SELECT id, TRIM(product_code) AS clean_code, CAST(raw_price AS NUMERIC(10,2)) AS price FROM products_pricing ORDER BY id;",
+                "starterQuery": "SELECT * FROM products_pricing;",
+                "table_names": [
+                        "products_pricing"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Decimal Casting and Whitespace Trimming (Var #1)",
+                                        "id": "Casting Desimal dan Pembersihan Spasi dengan TRIM (Latihan #1)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Stripping whitespace padding and casting text numbers into exact decimal currency amounts.\n\nEngine Processing Behavior: Trims space bytes from the string and parses the textual digits into a fixed-point decimal structure.\n\nBest Practices & Gotchas: Use DECIMAL rather than FLOAT for prices to avoid rounding discrepancies.",
+                                        "id": "Analogi Konseptual: Menghapus spasi berlebih dan mengonversi teks angka menjadi nilai desimal mata uang yang presisi.\n\nCara Kerja Database Engine: Memotong byte spasi dari string dan mem-parsing karakter angka ke struktur data desimal fixed-point.\n\nBest Practices & Catatan Penting: Gunakan tipe data DECIMAL alih-alih FLOAT untuk nilai harga guna mencegah ketidakakuratan pembulatan."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL decimal casting with TRIM",
+                                                        "id": "Casting desimal MySQL dengan fungsi TRIM"
+                                                },
+                                                "code": "SELECT id, TRIM(product_code) AS clean_code, CAST(raw_price AS DECIMAL(10,2)) AS price FROM products_pricing ORDER BY id;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Trim whitespace from `product_code` aliased as `clean_code` and cast `raw_price` to a decimal with two decimal places aliased as `price`, displaying `id`, `clean_code`, and `price` from `products_pricing`, ordered by `id`.",
+                                        "id": "Bersihkan spasi dari `product_code` beralias `clean_code` dan lakukan casting `raw_price` ke tipe desimal dengan dua digit desimal beralias `price`, menampilkan `id`, `clean_code`, dan `price` dari tabel `products_pricing`, diurutkan berdasarkan `id`."
+                                },
+                                "expected_query": "SELECT id, TRIM(product_code) AS clean_code, CAST(raw_price AS DECIMAL(10,2)) AS price FROM products_pricing ORDER BY id;",
+                                "starterQuery": "SELECT * FROM products_pricing;"
+                        }
+                }
+        },
+        {
+                "id": 438,
+                "moduleId": 4,
+                "categorySlot": 8,
+                "title": {
+                        "en": "Building Compound Labels with CONCAT and TRIM (Var #2)",
+                        "id": "Membangun Label Majemuk dengan CONCAT dan TRIM (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Combining cleaned product codes and descriptive notes creates readable product badges for store displays.\n\nEngine Processing Behavior: Evaluates inner TRIM functions to strip padding, then allocates a unified string buffer concatenating all argument strings in sequence.\n\nBest Practices & Gotchas: The CONCAT function converts null values to empty strings gracefully, unlike raw concatenation in some database engines.",
+                        "id": "Analogi Konseptual: Menggabungkan kode produk yang telah dibersihkan dengan catatan deskriptif menghasilkan label produk yang informatif untuk katalog toko.\n\nCara Kerja Database Engine: Mengevaluasi fungsi TRIM internal untuk membersihkan spasi, lalu mengalokasikan buffer memori string untuk menyatukan seluruh argumen teks secara berurutan.\n\nBest Practices & Catatan Penting: Fungsi CONCAT secara aman menangani nilai null sebagai string kosong tanpa membatalkan seluruh hasil penggabungan teks."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Concatenating trimmed fields",
+                                        "id": "Penggabungan kolom yang dibersihkan"
+                                },
+                                "code": "SELECT id, CONCAT(TRIM(product_code), ' - ', TRIM(notes)) AS product_label FROM products_pricing ORDER BY id;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Build a single label combining trimmed `product_code`, a hyphen with spaces, and trimmed `notes` aliased as `product_label`, displaying `id` and `product_label` from `products_pricing`, ordered by `id`.",
+                        "id": "Bangun satu label yang menggabungkan `product_code` tanpa spasi, tanda strip dengan spasi, dan `notes` tanpa spasi beralias `product_label`, menampilkan `id` dan `product_label` dari tabel `products_pricing`, diurutkan berdasarkan `id`."
+                },
+                seed_sql: mod4CastingSeed,
+                "expected_query": "SELECT id, CONCAT(TRIM(product_code), ' - ', TRIM(notes)) AS product_label FROM products_pricing ORDER BY id;",
+                "starterQuery": "SELECT * FROM products_pricing;",
+                "table_names": [
+                        "products_pricing"
+                ]
+        },
+        {
+                "id": 439,
+                "moduleId": 4,
+                "categorySlot": 8,
+                "title": {
+                        "en": "Extracting Category Code Prefixes with SUBSTRING (Var #3)",
+                        "id": "Mengekstrak Awalan Kode Kategori dengan SUBSTRING (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Extracting the first few characters of a structured identifier is like reading the state code on a vehicle license plate.\n\nEngine Processing Behavior: The substring function offsets into the trimmed character sequence and copies the requested length of characters.\n\nBest Practices & Gotchas: SQL string indexing begins at index 1 rather than 0; always trim preceding whitespace first so offsets align accurately.",
+                        "id": "Analogi Konseptual: Mengambil beberapa karakter awal dari kode terstruktur seperti membaca kode wilayah pada plat nomor kendaraan.\n\nCara Kerja Database Engine: Fungsi substring melompat ke offset karakter yang diminta pada string yang telah dibersihkan dan menyalin karakter sebanyak panjang yang ditentukan.\n\nBest Practices & Catatan Penting: Indeks string dalam SQL dimulai dari angka 1 bukan 0; bersihkan spasi di awal terlebih dahulu agar posisi karakter selalu konsisten."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Substring prefix extraction",
+                                        "id": "Ekstraksi prefiks dengan substring"
+                                },
+                                "code": "SELECT id, TRIM(product_code) AS code, SUBSTRING(TRIM(product_code), 1, 4) AS category_prefix FROM products_pricing ORDER BY id;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Display `id`, trimmed `product_code` aliased as `code`, and the first four characters of trimmed `product_code` aliased as `category_prefix` from `products_pricing`, ordered by `id`.",
+                        "id": "Tampilkan `id`, `product_code` yang telah dibersihkan beralias `code`, serta empat karakter pertama dari `product_code` yang telah dibersihkan beralias `category_prefix` dari tabel `products_pricing`, diurutkan berdasarkan `id`."
+                },
+                seed_sql: mod4CastingSeed,
+                "expected_query": "SELECT id, TRIM(product_code) AS code, SUBSTRING(TRIM(product_code), 1, 4) AS category_prefix FROM products_pricing ORDER BY id;",
+                "starterQuery": "SELECT * FROM products_pricing;",
+                "table_names": [
+                        "products_pricing"
+                ]
+        },
+        {
+                "id": 440,
+                "moduleId": 4,
+                "categorySlot": 8,
+                "title": {
+                        "en": "Discounted Price Calculation with Explicit Casting (Var #4)",
+                        "id": "Perhitungan Harga Diskon dengan Explicit Casting (Latihan #4)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Converting text numbers into exact financial figures before multiplying ensures customer discounts calculate down to the exact cent.\n\nEngine Processing Behavior: Converts text columns to fixed numeric types and computes mathematical discount expressions within the projection stage.\n\nBest Practices & Gotchas: Arithmetic between text and numeric without explicit casting can trigger silent conversion failures or unpredictable precision losses.",
+                        "id": "Analogi Konseptual: Mengubah teks angka menjadi angka moneter presisi sebelum perkalian memastikan nilai potongan harga dihitung akurat hingga digit sen.\n\nCara Kerja Database Engine: Mengonversi kolom teks ke tipe numerik berpresisi tetap lalu mengeksekusi perhitungan matematika potongan harga pada tahap proyeksi data.\n\nBest Practices & Catatan Penting: Operasi aritmatika antara teks dan angka tanpa casting eksplisit berisiko memicu kegagalan konversi atau hilangnya presisi desimal."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Discount arithmetic with numeric casting",
+                                        "id": "Aritmatika diskon dengan casting numerik"
+                                },
+                                "code": "SELECT id, TRIM(product_code) AS code, (raw_price::NUMERIC(10,2) * (1 - discount_rate::NUMERIC(10,2)))::NUMERIC(10,2) AS discounted_price FROM products_pricing ORDER BY id;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Compute the final price by multiplying `raw_price` by one minus `discount_rate` with numeric precision aliased as `discounted_price`, showing `id`, trimmed `product_code` aliased as `code`, and `discounted_price` from `products_pricing`, ordered by `id`.",
+                        "id": "Hitung harga akhir dengan mengalikan `raw_price` terhadap satu dikurangi `discount_rate` dengan presisi numerik dua desimal beralias `discounted_price`, menampilkan `id`, `product_code` tanpa spasi beralias `code`, dan `discounted_price` dari tabel `products_pricing`, diurutkan berdasarkan `id`."
+                },
+                seed_sql: mod4CastingSeed,
+                "expected_query": "SELECT id, TRIM(product_code) AS code, (raw_price::NUMERIC(10,2) * (1 - discount_rate::NUMERIC(10,2)))::NUMERIC(10,2) AS discounted_price FROM products_pricing ORDER BY id;",
+                "starterQuery": "SELECT * FROM products_pricing;",
+                "table_names": [
+                        "products_pricing"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Discounted Price Calculation with DECIMAL Casting (Var #4)",
+                                        "id": "Perhitungan Harga Diskon dengan Casting DECIMAL (Latihan #4)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Casting raw price text to decimal numbers before calculating percentage markdowns prevents floating-point inaccuracies.\n\nEngine Processing Behavior: Casts both operands to decimal structures and performs fixed-point arithmetic.\n\nBest Practices & Gotchas: Always specify decimal precision and scale for currency values.",
+                                        "id": "Analogi Konseptual: Melakukan casting teks harga mentah ke angka desimal sebelum menghitung diskon mencegah kesalahan pembulatan angka pecahan.\n\nCara Kerja Database Engine: Mengonversi kedua operand ke struktur desimal dan menjalankan operasi aritmatika fixed-point.\n\nBest Practices & Catatan Penting: Selalu tetapkan presisi dan skala desimal secara spesifik untuk kolom bernilai mata uang."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL decimal discount calculation",
+                                                        "id": "Perhitungan diskon desimal MySQL"
+                                                },
+                                                "code": "SELECT id, TRIM(product_code) AS code, CAST(CAST(raw_price AS DECIMAL(10,2)) * (1 - CAST(discount_rate AS DECIMAL(10,2))) AS DECIMAL(10,2)) AS discounted_price FROM products_pricing ORDER BY id;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Compute the final price by multiplying `raw_price` by one minus `discount_rate` with decimal precision aliased as `discounted_price`, showing `id`, trimmed `product_code` aliased as `code`, and `discounted_price` from `products_pricing`, ordered by `id`.",
+                                        "id": "Hitung harga akhir dengan mengalikan `raw_price` terhadap satu dikurangi `discount_rate` dengan presisi desimal dua angka di belakang koma beralias `discounted_price`, menampilkan `id`, `product_code` tanpa spasi beralias `code`, dan `discounted_price` dari tabel `products_pricing`, diurutkan berdasarkan `id`."
+                                },
+                                "expected_query": "SELECT id, TRIM(product_code) AS code, CAST(CAST(raw_price AS DECIMAL(10,2)) * (1 - CAST(discount_rate AS DECIMAL(10,2))) AS DECIMAL(10,2)) AS discounted_price FROM products_pricing ORDER BY id;",
+                                "starterQuery": "SELECT * FROM products_pricing;"
+                        }
+                }
+        },
+        {
+                "id": 441,
+                "moduleId": 4,
+                "categorySlot": 8,
+                "title": {
+                        "en": "Formatting Titles with String Functions and Concatenation (Var #5)",
+                        "id": "Format Judul dengan Fungsi Huruf Besar-Kecil dan Penggabungan (Latihan #5)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Standardizing product codes in uppercase and notes in lowercase creates consistent presentation formatting for catalog indexing.\n\nEngine Processing Behavior: Normalizes case per character byte before piping results into the string concatenation operator.\n\nBest Practices & Gotchas: String concatenation operators vary across SQL dialects; pipe operators are standard in PostgreSQL while MySQL prefers the CONCAT function.",
+                        "id": "Analogi Konseptual: Menyeragamkan kode produk ke huruf besar dan deskripsi catatan ke huruf kecil menghasilkan tampilan katalog yang rapi dan konsisten.\n\nCara Kerja Database Engine: Menormalkan format besar-kecil tiap karakter sebelum mengalirkannya ke operator penggabungan teks.\n\nBest Practices & Catatan Penting: Operator penggabungan teks berbeda antar database; PostgreSQL mendukung operator pipa sedangkan MySQL umumnya mengandalkan fungsi CONCAT."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Case conversion and pipe concatenation",
+                                        "id": "Konversi huruf dan penggabungan dengan pipa"
+                                },
+                                "code": "SELECT id, UPPER(TRIM(product_code)) || ': ' || LOWER(TRIM(notes)) AS display_title FROM products_pricing ORDER BY id;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Create a display title combining uppercase trimmed `product_code`, a colon with space, and lowercase trimmed `notes` aliased as `display_title`, showing `id` and `display_title` from `products_pricing`, ordered by `id`.",
+                        "id": "Buat judul tampilan yang menggabungkan `product_code` huruf besar tanpa spasi, tanda titik dua dengan spasi, dan `notes` huruf kecil tanpa spasi beralias `display_title`, menampilkan `id` dan `display_title` dari tabel `products_pricing`, diurutkan berdasarkan `id`."
+                },
+                seed_sql: mod4CastingSeed,
+                "expected_query": "SELECT id, UPPER(TRIM(product_code)) || ': ' || LOWER(TRIM(notes)) AS display_title FROM products_pricing ORDER BY id;",
+                "starterQuery": "SELECT * FROM products_pricing;",
+                "table_names": [
+                        "products_pricing"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Formatting Titles with CONCAT and Case Functions (Var #5)",
+                                        "id": "Format Judul dengan CONCAT dan Fungsi Huruf (Latihan #5)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Joining capitalized codes and lowercase notes into a standard catalog label using CONCAT.\n\nEngine Processing Behavior: Converts case transforms in memory and passes outputs to CONCAT.\n\nBest Practices & Gotchas: The CONCAT function handles multi-part string joins cleanly in MySQL.",
+                                        "id": "Analogi Konseptual: Menyatukan kode produk berhuruf besar dan catatan berhuruf kecil menjadi label standar menggunakan fungsi CONCAT.\n\nCara Kerja Database Engine: Menjalankan transformasi huruf di memori lalu meneruskan hasilnya ke fungsi CONCAT.\n\nBest Practices & Catatan Penting: Fungsi CONCAT menangani penggabungan string multi-bagian secara aman di MySQL."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL CONCAT with case transforms",
+                                                        "id": "CONCAT MySQL dengan transformasi huruf"
+                                                },
+                                                "code": "SELECT id, CONCAT(UPPER(TRIM(product_code)), ': ', LOWER(TRIM(notes))) AS display_title FROM products_pricing ORDER BY id;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Create a display title combining uppercase trimmed `product_code`, a colon with space, and lowercase trimmed `notes` aliased as `display_title`, showing `id` and `display_title` from `products_pricing`, ordered by `id`.",
+                                        "id": "Buat judul tampilan yang menggabungkan `product_code` huruf besar tanpa spasi, tanda titik dua dengan spasi, dan `notes` huruf kecil tanpa spasi beralias `display_title`, menampilkan `id` dan `display_title` dari tabel `products_pricing`, diurutkan berdasarkan `id`."
+                                },
+                                "expected_query": "SELECT id, CONCAT(UPPER(TRIM(product_code)), ': ', LOWER(TRIM(notes))) AS display_title FROM products_pricing ORDER BY id;",
+                                "starterQuery": "SELECT * FROM products_pricing;"
+                        }
+                }
+        },
+        {
+                "id": 442,
+                "moduleId": 4,
+                "categorySlot": 8,
+                "title": {
+                        "en": "Parsing Substring Digits to Integer (Var #6)",
+                        "id": "Parsing Digit Substring ke Tipe Integer (Latihan #6)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Extracting the numeric sequence from a serial code and converting it into a true integer for mathematical sorting and calculations.\n\nEngine Processing Behavior: Slices the substring starting at index 6 for 3 characters, then casts the resulting text digits into integer numerical form.\n\nBest Practices & Gotchas: Verify that the substring range contains strictly numeric characters prior to casting to integer to prevent parsing errors.",
+                        "id": "Analogi Konseptual: Mengambil nomor urut dari kode serial dan mengubahnya menjadi bilangan bulat integer untuk pengurutan numerik dan komputasi.\n\nCara Kerja Database Engine: Memotong substring mulai karakter ke-6 sebanyak 3 karakter, lalu melakukan casting string angka tersebut ke tipe integer bilangan bulat.\n\nBest Practices & Catatan Penting: Pastikan rentang karakter substring hanya memuat digit angka sebelum melakukan casting ke integer untuk menghindari parsing error."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Substring casting to integer",
+                                        "id": "Casting substring ke tipe integer"
+                                },
+                                "code": "SELECT id, TRIM(product_code) AS code, CAST(SUBSTRING(TRIM(product_code), 6, 3) AS INT) AS numeric_id FROM products_pricing ORDER BY id;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Extract three characters starting from the sixth position of trimmed `product_code` and cast them to an integer aliased as `numeric_id`, displaying `id`, trimmed `product_code` aliased as `code`, and `numeric_id` from `products_pricing`, ordered by `id`.",
+                        "id": "Ekstrak tiga karakter mulai dari posisi ke-6 dari `product_code` yang dibersihkan lalu lakukan casting ke tipe integer beralias `numeric_id`, menampilkan `id`, `product_code` tanpa spasi beralias `code`, dan `numeric_id` dari tabel `products_pricing`, diurutkan berdasarkan `id`."
+                },
+                seed_sql: mod4CastingSeed,
+                "expected_query": "SELECT id, TRIM(product_code) AS code, CAST(SUBSTRING(TRIM(product_code), 6, 3) AS INT) AS numeric_id FROM products_pricing ORDER BY id;",
+                "starterQuery": "SELECT * FROM products_pricing;",
+                "table_names": [
+                        "products_pricing"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Parsing Substring Digits to SIGNED Integer (Var #6)",
+                                        "id": "Parsing Digit Substring ke SIGNED Integer (Latihan #6)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Isolating numeric digits within an alphanumeric product tag and casting them into a signed integer.\n\nEngine Processing Behavior: Extracts substring bytes and parses them into a signed 64-bit numerical integer.\n\nBest Practices & Gotchas: MySQL uses SIGNED or UNSIGNED as the target type name in CAST expressions for integers.",
+                                        "id": "Analogi Konseptual: Mengisolasi digit angka dari label kode alfanumerik dan mengonversinya menjadi bilangan bulat bertanda (signed integer).\n\nCara Kerja Database Engine: Mengambil potongan teks karakter dan mengonversinya ke format numerik bilangan bulat SIGNED.\n\nBest Practices & Catatan Penting: MySQL menggunakan nama tipe SIGNED atau UNSIGNED pada klausa CAST untuk bilangan bulat."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL substring cast to SIGNED",
+                                                        "id": "Casting substring ke SIGNED di MySQL"
+                                                },
+                                                "code": "SELECT id, TRIM(product_code) AS code, CAST(SUBSTRING(TRIM(product_code), 6, 3) AS SIGNED) AS numeric_id FROM products_pricing ORDER BY id;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Extract three characters starting from the sixth position of trimmed `product_code` and cast them to a signed integer aliased as `numeric_id`, displaying `id`, trimmed `product_code` aliased as `code`, and `numeric_id` from `products_pricing`, ordered by `id`.",
+                                        "id": "Ekstrak tiga karakter mulai dari posisi ke-6 dari `product_code` yang dibersihkan lalu lakukan casting ke integer bertanda beralias `numeric_id`, menampilkan `id`, `product_code` tanpa spasi beralias `code`, dan `numeric_id` dari tabel `products_pricing`, diurutkan berdasarkan `id`."
+                                },
+                                "expected_query": "SELECT id, TRIM(product_code) AS code, CAST(SUBSTRING(TRIM(product_code), 6, 3) AS SIGNED) AS numeric_id FROM products_pricing ORDER BY id;",
+                                "starterQuery": "SELECT * FROM products_pricing;"
+                        }
+                }
         }
     ];
 }
@@ -7355,7 +8233,7 @@ function generateModule5(): Question[] {
         {
             id: 503,
             moduleId: 5,
-            categorySlot: 3,
+            categorySlot: 4,
             title: {
                 en: "Full Relational Join (Var #1)",
                 id: "Menggabungkan Seluruh Data dengan FULL OUTER JOIN (Latihan #1)"
@@ -7415,7 +8293,7 @@ function generateModule5(): Question[] {
         {
             id: 504,
             moduleId: 5,
-            categorySlot: 4,
+            categorySlot: 6,
             title: {
                 en: "Self-Join Employee & Manager (Var #1)",
                 id: "Relasi Hierarki Karyawan dengan Self-Join (Latihan #1)"
@@ -7447,7 +8325,7 @@ function generateModule5(): Question[] {
         {
             id: 505,
             moduleId: 5,
-            categorySlot: 5,
+            categorySlot: 7,
             title: {
                 en: "Find Employees Without Department (Var #1)",
                 id: "Menemukan Data Tanpa Relasi (Orphan Rows) (Latihan #1)"
@@ -7480,7 +8358,7 @@ function generateModule5(): Question[] {
         {
             id: 506,
             moduleId: 5,
-            categorySlot: 6,
+            categorySlot: 8,
             title: {
                 en: "Aliased Filtered JOIN (Var #1)",
                 id: "Operasi JOIN dengan Alias Tabel & Filter Kondisi (Latihan #1)"
@@ -7513,7 +8391,7 @@ function generateModule5(): Question[] {
         {
             id: 507,
             moduleId: 5,
-            categorySlot: 7,
+            categorySlot: 11,
             title: {
                 en: "CHECK Domain Constraint (Var #1)",
                 id: "Validasi Nilai Kolom dengan CHECK Constraint (Latihan #1)"
@@ -7571,7 +8449,7 @@ function generateModule5(): Question[] {
         {
             id: 508,
             moduleId: 5,
-            categorySlot: 8,
+            categorySlot: 12,
             title: {
                 en: "UNIQUE Column Integrity (Var #1)",
                 id: "Menjamin Keunikan Data dengan UNIQUE (Latihan #1)"
@@ -7672,7 +8550,7 @@ function generateModule5(): Question[] {
         {
             id: 509,
             moduleId: 5,
-            categorySlot: 9,
+            categorySlot: 13,
             title: {
                 en: "FOREIGN KEY ON DELETE CASCADE (Var #1)",
                 id: "Relasi Cascading dengan ON DELETE CASCADE (Latihan #1)"
@@ -7797,7 +8675,7 @@ function generateModule5(): Question[] {
         {
             id: 512,
             moduleId: 5,
-            categorySlot: 3,
+            categorySlot: 4,
             title: {
                 en: "Full Relational Join (Var #2)",
                 id: "Menggabungkan Seluruh Data dengan FULL OUTER JOIN (Latihan #2)"
@@ -7857,7 +8735,7 @@ function generateModule5(): Question[] {
         {
             id: 513,
             moduleId: 5,
-            categorySlot: 4,
+            categorySlot: 6,
             title: {
                 en: "Self-Join Employee & Manager (Var #2)",
                 id: "Relasi Hierarki Karyawan dengan Self-Join (Latihan #2)"
@@ -7889,7 +8767,7 @@ function generateModule5(): Question[] {
         {
             id: 514,
             moduleId: 5,
-            categorySlot: 5,
+            categorySlot: 7,
             title: {
                 en: "Find Employees Without Department (Var #2)",
                 id: "Menemukan Data Tanpa Relasi (Orphan Rows) (Latihan #2)"
@@ -7922,7 +8800,7 @@ function generateModule5(): Question[] {
         {
             id: 515,
             moduleId: 5,
-            categorySlot: 6,
+            categorySlot: 8,
             title: {
                 en: "Aliased Filtered JOIN (Var #2)",
                 id: "Operasi JOIN dengan Alias Tabel & Filter Kondisi (Latihan #2)"
@@ -7955,7 +8833,7 @@ function generateModule5(): Question[] {
         {
             id: 516,
             moduleId: 5,
-            categorySlot: 7,
+            categorySlot: 11,
             title: {
                 en: "CHECK Domain Constraint (Var #2)",
                 id: "Validasi Nilai Kolom dengan CHECK Constraint (Latihan #2)"
@@ -8013,7 +8891,7 @@ function generateModule5(): Question[] {
         {
             id: 517,
             moduleId: 5,
-            categorySlot: 8,
+            categorySlot: 12,
             title: {
                 en: "UNIQUE Column Integrity (Var #2)",
                 id: "Menjamin Keunikan Data dengan UNIQUE (Latihan #2)"
@@ -8114,7 +8992,7 @@ function generateModule5(): Question[] {
         {
             id: 518,
             moduleId: 5,
-            categorySlot: 9,
+            categorySlot: 13,
             title: {
                 en: "FOREIGN KEY ON DELETE CASCADE (Var #2)",
                 id: "Relasi Cascading dengan ON DELETE CASCADE (Latihan #2)"
@@ -8239,7 +9117,7 @@ function generateModule5(): Question[] {
         {
             id: 521,
             moduleId: 5,
-            categorySlot: 3,
+            categorySlot: 4,
             title: {
                 en: "Full Relational Join (Var #3)",
                 id: "Menggabungkan Seluruh Data dengan FULL OUTER JOIN (Latihan #3)"
@@ -8299,7 +9177,7 @@ function generateModule5(): Question[] {
         {
             id: 522,
             moduleId: 5,
-            categorySlot: 4,
+            categorySlot: 6,
             title: {
                 en: "Self-Join Employee & Manager (Var #3)",
                 id: "Relasi Hierarki Karyawan dengan Self-Join (Latihan #3)"
@@ -8331,7 +9209,7 @@ function generateModule5(): Question[] {
         {
             id: 523,
             moduleId: 5,
-            categorySlot: 5,
+            categorySlot: 7,
             title: {
                 en: "Find Employees Without Department (Var #3)",
                 id: "Menemukan Data Tanpa Relasi (Orphan Rows) (Latihan #3)"
@@ -8364,7 +9242,7 @@ function generateModule5(): Question[] {
         {
             id: 524,
             moduleId: 5,
-            categorySlot: 6,
+            categorySlot: 8,
             title: {
                 en: "Aliased Filtered JOIN (Var #3)",
                 id: "Operasi JOIN dengan Alias Tabel & Filter Kondisi (Latihan #3)"
@@ -8397,7 +9275,7 @@ function generateModule5(): Question[] {
         {
             id: 525,
             moduleId: 5,
-            categorySlot: 7,
+            categorySlot: 11,
             title: {
                 en: "CHECK Domain Constraint (Var #3)",
                 id: "Validasi Nilai Kolom dengan CHECK Constraint (Latihan #3)"
@@ -8455,7 +9333,7 @@ function generateModule5(): Question[] {
         {
             id: 526,
             moduleId: 5,
-            categorySlot: 8,
+            categorySlot: 12,
             title: {
                 en: "UNIQUE Column Integrity (Var #3)",
                 id: "Menjamin Keunikan Data dengan UNIQUE (Latihan #3)"
@@ -8556,7 +9434,7 @@ function generateModule5(): Question[] {
         {
             id: 527,
             moduleId: 5,
-            categorySlot: 9,
+            categorySlot: 13,
             title: {
                 en: "FOREIGN KEY ON DELETE CASCADE (Var #3)",
                 id: "Relasi Cascading dengan ON DELETE CASCADE (Latihan #3)"
@@ -8681,7 +9559,7 @@ function generateModule5(): Question[] {
         {
             id: 530,
             moduleId: 5,
-            categorySlot: 3,
+            categorySlot: 4,
             title: {
                 en: "Full Relational Join (Var #4)",
                 id: "Menggabungkan Seluruh Data dengan FULL OUTER JOIN (Latihan #4)"
@@ -8741,7 +9619,7 @@ function generateModule5(): Question[] {
         {
             id: 531,
             moduleId: 5,
-            categorySlot: 4,
+            categorySlot: 6,
             title: {
                 en: "Self-Join Employee & Manager (Var #4)",
                 id: "Relasi Hierarki Karyawan dengan Self-Join (Latihan #4)"
@@ -8773,7 +9651,7 @@ function generateModule5(): Question[] {
         {
             id: 532,
             moduleId: 5,
-            categorySlot: 5,
+            categorySlot: 7,
             title: {
                 en: "Find Employees Without Department (Var #4)",
                 id: "Menemukan Data Tanpa Relasi (Orphan Rows) (Latihan #4)"
@@ -8806,7 +9684,7 @@ function generateModule5(): Question[] {
         {
             id: 533,
             moduleId: 5,
-            categorySlot: 6,
+            categorySlot: 8,
             title: {
                 en: "Aliased Filtered JOIN (Var #4)",
                 id: "Operasi JOIN dengan Alias Tabel & Filter Kondisi (Latihan #4)"
@@ -8839,7 +9717,7 @@ function generateModule5(): Question[] {
         {
             id: 534,
             moduleId: 5,
-            categorySlot: 7,
+            categorySlot: 11,
             title: {
                 en: "CHECK Domain Constraint (Var #4)",
                 id: "Validasi Nilai Kolom dengan CHECK Constraint (Latihan #4)"
@@ -8897,7 +9775,7 @@ function generateModule5(): Question[] {
         {
             id: 535,
             moduleId: 5,
-            categorySlot: 8,
+            categorySlot: 12,
             title: {
                 en: "UNIQUE Column Integrity (Var #4)",
                 id: "Menjamin Keunikan Data dengan UNIQUE (Latihan #4)"
@@ -8998,7 +9876,7 @@ function generateModule5(): Question[] {
         {
             id: 536,
             moduleId: 5,
-            categorySlot: 9,
+            categorySlot: 13,
             title: {
                 en: "FOREIGN KEY ON DELETE CASCADE (Var #4)",
                 id: "Relasi Cascading dengan ON DELETE CASCADE (Latihan #4)"
@@ -9123,7 +10001,7 @@ function generateModule5(): Question[] {
         {
             id: 539,
             moduleId: 5,
-            categorySlot: 3,
+            categorySlot: 4,
             title: {
                 en: "Full Relational Join (Var #5)",
                 id: "Menggabungkan Seluruh Data dengan FULL OUTER JOIN (Latihan #5)"
@@ -9183,7 +10061,7 @@ function generateModule5(): Question[] {
         {
             id: 540,
             moduleId: 5,
-            categorySlot: 4,
+            categorySlot: 6,
             title: {
                 en: "Self-Join Employee & Manager (Var #5)",
                 id: "Relasi Hierarki Karyawan dengan Self-Join (Latihan #5)"
@@ -9215,7 +10093,7 @@ function generateModule5(): Question[] {
         {
             id: 541,
             moduleId: 5,
-            categorySlot: 5,
+            categorySlot: 7,
             title: {
                 en: "Find Employees Without Department (Var #5)",
                 id: "Menemukan Data Tanpa Relasi (Orphan Rows) (Latihan #5)"
@@ -9248,7 +10126,7 @@ function generateModule5(): Question[] {
         {
             id: 542,
             moduleId: 5,
-            categorySlot: 6,
+            categorySlot: 8,
             title: {
                 en: "Aliased Filtered JOIN (Var #5)",
                 id: "Operasi JOIN dengan Alias Tabel & Filter Kondisi (Latihan #5)"
@@ -9281,7 +10159,7 @@ function generateModule5(): Question[] {
         {
             id: 543,
             moduleId: 5,
-            categorySlot: 7,
+            categorySlot: 11,
             title: {
                 en: "CHECK Domain Constraint (Var #5)",
                 id: "Validasi Nilai Kolom dengan CHECK Constraint (Latihan #5)"
@@ -9339,7 +10217,7 @@ function generateModule5(): Question[] {
         {
             id: 544,
             moduleId: 5,
-            categorySlot: 8,
+            categorySlot: 12,
             title: {
                 en: "UNIQUE Column Integrity (Var #5)",
                 id: "Menjamin Keunikan Data dengan UNIQUE (Latihan #5)"
@@ -9440,7 +10318,7 @@ function generateModule5(): Question[] {
         {
             id: 545,
             moduleId: 5,
-            categorySlot: 9,
+            categorySlot: 13,
             title: {
                 en: "FOREIGN KEY ON DELETE CASCADE (Var #5)",
                 id: "Relasi Cascading dengan ON DELETE CASCADE (Latihan #5)"
@@ -9499,7 +10377,7 @@ function generateModule5(): Question[] {
         {
         "id": 546,
         "moduleId": 5,
-        "categorySlot": 10,
+        "categorySlot": 16,
         "title": {
                 "en": "Atomic UPSERT with ON CONFLICT (Var #1)",
                 "id": "Penanganan Konflik Kunci Atomik dengan UPSERT (Latihan #1)"
@@ -9555,7 +10433,7 @@ function generateModule5(): Question[] {
         {
         "id": 547,
         "moduleId": 5,
-        "categorySlot": 10,
+        "categorySlot": 16,
         "title": {
                 "en": "UPSERT Overwrite Assignment (Var #2)",
                 "id": "UPSERT Penimpaan Nilai Baru (Latihan #2)"
@@ -9611,7 +10489,7 @@ function generateModule5(): Question[] {
         {
         "id": 548,
         "moduleId": 5,
-        "categorySlot": 10,
+        "categorySlot": 16,
         "title": {
                 "en": "Cumulative UPSERT for Alternate User (Var #3)",
                 "id": "UPSERT Kumulatif untuk User Alternatif (Latihan #3)"
@@ -9663,7 +10541,550 @@ function generateModule5(): Question[] {
                         "starterQuery": "INSERT INTO cart (user_id, product_id, quantity)\nVALUES (2, 101, 2);"
                 }
         }
-}
+},
+{
+                "id": 549,
+                "moduleId": 5,
+                "categorySlot": 14,
+                "title": {
+                        "en": "Referential Integrity with ON DELETE RESTRICT (Var #6)",
+                        "id": "Integritas Referensial dengan ON DELETE RESTRICT (Latihan #6)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: RESTRICT acts like a physical safety padlock: the database outright forbids deleting a parent department if there are dependent head records relying upon it.\n\nEngine Processing Behavior: When a DELETE statement targets a referenced parent row, the storage engine checks foreign key indexes for referencing child tuples. If any exist, the delete operation is immediately aborted with a foreign key violation error.\n\nBest Practices & Gotchas: RESTRICT is the safest default for essential financial and organizational hierarchies where accidental data purges must be strictly blocked.",
+                        "id": "Analogi Konseptual: RESTRICT bekerja seperti gembok pengaman: database menolak keras penghapusan suatu departemen induk jika masih ada data kepala divisi yang bergantung padanya.\n\nCara Kerja Database Engine: Saat perintah DELETE menyasar baris induk, storage engine memeriksa relasi foreign key pada data anak. Jika ditemukan baris anak yang mereferensikannya, operasi DELETE langsung digagalkan dengan error pelanggaran foreign key.\n\nBest Practices & Catatan Penting: RESTRICT adalah opsi paling aman untuk data penting seperti transaksi finansial atau struktur organisasi demi mencegah terhapusnya data penting secara tidak sengaja."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Foreign key with ON DELETE RESTRICT",
+                                        "id": "Foreign key dengan ON DELETE RESTRICT"
+                                },
+                                "code": "CREATE TABLE department_heads (id INT PRIMARY KEY, name TEXT, department_id INT REFERENCES departments(id) ON DELETE RESTRICT);"
+                        }
+                ],
+                "instructions": {
+                        "en": "Create a `department_heads` table with `id`, `name`, and `department_id`, referencing `departments` so deleting a department is prevented when dependent head records exist.",
+                        "id": "Buat tabel `department_heads` dengan kolom `id`, `name`, dan `department_id`, mereferensikan `departments` sehingga penghapusan departemen dicegah jika masih terdapat data kepala departemen terkait."
+                },
+                seed_sql: mod5Seed,
+                "expected_query": "CREATE TABLE department_heads (id INT PRIMARY KEY, name TEXT, department_id INT REFERENCES departments(id) ON DELETE RESTRICT);",
+                "starterQuery": "-- Write CREATE TABLE here",
+                "table_names": [
+                        "department_heads"
+                ],
+                "isDdlCreate": true,
+                "mockPreviewData": {
+                        "tableName": "department_heads",
+                        "columns": [
+                                "id",
+                                "name",
+                                "department_id"
+                        ],
+                        "rows": [
+                                {
+                                        "id": 1,
+                                        "name": "Alice Smith",
+                                        "department_id": 1
+                                },
+                                {
+                                        "id": 2,
+                                        "name": "Bob Jones",
+                                        "department_id": 2
+                                }
+                        ]
+                }
+        },
+        {
+                "id": 550,
+                "moduleId": 5,
+                "categorySlot": 15,
+                "title": {
+                        "en": "Referential Integrity with ON DELETE SET NULL (Var #7)",
+                        "id": "Integritas Referensial dengan ON DELETE SET NULL (Latihan #7)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: SET NULL unlinks child records gracefully: when an employee record is removed, any linked profile simply has its employee reference cleared without deleting the profile itself.\n\nEngine Processing Behavior: Upon deletion of a parent row, the database engine updates all matching child foreign key columns to NULL within the same atomic transaction.\n\nBest Practices & Gotchas: The foreign key column in the child table must allow NULL values (no NOT NULL constraint) for SET NULL to succeed.",
+                        "id": "Analogi Konseptual: SET NULL melepaskan kaitan data anak secara halus: ketika seorang karyawan dihapus, profil terkait tetap ada namun kolom referensi karyawannya diubah menjadi kosong (NULL).\n\nCara Kerja Database Engine: Saat baris di tabel induk dihapus, database engine secara otomatis memperbarui kolom foreign key pada tabel anak menjadi NULL dalam satu transaksi atomik yang sama.\n\nBest Practices & Catatan Penting: Kolom foreign key pada tabel anak harus mengizinkan nilai NULL (tidak boleh NOT NULL) agar aksi SET NULL dapat berjalan tanpa error."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Foreign key with ON DELETE SET NULL",
+                                        "id": "Foreign key dengan ON DELETE SET NULL"
+                                },
+                                "code": "CREATE TABLE employee_profiles (id INT PRIMARY KEY, employee_id INT REFERENCES employees(id) ON DELETE SET NULL, bio TEXT);"
+                        }
+                ],
+                "instructions": {
+                        "en": "Create an `employee_profiles` table with `id`, `employee_id`, and `bio`, referencing `employees` so deleting an employee clears the reference to null without deleting the profile.",
+                        "id": "Buat tabel `employee_profiles` dengan kolom `id`, `employee_id`, dan `bio`, mereferensikan `employees` sehingga menghapus karyawan akan mengosongkan referensi menjadi null tanpa menghapus profilnya."
+                },
+                seed_sql: mod5Seed,
+                "expected_query": "CREATE TABLE employee_profiles (id INT PRIMARY KEY, employee_id INT REFERENCES employees(id) ON DELETE SET NULL, bio TEXT);",
+                "starterQuery": "-- Write CREATE TABLE here",
+                "table_names": [
+                        "employee_profiles"
+                ],
+                "isDdlCreate": true,
+                "mockPreviewData": {
+                        "tableName": "employee_profiles",
+                        "columns": [
+                                "id",
+                                "employee_id",
+                                "bio"
+                        ],
+                        "rows": [
+                                {
+                                        "id": 1,
+                                        "employee_id": 1,
+                                        "bio": "Senior database architect"
+                                },
+                                {
+                                        "id": 2,
+                                        "employee_id": 2,
+                                        "bio": "Full-stack developer"
+                                }
+                        ]
+                }
+        },
+        {
+                "id": 551,
+                "moduleId": 5,
+                "categorySlot": 17,
+                "title": {
+                        "en": "Idempotent Cart Insertion with ON CONFLICT DO NOTHING (Var #4)",
+                        "id": "Penyisipan Data Idempoten dengan ON CONFLICT DO NOTHING (Latihan #4)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: DO NOTHING acts as a silent bypass: if an item is already present in a shopping cart, the duplicate entry is ignored without crashing the application.\n\nEngine Processing Behavior: When a primary key conflict is encountered, the storage engine suppresses the uniqueness error and skips row insertion.\n\nBest Practices & Gotchas: DO NOTHING is ideal for batch ingestion pipelines where duplicate events can safely be skipped without side effects.",
+                        "id": "Analogi Konseptual: DO NOTHING bertindak sebagai bypass senyap: jika suatu produk sudah ada di keranjang, percobaan input duplikat diabaikan tanpa membuat aplikasi error.\n\nCara Kerja Database Engine: Ketika terjadi konflik primary key, engine membungkam error duplikasi dan melewati baris tersebut tanpa melakukan perubahan data.\n\nBest Practices & Catatan Penting: DO NOTHING sangat tepat untuk antrean data atau sinkronisasi batch di mana data yang sudah ada cukup diabaikan secara aman."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Upsert ignoring conflict",
+                                        "id": "Upsert dengan mengabaikan konflik"
+                                },
+                                "code": "INSERT INTO cart VALUES (1, 101, 5) ON CONFLICT (user_id, product_id) DO NOTHING;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Add a record to `cart` with `user_id` 1, `product_id` 101, and `quantity` 5, silently ignoring the operation if a key conflict on `(user_id, product_id)` occurs.",
+                        "id": "Tambahkan data ke tabel `cart` dengan `user_id` 1, `product_id` 101, dan `quantity` 5, abaikan operasi secara senyap jika terjadi konflik kunci pada `(user_id, product_id)`."
+                },
+                seed_sql: mod5Seed,
+                "expected_query": "INSERT INTO cart VALUES (1, 101, 5) ON CONFLICT (user_id, product_id) DO NOTHING;",
+                "starterQuery": "INSERT INTO cart VALUES (1, 101, 5);",
+                "table_names": [
+                        "cart"
+                ],
+                "verification_query": "SELECT user_id, product_id, quantity FROM cart WHERE user_id = 1 AND product_id = 101;",
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Idempotent Cart Insertion with INSERT IGNORE (Var #4)",
+                                        "id": "Penyisipan Data Idempoten dengan INSERT IGNORE (Latihan #4)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Bypassing duplicate primary key insertions silently in MySQL.\n\nEngine Processing Behavior: Suppresses unique key violations and leaves existing rows intact.\n\nBest Practices & Gotchas: Ensure the primary key columns match the intended uniqueness boundary.",
+                                        "id": "Analogi Konseptual: Mengabaikan penyisipan data duplikat secara senyap pada MySQL.\n\nCara Kerja Database Engine: Membungkam pesan error pelanggaran unique key dan mempertahankan baris data yang sudah ada.\n\nBest Practices & Catatan Penting: Pastikan kolom primary key telah sesuai dengan batasan keunikan data yang diinginkan."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL INSERT IGNORE",
+                                                        "id": "INSERT IGNORE pada MySQL"
+                                                },
+                                                "code": "INSERT IGNORE INTO cart VALUES (1, 101, 5);"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Add a record to `cart` with `user_id` 1, `product_id` 101, and `quantity` 5, silently ignoring the operation if a duplicate key conflict occurs.",
+                                        "id": "Tambahkan data ke tabel `cart` dengan `user_id` 1, `product_id` 101, dan `quantity` 5, abaikan operasi secara senyap jika terjadi konflik data duplikat."
+                                },
+                                "expected_query": "INSERT IGNORE INTO cart VALUES (1, 101, 5);",
+                                "starterQuery": "INSERT INTO cart VALUES (1, 101, 5);"
+                        }
+                }
+        },
+        {
+                "id": 552,
+                "moduleId": 5,
+                "categorySlot": 17,
+                "title": {
+                        "en": "Idempotent Secondary Cart Item Insertion (Var #5)",
+                        "id": "Penyisipan Idempoten Item Keranjang Sekunder (Latihan #5)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Adding an item to user 2's cart while ensuring repeated clicks on the checkout button do not cause duplicate insertion errors.\n\nEngine Processing Behavior: The storage engine verifies the primary index; if a matching tuple exists, write execution exits without error.\n\nBest Practices & Gotchas: Use DO NOTHING when user interfaces lack frontend debouncing to maintain safe idempotent writes.",
+                        "id": "Analogi Konseptual: Menambahkan barang ke keranjang belanja user 2 dengan memastikan klik berulang pada antarmuka tidak menimbulkan pesan error duplikasi.\n\nCara Kerja Database Engine: Storage engine memverifikasi indeks primary key; jika data yang cocok sudah ditemukan, penulisan selesai tanpa memunculkan error.\n\nBest Practices & Catatan Penting: Terapkan DO NOTHING untuk menjaga keamanan idempoten saat sistem menerima permintaan ganda dari antarmuka pengguna."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Idempotent insert with DO NOTHING",
+                                        "id": "Insert idempoten dengan DO NOTHING"
+                                },
+                                "code": "INSERT INTO cart VALUES (2, 102, 4) ON CONFLICT (user_id, product_id) DO NOTHING;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Add a record to `cart` with `user_id` 2, `product_id` 102, and `quantity` 4, ignoring the insertion if a conflict on `(user_id, product_id)` occurs.",
+                        "id": "Tambahkan data ke tabel `cart` dengan `user_id` 2, `product_id` 102, dan `quantity` 4, abaikan penambahan jika terjadi konflik pada `(user_id, product_id)`."
+                },
+                seed_sql: mod5Seed,
+                "expected_query": "INSERT INTO cart VALUES (2, 102, 4) ON CONFLICT (user_id, product_id) DO NOTHING;",
+                "starterQuery": "INSERT INTO cart VALUES (2, 102, 4);",
+                "table_names": [
+                        "cart"
+                ],
+                "verification_query": "SELECT user_id, product_id, quantity FROM cart WHERE user_id = 2 AND product_id = 102;",
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Idempotent Secondary Item Insertion with INSERT IGNORE (Var #5)",
+                                        "id": "Penyisipan Idempoten Item Sekunder dengan INSERT IGNORE (Latihan #5)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Safe idempotent cart insertion in MySQL.\n\nEngine Processing Behavior: Ignores duplicate key constraint violations and retains existing records.\n\nBest Practices & Gotchas: INSERT IGNORE skips constraint errors without aborting transactions.",
+                                        "id": "Analogi Konseptual: Penyisipan keranjang belanja yang aman dan idempoten di MySQL.\n\nCara Kerja Database Engine: Mengabaikan pelanggaran batasan duplicate key dan mempertahankan data yang sudah ada.\n\nBest Practices & Catatan Penting: Perintah INSERT IGNORE melewati error duplikasi tanpa membatalkan transaksi."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL INSERT IGNORE item",
+                                                        "id": "INSERT IGNORE item MySQL"
+                                                },
+                                                "code": "INSERT IGNORE INTO cart VALUES (2, 102, 4);"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Add a record to `cart` with `user_id` 2, `product_id` 102, and `quantity` 4, ignoring the insertion if a duplicate key conflict occurs.",
+                                        "id": "Tambahkan data ke tabel `cart` dengan `user_id` 2, `product_id` 102, dan `quantity` 4, abaikan penambahan jika terjadi konflik data duplikat."
+                                },
+                                "expected_query": "INSERT IGNORE INTO cart VALUES (2, 102, 4);",
+                                "starterQuery": "INSERT INTO cart VALUES (2, 102, 4);"
+                        }
+                }
+        },
+        {
+                "id": 553,
+                "moduleId": 5,
+                "categorySlot": 3,
+                "title": {
+                        "en": "Preserving All Departments with RIGHT JOIN (Var #1)",
+                        "id": "Mempertahankan Semua Departemen dengan RIGHT JOIN (Latihan #1)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: A RIGHT JOIN ensures every entity on the right-hand side (all departments) remains in the final roster, filling in nulls for departments without any assigned employees.\n\nEngine Processing Behavior: The planner scans the right table as the outer driving relation and looks up matches in the left relation, producing null-padded tuples whenever matches are absent.\n\nBest Practices & Gotchas: While RIGHT JOIN is functionally equivalent to reversing the tables in a LEFT JOIN, explicit RIGHT JOIN is valuable when following natural pipeline ordering.",
+                        "id": "Analogi Konseptual: RIGHT JOIN memastikan setiap entitas di sisi kanan (semua departemen) tetap ada di hasil akhir, mengisi nilai null untuk departemen yang belum memiliki karyawan.\n\nCara Kerja Database Engine: Planner memindai tabel kanan sebagai relasi utama dan mencari kecocokan pada tabel kiri, menghasilkan baris bertanda null ketika data pasangan tidak ditemukan.\n\nBest Practices & Catatan Penting: Meskipun secara fungsional setara dengan menukar posisi tabel pada LEFT JOIN, RIGHT JOIN berguna untuk mempertahankan alur baca query yang intuitif."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Right outer join",
+                                        "id": "Right outer join antar tabel"
+                                },
+                                "code": "SELECT d.dept_name, e.name FROM employees e RIGHT JOIN departments d ON e.department_id = d.id ORDER BY d.dept_name, e.name;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Join `employees` and `departments` preserving all departments, showing `dept_name` from `departments` and employee `name`, ordered by `dept_name` and `name`.",
+                        "id": "Hubungkan tabel `employees` dan `departments` dengan mempertahankan semua departemen, menampilkan `dept_name` dari `departments` dan `name` karyawan, diurutkan berdasarkan `dept_name` dan `name`."
+                },
+                seed_sql: mod5Seed,
+                "expected_query": "SELECT d.dept_name, e.name FROM employees e RIGHT JOIN departments d ON e.department_id = d.id ORDER BY d.dept_name, e.name;",
+                "starterQuery": "SELECT * FROM departments;",
+                "table_names": [
+                        "departments",
+                        "employees"
+                ]
+        },
+        {
+                "id": 554,
+                "moduleId": 5,
+                "categorySlot": 5,
+                "title": {
+                        "en": "Generating Store-Product Inventory Matrices with CROSS JOIN (Var #2)",
+                        "id": "Membuat Matriks Inventaris Toko dan Produk dengan CROSS JOIN (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: A CROSS JOIN produces a Cartesian product matching every store with every product, like printing a complete checklist of inventory shelves across all branch locations.\n\nEngine Processing Behavior: The query engine iterates over each row of the first relation and pairs it with every single row of the second relation, producing N times M total output tuples.\n\nBest Practices & Gotchas: Always ensure both participating tables are reasonably sized before running a CROSS JOIN to prevent combinatorial memory explosion.",
+                        "id": "Analogi Konseptual: CROSS JOIN menghasilkan produk Cartesian yang memasangkan setiap toko dengan setiap produk, seperti mencetak daftar periksa rak inventaris lengkap di seluruh cabang.\n\nCara Kerja Database Engine: Query engine mengulang setiap baris pada tabel pertama dan memasangkannya dengan setiap baris di tabel kedua, menghasilkan total baris sebanyak perkalian N dikali M.\n\nBest Practices & Catatan Penting: Pastikan kedua tabel berukuran wajar sebelum mengeksekusi CROSS JOIN untuk mencegah lonjakan konsumsi memori akibat perkalian data."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Cartesian product with CROSS JOIN",
+                                        "id": "Produk Cartesian dengan CROSS JOIN"
+                                },
+                                "code": "SELECT s.store_name, p.name AS product_name FROM stores s CROSS JOIN products p ORDER BY s.store_name, product_name;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Generate all combinations of `stores` and `products`, displaying `store_name` from `stores` and product `name` aliased as `product_name`, ordered by `store_name` and `product_name`.",
+                        "id": "Hasilkan semua kombinasi antara `stores` dan `products`, menampilkan `store_name` dari `stores` dan `name` produk beralias `product_name`, diurutkan berdasarkan `store_name` dan `product_name`."
+                },
+                seed_sql: mod5GradesSeed,
+                "expected_query": "SELECT s.store_name, p.name AS product_name FROM stores s CROSS JOIN products p ORDER BY s.store_name, product_name;",
+                "starterQuery": "SELECT * FROM stores;",
+                "table_names": [
+                        "stores",
+                        "products"
+                ]
+        },
+        {
+                "id": 555,
+                "moduleId": 5,
+                "categorySlot": 3,
+                "title": {
+                        "en": "Finding Empty Departments with RIGHT JOIN Anti-Join (Var #3)",
+                        "id": "Menemukan Departemen Tanpa Anggota dengan RIGHT JOIN Anti-Join (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Preserving all departments and filtering for missing employee links highlights departments that currently have zero assigned personnel.\n\nEngine Processing Behavior: Performs a right outer join and filters the resulting stream where the left side's primary key is NULL.\n\nBest Practices & Gotchas: Anti-joins via outer joins with IS NULL filters are highly optimized by database query planners.",
+                        "id": "Analogi Konseptual: Mempertahankan seluruh departemen lalu menyaring baris yang tidak memiliki karyawan untuk menemukan divisi yang belum terisi staf.\n\nCara Kerja Database Engine: Menjalankan right outer join lalu memfilter baris hasil di mana kolom primary key tabel kiri bernilai NULL.\n\nBest Practices & Catatan Penting: Pola anti-join menggunakan outer join dan filter IS NULL dioptimasi secara efisien oleh query planner database."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Right anti-join",
+                                        "id": "Right anti-join untuk menemukan data kosong"
+                                },
+                                "code": "SELECT d.dept_name FROM employees e RIGHT JOIN departments d ON e.department_id = d.id WHERE e.id IS NULL ORDER BY d.dept_name;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Find all departments that currently have no assigned employees by joining `employees` and `departments`, displaying `dept_name` from `departments`, ordered by `dept_name`.",
+                        "id": "Temukan semua departemen yang saat ini belum memiliki karyawan dengan menghubungkan `employees` dan `departments`, menampilkan `dept_name` dari `departments`, diurutkan berdasarkan `dept_name`."
+                },
+                seed_sql: mod5Seed,
+                "expected_query": "SELECT d.dept_name FROM employees e RIGHT JOIN departments d ON e.department_id = d.id WHERE e.id IS NULL ORDER BY d.dept_name;",
+                "starterQuery": "SELECT * FROM departments;",
+                "table_names": [
+                        "departments",
+                        "employees"
+                ]
+        },
+        {
+                "id": 556,
+                "moduleId": 5,
+                "categorySlot": 5,
+                "title": {
+                        "en": "Department and Store Branch Combination Grid (Var #4)",
+                        "id": "Matriks Kombinasi Departemen dan Cabang Toko (Latihan #4)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Pairing each business department with every retail branch helps plan organizational staffing coverage across regions.\n\nEngine Processing Behavior: Produces a full Cartesian product across both relations without requiring matching key attributes.\n\nBest Practices & Gotchas: CROSS JOIN is the intentional SQL equivalent of omitting join predicates; use it deliberately for grid generation.",
+                        "id": "Analogi Konseptual: Memasangkan setiap departemen dengan setiap cabang toko membantu perencanaan alokasi staf organisasi di berbagai wilayah.\n\nCara Kerja Database Engine: Menghasilkan produk Cartesian penuh dari kedua relasi tanpa memerlukan kolom kunci pencocokan.\n\nBest Practices & Catatan Penting: CROSS JOIN adalah bentuk eksplisit dan terencana untuk perkalian himpunan baris; gunakan untuk membuat matriks data."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Cartesian product of departments and stores",
+                                        "id": "Produk Cartesian departemen dan toko"
+                                },
+                                "code": "SELECT d.dept_name, s.store_name FROM departments d CROSS JOIN stores s ORDER BY d.dept_name, s.store_name;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Combine every department with every store, displaying `dept_name` from `departments` and `store_name` from `stores`, ordered by `dept_name` and `store_name`.",
+                        "id": "Gabungkan setiap departemen dengan setiap toko cabang, menampilkan `dept_name` dari `departments` dan `store_name` dari `stores`, diurutkan berdasarkan `dept_name` dan `store_name`."
+                },
+                seed_sql: mod5GradesSeed,
+                "expected_query": "SELECT d.dept_name, s.store_name FROM departments d CROSS JOIN stores s ORDER BY d.dept_name, s.store_name;",
+                "starterQuery": "SELECT * FROM departments;",
+                "table_names": [
+                        "departments",
+                        "stores"
+                ]
+        },
+        {
+                "id": 557,
+                "moduleId": 5,
+                "categorySlot": 9,
+                "title": {
+                        "en": "Classifying Compensation with Non-Equi Range Join (Var #1)",
+                        "id": "Klasifikasi Kompensasi dengan Non-Equi Range Join (Latihan #1)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: A non-equi join matches records within numerical brackets, like assigning a student a letter grade based on score ranges rather than exact IDs.\n\nEngine Processing Behavior: The planner evaluates inequality conditions (such as BETWEEN or >= and <=) across relations, associating each employee row with the appropriate grade bracket.\n\nBest Practices & Gotchas: Ensure range brackets do not overlap to prevent unexpected duplicate output rows for a single employee.",
+                        "id": "Analogi Konseptual: Non-equi join mencocokkan data berdasarkan rentang angka, seperti memberikan nilai huruf berdasarkan rentang nilai ujian alih-alih angka identitas persis.\n\nCara Kerja Database Engine: Planner mengevaluasi kondisi pertidaksamaan (seperti BETWEEN atau >= dan <=) antar relasi, memetakan setiap karyawan ke batas gaji yang sesuai.\n\nBest Practices & Catatan Penting: Pastikan rentang batas nilai tidak saling tumpang tindih agar satu baris data tidak terduplikasi secara tidak disengaja."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Non-equi range join with BETWEEN",
+                                        "id": "Non-equi join dengan rentang BETWEEN"
+                                },
+                                "code": "SELECT e.name, e.salary, g.grade_level FROM employees e JOIN salary_grades g ON e.salary BETWEEN g.min_salary AND g.max_salary ORDER BY e.salary DESC;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Match each employee with their salary grade bracket, displaying employee `name`, `salary`, and `grade_level` from `employees` and `salary_grades`, ordered by `salary` descending.",
+                        "id": "Cocokkan setiap karyawan dengan tingkat golongan gajinya, menampilkan `name` karyawan, `salary`, dan `grade_level` dari tabel `employees` dan `salary_grades`, diurutkan berdasarkan `salary` secara menurun."
+                },
+                seed_sql: mod5GradesSeed,
+                "expected_query": "SELECT e.name, e.salary, g.grade_level FROM employees e JOIN salary_grades g ON e.salary BETWEEN g.min_salary AND g.max_salary ORDER BY e.salary DESC;",
+                "starterQuery": "SELECT * FROM employees;",
+                "table_names": [
+                        "employees",
+                        "salary_grades"
+                ]
+        },
+        {
+                "id": 558,
+                "moduleId": 5,
+                "categorySlot": 9,
+                "title": {
+                        "en": "Compensation Disparity Self-Join with Inequality Predicates (Var #2)",
+                        "id": "Self-Join Kesenjangan Kompensasi dengan Predikat Pertidaksamaan (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Comparing pairs of colleagues where one earns substantially more than another to analyze internal compensation gaps.\n\nEngine Processing Behavior: Joins the employees relation against itself comparing salary values using inequality expressions.\n\nBest Practices & Gotchas: Always alias both instances of the table distinctively when performing self-joins.",
+                        "id": "Analogi Konseptual: Membandingkan pasangan rekan kerja di mana salah satunya berpenghasilan jauh lebih tinggi untuk menganalisis kesenjangan kompensasi internal.\n\nCara Kerja Database Engine: Menghubungkan tabel karyawan terhadap dirinya sendiri menggunakan perbandingan pertidaksamaan pada kolom gaji.\n\nBest Practices & Catatan Penting: Selalu berikan alias yang jelas dan berbeda untuk kedua instansi tabel saat menjalankan self-join."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Non-equi self-join disparity check",
+                                        "id": "Pengecekan kesenjangan dengan non-equi self-join"
+                                },
+                                "code": "SELECT e1.name AS high_earner, e1.salary AS high_salary, e2.name AS low_earner, e2.salary AS low_salary FROM employees e1 JOIN employees e2 ON e1.salary >= e2.salary + 25000 ORDER BY e1.salary DESC, e2.salary;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Find pairs of employees where the first earns at least 25000 more than the second, displaying `high_earner`, `high_salary`, `low_earner`, and `low_salary`, ordered by `high_salary` descending and `low_salary` ascending.",
+                        "id": "Temukan pasangan karyawan di mana karyawan pertama berpenghasilan setidaknya 25000 lebih besar dari karyawan kedua, menampilkan `high_earner`, `high_salary`, `low_earner`, dan `low_salary`, diurutkan berdasarkan `high_salary` menurun dan `low_salary` menaik."
+                },
+                seed_sql: mod5Seed,
+                "expected_query": "SELECT e1.name AS high_earner, e1.salary AS high_salary, e2.name AS low_earner, e2.salary AS low_salary FROM employees e1 JOIN employees e2 ON e1.salary >= e2.salary + 25000 ORDER BY e1.salary DESC, e2.salary;",
+                "starterQuery": "SELECT * FROM employees;",
+                "table_names": [
+                        "employees"
+                ]
+        },
+        {
+                "id": 559,
+                "moduleId": 5,
+                "categorySlot": 10,
+                "title": {
+                        "en": "Top Earner per Department with LEFT JOIN LATERAL (Var #3)",
+                        "id": "Karyawan Gaji Tertinggi Tiap Departemen dengan LEFT JOIN LATERAL (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: A LATERAL join acts like a for-each loop in SQL, allowing the subquery to reference attributes of the outer table to retrieve the single top earner for each department.\n\nEngine Processing Behavior: For each department tuple, the query engine re-evaluates the inner subquery ordered by salary descending with limit 1, returning matching top rows even for empty departments.\n\nBest Practices & Gotchas: LATERAL joins solve the classic top-N per category problem cleanly without convoluted window partition slicing.",
+                        "id": "Analogi Konseptual: LATERAL join bekerja seperti perulangan for-each di SQL, memungkinkan subquery membaca kolom dari tabel luar untuk mengambil satu karyawan berpenghasilan tertinggi di setiap departemen.\n\nCara Kerja Database Engine: Untuk setiap baris departemen, engine mengevaluasi subquery internal yang diurutkan berdasarkan gaji tertinggi dengan limit 1, tetap menampilkan departemen yang kosong berkat left join.\n\nBest Practices & Catatan Penting: LATERAL join menyelesaikan permasalahan klasik pengambilan top-N per kategori secara elegan tanpa partisi rumit."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Correlated lateral subquery join",
+                                        "id": "Join subquery lateral terikat"
+                                },
+                                "code": "SELECT d.dept_name, sub.name, sub.salary FROM departments d LEFT JOIN LATERAL (SELECT name, salary FROM employees WHERE department_id = d.id ORDER BY salary DESC LIMIT 1) sub ON true ORDER BY d.dept_name;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Find the highest-earning employee in each department using a correlated subquery join, displaying `dept_name` from `departments`, employee `name`, and `salary`, ordered by `dept_name`.",
+                        "id": "Temukan karyawan dengan gaji tertinggi di setiap departemen menggunakan correlated subquery join, menampilkan `dept_name` dari `departments`, `name` karyawan, dan `salary`, diurutkan berdasarkan `dept_name`."
+                },
+                seed_sql: mod5Seed,
+                "expected_query": "SELECT d.dept_name, sub.name, sub.salary FROM departments d LEFT JOIN LATERAL (SELECT name, salary FROM employees WHERE department_id = d.id ORDER BY salary DESC LIMIT 1) sub ON true ORDER BY d.dept_name;",
+                "starterQuery": "SELECT * FROM departments;",
+                "table_names": [
+                        "departments",
+                        "employees"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Top Earner per Department with Correlated Subquery Join (Var #3)",
+                                        "id": "Karyawan Gaji Tertinggi Tiap Departemen dengan Correlated Subquery Join (Latihan #3)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Finding the top earner in each department by matching each department with its maximum salary record.\n\nEngine Processing Behavior: Matches departments with employee rows whose salary equals the maximum salary computed for that department.\n\nBest Practices & Gotchas: Correlated subquery joins provide universal database compatibility across SQL engines.",
+                                        "id": "Analogi Konseptual: Menemukan karyawan berpenghasilan tertinggi di setiap departemen dengan mencocokkan departemen ke baris gaji maksimumnya.\n\nCara Kerja Database Engine: Menghubungkan departemen dengan baris karyawan yang gajinya bernilai sama dengan gaji maksimum departemen tersebut.\n\nBest Practices & Catatan Penting: Correlated subquery join memberikan kompatibilitas tinggi lintas berbagai database engine."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL correlated max salary join",
+                                                        "id": "Join gaji maksimum terikat MySQL"
+                                                },
+                                                "code": "SELECT d.dept_name, e.name, e.salary FROM departments d LEFT JOIN employees e ON e.department_id = d.id AND e.salary = (SELECT MAX(e2.salary) FROM employees e2 WHERE e2.department_id = d.id) ORDER BY d.dept_name;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Find the highest-earning employee in each department using a correlated subquery join, displaying `dept_name` from `departments`, employee `name`, and `salary`, ordered by `dept_name`.",
+                                        "id": "Temukan karyawan dengan gaji tertinggi di setiap departemen menggunakan correlated subquery join, menampilkan `dept_name` dari `departments`, `name` karyawan, dan `salary`, diurutkan berdasarkan `dept_name`."
+                                },
+                                "expected_query": "SELECT d.dept_name, e.name, e.salary FROM departments d LEFT JOIN employees e ON e.department_id = d.id AND e.salary = (SELECT MAX(e2.salary) FROM employees e2 WHERE e2.department_id = d.id) ORDER BY d.dept_name;",
+                                "starterQuery": "SELECT * FROM departments;"
+                        }
+                }
+        },
+        {
+                "id": 560,
+                "moduleId": 5,
+                "categorySlot": 10,
+                "title": {
+                        "en": "Lowest Earner per Department with CROSS JOIN LATERAL (Var #4)",
+                        "id": "Karyawan Gaji Terendah Tiap Departemen dengan CROSS JOIN LATERAL (Latihan #4)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Iterating over active departments to discover the baseline compensation earner in each department.\n\nEngine Processing Behavior: Evaluates the inner subquery for each outer department record, filtering out departments with zero employees.\n\nBest Practices & Gotchas: CROSS JOIN LATERAL excludes outer rows that return an empty set from the subquery, functioning as an inner lateral join.",
+                        "id": "Analogi Konseptual: Menelusuri departemen aktif untuk mengetahui batas kompensasi dasar terendah di masing-masing divisi.\n\nCara Kerja Database Engine: Mengevaluasi subquery internal untuk setiap baris departemen, mengeliminasi departemen yang belum memiliki staf.\n\nBest Practices & Catatan Penting: CROSS JOIN LATERAL secara otomatis mengabaikan baris tabel luar jika subquery menghasilkan himpunan kosong."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Cross join lateral subquery",
+                                        "id": "Cross join lateral subquery"
+                                },
+                                "code": "SELECT d.dept_name, sub.name, sub.salary FROM departments d CROSS JOIN LATERAL (SELECT name, salary FROM employees WHERE department_id = d.id ORDER BY salary ASC LIMIT 1) sub ORDER BY d.dept_name;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Find the lowest-earning employee in each active department using a lateral join, displaying `dept_name` from `departments`, employee `name`, and `salary`, ordered by `dept_name`.",
+                        "id": "Temukan karyawan dengan gaji terendah di setiap departemen aktif menggunakan lateral join, menampilkan `dept_name` dari `departments`, `name` karyawan, dan `salary`, diurutkan berdasarkan `dept_name`."
+                },
+                seed_sql: mod5Seed,
+                "expected_query": "SELECT d.dept_name, sub.name, sub.salary FROM departments d CROSS JOIN LATERAL (SELECT name, salary FROM employees WHERE department_id = d.id ORDER BY salary ASC LIMIT 1) sub ORDER BY d.dept_name;",
+                "starterQuery": "SELECT * FROM departments;",
+                "table_names": [
+                        "departments",
+                        "employees"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Lowest Earner per Department with Correlated Min Salary Join (Var #4)",
+                                        "id": "Karyawan Gaji Terendah Tiap Departemen dengan Join Gaji Minimum (Latihan #4)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Finding the baseline earner per department using an inner join on minimum salary.\n\nEngine Processing Behavior: Matches departments to employees holding the minimum salary in that department.\n\nBest Practices & Gotchas: Inner joins exclude empty departments automatically.",
+                                        "id": "Analogi Konseptual: Menemukan karyawan berpenghasilan terendah per departemen menggunakan inner join pada nilai gaji minimum.\n\nCara Kerja Database Engine: Mencocokkan departemen dengan karyawan yang memiliki gaji bernilai minimum pada departemen tersebut.\n\nBest Practices & Catatan Penting: Inner join secara otomatis mengeliminasi departemen yang tidak memiliki karyawan."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL min salary correlated join",
+                                                        "id": "Join gaji minimum MySQL"
+                                                },
+                                                "code": "SELECT d.dept_name, e.name, e.salary FROM departments d INNER JOIN employees e ON e.department_id = d.id AND e.salary = (SELECT MIN(e2.salary) FROM employees e2 WHERE e2.department_id = d.id) ORDER BY d.dept_name;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Find the lowest-earning employee in each active department using a correlated subquery join, displaying `dept_name` from `departments`, employee `name`, and `salary`, ordered by `dept_name`.",
+                                        "id": "Temukan karyawan dengan gaji terendah di setiap departemen aktif menggunakan correlated subquery join, menampilkan `dept_name` dari `departments`, `name` karyawan, dan `salary`, diurutkan berdasarkan `dept_name`."
+                                },
+                                "expected_query": "SELECT d.dept_name, e.name, e.salary FROM departments d INNER JOIN employees e ON e.department_id = d.id AND e.salary = (SELECT MIN(e2.salary) FROM employees e2 WHERE e2.department_id = d.id) ORDER BY d.dept_name;",
+                                "starterQuery": "SELECT * FROM departments;"
+                        }
+                }
+        }
     ];
 }
 
@@ -11344,7 +12765,398 @@ function generateModule6(): Question[] {
         "table_names": [
                 "employees"
         ]
-}
+},
+{
+                "id": 644,
+                "moduleId": 6,
+                "categorySlot": 10,
+                "title": {
+                        "en": "Organizational Hierarchy Depth Traversal with Recursive CTE (Var #1)",
+                        "id": "Penelusuran Kedalaman Struktur Organisasi dengan CTE Rekursif (Latihan #1)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: A recursive CTE explores a family or corporate tree level by level, starting at the root CEO and systematically expanding down through managers and direct reports.\n\nEngine Processing Behavior: The anchor query executes first to locate root rows (manager_id IS NULL) and seeds an internal working table. The recursive term joins the working table with the base relation, repeatedly accumulating direct reports while incrementing depth until no further child rows exist.\n\nBest Practices & Gotchas: Always ensure the recursive term includes a termination condition or references an acyclic graph to prevent infinite loops.",
+                        "id": "Analogi Konseptual: CTE rekursif menelusuri bagan pohon keluarga atau struktur perusahaan lapis demi lapis, dimulai dari pimpinan puncak (CEO) lalu turun ke manajer dan staf di bawahnya.\n\nCara Kerja Database Engine: Anchor query dieksekusi terlebih dahulu untuk mengambil baris akar (manager_id IS NULL) dan mengisinya ke working table internal. Bagian rekursif lalu menghubungkan working table dengan tabel relasi secara berulang sambil menambah angka kedalaman (depth) hingga seluruh bawahan selesai diproses.\n\nBest Practices & Catatan Penting: Selalu pastikan bagian query rekursif memiliki kondisi penghenti atau bekerja pada struktur data tanpa siklus untuk mencegah perulangan tak terhingga (infinite loop)."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Recursive hierarchy traversal",
+                                        "id": "Penelusuran hierarki rekursif"
+                                },
+                                "code": "WITH RECURSIVE org_tree AS (SELECT id, name, manager_id, role, 1 AS depth FROM org_hierarchy WHERE manager_id IS NULL UNION ALL SELECT o.id, o.name, o.manager_id, o.role, p.depth + 1 FROM org_hierarchy o INNER JOIN org_tree p ON o.manager_id = p.id) SELECT name, role, depth FROM org_tree ORDER BY depth, name;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Traverse the hierarchy starting from the top-level leader with no manager, computing the hierarchy level aliased as `depth` starting at 1, showing `name`, `role`, and `depth` from `org_hierarchy`, ordered by `depth` and `name`.",
+                        "id": "Telusuri hierarki struktur mulai dari pimpinan tingkat atas yang tidak memiliki manajer, hitung tingkat kedalaman beralias `depth` dimulai dari 1, menampilkan `name`, `role`, dan `depth` dari tabel `org_hierarchy`, diurutkan berdasarkan `depth` dan `name`."
+                },
+                seed_sql: mod6HierarchySeed,
+                "expected_query": "WITH RECURSIVE org_tree AS (SELECT id, name, manager_id, role, 1 AS depth FROM org_hierarchy WHERE manager_id IS NULL UNION ALL SELECT o.id, o.name, o.manager_id, o.role, p.depth + 1 FROM org_hierarchy o INNER JOIN org_tree p ON o.manager_id = p.id) SELECT name, role, depth FROM org_tree ORDER BY depth, name;",
+                "starterQuery": "SELECT * FROM org_hierarchy;",
+                "table_names": [
+                        "org_hierarchy"
+                ]
+        },
+        {
+                "id": 645,
+                "moduleId": 6,
+                "categorySlot": 10,
+                "title": {
+                        "en": "Generating Hierarchical Breadcrumb Paths (Var #2)",
+                        "id": "Membuat Jalur Navigasi Breadcrumb Hierarkis (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Constructing breadcrumb navigation trails (such as CEO -> VP -> Engineer) that illustrate the full chain of command for every employee.\n\nEngine Processing Behavior: The anchor query seeds each root name as the initial path string. On each recursive iteration, child names are appended to the accumulated parent path with an arrow separator.\n\nBest Practices & Gotchas: Explicitly cast the initial path column to TEXT or VARCHAR with sufficient length in the anchor query so that subsequent concatenated iterations do not truncate.",
+                        "id": "Analogi Konseptual: Membangun jejak navigasi hierarkis (seperti CEO -> VP -> Engineer) yang memperlihatkan garis komando lengkap bagi setiap karyawan.\n\nCara Kerja Database Engine: Anchor query menetapkan nama pimpinan akar sebagai string jalur awal. Pada setiap iterasi rekursif, nama bawahan digabungkan ke jalur induk menggunakan pemisah tanda panah.\n\nBest Practices & Catatan Penting: Lakukan casting eksplisit pada kolom jalur awal di anchor query ke tipe teks dengan kapasitas cukup agar penggabungan string tidak terpotong di iterasi lanjutan."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Recursive breadcrumb path concatenation",
+                                        "id": "Penggabungan jalur breadcrumb rekursif"
+                                },
+                                "code": "WITH RECURSIVE org_path AS (SELECT id, name, manager_id, CAST(name AS TEXT) AS path FROM org_hierarchy WHERE manager_id IS NULL UNION ALL SELECT o.id, o.name, o.manager_id, CAST(p.path || ' -> ' || o.name AS TEXT) FROM org_hierarchy o INNER JOIN org_path p ON o.manager_id = p.id) SELECT name, path FROM org_path ORDER BY name;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Build full organizational management paths starting from top leadership using arrows with spaces between names aliased as `path`, displaying employee `name` and `path` from `org_hierarchy`, ordered by `name`.",
+                        "id": "Bangun jalur manajemen lengkap mulai dari pimpinan puncak menggunakan tanda panah dengan spasi antar nama beralias `path`, menampilkan `name` dan `path` dari tabel `org_hierarchy`, diurutkan berdasarkan `name`."
+                },
+                seed_sql: mod6HierarchySeed,
+                "expected_query": "WITH RECURSIVE org_path AS (SELECT id, name, manager_id, CAST(name AS TEXT) AS path FROM org_hierarchy WHERE manager_id IS NULL UNION ALL SELECT o.id, o.name, o.manager_id, CAST(p.path || ' -> ' || o.name AS TEXT) FROM org_hierarchy o INNER JOIN org_path p ON o.manager_id = p.id) SELECT name, path FROM org_path ORDER BY name;",
+                "starterQuery": "SELECT * FROM org_hierarchy;",
+                "table_names": [
+                        "org_hierarchy"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Generating Hierarchical Breadcrumb Paths with CONCAT (Var #2)",
+                                        "id": "Membuat Jalur Navigasi Breadcrumb Hierarkis dengan CONCAT (Latihan #2)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Assembling management reporting chains into breadcrumb paths in MySQL.\n\nEngine Processing Behavior: Uses CONCAT within the recursive member to append subordinate names to the management chain.\n\nBest Practices & Gotchas: Cast the anchor path column to CHAR(255) to guarantee sufficient string allocation.",
+                                        "id": "Analogi Konseptual: Menyusun garis koordinasi manajerial menjadi jalur breadcrumb di MySQL.\n\nCara Kerja Database Engine: Menggunakan fungsi CONCAT pada query rekursif untuk menyambung nama bawahan ke jalur induk.\n\nBest Practices & Catatan Penting: Lakukan casting kolom awal ke CHAR(255) untuk memastikan ruang alokasi teks mencukupi."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL recursive path with CONCAT",
+                                                        "id": "Jalur rekursif MySQL dengan CONCAT"
+                                                },
+                                                "code": "WITH RECURSIVE org_path AS (SELECT id, name, manager_id, CAST(name AS CHAR(255)) AS path FROM org_hierarchy WHERE manager_id IS NULL UNION ALL SELECT o.id, o.name, o.manager_id, CONCAT(p.path, ' -> ', o.name) FROM org_hierarchy o INNER JOIN org_path p ON o.manager_id = p.id) SELECT name, path FROM org_path ORDER BY name;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Build full organizational management paths starting from top leadership using arrows with spaces between names aliased as `path`, displaying employee `name` and `path` from `org_hierarchy`, ordered by `name`.",
+                                        "id": "Bangun jalur manajemen lengkap mulai dari pimpinan puncak menggunakan tanda panah dengan spasi antar nama beralias `path`, menampilkan `name` dan `path` dari tabel `org_hierarchy`, diurutkan berdasarkan `name`."
+                                },
+                                "expected_query": "WITH RECURSIVE org_path AS (SELECT id, name, manager_id, CAST(name AS CHAR(255)) AS path FROM org_hierarchy WHERE manager_id IS NULL UNION ALL SELECT o.id, o.name, o.manager_id, CONCAT(p.path, ' -> ', o.name) FROM org_hierarchy o INNER JOIN org_path p ON o.manager_id = p.id) SELECT name, path FROM org_path ORDER BY name;",
+                                "starterQuery": "SELECT * FROM org_hierarchy;"
+                        }
+                }
+        },
+        {
+                "id": 646,
+                "moduleId": 6,
+                "categorySlot": 10,
+                "title": {
+                        "en": "Generating Sequential Numbers with Recursive Series (Var #3)",
+                        "id": "Membuat Deret Angka Berurutan dengan Seri Rekursif (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: A counter spinning upwards one tick at a time until reaching a target ceiling, synthesizing a calendar or sequence table out of thin air.\n\nEngine Processing Behavior: The anchor sets the initial value 1, and each recursive cycle increments the value until the terminating WHERE filter halts recursion.\n\nBest Practices & Gotchas: Always include a strict termination predicate (e.g. val < target) to avoid unbounded recursion exceptions.",
+                        "id": "Analogi Konseptual: Penghitung angka yang terus berputar naik satu demi satu hingga mencapai batas tertentu, menciptakan deret data sintetis langsung di memori query.\n\nCara Kerja Database Engine: Anchor menetapkan nilai awal 1, lalu setiap iterasi rekursif menambahkan 1 ke nilai sebelumnya hingga kondisi filter WHERE menghentikan proses.\n\nBest Practices & Catatan Penting: Selalu sertakan predikat penghenti yang tegas (misalnya val < batas) untuk mencegah terjadinya error akibat perulangan tanpa batas."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Recursive sequence generator",
+                                        "id": "Generator deret angka rekursif"
+                                },
+                                "code": "WITH RECURSIVE number_seq AS (SELECT 1 AS val UNION ALL SELECT val + 1 FROM number_seq WHERE val < 5) SELECT val FROM number_seq ORDER BY val;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Generate an ordered series of integer numbers from 1 to 5 inclusive aliased as `val`, ordered by `val`.",
+                        "id": "Buat deret bilangan bulat berurutan dari 1 sampai 5 inklusif beralias `val`, diurutkan berdasarkan `val`."
+                },
+                seed_sql: mod6HierarchySeed,
+                "expected_query": "WITH RECURSIVE number_seq AS (SELECT 1 AS val UNION ALL SELECT val + 1 FROM number_seq WHERE val < 5) SELECT val FROM number_seq ORDER BY val;",
+                "starterQuery": "-- Generate sequence from 1 to 5",
+                "table_names": [
+                        "org_hierarchy"
+                ]
+        },
+        {
+                "id": 647,
+                "moduleId": 6,
+                "categorySlot": 10,
+                "title": {
+                        "en": "Subtree Discovery for Engineering Department (Var #4)",
+                        "id": "Penelusuran Sub-Pohon Tim Engineering (Latihan #4)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Isolating a specific corporate branch by setting the anchor to a departmental lead and finding all personnel nested within their division.\n\nEngine Processing Behavior: The anchor query selects only 'Marcus Brody', and the recursive step retrieves all direct and indirect reports who roll up under him.\n\nBest Practices & Gotchas: Anchoring to specific sub-roots provides fast subtree extraction without scanning the entire organizational tree.",
+                        "id": "Analogi Konseptual: Mengisolasi satu cabang divisi perusahaan dengan menetapkan kepala divisi sebagai titik awal untuk menemukan seluruh anggota di bawah kepemimpinannya.\n\nCara Kerja Database Engine: Anchor query hanya memilih baris 'Marcus Brody', lalu langkah rekursif secara otomatis mengambil seluruh bawahan langsung maupun tidak langsung.\n\nBest Practices & Catatan Penting: Menetapkan titik awal pada simpul sub-pohon tertentu mempercepat penelusuran data tanpa perlu memproses seluruh entitas organisasi."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Subtree recursive discovery",
+                                        "id": "Penelusuran sub-pohon rekursif"
+                                },
+                                "code": "WITH RECURSIVE engineering_team AS (SELECT id, name, manager_id, role FROM org_hierarchy WHERE name = 'Marcus Brody' UNION ALL SELECT o.id, o.name, o.manager_id, o.role FROM org_hierarchy o INNER JOIN engineering_team e ON o.manager_id = e.id) SELECT name, role FROM engineering_team ORDER BY name;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Find Marcus Brody and all team members reporting directly or indirectly under him, displaying `name` and `role` from `org_hierarchy`, ordered by `name`.",
+                        "id": "Temukan Marcus Brody beserta seluruh anggota tim yang melapor secara langsung maupun tidak langsung di bawahnya, menampilkan `name` dan `role` dari tabel `org_hierarchy`, diurutkan berdasarkan `name`."
+                },
+                seed_sql: mod6HierarchySeed,
+                "expected_query": "WITH RECURSIVE engineering_team AS (SELECT id, name, manager_id, role FROM org_hierarchy WHERE name = 'Marcus Brody' UNION ALL SELECT o.id, o.name, o.manager_id, o.role FROM org_hierarchy o INNER JOIN engineering_team e ON o.manager_id = e.id) SELECT name, role FROM engineering_team ORDER BY name;",
+                "starterQuery": "SELECT * FROM org_hierarchy;",
+                "table_names": [
+                        "org_hierarchy"
+                ]
+        },
+        {
+                "id": 648,
+                "moduleId": 6,
+                "categorySlot": 11,
+                "title": {
+                        "en": "Archiving Closed Tickets with Data-Modifying CTE (Var #1)",
+                        "id": "Mengarsipkan Tiket Selesai dengan CTE Pemodifikasi Data (Latihan #1)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Moving physical files out of an active drawer and directly onto an archive clipboard in one seamless physical motion.\n\nEngine Processing Behavior: The CTE deletes closed ticket tuples from active_tickets, captures the deleted rows via RETURNING, and pipes them immediately to the outer SELECT.\n\nBest Practices & Gotchas: Data-modifying CTEs execute in a single atomic snapshot, preventing concurrency race conditions between read and delete operations.",
+                        "id": "Analogi Konseptual: Memindahkan berkas dokumen dari laci aktif langsung ke papan arsip dalam satu gerakan tangan yang menyatu dan aman.\n\nCara Kerja Database Engine: Bagian CTE menghapus baris tiket selesai dari tabel active_tickets, menangkap baris yang terhapus menggunakan klausa RETURNING, dan langsung meneruskannya ke SELECT luar.\n\nBest Practices & Catatan Penting: CTE pemodifikasi data dieksekusi dalam satu snapshot transaksi atomik, mencegah terjadinya perebutan data (race condition) antar proses bersamaan."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Delete returning in CTE",
+                                        "id": "Penghapusan dengan returning di dalam CTE"
+                                },
+                                "code": "WITH moved AS (DELETE FROM active_tickets WHERE status = 'closed' RETURNING id, title, status, closed_at) SELECT id, title, status, closed_at FROM moved ORDER BY id;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Purge all closed tickets from `active_tickets`, outputting the deleted tickets with `id`, `title`, `status`, and `closed_at`, ordered by `id`.",
+                        "id": "Hapus semua tiket dengan status closed dari `active_tickets`, dan tampilkan data tiket yang dihapus dengan kolom `id`, `title`, `status`, dan `closed_at`, diurutkan berdasarkan `id`."
+                },
+                seed_sql: mod6ArchiveSeed,
+                "expected_query": "WITH moved AS (DELETE FROM active_tickets WHERE status = 'closed' RETURNING id, title, status, closed_at) SELECT id, title, status, closed_at FROM moved ORDER BY id;",
+                "starterQuery": "SELECT * FROM active_tickets;",
+                "table_names": [
+                        "active_tickets"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Archiving Closed Tickets with Staged Result (Var #1)",
+                                        "id": "Mengarsipkan Tiket Selesai dengan Tabel Sementara (Latihan #1)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Capturing records in a staging area before purging them from active storage in MySQL.\n\nEngine Processing Behavior: Stages closed records, executes the purge, and returns the staged output.\n\nBest Practices & Gotchas: Multi-step archival scripts maintain auditability in engines lacking writable CTEs.",
+                                        "id": "Analogi Konseptual: Menangkap data ke area penampungan sementara sebelum menghapusnya dari tabel operasional di MySQL.\n\nCara Kerja Database Engine: Menampung data tiket yang selesai, mengeksekusi penghapusan, lalu menampilkan data yang ditampung.\n\nBest Practices & Catatan Penting: Skrip arsip multi-langkah menjaga auditabilitas pada database engine yang belum mendukung writable CTE."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL staged archival query",
+                                                        "id": "Query pengarsipan bertahap MySQL"
+                                                },
+                                                "code": "CREATE TEMPORARY TABLE moved AS SELECT id, title, status, closed_at FROM active_tickets WHERE status = 'closed'; DELETE FROM active_tickets WHERE status = 'closed'; SELECT * FROM moved ORDER BY id;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Purge all closed tickets from `active_tickets`, outputting the deleted tickets with `id`, `title`, `status`, and `closed_at`, ordered by `id`.",
+                                        "id": "Hapus semua tiket dengan status closed dari `active_tickets`, dan tampilkan data tiket yang dihapus dengan kolom `id`, `title`, `status`, dan `closed_at`, diurutkan berdasarkan `id`."
+                                },
+                                "expected_query": "CREATE TEMPORARY TABLE moved AS SELECT id, title, status, closed_at FROM active_tickets WHERE status = 'closed'; DELETE FROM active_tickets WHERE status = 'closed'; SELECT * FROM moved ORDER BY id;",
+                                "starterQuery": "SELECT * FROM active_tickets;"
+                        }
+                }
+        },
+        {
+                "id": 649,
+                "moduleId": 6,
+                "categorySlot": 11,
+                "title": {
+                        "en": "Atomic Status Transition with UPDATE RETURNING in CTE (Var #2)",
+                        "id": "Peralihan Status Atomik dengan UPDATE RETURNING di CTE (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Upgrading the status of active work orders and simultaneously stamping an audit log of exactly what was modified.\n\nEngine Processing Behavior: Updates matching tuples in the primary relation and immediately passes the modified values out to the surrounding query.\n\nBest Practices & Gotchas: RETURNING inside a CTE eliminates the need for separate pre-fetch or post-fetch SELECT statements.",
+                        "id": "Analogi Konseptual: Memperbarui status tiket investigasi menjadi terselesaikan sekaligus mencetak bukti data yang telah diubah secara instan.\n\nCara Kerja Database Engine: Memperbarui baris data yang cocok di tabel utama dan langsung mengalirkan data baru tersebut ke query luar.\n\nBest Practices & Catatan Penting: Klausa RETURNING di dalam CTE meniadakan kebutuhan query SELECT terpisah sebelum dan sesudah perubahan data."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Update returning in CTE",
+                                        "id": "Pembaruan data dengan returning di dalam CTE"
+                                },
+                                "code": "WITH updated_tickets AS (UPDATE active_tickets SET status = 'resolved' WHERE status = 'investigating' RETURNING id, title, status) SELECT id, title, status FROM updated_tickets ORDER BY id;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Update investigating tickets in `active_tickets` to have status 'resolved', displaying the modified tickets with `id`, `title`, and `status`, ordered by `id`.",
+                        "id": "Perbarui tiket dengan status investigating pada `active_tickets` menjadi 'resolved', dan tampilkan data tiket yang diperbarui dengan `id`, `title`, dan `status`, diurutkan berdasarkan `id`."
+                },
+                seed_sql: mod6ArchiveSeed,
+                "expected_query": "WITH updated_tickets AS (UPDATE active_tickets SET status = 'resolved' WHERE status = 'investigating' RETURNING id, title, status) SELECT id, title, status FROM updated_tickets ORDER BY id;",
+                "starterQuery": "SELECT * FROM active_tickets;",
+                "table_names": [
+                        "active_tickets"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Atomic Status Transition with Staged Update (Var #2)",
+                                        "id": "Peralihan Status Atomik dengan Pembaruan Bertahap (Latihan #2)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Capturing transitioned records during an update operation in MySQL.\n\nEngine Processing Behavior: Stages the target rows with their new status and executes the update in place.\n\nBest Practices & Gotchas: Ensures deterministic result reporting across database engines.",
+                                        "id": "Analogi Konseptual: Menangkap baris data yang mengalami peralihan status selama operasi pembaruan di MySQL.\n\nCara Kerja Database Engine: Menampung baris sasaran dengan status baru lalu memperbarui tabel operasional secara langsung.\n\nBest Practices & Catatan Penting: Menjamin konsistensi hasil pembaruan antar berbagai database engine."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL staged update query",
+                                                        "id": "Query pembaruan bertahap MySQL"
+                                                },
+                                                "code": "CREATE TEMPORARY TABLE updated_tickets AS SELECT id, title, 'resolved' AS status FROM active_tickets WHERE status = 'investigating'; UPDATE active_tickets SET status = 'resolved' WHERE status = 'investigating'; SELECT id, title, status FROM updated_tickets ORDER BY id;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Update investigating tickets in `active_tickets` to have status 'resolved', displaying the modified tickets with `id`, `title`, and `status`, ordered by `id`.",
+                                        "id": "Perbarui tiket dengan status investigating pada `active_tickets` menjadi 'resolved', dan tampilkan data tiket yang diperbarui dengan `id`, `title`, dan `status`, diurutkan berdasarkan `id`."
+                                },
+                                "expected_query": "CREATE TEMPORARY TABLE updated_tickets AS SELECT id, title, 'resolved' AS status FROM active_tickets WHERE status = 'investigating'; UPDATE active_tickets SET status = 'resolved' WHERE status = 'investigating'; SELECT id, title, status FROM updated_tickets ORDER BY id;",
+                                "starterQuery": "SELECT * FROM active_tickets;"
+                        }
+                }
+        },
+        {
+                "id": 650,
+                "moduleId": 6,
+                "categorySlot": 11,
+                "title": {
+                        "en": "Purge Counting via Writable CTE Aggregation (Var #3)",
+                        "id": "Penghitungan Pembersihan Data via Agregasi Writable CTE (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Emptying out expired paperwork and having the paper shredder report the total tally of shredded documents in real time.\n\nEngine Processing Behavior: Purges matching rows and feeds the returned IDs directly into an aggregate COUNT function without an intermediate table.\n\nBest Practices & Gotchas: Using COUNT on RETURNING columns provides exact deletion counts without relying on driver-specific affected-row counts.",
+                        "id": "Analogi Konseptual: Mengosongkan berkas usang dan meminta mesin penghancur kertas melaporkan total lembar yang dihancurkan secara langsung.\n\nCara Kerja Database Engine: Menghapus baris yang cocok dan mengalirkan ID hasil penghapusan langsung ke fungsi agregasi COUNT tanpa tabel perantara.\n\nBest Practices & Catatan Penting: Menjalankan COUNT pada kolom RETURNING memberikan jumlah data terhapus secara akurat tanpa bergantung pada metadata driver."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Count of deleted rows via CTE",
+                                        "id": "Menghitung baris terhapus via CTE"
+                                },
+                                "code": "WITH deleted_tickets AS (DELETE FROM active_tickets WHERE closed_at < '2024-02-16' RETURNING id) SELECT COUNT(*) AS purged_count FROM deleted_tickets;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Delete tickets closed prior to February 16, 2024 from `active_tickets` and display the count of deleted records aliased as `purged_count`.",
+                        "id": "Hapus tiket yang diselesaikan sebelum 16 Februari 2024 dari `active_tickets` dan tampilkan total baris yang terhapus dengan alias `purged_count`."
+                },
+                seed_sql: mod6ArchiveSeed,
+                "expected_query": "WITH deleted_tickets AS (DELETE FROM active_tickets WHERE closed_at < '2024-02-16' RETURNING id) SELECT COUNT(*) AS purged_count FROM deleted_tickets;",
+                "starterQuery": "SELECT * FROM active_tickets;",
+                "table_names": [
+                        "active_tickets"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Purge Counting with Staged Aggregation (Var #3)",
+                                        "id": "Penghitungan Pembersihan dengan Agregasi Bertahap (Latihan #3)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Staging records to count the exact number of purged entities in MySQL.\n\nEngine Processing Behavior: Stages IDs of targeted rows, deletes from the main table, and aggregates the count.\n\nBest Practices & Gotchas: Staged counts confirm deletion totals before changes commit.",
+                                        "id": "Analogi Konseptual: Menampung data untuk menghitung jumlah entitas yang dibersihkan di MySQL.\n\nCara Kerja Database Engine: Menampung ID baris yang disasar, menghapusnya dari tabel utama, lalu mengagregasi totalnya.\n\nBest Practices & Catatan Penting: Penghitungan bertahap memastikan akurasi data terhapus sebelum transaksi diselesaikan."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL staged count of deleted rows",
+                                                        "id": "Penghitungan baris terhapus bertahap MySQL"
+                                                },
+                                                "code": "CREATE TEMPORARY TABLE deleted_tickets AS SELECT id FROM active_tickets WHERE closed_at < '2024-02-16'; DELETE FROM active_tickets WHERE closed_at < '2024-02-16'; SELECT COUNT(*) AS purged_count FROM deleted_tickets;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Delete tickets closed prior to February 16, 2024 from `active_tickets` and display the count of deleted records aliased as `purged_count`.",
+                                        "id": "Hapus tiket yang diselesaikan sebelum 16 Februari 2024 dari `active_tickets` dan tampilkan total baris yang terhapus dengan alias `purged_count`."
+                                },
+                                "expected_query": "CREATE TEMPORARY TABLE deleted_tickets AS SELECT id FROM active_tickets WHERE closed_at < '2024-02-16'; DELETE FROM active_tickets WHERE closed_at < '2024-02-16'; SELECT COUNT(*) AS purged_count FROM deleted_tickets;",
+                                "starterQuery": "SELECT * FROM active_tickets;"
+                        }
+                }
+        },
+        {
+                "id": 651,
+                "moduleId": 6,
+                "categorySlot": 11,
+                "title": {
+                        "en": "Atomic Record Insertion and Confirmation via CTE (Var #4)",
+                        "id": "Penyisipan dan Konfirmasi Rekaman Atomik via CTE (Latihan #4)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Adding a new ticket to an active ticket dispatch system and instantly returning a ticket receipt to the requesting user.\n\nEngine Processing Behavior: Inserts the new tuple into the target table, captures the newly generated row values, and projects them through the outer query.\n\nBest Practices & Gotchas: Combines insertion and data retrieval into a single database roundtrip.",
+                        "id": "Analogi Konseptual: Mendaftarkan tiket baru ke sistem penanganan tiket dan langsung mengembalikan struk bukti tiket ke pengguna pemohon.\n\nCara Kerja Database Engine: Menyisipkan baris baru ke tabel sasaran, menangkap nilai data baru tersebut, lalu memproyeksikannya keluar melalui query utama.\n\nBest Practices & Catatan Penting: Menggabungkan operasi penambahan data dan pembacaan kembali dalam satu round-trip database."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Insert returning via CTE",
+                                        "id": "Penyisipan data dengan returning via CTE"
+                                },
+                                "code": "WITH new_ticket AS (INSERT INTO active_tickets VALUES (5, 'API rate limiter bug', 'open', NULL) RETURNING id, title, status) SELECT id, title, status FROM new_ticket;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Insert a new ticket with `id` 5, title 'API rate limiter bug', status 'open', and null `closed_at` into `active_tickets`, outputting the inserted `id`, `title`, and `status`.",
+                        "id": "Sisipkan tiket baru dengan `id` 5, judul 'API rate limiter bug', status 'open', dan `closed_at` bernilai null ke dalam `active_tickets`, lalu tampilkan kolom `id`, `title`, dan `status` dari data tersebut."
+                },
+                seed_sql: mod6ArchiveSeed,
+                "expected_query": "WITH new_ticket AS (INSERT INTO active_tickets VALUES (5, 'API rate limiter bug', 'open', NULL) RETURNING id, title, status) SELECT id, title, status FROM new_ticket;",
+                "starterQuery": "SELECT * FROM active_tickets;",
+                "table_names": [
+                        "active_tickets"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Record Insertion and Confirmation (Var #4)",
+                                        "id": "Penyisipan dan Konfirmasi Rekaman (Latihan #4)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Inserting a ticket and retrieving the confirmation record in MySQL.\n\nEngine Processing Behavior: Executes insertion followed by an immediate lookup of the inserted record.\n\nBest Practices & Gotchas: Ensures the newly inserted record matches expectations.",
+                                        "id": "Analogi Konseptual: Menyisipkan tiket dan mengambil rekaman konfirmasi di MySQL.\n\nCara Kerja Database Engine: Mengeksekusi penambahan data diikuti pembacaan data yang baru saja disisipkan.\n\nBest Practices & Catatan Penting: Memastikan data yang baru ditambahkan sesuai dengan ekspektasi sistem."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL insertion and select lookup",
+                                                        "id": "Penyisipan dan seleksi rekaman MySQL"
+                                                },
+                                                "code": "INSERT INTO active_tickets VALUES (5, 'API rate limiter bug', 'open', NULL); SELECT id, title, status FROM active_tickets WHERE id = 5;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Insert a new ticket with `id` 5, title 'API rate limiter bug', status 'open', and null `closed_at` into `active_tickets`, outputting the inserted `id`, `title`, and `status`.",
+                                        "id": "Sisipkan tiket baru dengan `id` 5, judul 'API rate limiter bug', status 'open', dan `closed_at` bernilai null ke dalam `active_tickets`, lalu tampilkan kolom `id`, `title`, dan `status` dari data tersebut."
+                                },
+                                "expected_query": "INSERT INTO active_tickets VALUES (5, 'API rate limiter bug', 'open', NULL); SELECT id, title, status FROM active_tickets WHERE id = 5;",
+                                "starterQuery": "SELECT * FROM active_tickets;"
+                        }
+                }
+        }
     ];
 }
 
@@ -11481,7 +13293,7 @@ function generateModule7(): Question[] {
         {
             id: 705,
             moduleId: 7,
-            categorySlot: 5,
+            categorySlot: 10,
             title: {
                 en: "CREATE VIEW Savings Summary (Var #1)",
                 id: "Menyimpan Query Reusable dengan CREATE VIEW (Latihan #1)"
@@ -11641,7 +13453,7 @@ function generateModule7(): Question[] {
         {
             id: 710,
             moduleId: 7,
-            categorySlot: 5,
+            categorySlot: 10,
             title: {
                 en: "CREATE VIEW Savings Summary (Var #2)",
                 id: "Menyimpan Query Reusable dengan CREATE VIEW (Latihan #2)"
@@ -11801,7 +13613,7 @@ function generateModule7(): Question[] {
         {
             id: 715,
             moduleId: 7,
-            categorySlot: 5,
+            categorySlot: 10,
             title: {
                 en: "CREATE VIEW Savings Summary (Var #3)",
                 id: "Menyimpan Query Reusable dengan CREATE VIEW (Latihan #3)"
@@ -11961,7 +13773,7 @@ function generateModule7(): Question[] {
         {
             id: 720,
             moduleId: 7,
-            categorySlot: 5,
+            categorySlot: 10,
             title: {
                 en: "CREATE VIEW Savings Summary (Var #4)",
                 id: "Menyimpan Query Reusable dengan CREATE VIEW (Latihan #4)"
@@ -12121,7 +13933,7 @@ function generateModule7(): Question[] {
         {
             id: 725,
             moduleId: 7,
-            categorySlot: 5,
+            categorySlot: 10,
             title: {
                 en: "CREATE VIEW Savings Summary (Var #5)",
                 id: "Menyimpan Query Reusable dengan CREATE VIEW (Latihan #5)"
@@ -12281,7 +14093,7 @@ function generateModule7(): Question[] {
         {
             id: 730,
             moduleId: 7,
-            categorySlot: 5,
+            categorySlot: 10,
             title: {
                 en: "CREATE VIEW Savings Summary (Var #6)",
                 id: "Menyimpan Query Reusable dengan CREATE VIEW (Latihan #6)"
@@ -12313,7 +14125,7 @@ function generateModule7(): Question[] {
         {
         "id": 731,
         "moduleId": 7,
-        "categorySlot": 6,
+        "categorySlot": 9,
         "title": {
                 "en": "Latest Record Deduplication with DISTINCT ON (Var #1)",
                 "id": "Deduplikasi Data Terbaru dengan DISTINCT ON (Latihan #1)"
@@ -12367,7 +14179,7 @@ function generateModule7(): Question[] {
         {
         "id": 732,
         "moduleId": 7,
-        "categorySlot": 6,
+        "categorySlot": 9,
         "title": {
                 "en": "Highest Value Order Deduplication (Var #2)",
                 "id": "Deduplikasi Order Nilai Tertinggi dengan DISTINCT ON (Latihan #2)"
@@ -12421,7 +14233,7 @@ function generateModule7(): Question[] {
         {
         "id": 733,
         "moduleId": 7,
-        "categorySlot": 6,
+        "categorySlot": 9,
         "title": {
                 "en": "First/Earliest Order Deduplication (Var #3)",
                 "id": "Deduplikasi Order Pertama Pelanggan (Latihan #3)"
@@ -12471,7 +14283,456 @@ function generateModule7(): Question[] {
                         "expected_query": "WITH ranked_orders AS (\n    SELECT customer_id, order_date, amount,\n           ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date ASC) AS rn\n    FROM orders\n)\nSELECT customer_id, order_date, amount\nFROM ranked_orders\nWHERE rn = 1;"
                 }
         }
-}
+},
+{
+                "id": 734,
+                "moduleId": 7,
+                "categorySlot": 8,
+                "title": {
+                        "en": "Cumulative Running Balance with Window Frame (Var #1)",
+                        "id": "Akumulasi Saldo Berjalan dengan Window Frame (Latihan #1)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: A running total acts like a running meter in a marathon: as each runner crosses a checkpoint, the meter aggregates the total distance covered from the very beginning up to that exact participant.\n\nEngine Processing Behavior: The window framing clause bounds aggregate computation from the very first row of the partition (UNBOUNDED PRECEDING) up to the CURRENT ROW, maintaining an running accumulator in memory.\n\nBest Practices & Gotchas: Omitting the frame clause on an ORDER BY window defaults to RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW, which can group duplicate metric values together; ROWS BETWEEN guarantees strict row-by-row aggregation.",
+                        "id": "Analogi Konseptual: Total akumulasi berjalan bekerja seperti odometer jarak pada maraton: saat setiap pelari melewati pos, alat ukur menjumlahkan total jarak dari garis awal hingga pelari saat ini.\n\nCara Kerja Database Engine: Klausa window framing membatasi komputasi agregasi mulai dari baris paling awal partisi (UNBOUNDED PRECEDING) hingga baris saat ini (CURRENT ROW), menyimpan akumulator di memori kerja.\n\nBest Practices & Catatan Penting: Mengabaikan klausa frame pada window ORDER BY menerapkan default RANGE yang dapat menyatukan nilai ganda; gunakan ROWS BETWEEN untuk agregasi baris per baris yang deterministik."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Running total with unbounded preceding frame",
+                                        "id": "Total berjalan dengan frame unbounded preceding"
+                                },
+                                "code": "SELECT id, owner, balance, SUM(balance) OVER (ORDER BY id ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_total FROM accounts ORDER BY id;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Calculate a cumulative running total of balance from the first row through the current row ordered by id aliased as `running_total`, displaying `id`, `owner`, `balance`, and `running_total` from `accounts`, ordered by `id`.",
+                        "id": "Hitung total akumulasi saldo berjalan dari baris awal hingga baris saat ini diurutkan berdasarkan id beralias `running_total`, menampilkan `id`, `owner`, `balance`, dan `running_total` dari tabel `accounts`, diurutkan berdasarkan `id`."
+                },
+                seed_sql: mod7Seed,
+                "expected_query": "SELECT id, owner, balance, SUM(balance) OVER (ORDER BY id ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_total FROM accounts ORDER BY id;",
+                "starterQuery": "SELECT * FROM accounts;",
+                "table_names": [
+                        "accounts"
+                ]
+        },
+        {
+                "id": 735,
+                "moduleId": 7,
+                "categorySlot": 8,
+                "title": {
+                        "en": "Three-Row Moving Average Calculation (Var #2)",
+                        "id": "Perhitungan Rata-rata Bergerak Tiga Baris (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: A moving average smooths short-term fluctuations by averaging a sliding viewport across recent data points, like smoothing daily stock prices over recent trading days.\n\nEngine Processing Behavior: For each row, the window engine buffers the previous 2 rows plus the current row, evaluates the average across this 3-tuple frame, and rounds the metric.\n\nBest Practices & Gotchas: Boundary rows at the start of the table evaluate smaller frames (e.g. 1 or 2 rows) without error.",
+                        "id": "Analogi Konseptual: Rata-rata bergerak meredam fluktuasi jangka pendek dengan menghitung rata-rata jendela data terkini, seperti menghaluskan grafik harga harian saham.\n\nCara Kerja Database Engine: Untuk setiap baris, window engine menampung 2 baris sebelumnya ditambah baris saat ini, lalu menghitung rata-rata frame 3 baris tersebut dan membulatkannya.\n\nBest Practices & Catatan Penting: Baris-baris awal pada tabel secara otomatis mengevaluasi frame yang lebih kecil (1 atau 2 baris) secara anggun tanpa menghasilkan error."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Moving average over preceding rows",
+                                        "id": "Rata-rata bergerak atas baris sebelumnya"
+                                },
+                                "code": "SELECT id, owner, balance, ROUND(AVG(balance) OVER (ORDER BY id ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS moving_avg FROM accounts ORDER BY id;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Calculate a 3-row moving average of balance covering 2 preceding rows and the current row rounded to two decimals aliased as `moving_avg`, displaying `id`, `owner`, `balance`, and `moving_avg` from `accounts`, ordered by `id`.",
+                        "id": "Hitung rata-rata bergerak 3 baris dari saldo mencakup 2 baris sebelumnya dan baris saat ini dibulatkan ke dua desimal beralias `moving_avg`, menampilkan `id`, `owner`, `balance`, dan `moving_avg` dari tabel `accounts`, diurutkan berdasarkan `id`."
+                },
+                seed_sql: mod7Seed,
+                "expected_query": "SELECT id, owner, balance, ROUND(AVG(balance) OVER (ORDER BY id ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS moving_avg FROM accounts ORDER BY id;",
+                "starterQuery": "SELECT * FROM accounts;",
+                "table_names": [
+                        "accounts"
+                ]
+        },
+        {
+                "id": 736,
+                "moduleId": 7,
+                "categorySlot": 8,
+                "title": {
+                        "en": "Forward-Looking Window Frame Aggregation (Var #3)",
+                        "id": "Agregasi Window Frame Menatap ke Depan (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Looking ahead to paired subsequent milestones, combining current obligations with the immediately upcoming cycle.\n\nEngine Processing Behavior: The execution engine extends the window frame ahead by 1 row (1 FOLLOWING), summing the current row and its immediate successor.\n\nBest Practices & Gotchas: Frame specifications can navigate both backward (PRECEDING) and forward (FOLLOWING) relative to the active row.",
+                        "id": "Analogi Konseptual: Menengok ke depan pada jadwal pencapaian berikutnya, menggabungkan beban saat ini dengan siklus terdekat yang akan datang.\n\nCara Kerja Database Engine: Engine eksekusi memperluas frame jendela ke depan sebanyak 1 baris (1 FOLLOWING), menjumlahkan baris saat ini dengan baris tepat setelahnya.\n\nBest Practices & Catatan Penting: Spesifikasi frame dapat bergerak mundur (PRECEDING) maupun maju ke depan (FOLLOWING) relatif terhadap baris aktif."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Window frame with following rows",
+                                        "id": "Window frame dengan baris following"
+                                },
+                                "code": "SELECT id, owner, balance, SUM(balance) OVER (ORDER BY id ROWS BETWEEN CURRENT ROW AND 1 FOLLOWING) AS next_window_sum FROM accounts ORDER BY id;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Sum the balance of the current row and the immediate next row aliased as `next_window_sum`, displaying `id`, `owner`, `balance`, and `next_window_sum` from `accounts`, ordered by `id`.",
+                        "id": "Jumlahkan saldo baris saat ini dan tepat satu baris setelahnya beralias `next_window_sum`, menampilkan `id`, `owner`, `balance`, dan `next_window_sum` dari tabel `accounts`, diurutkan berdasarkan `id`."
+                },
+                seed_sql: mod7Seed,
+                "expected_query": "SELECT id, owner, balance, SUM(balance) OVER (ORDER BY id ROWS BETWEEN CURRENT ROW AND 1 FOLLOWING) AS next_window_sum FROM accounts ORDER BY id;",
+                "starterQuery": "SELECT * FROM accounts;",
+                "table_names": [
+                        "accounts"
+                ]
+        },
+        {
+                "id": 737,
+                "moduleId": 7,
+                "categorySlot": 6,
+                "title": {
+                        "en": "Category Peak Earner Lookup with FIRST_VALUE (Var #1)",
+                        "id": "Pencarian Pemilik Saldo Teratas Kategori dengan FIRST_VALUE (Latihan #1)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Stamping the name of the gold-medal champion in each division across every contestant's scorecard for comparison.\n\nEngine Processing Behavior: Within each category partition ordered by balance descending, the engine retrieves the value of owner from the very first ranked row.\n\nBest Practices & Gotchas: FIRST_VALUE requires explicit partition ordering to determine which row is considered first.",
+                        "id": "Analogi Konseptual: Menempelkan nama juara peraih medali emas di setiap divisi pada kartu nilai semua peserta sebagai perbandingan.\n\nCara Kerja Database Engine: Di setiap partisi kategori yang diurutkan dari saldo tertinggi, engine mengambil nilai kolom owner dari baris peringkat paling pertama.\n\nBest Practices & Catatan Penting: FIRST_VALUE memerlukan klausa pengurutan partisi yang tegas untuk menentukan baris mana yang dianggap pertama."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "FIRST_VALUE in partition",
+                                        "id": "FIRST_VALUE dalam partisi"
+                                },
+                                "code": "SELECT id, owner, category, balance, FIRST_VALUE(owner) OVER (PARTITION BY category ORDER BY balance DESC) AS top_owner FROM accounts ORDER BY category, balance DESC;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Identify the top account owner per category using window value functions aliased as `top_owner`, displaying `id`, `owner`, `category`, `balance`, and `top_owner` from `accounts`, ordered by `category` and `balance` descending.",
+                        "id": "Identifikasi pemilik akun saldo tertinggi per kategori menggunakan fungsi analitik nilai beralias `top_owner`, menampilkan `id`, `owner`, `category`, `balance`, dan `top_owner` dari tabel `accounts`, diurutkan berdasarkan `category` dan `balance` menurun."
+                },
+                seed_sql: mod7Seed,
+                "expected_query": "SELECT id, owner, category, balance, FIRST_VALUE(owner) OVER (PARTITION BY category ORDER BY balance DESC) AS top_owner FROM accounts ORDER BY category, balance DESC;",
+                "starterQuery": "SELECT * FROM accounts;",
+                "table_names": [
+                        "accounts"
+                ]
+        },
+        {
+                "id": 738,
+                "moduleId": 7,
+                "categorySlot": 5,
+                "title": {
+                        "en": "Next Account Balance Peeking with LEAD (Var #2)",
+                        "id": "Mengintip Saldo Akun Berikutnya dengan LEAD (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Peeking one step forward in line to see the next customer's balance without stepping out of sequence.\n\nEngine Processing Behavior: The LEAD function fetches values from following tuples based on an offset distance without requiring self-joins.\n\nBest Practices & Gotchas: The final tuple in the ordering will return NULL for LEAD unless an explicit default fallback value is supplied.",
+                        "id": "Analogi Konseptual: Mengintip satu langkah ke depan dalam antrean untuk melihat saldo pelanggan berikutnya tanpa merusak barisan.\n\nCara Kerja Database Engine: Fungsi LEAD mengambil nilai dari baris berikutnya berdasarkan jarak offset tanpa memerlukan operasi self-join yang membebani memori.\n\nBest Practices & Catatan Penting: Baris terakhir dalam urutan akan menghasilkan nilai NULL untuk LEAD kecuali nilai default alternatif disediakan."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "LEAD value lookup",
+                                        "id": "Pencarian nilai dengan LEAD"
+                                },
+                                "code": "SELECT id, owner, balance, LEAD(balance, 1) OVER (ORDER BY balance ASC) AS next_balance FROM accounts ORDER BY balance ASC;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Look ahead to the next higher account balance in ascending sequence aliased as `next_balance`, displaying `id`, `owner`, `balance`, and `next_balance` from `accounts`, ordered by `balance` ascending.",
+                        "id": "Lihat saldo akun berikutnya yang lebih tinggi dalam urutan menaik beralias `next_balance`, menampilkan `id`, `owner`, `balance`, dan `next_balance` dari tabel `accounts`, diurutkan berdasarkan `balance` menaik."
+                },
+                seed_sql: mod7Seed,
+                "expected_query": "SELECT id, owner, balance, LEAD(balance, 1) OVER (ORDER BY balance ASC) AS next_balance FROM accounts ORDER BY balance ASC;",
+                "starterQuery": "SELECT * FROM accounts;",
+                "table_names": [
+                        "accounts"
+                ]
+        },
+        {
+                "id": 739,
+                "moduleId": 7,
+                "categorySlot": 7,
+                "title": {
+                        "en": "Wealth Quartile Distribution with NTILE (Var #3)",
+                        "id": "Distribusi Kuartil Kekayaan dengan NTILE (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Dividing a group of test takers into four equal performance quartiles (top 25%, upper-mid, lower-mid, bottom 25%).\n\nEngine Processing Behavior: The NTILE function divides the sorted partition into N equal buckets, assigning each row an integer bucket identifier from 1 to N.\n\nBest Practices & Gotchas: If the row count is not evenly divisible by N, earlier buckets receive the extra remaining rows.",
+                        "id": "Analogi Konseptual: Membagi kelompok peserta ujian ke dalam empat kuartil prestasi yang sama besar (25% teratas, menengah-atas, menengah-bawah, 25% terbawah).\n\nCara Kerja Database Engine: Fungsi NTILE membagi partisi yang telah terurut ke dalam N kelompok berukuran seimbang, memberikan nomor kelompok integer 1 sampai N pada tiap baris.\n\nBest Practices & Catatan Penting: Jika jumlah baris tidak habis dibagi N, kelompok-kelompok bernomor awal akan menampung sisa baris ekstra tersebut."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "NTILE quartile assignment",
+                                        "id": "Penetapan kuartil dengan NTILE"
+                                },
+                                "code": "SELECT id, owner, balance, NTILE(4) OVER (ORDER BY balance DESC) AS quartile FROM accounts ORDER BY balance DESC, id;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Divide accounts into four equal wealth quartiles based on descending balance aliased as `quartile`, displaying `id`, `owner`, `balance`, and `quartile` from `accounts`, ordered by `balance` descending and `id`.",
+                        "id": "Bagi akun ke dalam empat kuartil kekayaan seimbang berdasarkan saldo menurun beralias `quartile`, menampilkan `id`, `owner`, `balance`, dan `quartile` dari tabel `accounts`, diurutkan berdasarkan `balance` menurun dan `id`."
+                },
+                seed_sql: mod7Seed,
+                "expected_query": "SELECT id, owner, balance, NTILE(4) OVER (ORDER BY balance DESC) AS quartile FROM accounts ORDER BY balance DESC, id;",
+                "starterQuery": "SELECT * FROM accounts;",
+                "table_names": [
+                        "accounts"
+                ]
+        },
+        {
+                "id": 740,
+                "moduleId": 7,
+                "categorySlot": 6,
+                "title": {
+                        "en": "Category Baseline Lookup with LAST_VALUE and Explicit Frame (Var #4)",
+                        "id": "Pencarian Saldo Terendah Kategori dengan LAST_VALUE dan Frame Eksplisit (Latihan #4)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Looking all the way to the end of each category's roster to find the minimum entry point balance.\n\nEngine Processing Behavior: The default frame stops at CURRENT ROW, which causes LAST_VALUE to simply return the current row; extending the frame with UNBOUNDED FOLLOWING allows LAST_VALUE to inspect the true partition boundary.\n\nBest Practices & Gotchas: Always specify ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING when using LAST_VALUE.",
+                        "id": "Analogi Konseptual: Melihat hingga ke ujung paling akhir daftar setiap kategori untuk mengetahui saldo awal batas terbawah.\n\nCara Kerja Database Engine: Batasan frame default berhenti pada CURRENT ROW sehingga LAST_VALUE hanya membaca baris saat ini; memperluas frame dengan UNBOUNDED FOLLOWING memungkinkan LAST_VALUE membaca baris partisi paling ujung.\n\nBest Practices & Catatan Penting: Selalu cantumkan ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ketika menggunakan LAST_VALUE."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "LAST_VALUE with full frame",
+                                        "id": "LAST_VALUE dengan frame penuh"
+                                },
+                                "code": "SELECT id, owner, category, balance, LAST_VALUE(owner) OVER (PARTITION BY category ORDER BY balance DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS lowest_owner FROM accounts ORDER BY category, balance DESC;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Find the lowest-balance account owner per category using value functions with full partition framing aliased as `lowest_owner`, displaying `id`, `owner`, `category`, `balance`, and `lowest_owner` from `accounts`, ordered by `category` and `balance` descending.",
+                        "id": "Temukan pemilik akun dengan saldo terendah per kategori menggunakan fungsi nilai dengan frame partisi penuh beralias `lowest_owner`, menampilkan `id`, `owner`, `category`, `balance`, dan `lowest_owner` dari tabel `accounts`, diurutkan berdasarkan `category` dan `balance` menurun."
+                },
+                seed_sql: mod7Seed,
+                "expected_query": "SELECT id, owner, category, balance, LAST_VALUE(owner) OVER (PARTITION BY category ORDER BY balance DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS lowest_owner FROM accounts ORDER BY category, balance DESC;",
+                "starterQuery": "SELECT * FROM accounts;",
+                "table_names": [
+                        "accounts"
+                ]
+        },
+        {
+                "id": 741,
+                "moduleId": 7,
+                "categorySlot": 11,
+                "title": {
+                        "en": "Creating Precomputed Aggregations with Materialized View (Var #1)",
+                        "id": "Membuat Agregasi Terkomputasi dengan Materialized View (Latihan #1)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Printing a physical summary report and storing it in a binder rather than recalculating millions of receipts on every customer visit.\n\nEngine Processing Behavior: A materialized view executes the defining query once and writes the resulting tuple pages permanently to disk storage, allowing subsequent queries to scan the cached snapshot at blinding speed.\n\nBest Practices & Gotchas: Materialized views do not update automatically when underlying tables change; they must be periodically refreshed.",
+                        "id": "Analogi Konseptual: Mencetak laporan ringkasan fisik ke dalam map berkas alih-alih menghitung ulang jutaan lembar struk setiap kali ada pelanggan yang bertanya.\n\nCara Kerja Database Engine: Materialized view mengeksekusi query pendefinisi satu kali lalu menulis halaman data hasilnya secara permanen ke disk storage, sehingga pembacaan berikutnya berlangsung instan tanpa proses agregasi ulang.\n\nBest Practices & Catatan Penting: Materialized view tidak otomatis terbarui saat tabel dasar mengalami mutasi data; view ini harus disegarkan secara berkala."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Create materialized view",
+                                        "id": "Pembuatan materialized view"
+                                },
+                                "code": "CREATE MATERIALIZED VIEW premium_accounts_summary AS SELECT category, COUNT(*) AS total_accounts, SUM(balance) AS total_balance FROM accounts WHERE balance >= 3000 GROUP BY category;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Create a materialized view named `premium_accounts_summary` storing `category`, `total_accounts`, and `total_balance` for accounts with balance at least 3000 grouped by `category`.",
+                        "id": "Buat materialized view bernama `premium_accounts_summary` yang menyimpan `category`, `total_accounts`, dan `total_balance` untuk akun bersaldo minimal 3000 dikelompokkan berdasarkan `category`."
+                },
+                seed_sql: mod7Seed,
+                "expected_query": "CREATE MATERIALIZED VIEW premium_accounts_summary AS SELECT category, COUNT(*) AS total_accounts, SUM(balance) AS total_balance FROM accounts WHERE balance >= 3000 GROUP BY category;",
+                "starterQuery": "-- Create materialized view here",
+                "table_names": [
+                        "accounts"
+                ],
+                "isDdlCreate": true,
+                "mockPreviewData": {
+                        "tableName": "premium_accounts_summary",
+                        "columns": [
+                                "category",
+                                "total_accounts",
+                                "total_balance"
+                        ],
+                        "rows": [
+                                {
+                                        "category": "Premium",
+                                        "total_accounts": 3,
+                                        "total_balance": 20100
+                                },
+                                {
+                                        "category": "Standard",
+                                        "total_accounts": 2,
+                                        "total_balance": 7300
+                                }
+                        ]
+                },
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Creating Precomputed Aggregations with Standard View (Var #1)",
+                                        "id": "Membuat Agregasi Terkomputasi dengan View Standar (Latihan #1)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Encapsulating heavy aggregation queries into reusable virtual table views in MySQL.\n\nEngine Processing Behavior: Stores the query definition in the data dictionary for transparent querying.\n\nBest Practices & Gotchas: Standard views present real-time projections of underlying tables.",
+                                        "id": "Analogi Konseptual: Membungkus query agregasi kompleks ke dalam view tabel virtual yang dapat digunakan kembali di MySQL.\n\nCara Kerja Database Engine: Menyimpan definisi query ke kamus data untuk kemudahan pemanggilan query berikutnya.\n\nBest Practices & Catatan Penting: View standar menyajikan proyeksi data terkini dari tabel dasarnya secara langsung."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL view creation",
+                                                        "id": "Pembuatan view MySQL"
+                                                },
+                                                "code": "CREATE VIEW premium_accounts_summary AS SELECT category, COUNT(*) AS total_accounts, SUM(balance) AS total_balance FROM accounts WHERE balance >= 3000 GROUP BY category;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Create a view named `premium_accounts_summary` storing `category`, `total_accounts`, and `total_balance` for accounts with balance at least 3000 grouped by `category`.",
+                                        "id": "Buat view bernama `premium_accounts_summary` yang menyimpan `category`, `total_accounts`, dan `total_balance` untuk akun bersaldo minimal 3000 dikelompokkan berdasarkan `category`."
+                                },
+                                "expected_query": "CREATE VIEW premium_accounts_summary AS SELECT category, COUNT(*) AS total_accounts, SUM(balance) AS total_balance FROM accounts WHERE balance >= 3000 GROUP BY category;",
+                                "starterQuery": "-- Create view here"
+                        }
+                }
+        },
+        {
+                "id": 742,
+                "moduleId": 7,
+                "categorySlot": 11,
+                "title": {
+                        "en": "Refreshing Cached Materialized View Snapshots (Var #2)",
+                        "id": "Menyegarkan Snapshot Cache Materialized View (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Tearing off the old monthly summary and re-running the numbers from latest base records to update the physical binder.\n\nEngine Processing Behavior: Re-executes the underlying query of the materialized view, populates a new storage page set, and swaps the pointer to the fresh dataset.\n\nBest Practices & Gotchas: Use REFRESH MATERIALIZED VIEW CONCURRENTLY in production systems to allow reads while the refresh proceeds in the background (requires a unique index).",
+                        "id": "Analogi Konseptual: Mencetak ulang lembar ringkasan bulanan dengan menghitung data terkini dari transaksi dasar untuk memperbarui dokumen fisik.\n\nCara Kerja Database Engine: Mengeksekusi ulang query pendefinisi dari materialized view, menyusun kumpulan halaman disk baru, lalu mengalihkan pointer ke data segar tersebut.\n\nBest Practices & Catatan Penting: Gunakan opsi CONCURRENTLY pada sistem produksi agar pembacaan data tetap berjalan lancar saat proses penyegaran berlangsung di latar belakang."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Refresh materialized view",
+                                        "id": "Penyegaran materialized view"
+                                },
+                                "code": "REFRESH MATERIALIZED VIEW premium_accounts_summary;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Refresh the stored snapshot of the `premium_accounts_summary` materialized view.",
+                        "id": "Segarkan snapshot data tersimpan dari materialized view `premium_accounts_summary`."
+                },
+                seed_sql: mod7Seed + `
+CREATE MATERIALIZED VIEW premium_accounts_summary AS SELECT category, COUNT(*) AS total_accounts, SUM(balance) AS total_balance FROM accounts WHERE balance >= 3000 GROUP BY category;`,
+                "expected_query": "REFRESH MATERIALIZED VIEW premium_accounts_summary;",
+                "starterQuery": "-- Refresh view here",
+                "table_names": [
+                        "accounts"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Querying Refreshed Summary View (Var #2)",
+                                        "id": "Membaca View Ringkasan Terkini (Latihan #2)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Inspecting the updated data output from an analytical view in MySQL.\n\nEngine Processing Behavior: Scans and returns pre-aggregated data records.\n\nBest Practices & Gotchas: Views reflect underlying mutations dynamically.",
+                                        "id": "Analogi Konseptual: Memeriksa data hasil kalkulasi terbaru dari view analitik di MySQL.\n\nCara Kerja Database Engine: Membaca dan mengembalikan baris data yang telah diagregasikan.\n\nBest Practices & Catatan Penting: View di MySQL secara dinamis mencerminkan perubahan data pada tabel dasar."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL select from view",
+                                                        "id": "Seleksi data view MySQL"
+                                                },
+                                                "code": "SELECT category, total_accounts, total_balance FROM premium_accounts_summary ORDER BY category;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Display `category`, `total_accounts`, and `total_balance` from the `premium_accounts_summary` view, ordered by `category`.",
+                                        "id": "Tampilkan `category`, `total_accounts`, dan `total_balance` dari view `premium_accounts_summary`, diurutkan berdasarkan `category`."
+                                },
+                                "expected_query": "SELECT category, total_accounts, total_balance FROM premium_accounts_summary ORDER BY category;",
+                                "starterQuery": "SELECT * FROM premium_accounts_summary;"
+                        }
+                }
+        },
+        {
+                "id": 743,
+                "moduleId": 7,
+                "categorySlot": 11,
+                "title": {
+                        "en": "Creating Materialized View for High Value Accounts (Var #3)",
+                        "id": "Membuat Materialized View untuk Akun Bernilai Tinggi (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Creating a dedicated VIP ledger containing only top-tier clientele for ultra-fast customer service lookups.\n\nEngine Processing Behavior: Filters tuples with balance above 5000 and materializes the owner and balance columns into dedicated storage pages.\n\nBest Practices & Gotchas: Materializing heavily filtered, read-heavy subsets avoids scanning large base tables repeatedly.",
+                        "id": "Analogi Konseptual: Membuat buku kas khusus VIP yang hanya memuat nasabah prioritas utama untuk mempercepat layanan nasabah secara instan.\n\nCara Kerja Database Engine: Menyaring baris akun bersaldo di atas 5000 dan mematerialisasikan kolom nama serta saldo ke halaman disk terpisah.\n\nBest Practices & Catatan Penting: Mematerialisasikan subset data yang sering dibaca menghemat I/O disk secara signifikan karena tidak perlu memindai tabel induk yang besar."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Create filtered materialized view",
+                                        "id": "Pembuatan materialized view dengan filter"
+                                },
+                                "code": "CREATE MATERIALIZED VIEW vip_accounts AS SELECT id, owner, balance FROM accounts WHERE balance >= 5000;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Create a materialized view named `vip_accounts` containing `id`, `owner`, and `balance` for all accounts with balance at least 5000.",
+                        "id": "Buat materialized view bernama `vip_accounts` yang memuat `id`, `owner`, dan `balance` untuk seluruh akun yang memiliki saldo minimal 5000."
+                },
+                seed_sql: mod7Seed,
+                "expected_query": "CREATE MATERIALIZED VIEW vip_accounts AS SELECT id, owner, balance FROM accounts WHERE balance >= 5000;",
+                "starterQuery": "-- Create VIP materialized view",
+                "table_names": [
+                        "accounts"
+                ],
+                "isDdlCreate": true,
+                "mockPreviewData": {
+                        "tableName": "vip_accounts",
+                        "columns": [
+                                "id",
+                                "owner",
+                                "balance"
+                        ],
+                        "rows": [
+                                {
+                                        "id": 1,
+                                        "owner": "Alice",
+                                        "balance": 5000
+                                },
+                                {
+                                        "id": 4,
+                                        "owner": "Diana",
+                                        "balance": 8900
+                                },
+                                {
+                                        "id": 7,
+                                        "owner": "George",
+                                        "balance": 6200
+                                }
+                        ]
+                },
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Creating Filtered VIP View (Var #3)",
+                                        "id": "Membuat View VIP Tersaring (Latihan #3)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Creating a reusable VIP virtual table view in MySQL.\n\nEngine Processing Behavior: Encapsulates the filter into a named view definition.\n\nBest Practices & Gotchas: Simplifies application query construction.",
+                                        "id": "Analogi Konseptual: Membuat view tabel virtual VIP yang dapat dipanggil berulang di MySQL.\n\nCara Kerja Database Engine: Membungkus filter saldo ke dalam definisi objek view.\n\nBest Practices & Catatan Penting: Memudahkan penulisan query aplikasi tanpa perlu mengulang filter yang sama."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL VIP view",
+                                                        "id": "View VIP MySQL"
+                                                },
+                                                "code": "CREATE VIEW vip_accounts AS SELECT id, owner, balance FROM accounts WHERE balance >= 5000;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Create a view named `vip_accounts` containing `id`, `owner`, and `balance` for all accounts with balance at least 5000.",
+                                        "id": "Buat view bernama `vip_accounts` yang memuat `id`, `owner`, dan `balance` untuk seluruh akun yang memiliki saldo minimal 5000."
+                                },
+                                "expected_query": "CREATE VIEW vip_accounts AS SELECT id, owner, balance FROM accounts WHERE balance >= 5000;",
+                                "starterQuery": "-- Create view here"
+                        }
+                }
+        }
     ];
 }
 
@@ -12598,7 +14859,7 @@ function generateModule8(): Question[] {
         {
             id: 803,
             moduleId: 8,
-            categorySlot: 3,
+            categorySlot: 4,
             title: {
                 en: "Pessimistic Row Lock (Var #1)",
                 id: "Pessimistic Locking dengan SELECT FOR UPDATE (Latihan #1)"
@@ -12630,7 +14891,7 @@ function generateModule8(): Question[] {
         {
             id: 804,
             moduleId: 8,
-            categorySlot: 4,
+            categorySlot: 3,
             title: {
                 en: "Partial Rollback with SAVEPOINT (Var #1)",
                 id: "Rollback Sebagian dengan SAVEPOINT (Latihan #1)"
@@ -12807,7 +15068,7 @@ function generateModule8(): Question[] {
         {
             id: 807,
             moduleId: 8,
-            categorySlot: 3,
+            categorySlot: 4,
             title: {
                 en: "Pessimistic Row Lock (Var #2)",
                 id: "Pessimistic Locking dengan SELECT FOR UPDATE (Latihan #2)"
@@ -12866,7 +15127,7 @@ function generateModule8(): Question[] {
         {
             id: 808,
             moduleId: 8,
-            categorySlot: 4,
+            categorySlot: 3,
             title: {
                 en: "Partial Rollback with SAVEPOINT (Var #2)",
                 id: "Rollback Sebagian dengan SAVEPOINT (Latihan #2)"
@@ -13043,7 +15304,7 @@ function generateModule8(): Question[] {
         {
             id: 811,
             moduleId: 8,
-            categorySlot: 3,
+            categorySlot: 4,
             title: {
                 en: "Pessimistic Row Lock (Var #3)",
                 id: "Pessimistic Locking dengan SELECT FOR UPDATE (Latihan #3)"
@@ -13102,7 +15363,7 @@ function generateModule8(): Question[] {
         {
             id: 812,
             moduleId: 8,
-            categorySlot: 4,
+            categorySlot: 3,
             title: {
                 en: "Partial Rollback with SAVEPOINT (Var #3)",
                 id: "Rollback Sebagian dengan SAVEPOINT (Latihan #3)"
@@ -13279,7 +15540,7 @@ function generateModule8(): Question[] {
         {
             id: 815,
             moduleId: 8,
-            categorySlot: 3,
+            categorySlot: 4,
             title: {
                 en: "Pessimistic Row Lock (Var #4)",
                 id: "Pessimistic Locking dengan SELECT FOR UPDATE (Latihan #4)"
@@ -13338,7 +15599,7 @@ function generateModule8(): Question[] {
         {
             id: 816,
             moduleId: 8,
-            categorySlot: 4,
+            categorySlot: 3,
             title: {
                 en: "Partial Rollback with SAVEPOINT (Var #4)",
                 id: "Rollback Sebagian dengan SAVEPOINT (Latihan #4)"
@@ -13515,7 +15776,7 @@ function generateModule8(): Question[] {
         {
             id: 819,
             moduleId: 8,
-            categorySlot: 3,
+            categorySlot: 4,
             title: {
                 en: "Pessimistic Row Lock (Var #5)",
                 id: "Pessimistic Locking dengan SELECT FOR UPDATE (Latihan #5)"
@@ -13547,7 +15808,7 @@ function generateModule8(): Question[] {
         {
             id: 820,
             moduleId: 8,
-            categorySlot: 4,
+            categorySlot: 3,
             title: {
                 en: "Partial Rollback with SAVEPOINT (Var #5)",
                 id: "Rollback Sebagian dengan SAVEPOINT (Latihan #5)"
@@ -13602,9 +15863,387 @@ function generateModule8(): Question[] {
                     ]
                 }
             }
+        },
+{
+                "id": 821,
+                "moduleId": 8,
+                "categorySlot": 7,
+                "title": {
+                        "en": "Setting Repeatable Read Isolation Level (Var #1)",
+                        "id": "Mengatur Tingkat Isolasi Repeatable Read (Latihan #1)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Locking a snapshot photograph of the ledger: regardless of how many changes other tellers make while you work, every glance at your ledger shows the exact same numbers.\n\nEngine Processing Behavior: In REPEATABLE READ, the transaction freezes its read view at the first query, guaranteeing that repeated SELECT statements within the transaction see identical data without non-repeatable reads.\n\nBest Practices & Gotchas: Write conflicts abort if concurrent transactions modify the same target rows; applications should include retry logic for serialization failures.",
+                        "id": "Analogi Konseptual: Mengunci foto snapshot dari buku kas: sebanyak apa pun perubahan yang dilakukan kasir lain saat Anda bekerja, setiap kali Anda memeriksa buku, angkanya selalu sama persis.\n\nCara Kerja Database Engine: Pada tingkat REPEATABLE READ, transaksi membekukan read view pada query pertama, menjamin perintah SELECT berulang di dalam transaksi melihat data yang identik tanpa non-repeatable read.\n\nBest Practices & Catatan Penting: Konflik penulisan data akan menggagalkan transaksi jika ada proses lain yang mengubah baris yang sama; siapkan mekanisme retry di aplikasi."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Set Repeatable Read transaction",
+                                        "id": "Set transaksi Repeatable Read"
+                                },
+                                "code": "BEGIN; SET TRANSACTION ISOLATION LEVEL REPEATABLE READ; SELECT * FROM accounts WHERE id = 1; COMMIT;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Execute a transaction setting isolation level to Repeatable Read, selecting the account with id 1, and committing the transaction.",
+                        "id": "Jalankan blok transaksi yang mengatur tingkat isolasi menjadi Repeatable Read, memilih akun dengan id 1, lalu menyelesaikan transaksi."
+                },
+                seed_sql: mod8Seed,
+                "expected_query": "BEGIN; SET TRANSACTION ISOLATION LEVEL REPEATABLE READ; SELECT * FROM accounts WHERE id = 1; COMMIT;",
+                "starterQuery": "SELECT * FROM accounts WHERE id = 1;",
+                "table_names": [
+                        "accounts"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Setting Repeatable Read Isolation Level in MySQL (Var #1)",
+                                        "id": "Mengatur Tingkat Isolasi Repeatable Read di MySQL (Latihan #1)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Ensuring consistent snapshot reads in MySQL InnoDB.\n\nEngine Processing Behavior: Sets transaction characteristics and enforces MVCC read view consistency.\n\nBest Practices & Gotchas: REPEATABLE READ is the default isolation level in MySQL InnoDB.",
+                                        "id": "Analogi Konseptual: Menjamin konsistensi pembacaan data snapshot di MySQL InnoDB.\n\nCara Kerja Database Engine: Menetapkan karakteristik transaksi dan menerapkan konsistensi read view MVCC.\n\nBest Practices & Catatan Penting: REPEATABLE READ merupakan tingkat isolasi bawaan pada engine InnoDB MySQL."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL transaction isolation set",
+                                                        "id": "Penetapan isolasi transaksi MySQL"
+                                                },
+                                                "code": "SET TRANSACTION ISOLATION LEVEL REPEATABLE READ; BEGIN; SELECT * FROM accounts WHERE id = 1; COMMIT;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Execute a transaction setting isolation level to Repeatable Read, selecting the account with id 1, and committing the transaction.",
+                                        "id": "Jalankan blok transaksi yang mengatur tingkat isolasi menjadi Repeatable Read, memilih akun dengan id 1, lalu menyelesaikan transaksi."
+                                },
+                                "expected_query": "SET TRANSACTION ISOLATION LEVEL REPEATABLE READ; BEGIN; SELECT * FROM accounts WHERE id = 1; COMMIT;",
+                                "starterQuery": "SELECT * FROM accounts WHERE id = 1;"
+                        }
+                }
+        },
+        {
+                "id": 822,
+                "moduleId": 8,
+                "categorySlot": 8,
+                "title": {
+                        "en": "Enforcing Strict Serializable Transaction Isolation (Var #2)",
+                        "id": "Menerapkan Isolasi Transaksi Serializable yang Ketat (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Single-file processing: transactions behave as though they occurred sequentially one after another, completely preventing phantom reads and write skews.\n\nEngine Processing Behavior: SERIALIZABLE tracks read and write dependencies (SIREAD locks in PostgreSQL) across concurrent transactions, aborting any transaction that exhibits anomalous dependency interleaving.\n\nBest Practices & Gotchas: Highest safety level at the cost of potential serialization aborts under high write contention; prepare robust application retry loops.",
+                        "id": "Analogi Konseptual: Pemrosesan satu jalur: seluruh transaksi berperilaku seolah-olah dieksekusi berurutan satu per satu, mencegah munculnya phantom read maupun write skew secara total.\n\nCara Kerja Database Engine: SERIALIZABLE memantau dependensi baca dan tulis (SIREAD lock pada PostgreSQL) antar transaksi bersamaan, membatalkan transaksi jika terjadi anomali tumpang tindih.\n\nBest Practices & Catatan Penting: Menawarkan tingkat keamanan integritas tertinggi dengan konsekuensi potensi abort saat beban tulis tinggi; lengkapi aplikasi dengan siklus retry otomatis."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Set Serializable transaction",
+                                        "id": "Set transaksi Serializable"
+                                },
+                                "code": "BEGIN; SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; SELECT * FROM accounts WHERE id = 2; COMMIT;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Execute a transaction configuring Serializable isolation level, reading account details for id 2, and concluding with a commit.",
+                        "id": "Jalankan blok transaksi yang mengonfigurasi tingkat isolasi Serializable, membaca data akun untuk id 2, lalu diakhiri dengan commit."
+                },
+                seed_sql: mod8Seed,
+                "expected_query": "BEGIN; SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; SELECT * FROM accounts WHERE id = 2; COMMIT;",
+                "starterQuery": "SELECT * FROM accounts WHERE id = 2;",
+                "table_names": [
+                        "accounts"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Enforcing Serializable Isolation in MySQL (Var #2)",
+                                        "id": "Menerapkan Isolasi Serializable di MySQL (Latihan #2)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Locking all read rows implicitly in MySQL serializable transactions.\n\nEngine Processing Behavior: Converts standard SELECT statements into shared locks automatically under serializable mode.\n\nBest Practices & Gotchas: Prevents phantoms by acquiring gap locks in InnoDB.",
+                                        "id": "Analogi Konseptual: Mengunci semua baris pembacaan secara implisit pada transaksi serializable di MySQL.\n\nCara Kerja Database Engine: Mengonversi perintah SELECT biasa menjadi shared lock secara otomatis di mode serializable.\n\nBest Practices & Catatan Penting: Mencegah terjadinya phantom read dengan menerapkan gap lock pada InnoDB."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL Serializable transaction",
+                                                        "id": "Transaksi Serializable MySQL"
+                                                },
+                                                "code": "SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; BEGIN; SELECT * FROM accounts WHERE id = 2; COMMIT;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Execute a transaction configuring Serializable isolation level, reading account details for id 2, and concluding with a commit.",
+                                        "id": "Jalankan blok transaksi yang mengonfigurasi tingkat isolasi Serializable, membaca data akun untuk id 2, lalu diakhiri dengan commit."
+                                },
+                                "expected_query": "SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; BEGIN; SELECT * FROM accounts WHERE id = 2; COMMIT;",
+                                "starterQuery": "SELECT * FROM accounts WHERE id = 2;"
+                        }
+                }
+        },
+        {
+                "id": 823,
+                "moduleId": 8,
+                "categorySlot": 7,
+                "title": {
+                        "en": "Filtering Accounts under Read Committed Isolation (Var #3)",
+                        "id": "Menyaring Akun di Bawah Isolasi Read Committed (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Reading the public bulletin board: each query in your transaction sees whatever was officially posted and committed up to that exact moment.\n\nEngine Processing Behavior: In READ COMMITTED, each individual statement acquires a fresh snapshot of committed database state.\n\nBest Practices & Gotchas: Default in PostgreSQL; excellent concurrency throughput with minimal serialization conflict overhead.",
+                        "id": "Analogi Konseptual: Membaca papan pengumuman umum: setiap query di dalam transaksi Anda melihat apa pun yang telah resmi ditempel dan di-commit hingga detik tersebut.\n\nCara Kerja Database Engine: Pada tingkat READ COMMITTED, setiap pernyataan query tunggal mengambil snapshot segar dari kondisi database yang telah ter-commit.\n\nBest Practices & Catatan Penting: Merupakan tingkat isolasi default di PostgreSQL; menawarkan throughput konkurensi luar biasa dengan minim risiko konflik serialisasi."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Set Read Committed isolation",
+                                        "id": "Set isolasi Read Committed"
+                                },
+                                "code": "BEGIN; SET TRANSACTION ISOLATION LEVEL READ COMMITTED; SELECT * FROM accounts WHERE category = 'Premium' ORDER BY id; COMMIT;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Run a transaction configured with Read Committed isolation level, retrieving all accounts in the Premium category ordered by id, and commit.",
+                        "id": "Jalankan transaksi dengan tingkat isolasi Read Committed, mengambil seluruh akun dalam kategori Premium diurutkan berdasarkan id, lalu lakukan commit."
+                },
+                seed_sql: mod8Seed,
+                "expected_query": "BEGIN; SET TRANSACTION ISOLATION LEVEL READ COMMITTED; SELECT * FROM accounts WHERE category = 'Premium' ORDER BY id; COMMIT;",
+                "starterQuery": "SELECT * FROM accounts WHERE category = 'Premium';",
+                "table_names": [
+                        "accounts"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Read Committed Transaction in MySQL (Var #3)",
+                                        "id": "Transaksi Read Committed di MySQL (Latihan #3)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Non-locking consistent reads per statement in MySQL.\n\nEngine Processing Behavior: Re-creates the read snapshot per individual statement execution.\n\nBest Practices & Gotchas: Reduces locking and deadlocks in write-heavy transactional systems.",
+                                        "id": "Analogi Konseptual: Pembacaan data konsisten tanpa penguncian per pernyataan query di MySQL.\n\nCara Kerja Database Engine: Membuat ulang snapshot pembacaan untuk setiap eksekusi pernyataan query individu.\n\nBest Practices & Catatan Penting: Mengurangi risiko kebuntuan penguncian (deadlock) pada sistem transaksi berbeban tulis tinggi."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL Read Committed",
+                                                        "id": "Read Committed MySQL"
+                                                },
+                                                "code": "SET TRANSACTION ISOLATION LEVEL READ COMMITTED; BEGIN; SELECT * FROM accounts WHERE category = 'Premium' ORDER BY id; COMMIT;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Run a transaction configured with Read Committed isolation level, retrieving all accounts in the Premium category ordered by id, and commit.",
+                                        "id": "Jalankan transaksi dengan tingkat isolasi Read Committed, mengambil seluruh akun dalam kategori Premium diurutkan berdasarkan id, lalu lakukan commit."
+                                },
+                                "expected_query": "SET TRANSACTION ISOLATION LEVEL READ COMMITTED; BEGIN; SELECT * FROM accounts WHERE category = 'Premium' ORDER BY id; COMMIT;",
+                                "starterQuery": "SELECT * FROM accounts WHERE category = 'Premium';"
+                        }
+                }
+        },
+        {
+                "id": 824,
+                "moduleId": 8,
+                "categorySlot": 7,
+                "title": {
+                        "en": "High Balance Audit under Repeatable Read (Var #4)",
+                        "id": "Audit Saldo Tinggi di Bawah Repeatable Read (Latihan #4)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: An auditor verifying large accounts without disturbance from concurrently posting transactions.\n\nEngine Processing Behavior: Guarantees point-in-time snapshot visibility for large balance lookups.\n\nBest Practices & Gotchas: Ideal for financial balance sheet reporting runs.",
+                        "id": "Analogi Konseptual: Auditor keuangan yang memeriksa akun-akun bersaldo besar tanpa terganggu oleh mutasi transaksi yang sedang berlangsung.\n\nCara Kerja Database Engine: Menjamin visibilitas snapshot waktu tunggal yang konsisten untuk pembacaan saldo bernilai besar.\n\nBest Practices & Catatan Penting: Sangat tepat digunakan untuk pembuatan laporan neraca keuangan berkala."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Repeatable read balance audit",
+                                        "id": "Audit saldo dengan repeatable read"
+                                },
+                                "code": "BEGIN; SET TRANSACTION ISOLATION LEVEL REPEATABLE READ; SELECT owner, balance FROM accounts WHERE balance >= 5000 ORDER BY id; COMMIT;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Execute a transaction with Repeatable Read isolation selecting `owner` and `balance` for balances at least 5000, ordered by `id`, and commit.",
+                        "id": "Jalankan transaksi dengan isolasi Repeatable Read yang memilih `owner` dan `balance` untuk saldo minimal 5000, diurutkan berdasarkan `id`, lalu lakukan commit."
+                },
+                seed_sql: mod8Seed,
+                "expected_query": "BEGIN; SET TRANSACTION ISOLATION LEVEL REPEATABLE READ; SELECT owner, balance FROM accounts WHERE balance >= 5000 ORDER BY id; COMMIT;",
+                "starterQuery": "SELECT owner, balance FROM accounts WHERE balance >= 5000;",
+                "table_names": [
+                        "accounts"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "High Balance Audit under Repeatable Read in MySQL (Var #4)",
+                                        "id": "Audit Saldo Tinggi di Bawah Repeatable Read di MySQL (Latihan #4)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Consistent balance auditing in MySQL.\n\nEngine Processing Behavior: Preserves snapshot view across projections.\n\nBest Practices & Gotchas: Standard practice for transactional report consistency.",
+                                        "id": "Analogi Konseptual: Audit saldo keuangan yang konsisten di MySQL.\n\nCara Kerja Database Engine: Mempertahankan tampilan snapshot di seluruh proyeksi data.\n\nBest Practices & Catatan Penting: Praktik standar untuk konsistensi laporan transaksional."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL balance audit transaction",
+                                                        "id": "Transaksi audit saldo MySQL"
+                                                },
+                                                "code": "SET TRANSACTION ISOLATION LEVEL REPEATABLE READ; BEGIN; SELECT owner, balance FROM accounts WHERE balance >= 5000 ORDER BY id; COMMIT;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Execute a transaction with Repeatable Read isolation selecting `owner` and `balance` for balances at least 5000, ordered by `id`, and commit.",
+                                        "id": "Jalankan transaksi dengan isolasi Repeatable Read yang memilih `owner` dan `balance` untuk saldo minimal 5000, diurutkan berdasarkan `id`, lalu lakukan commit."
+                                },
+                                "expected_query": "SET TRANSACTION ISOLATION LEVEL REPEATABLE READ; BEGIN; SELECT owner, balance FROM accounts WHERE balance >= 5000 ORDER BY id; COMMIT;",
+                                "starterQuery": "SELECT owner, balance FROM accounts WHERE balance >= 5000;"
+                        }
+                }
+        },
+        {
+                "id": 825,
+                "moduleId": 8,
+                "categorySlot": 5,
+                "title": {
+                        "en": "Worker Task Claim with SKIP LOCKED (Var #1)",
+                        "id": "Pengambilan Tugas Pekerja dengan SKIP LOCKED (Latihan #1)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Grabbing the next available work ticket from a dispenser: if another worker has their hand on a ticket, you glide past it instantly to take the next untaken ticket without waiting.\n\nEngine Processing Behavior: The storage engine skips any rows currently locked by concurrent transactions and locks the next matching unlocked row with exclusive row-level locking.\n\nBest Practices & Gotchas: SKIP LOCKED is the industry gold standard for high-throughput, non-blocking asynchronous queue patterns in relational databases.",
+                        "id": "Analogi Konseptual: Mengambil nomor antrean tugas dari dispenser: jika pekerja lain sedang memegang satu tiket tugas, Anda langsung melewatinya dan mengambil tiket berikutnya tanpa perlu mengantre.\n\nCara Kerja Database Engine: Storage engine melewati baris data yang sedang dikunci oleh transaksi lain dan mengunci baris data berikutnya yang belum terkunci menggunakan exclusive row lock.\n\nBest Practices & Catatan Penting: SKIP LOCKED adalah standar industri terbaik untuk membangun antrean tugas (job queue) berkecepatan tinggi tanpa hambatan blocking."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Row lock with SKIP LOCKED",
+                                        "id": "Penguncian baris dengan SKIP LOCKED"
+                                },
+                                "code": "SELECT id, task_type, payload FROM job_queue WHERE status = 'queued' ORDER BY id LIMIT 1 FOR UPDATE SKIP LOCKED;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Claim the earliest queued job from `job_queue` locking it and skipping any locked rows, showing `id`, `task_type`, and `payload`.",
+                        "id": "Ambil tugas antrean paling awal dari `job_queue` dengan menguncinya dan melewati baris yang sedang dikunci, menampilkan `id`, `task_type`, dan `payload`."
+                },
+                seed_sql: mod8QueueSeed,
+                "expected_query": "SELECT id, task_type, payload FROM job_queue WHERE status = 'queued' ORDER BY id LIMIT 1 FOR UPDATE SKIP LOCKED;",
+                "starterQuery": "SELECT * FROM job_queue;",
+                "table_names": [
+                        "job_queue"
+                ]
+        },
+        {
+                "id": 826,
+                "moduleId": 8,
+                "categorySlot": 6,
+                "title": {
+                        "en": "Failing Fast with FOR UPDATE NOWAIT (Var #2)",
+                        "id": "Pengecekan Cepat Gagal dengan FOR UPDATE NOWAIT (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Tapping a locked meeting room door: if it is locked, you leave immediately rather than standing in the hallway waiting.\n\nEngine Processing Behavior: Attempts to acquire a row lock immediately; if the target tuple is locked by another transaction, it raises an error instantly without blocking.\n\nBest Practices & Gotchas: NOWAIT prevents connection pool exhaustion by rejecting locked requests immediately.",
+                        "id": "Analogi Konseptual: Mengetuk pintu ruang rapat: jika terkunci dari dalam, Anda segera pergi alih-alih berdiri menunggu tanpa kepastian di lorong.\n\nCara Kerja Database Engine: Mencoba memperoleh row lock seketika; jika baris target sedang dikunci oleh transaksi lain, engine langsung memunculkan error tanpa jeda blocking.\n\nBest Practices & Catatan Penting: NOWAIT mencegah kehabisan koneksi pada connection pool dengan menolak permintaan yang sedang terkunci secara instan."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Row lock with NOWAIT",
+                                        "id": "Penguncian baris dengan NOWAIT"
+                                },
+                                "code": "SELECT id, task_type, payload FROM job_queue WHERE id = 1 FOR UPDATE NOWAIT;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Lock job record 1 in `job_queue` immediately without waiting if blocked, displaying `id`, `task_type`, and `payload`.",
+                        "id": "Kunci data tugas 1 pada `job_queue` seketika tanpa menunggu jika sedang terhalang, menampilkan `id`, `task_type`, dan `payload`."
+                },
+                seed_sql: mod8QueueSeed,
+                "expected_query": "SELECT id, task_type, payload FROM job_queue WHERE id = 1 FOR UPDATE NOWAIT;",
+                "starterQuery": "SELECT * FROM job_queue WHERE id = 1;",
+                "table_names": [
+                        "job_queue"
+                ]
+        },
+        {
+                "id": 827,
+                "moduleId": 8,
+                "categorySlot": 5,
+                "title": {
+                        "en": "Batch Worker Task Claim with SKIP LOCKED (Var #3)",
+                        "id": "Pengambilan Batch Tugas Pekerja dengan SKIP LOCKED (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: A worker taking a batch of 2 tasks from a work queue while bypassing any jobs currently undergoing processing.\n\nEngine Processing Behavior: Scans for matching candidate rows, ignores tuples held under lock by other processes, and locks up to 2 unlocked records.\n\nBest Practices & Gotchas: Batch job fetching reduces transaction roundtrips in background worker daemons.",
+                        "id": "Analogi Konseptual: Seorang pekerja mengambil sekaligus 2 tugas dari antrean kerja sambil melewati tugas apa pun yang sedang diproses oleh rekan lain.\n\nCara Kerja Database Engine: Memindai baris data yang cocok, mengabaikan baris yang sedang dikunci proses lain, lalu mengunci maksimal 2 rekaman yang belum terkunci.\n\nBest Practices & Catatan Penting: Pengambilan tugas dalam bentuk batch menghemat round-trip transaksi pada background worker daemon."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Batch claim with SKIP LOCKED",
+                                        "id": "Pengambilan batch dengan SKIP LOCKED"
+                                },
+                                "code": "SELECT id, task_type, payload FROM job_queue WHERE status = 'queued' ORDER BY id LIMIT 2 FOR UPDATE SKIP LOCKED;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Claim up to two queued jobs from `job_queue` locking them and skipping locked rows, ordered by `id`, showing `id`, `task_type`, and `payload`.",
+                        "id": "Ambil hingga dua tugas antrean dari `job_queue` dengan menguncinya dan melewati baris terkunci, diurutkan berdasarkan `id`, menampilkan `id`, `task_type`, dan `payload`."
+                },
+                seed_sql: mod8QueueSeed,
+                "expected_query": "SELECT id, task_type, payload FROM job_queue WHERE status = 'queued' ORDER BY id LIMIT 2 FOR UPDATE SKIP LOCKED;",
+                "starterQuery": "SELECT * FROM job_queue;",
+                "table_names": [
+                        "job_queue"
+                ]
+        },
+        {
+                "id": 828,
+                "moduleId": 8,
+                "categorySlot": 6,
+                "title": {
+                        "en": "Immediate Secondary Job Lock with NOWAIT (Var #4)",
+                        "id": "Penguncian Instan Tugas Sekunder dengan NOWAIT (Latihan #4)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Verifying exclusive availability of a secondary task and failing fast if an operation is already underway.\n\nEngine Processing Behavior: Checks the lock status of row 2 and locks it exclusively, raising an error if blocked.\n\nBest Practices & Gotchas: Use NOWAIT when task operations are non-idempotent and cannot afford waiting delays.",
+                        "id": "Analogi Konseptual: Memeriksa ketersediaan eksklusif dari suatu tugas sekunder dan langsung gagal jika ada operasi yang sedang berjalan padanya.\n\nCara Kerja Database Engine: Memeriksa status penguncian baris 2 dan menguncinya secara eksklusif, memunculkan error seketika jika terhalang.\n\nBest Practices & Catatan Penting: Gunakan NOWAIT saat operasi pekerjaan tidak boleh mengalami penundaan antrean."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Lock job with NOWAIT",
+                                        "id": "Kunci tugas dengan NOWAIT"
+                                },
+                                "code": "SELECT id, task_type, payload FROM job_queue WHERE id = 2 FOR UPDATE NOWAIT;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Lock job record 2 in `job_queue` immediately without waiting if blocked, displaying `id`, `task_type`, and `payload`.",
+                        "id": "Kunci data tugas 2 pada `job_queue` seketika tanpa menunggu jika sedang terhalang, menampilkan `id`, `task_type`, dan `payload`."
+                },
+                seed_sql: mod8QueueSeed,
+                "expected_query": "SELECT id, task_type, payload FROM job_queue WHERE id = 2 FOR UPDATE NOWAIT;",
+                "starterQuery": "SELECT * FROM job_queue WHERE id = 2;",
+                "table_names": [
+                        "job_queue"
+                ]
         }
     ];
 }
+
+const mod9FtsSeed = `CREATE TABLE documents (
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL,
+    body TEXT NOT NULL
+);
+INSERT INTO documents (title, body) VALUES
+(1, 'Database Indexing Guide', 'Learn how B-tree and GIN indexes optimize query performance.'),
+(2, 'PostgreSQL Internals', 'Understanding storage engines, buffer cache, and query execution plans.'),
+(3, 'Web Development Basics', 'Building responsive layouts with CSS grid and flexbox.');`;
+const mod9FtsQuerySeed = mod9FtsSeed + `
+CREATE INDEX idx_documents_body_fts ON documents USING GIN(to_tsvector('english', body));`;
+const mod9FtsMysqlQuerySeed = mod9FtsSeed + `
+CREATE FULLTEXT INDEX idx_documents_body_fts ON documents(body);`;
 
 function generateModule9(): Question[] {
     return [
@@ -13644,7 +16283,7 @@ function generateModule9(): Question[] {
         {
             id: 902,
             moduleId: 9,
-            categorySlot: 2,
+            categorySlot: 5,
             title: {
                 en: "Custom ENUM Data Type (Var #1)",
                 id: "Konsistensi Data dengan Tipe ENUM (Latihan #1)"
@@ -13711,7 +16350,7 @@ function generateModule9(): Question[] {
         {
             id: 903,
             moduleId: 9,
-            categorySlot: 3,
+            categorySlot: 13,
             title: {
                 en: "Full-Text Search Engine (Var #1)",
                 id: "Pencarian Teks Bebas (Full-Text Search) (Latihan #1)"
@@ -13769,7 +16408,7 @@ function generateModule9(): Question[] {
         {
             id: 904,
             moduleId: 9,
-            categorySlot: 4,
+            categorySlot: 6,
             title: {
                 en: "Schema Namespace Isolation (Var #1)",
                 id: "Isolasi Namespace dengan CREATE SCHEMA (Latihan #1)"
@@ -13832,7 +16471,7 @@ function generateModule9(): Question[] {
         {
             id: 905,
             moduleId: 9,
-            categorySlot: 5,
+            categorySlot: 2,
             title: {
                 en: "Composite Multi-Column Index (Var #1)",
                 id: "Composite Index & Aturan Leftmost Prefix (Latihan #1)"
@@ -13898,7 +16537,7 @@ function generateModule9(): Question[] {
         {
             id: 907,
             moduleId: 9,
-            categorySlot: 2,
+            categorySlot: 5,
             title: {
                 en: "Custom ENUM Data Type (Var #2)",
                 id: "Konsistensi Data dengan Tipe ENUM (Latihan #2)"
@@ -13965,7 +16604,7 @@ function generateModule9(): Question[] {
         {
             id: 908,
             moduleId: 9,
-            categorySlot: 3,
+            categorySlot: 13,
             title: {
                 en: "Full-Text Search Engine (Var #2)",
                 id: "Pencarian Teks Bebas (Full-Text Search) (Latihan #2)"
@@ -14036,7 +16675,7 @@ function generateModule9(): Question[] {
         {
             id: 909,
             moduleId: 9,
-            categorySlot: 4,
+            categorySlot: 6,
             title: {
                 en: "Schema Namespace Isolation (Var #2)",
                 id: "Isolasi Namespace dengan CREATE SCHEMA (Latihan #2)"
@@ -14108,7 +16747,7 @@ function generateModule9(): Question[] {
         {
             id: 910,
             moduleId: 9,
-            categorySlot: 5,
+            categorySlot: 2,
             title: {
                 en: "Composite Multi-Column Index (Var #2)",
                 id: "Composite Index & Aturan Leftmost Prefix (Latihan #2)"
@@ -14174,7 +16813,7 @@ function generateModule9(): Question[] {
         {
             id: 912,
             moduleId: 9,
-            categorySlot: 2,
+            categorySlot: 5,
             title: {
                 en: "Custom ENUM Data Type (Var #3)",
                 id: "Konsistensi Data dengan Tipe ENUM (Latihan #3)"
@@ -14241,7 +16880,7 @@ function generateModule9(): Question[] {
         {
             id: 913,
             moduleId: 9,
-            categorySlot: 3,
+            categorySlot: 13,
             title: {
                 en: "Full-Text Search Engine (Var #3)",
                 id: "Pencarian Teks Bebas (Full-Text Search) (Latihan #3)"
@@ -14299,7 +16938,7 @@ function generateModule9(): Question[] {
         {
             id: 914,
             moduleId: 9,
-            categorySlot: 4,
+            categorySlot: 6,
             title: {
                 en: "Schema Namespace Isolation (Var #3)",
                 id: "Isolasi Namespace dengan CREATE SCHEMA (Latihan #3)"
@@ -14371,7 +17010,7 @@ function generateModule9(): Question[] {
         {
             id: 915,
             moduleId: 9,
-            categorySlot: 5,
+            categorySlot: 2,
             title: {
                 en: "Composite Multi-Column Index (Var #3)",
                 id: "Composite Index & Aturan Leftmost Prefix (Latihan #3)"
@@ -14437,7 +17076,7 @@ function generateModule9(): Question[] {
         {
             id: 917,
             moduleId: 9,
-            categorySlot: 2,
+            categorySlot: 5,
             title: {
                 en: "Custom ENUM Data Type (Var #4)",
                 id: "Konsistensi Data dengan Tipe ENUM (Latihan #4)"
@@ -14504,7 +17143,7 @@ function generateModule9(): Question[] {
         {
             id: 918,
             moduleId: 9,
-            categorySlot: 3,
+            categorySlot: 13,
             title: {
                 en: "Full-Text Search Engine (Var #4)",
                 id: "Pencarian Teks Bebas (Full-Text Search) (Latihan #4)"
@@ -14562,7 +17201,7 @@ function generateModule9(): Question[] {
         {
             id: 919,
             moduleId: 9,
-            categorySlot: 4,
+            categorySlot: 6,
             title: {
                 en: "Schema Namespace Isolation (Var #4)",
                 id: "Isolasi Namespace dengan CREATE SCHEMA (Latihan #4)"
@@ -14625,7 +17264,7 @@ function generateModule9(): Question[] {
         {
             id: 920,
             moduleId: 9,
-            categorySlot: 5,
+            categorySlot: 2,
             title: {
                 en: "Composite Multi-Column Index (Var #4)",
                 id: "Composite Index & Aturan Leftmost Prefix (Latihan #4)"
@@ -14691,7 +17330,7 @@ function generateModule9(): Question[] {
         {
             id: 922,
             moduleId: 9,
-            categorySlot: 2,
+            categorySlot: 5,
             title: {
                 en: "Custom ENUM Data Type (Var #5)",
                 id: "Konsistensi Data dengan Tipe ENUM (Latihan #5)"
@@ -14758,7 +17397,7 @@ function generateModule9(): Question[] {
         {
             id: 923,
             moduleId: 9,
-            categorySlot: 3,
+            categorySlot: 13,
             title: {
                 en: "Full-Text Search Engine (Var #5)",
                 id: "Pencarian Teks Bebas (Full-Text Search) (Latihan #5)"
@@ -14816,7 +17455,7 @@ function generateModule9(): Question[] {
         {
             id: 924,
             moduleId: 9,
-            categorySlot: 4,
+            categorySlot: 6,
             title: {
                 en: "Schema Namespace Isolation (Var #5)",
                 id: "Isolasi Namespace dengan CREATE SCHEMA (Latihan #5)"
@@ -14879,7 +17518,7 @@ function generateModule9(): Question[] {
         {
             id: 925,
             moduleId: 9,
-            categorySlot: 5,
+            categorySlot: 2,
             title: {
                 en: "Composite Multi-Column Index (Var #5)",
                 id: "Composite Index & Aturan Leftmost Prefix (Latihan #5)"
@@ -14912,7 +17551,7 @@ function generateModule9(): Question[] {
         {
         "id": 926,
         "moduleId": 9,
-        "categorySlot": 6,
+        "categorySlot": 9,
         "title": {
                 "en": "JSONB Field Extraction with ->> (Var #1)",
                 "id": "Ekstraksi Teks JSONB dengan Operator ->> (Latihan #1)"
@@ -14966,7 +17605,7 @@ function generateModule9(): Question[] {
         {
         "id": 927,
         "moduleId": 9,
-        "categorySlot": 6,
+        "categorySlot": 9,
         "title": {
                 "en": "Filtered JSONB Text Extraction (Var #2)",
                 "id": "Ekstraksi Teks JSONB Terfilter (Latihan #2)"
@@ -15020,7 +17659,7 @@ function generateModule9(): Question[] {
         {
         "id": 928,
         "moduleId": 9,
-        "categorySlot": 6,
+        "categorySlot": 9,
         "title": {
                 "en": "Matching JSONB Value Filter (Var #3)",
                 "id": "Pencocokan Nilai JSONB Spesifik (Latihan #3)"
@@ -15074,7 +17713,7 @@ function generateModule9(): Question[] {
         {
         "id": 929,
         "moduleId": 9,
-        "categorySlot": 7,
+        "categorySlot": 10,
         "title": {
                 "en": "JSONB Key Existence with ? (Var #1)",
                 "id": "Pengecekan Keberadaan Key JSONB dengan ? (Latihan #1)"
@@ -15128,7 +17767,7 @@ function generateModule9(): Question[] {
         {
         "id": 930,
         "moduleId": 9,
-        "categorySlot": 7,
+        "categorySlot": 10,
         "title": {
                 "en": "Key Existence for Material Attribute (Var #2)",
                 "id": "Pengecekan Key Material pada JSONB (Latihan #2)"
@@ -15182,7 +17821,7 @@ function generateModule9(): Question[] {
         {
         "id": 931,
         "moduleId": 9,
-        "categorySlot": 7,
+        "categorySlot": 10,
         "title": {
                 "en": "Key Existence for In-Stock Flag (Var #3)",
                 "id": "Pengecekan Key Status Stok (Latihan #3)"
@@ -15236,7 +17875,7 @@ function generateModule9(): Question[] {
         {
         "id": 932,
         "moduleId": 9,
-        "categorySlot": 8,
+        "categorySlot": 11,
         "title": {
                 "en": "JSONB Document Containment with @> (Var #1)",
                 "id": "Pencocokan Dokumen JSONB dengan @> (Latihan #1)"
@@ -15290,7 +17929,7 @@ function generateModule9(): Question[] {
         {
         "id": 933,
         "moduleId": 9,
-        "categorySlot": 8,
+        "categorySlot": 11,
         "title": {
                 "en": "Containment by Brand Document (Var #2)",
                 "id": "Pencocokan Dokumen Brand pada JSONB (Latihan #2)"
@@ -15344,7 +17983,7 @@ function generateModule9(): Question[] {
         {
         "id": 934,
         "moduleId": 9,
-        "categorySlot": 8,
+        "categorySlot": 11,
         "title": {
                 "en": "Multi-Attribute Document Containment (Var #3)",
                 "id": "Pencocokan Multi-Atribut Dokumen JSONB (Latihan #3)"
@@ -15398,7 +18037,7 @@ function generateModule9(): Question[] {
         {
             id: 935,
             moduleId: 9,
-            categorySlot: 9,
+            categorySlot: 8,
             title: {
                 en: "Create a Role (Var #1)",
                 id: "Membuat Role (Latihan #1)"
@@ -15449,7 +18088,7 @@ function generateModule9(): Question[] {
         {
             id: 936,
             moduleId: 9,
-            categorySlot: 9,
+            categorySlot: 8,
             title: {
                 en: "Alter Role with Login and Password (Var #2)",
                 id: "Mengatur Izin Login dan Password Role (Latihan #2)"
@@ -15501,7 +18140,7 @@ function generateModule9(): Question[] {
         {
             id: 937,
             moduleId: 9,
-            categorySlot: 9,
+            categorySlot: 8,
             title: {
                 en: "Grant Table Privileges to Role (Var #3)",
                 id: "Memberikan Hak Akses Tabel ke Role (Latihan #3)"
@@ -15553,7 +18192,7 @@ function generateModule9(): Question[] {
         {
             id: 938,
             moduleId: 9,
-            categorySlot: 9,
+            categorySlot: 8,
             title: {
                 en: "Revoke Table Privilege from Role (Var #4)",
                 id: "Mencabut Hak Akses Tabel dari Role (Latihan #4)"
@@ -15605,7 +18244,7 @@ function generateModule9(): Question[] {
         {
             id: 939,
             moduleId: 9,
-            categorySlot: 9,
+            categorySlot: 8,
             title: {
                 en: "Create Role with Direct Login (Var #5)",
                 id: "Membuat Role dengan Akses Login Langsung (Latihan #5)"
@@ -15657,7 +18296,7 @@ function generateModule9(): Question[] {
         {
             id: 940,
             moduleId: 9,
-            categorySlot: 10,
+            categorySlot: 7,
             title: {
                 en: "Database Namespace Creation (Var #1)",
                 id: "Membuat Database Baru dengan CREATE DATABASE (Latihan #1)"
@@ -15706,7 +18345,2312 @@ function generateModule9(): Question[] {
                 }
             }
         }
+    ,
+        {
+            id: 941,
+            moduleId: 9,
+            categorySlot: 12,
+            title: {
+                en: "Create Full-Text Search Index (Var #1)",
+                id: "Membuat Full-Text Search Index (Latihan #1)"
+            },
+            conceptExplanation: {
+                en: "Conceptual Analogy: A book index lists key terms and page numbers so you do not have to read every sentence. Similarly, a full-text search index tokenizes and stems words into lexemes for instant document lookup.\n\nEngine Processing Behavior: In PostgreSQL, the to_tsvector function parses document text into normalized lexemes. The GIN (Generalized Inverted Index) data structure maps each unique lexeme to the exact document rows where it appears. This enables sub-millisecond keyword retrieval without full table scans.\n\nBest Practices & Gotchas: Always specify a text search configuration such as 'english' when indexing text, ensuring consistent tokenization between index creation and query time.",
+                id: "Analogi Konseptual: Indeks pada buku mencatat kata penting dan nomor halaman sehingga pembaca tidak perlu membaca seluruh isi buku. Demikian pula full-text index memecah dan menormalisasi kata menjadi leksem untuk pencarian dokumen instan.\n\nCara Kerja Database Engine: Fungsi to_tsvector di PostgreSQL memecah string teks menjadi token leksem ternormalisasi. Struktur data GIN (Generalized Inverted Index) memetakan setiap leksem unik ke lokasi baris dokumen tempat kata tersebut muncul, menghasilkan kecepatan pencarian tingkat tinggi tanpa table scan.\n\nBest Practices & Catatan Penting: Selalu tentukan konfigurasi pencarian teks secara eksplisit seperti 'english' agar proses pemotongan imbuhan (stemming) konsisten antara pembuatan indeks dan pencarian query."
+            },
+            syntaxPatterns: [
+                {
+                    label: {
+                        en: "Create GIN Full-Text Index",
+                        id: "Membuat Indeks GIN Full-Text"
+                    },
+                    code: "CREATE INDEX idx_name ON table_name USING GIN(to_tsvector('english', column_name));"
+                }
+            ],
+            instructions: {
+                en: "Create a GIN full-text search index named `idx_documents_body_fts` on the `body` column of the `documents` table configured for english text search.",
+                id: "Buat indeks pencarian teks penuh GIN bernama `idx_documents_body_fts` pada kolom `body` di tabel `documents` dengan konfigurasi teks english."
+            },
+            seed_sql: mod9FtsSeed,
+            expected_query: "CREATE INDEX idx_documents_body_fts ON documents USING GIN(to_tsvector('english', body));",
+            verification_query: "SELECT schemaname, tablename, indexname, indexdef FROM pg_indexes WHERE tablename = 'documents' AND indexname = 'idx_documents_body_fts' AND indexdef ILIKE '%GIN%' AND indexdef ILIKE '%tsvector%';",
+            starterQuery: "-- Create a GIN full-text search index here",
+            isMandatory: true,
+            table_names: [
+                "documents"
+            ],
+            engineOverrides: {
+                mysql: {
+                    expected_query: "CREATE FULLTEXT INDEX idx_documents_body_fts ON documents(body);",
+                    verification_query: "SHOW INDEX FROM documents WHERE Key_name = 'idx_documents_body_fts' AND Index_type = 'FULLTEXT';",
+                    starterQuery: "-- Create FULLTEXT index in MySQL",
+                    syntaxPatterns: [
+                        {
+                            label: {
+                                en: "Create FULLTEXT Index in MySQL",
+                                id: "Membuat Indeks FULLTEXT di MySQL"
+                            },
+                            code: "CREATE FULLTEXT INDEX idx_name ON table_name(column_name);"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            id: 942,
+            moduleId: 9,
+            categorySlot: 13,
+            title: {
+                en: "Search Documents Using Full-Text Index (Var #1)",
+                id: "Cari Dokumen Menggunakan Full-Text Index (Latihan #1)"
+            },
+            conceptExplanation: {
+                en: "Conceptual Analogy: Looking up keywords in an organized dictionary index pinpoints relevant definitions immediately without leafing through all pages.\n\nEngine Processing Behavior: The match operator @@ compares a document's tsvector against a tsquery search term. When an index exists on the tsvector expression, PostgreSQL utilizes a Bitmap Index Scan on the GIN index to identify matching row pointers in sub-millisecond time.\n\nBest Practices & Gotchas: Ensure that the search configuration specified in to_tsquery matches the configuration used in to_tsvector, preventing stem mismatch between the query and the stored index entries.",
+                id: "Analogi Konseptual: Mencari entri kosakata pada kamus berindeks langsung mengarahkan kita ke definisi yang tepat tanpa harus membalik setiap halaman dari awal.\n\nCara Kerja Database Engine: Operator pencocokan @@ menguji kesesuaian antara tsvector dari dokumen dan tsquery pencarian. Bila indeks GIN tersedia pada ekspresi tsvector tersebut, PostgreSQL menggunakan Bitmap Index Scan untuk menemukan baris yang cocok secara instan.\n\nBest Practices & Catatan Penting: Pastikan konfigurasi bahasa pada to_tsquery sama dengan konfigurasi pada to_tsvector agar pemotongan kata dan pencocokan leksem bekerja selaras."
+            },
+            syntaxPatterns: [
+                {
+                    label: {
+                        en: "Full-Text Search with Match Operator",
+                        id: "Pencarian Full-Text dengan Operator @@"
+                    },
+                    code: "SELECT col FROM table_name WHERE to_tsvector('english', col) @@ to_tsquery('english', 'search_term') ORDER BY id;"
+                }
+            ],
+            instructions: {
+                en: "Retrieve the `id`, `title`, and `body` from `documents` for records where the body text contains the term 'performance', sorted by `id`.",
+                id: "Tampilkan `id`, `title`, dan `body` dari `documents` untuk baris yang isi teksnya memuat kata 'performance', terurut berdasarkan `id`."
+            },
+            seed_sql: mod9FtsQuerySeed,
+            expected_query: "SELECT id, title, body FROM documents WHERE to_tsvector('english', body) @@ to_tsquery('english', 'performance') ORDER BY id;",
+            verification_query: "SELECT id, title, body FROM documents WHERE to_tsvector('english', body) @@ to_tsquery('english', 'performance') ORDER BY id;",
+            starterQuery: "-- Write a query to find documents containing 'performance'",
+            isMandatory: true,
+            table_names: [
+                "documents"
+            ],
+            engineOverrides: {
+                mysql: {
+                    seed_sql: mod9FtsMysqlQuerySeed,
+                    expected_query: "SELECT id, title, body FROM documents WHERE MATCH(body) AGAINST('+performance' IN BOOLEAN MODE) ORDER BY id;",
+                    verification_query: "SELECT id, title, body FROM documents WHERE MATCH(body) AGAINST('+performance' IN BOOLEAN MODE) ORDER BY id;",
+                    starterQuery: "-- Search documents using MATCH AGAINST in MySQL",
+                    syntaxPatterns: [
+                        {
+                            label: {
+                                en: "MySQL Full-Text Search (BOOLEAN MODE)",
+                                id: "Full-Text Search MySQL (BOOLEAN MODE)"
+                            },
+                            code: "SELECT col FROM table_name WHERE MATCH(col) AGAINST('+search_term' IN BOOLEAN MODE) ORDER BY id;"
+                        }
+                    ]
+                }
+            }
+        },
+{
+                "id": 943,
+                "moduleId": 9,
+                "categorySlot": 3,
+                "title": {
+                        "en": "Creating a Filtered Partial Index on Active Users (Var #1)",
+                        "id": "Membuat Partial Index Tersaring pada Pengguna Aktif (Latihan #1)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Building an index card catalog that only includes active gym members rather than wasting space cataloging deactivated accounts from ten years ago.\n\nEngine Processing Behavior: The database builds a B-Tree index exclusively containing index entries for rows satisfying the WHERE predicate (is_active = true), significantly reducing index storage size and write maintenance costs.\n\nBest Practices & Gotchas: Queries must include the same WHERE predicate (or a subset) for the query planner to recognize and utilize the partial index.",
+                        "id": "Analogi Konseptual: Membuat katalog kartu anggota yang hanya memuat anggota aktif alih-alih membuang tempat mencatat ribuan akun yang sudah tidak aktif bertahun-tahun.\n\nCara Kerja Database Engine: Database membangun indeks B-Tree yang khusus menampung baris data yang memenuhi kondisi klausa WHERE (is_active = true), menghemat ukuran memori indeks dan biaya pembaruan data.\n\nBest Practices & Catatan Penting: Query pencarian harus menyertakan kondisi WHERE yang selaras agar planner dapat memanfaatkan partial index tersebut."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Create partial index with WHERE",
+                                        "id": "Pembuatan partial index dengan WHERE"
+                                },
+                                "code": "CREATE INDEX idx_active_users_email ON user_accounts (email) WHERE is_active = true;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Create a partial index named `idx_active_users_email` on the `email` column of `user_accounts` indexing only active records where `is_active` is true.",
+                        "id": "Buat partial index bernama `idx_active_users_email` pada kolom `email` di tabel `user_accounts` yang hanya mengindeks baris data aktif di mana `is_active` bernilai true."
+                },
+                seed_sql: mod9ArraysSeed,
+                "expected_query": "CREATE INDEX idx_active_users_email ON user_accounts (email) WHERE is_active = true;",
+                "starterQuery": "-- Create partial index here",
+                "table_names": [
+                        "user_accounts"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Creating User Email Index in MySQL (Var #1)",
+                                        "id": "Membuat Indeks Email Pengguna di MySQL (Latihan #1)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Creating a B-Tree index on email in MySQL.\n\nEngine Processing Behavior: Builds a standard secondary index on the email column.\n\nBest Practices & Gotchas: Speeds up lookup queries filtering by user email.",
+                                        "id": "Analogi Konseptual: Membangun indeks B-Tree pada kolom email di MySQL.\n\nCara Kerja Database Engine: Membangun secondary index standar pada kolom email.\n\nBest Practices & Catatan Penting: Mempercepat query pencarian yang memfilter berdasarkan email pengguna."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL email index",
+                                                        "id": "Indeks email MySQL"
+                                                },
+                                                "code": "CREATE INDEX idx_active_users_email ON user_accounts (email);"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Create an index named `idx_active_users_email` on the `email` column of `user_accounts`.",
+                                        "id": "Buat indeks bernama `idx_active_users_email` pada kolom `email` di tabel `user_accounts`."
+                                },
+                                "expected_query": "CREATE INDEX idx_active_users_email ON user_accounts (email);",
+                                "starterQuery": "-- Create index here"
+                        }
+                }
+        },
+        {
+                "id": 944,
+                "moduleId": 9,
+                "categorySlot": 4,
+                "title": {
+                        "en": "Creating an Expression Index for Case-Insensitive Lookups (Var #2)",
+                        "id": "Membuat Indeks Ekspresi untuk Pencarian Case-Insensitive (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Sorting student name badges alphabetically by their lowercase letters, so looking up 'alice' or 'ALICE' goes straight to the exact filing drawer.\n\nEngine Processing Behavior: The engine computes LOWER(email) for each row and stores the computed hash in the B-Tree index pages, allowing WHERE LOWER(email) = '...' to perform lightning-fast index scans.\n\nBest Practices & Gotchas: Standard indexes on email cannot be used when the query wraps the column inside a function like LOWER(); expression indexes resolve this bottleneck.",
+                        "id": "Analogi Konseptual: Mengurutkan tanda nama siswa berdasarkan huruf kecilnya, sehingga mencari 'alice' atau 'ALICE' langsung tertuju ke laci arsip yang tepat.\n\nCara Kerja Database Engine: Engine menghitung ekspresi LOWER(email) untuk setiap baris dan menyimpan hasil komputasi tersebut di halaman indeks B-Tree, memungkinkan index scan pada pencarian case-insensitive.\n\nBest Practices & Catatan Penting: Indeks biasa tidak dapat digunakan jika query membungkus kolom dalam fungsi seperti LOWER(); indeks ekspresi adalah solusi tepat."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Create expression functional index",
+                                        "id": "Pembuatan indeks ekspresi fungsional"
+                                },
+                                "code": "CREATE INDEX idx_lower_user_email ON user_accounts (LOWER(email));"
+                        }
+                ],
+                "instructions": {
+                        "en": "Create an expression index named `idx_lower_user_email` on `user_accounts` indexing the lowercase conversion of `email`.",
+                        "id": "Buat indeks ekspresi bernama `idx_lower_user_email` pada tabel `user_accounts` yang mengindeks hasil konversi huruf kecil dari kolom `email`."
+                },
+                seed_sql: mod9ArraysSeed,
+                "expected_query": "CREATE INDEX idx_lower_user_email ON user_accounts (LOWER(email));",
+                "starterQuery": "-- Create expression index here",
+                "table_names": [
+                        "user_accounts"
+                ]
+        },
+        {
+                "id": 945,
+                "moduleId": 9,
+                "categorySlot": 3,
+                "title": {
+                        "en": "Creating a Partial Index for High Balance Accounts (Var #3)",
+                        "id": "Membuat Partial Index untuk Akun Bersaldo Tinggi (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Maintaining an index card catalog only for premium corporate accounts with high capital balances.\n\nEngine Processing Behavior: Only indexes rows meeting the predicate balance > 4000, reducing tree depth.\n\nBest Practices & Gotchas: Keeps index maintenance overhead low for large tables with skewed querying patterns.",
+                        "id": "Analogi Konseptual: Menyimpan kartu arsip khusus untuk akun-akun prioritas yang memiliki saldo modal besar.\n\nCara Kerja Database Engine: Hanya mengindeks baris yang memenuhi predikat balance > 4000, meminimalkan kedalaman pohon indeks.\n\nBest Practices & Catatan Penting: Mengurangi beban pemeliharaan indeks pada tabel besar yang memiliki pola pencarian data condong ke kriteria tertentu."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Partial index on numeric threshold",
+                                        "id": "Partial index pada ambang batas numerik"
+                                },
+                                "code": "CREATE INDEX idx_high_balance ON accounts (balance) WHERE balance > 4000;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Create a partial index named `idx_high_balance` on the `balance` column of `accounts` for rows where `balance` is greater than 4000.",
+                        "id": "Buat partial index bernama `idx_high_balance` pada kolom `balance` di tabel `accounts` untuk baris di mana `balance` lebih besar dari 4000."
+                },
+                seed_sql: mod7Seed,
+                "expected_query": "CREATE INDEX idx_high_balance ON accounts (balance) WHERE balance > 4000;",
+                "starterQuery": "-- Create partial index here",
+                "table_names": [
+                        "accounts"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Creating Balance Index in MySQL (Var #3)",
+                                        "id": "Membuat Indeks Saldo di MySQL (Latihan #3)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Creating a balance index in MySQL.\n\nEngine Processing Behavior: Builds a B-Tree index on the balance attribute.\n\nBest Practices & Gotchas: Supports range-based queries on account balances.",
+                                        "id": "Analogi Konseptual: Membangun indeks saldo akun di MySQL.\n\nCara Kerja Database Engine: Membangun indeks B-Tree pada atribut kolom balance.\n\nBest Practices & Catatan Penting: Mendukung query pencarian berbasis rentang saldo akun."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL balance index",
+                                                        "id": "Indeks saldo MySQL"
+                                                },
+                                                "code": "CREATE INDEX idx_high_balance ON accounts (balance);"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Create an index named `idx_high_balance` on the `balance` column of `accounts`.",
+                                        "id": "Buat indeks bernama `idx_high_balance` pada kolom `balance` di tabel `accounts`."
+                                },
+                                "expected_query": "CREATE INDEX idx_high_balance ON accounts (balance);",
+                                "starterQuery": "-- Create index here"
+                        }
+                }
+        },
+        {
+                "id": 946,
+                "moduleId": 9,
+                "categorySlot": 14,
+                "title": {
+                        "en": "Querying Multi-Valued Attributes with ANY Operator (Var #1)",
+                        "id": "Query Atribut Bernilai Ganda dengan Operator ANY (Latihan #1)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Checking if a student's enrolled sports tags include 'soccer', without creating an entirely separate junction table.\n\nEngine Processing Behavior: The ANY operator iterates across the native array elements in the column, returning true if any element matches the candidate scalar value.\n\nBest Practices & Gotchas: Native array types in PostgreSQL provide lightweight tag modeling; for massive search catalogs, combine with GIN indexes.",
+                        "id": "Analogi Konseptual: Memeriksa apakah daftar minat kegiatan siswa memuat 'soccer', tanpa perlu membuat tabel relasi perantara terpisah.\n\nCara Kerja Database Engine: Operator ANY memeriksa setiap elemen di dalam array kolom, mengembalikan nilai true jika terdapat elemen yang cocok dengan nilai pembanding.\n\nBest Practices & Catatan Penting: Tipe data array di PostgreSQL sangat praktis untuk pemodelan tag; gabungkan dengan GIN index untuk pencarian skala besar."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Array membership check with ANY",
+                                        "id": "Pengecekan keanggotaan array dengan ANY"
+                                },
+                                "code": "SELECT id, title, tags FROM article_tags WHERE 'postgres' = ANY(tags) ORDER BY id;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Find all articles that include 'postgres' in their tags array, displaying `id`, `title`, and `tags` from `article_tags`, ordered by `id`.",
+                        "id": "Temukan semua artikel yang memuat 'postgres' di dalam array tags mereka, menampilkan `id`, `title`, dan `tags` dari tabel `article_tags`, diurutkan berdasarkan `id`."
+                },
+                seed_sql: mod9ArraysSeed,
+                "expected_query": "SELECT id, title, tags FROM article_tags WHERE 'postgres' = ANY(tags) ORDER BY id;",
+                "starterQuery": "SELECT * FROM article_tags;",
+                "table_names": [
+                        "article_tags"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Matching Tag Substrings in MySQL (Var #1)",
+                                        "id": "Pencocokan Substring Tag di MySQL (Latihan #1)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Finding tagged articles in MySQL using pattern matching on text tags.\n\nEngine Processing Behavior: Performs pattern matching on the tags string.\n\nBest Practices & Gotchas: Text pattern matching operates across tag entries.",
+                                        "id": "Analogi Konseptual: Menemukan artikel bertag di MySQL menggunakan pencocokan pola teks.\n\nCara Kerja Database Engine: Menjalankan pencocokan pola teks pada kolom tags.\n\nBest Practices & Catatan Penting: Pencocokan teks bekerja mencari kata kunci tag di kolom string."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL pattern match on tags",
+                                                        "id": "Pencocokan pola tag MySQL"
+                                                },
+                                                "code": "SELECT id, title, tags FROM article_tags WHERE tags LIKE '%postgres%' ORDER BY id;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Find all articles that include 'postgres' in their tags, displaying `id`, `title`, and `tags` from `article_tags`, ordered by `id`.",
+                                        "id": "Temukan semua artikel yang memuat 'postgres' pada kolom tags, menampilkan `id`, `title`, dan `tags` dari tabel `article_tags`, diurutkan berdasarkan `id`."
+                                },
+                                "expected_query": "SELECT id, title, tags FROM article_tags WHERE tags LIKE '%postgres%' ORDER BY id;",
+                                "starterQuery": "SELECT * FROM article_tags;"
+                        }
+                }
+        },
+        {
+                "id": 947,
+                "moduleId": 9,
+                "categorySlot": 14,
+                "title": {
+                        "en": "Expanding Array Elements with UNNEST (Var #2)",
+                        "id": "Mengekspansi Elemen Array Menjadi Baris dengan UNNEST (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Unpacking a gift box containing three books and placing each book on its own separate library shelf.\n\nEngine Processing Behavior: The UNNEST set-returning function pivots an array into individual row tuples, producing one output record per element.\n\nBest Practices & Gotchas: UNNEST allows standard relational operations (like GROUP BY, DISTINCT, and COUNT) to be performed on array elements.",
+                        "id": "Analogi Konseptual: Membuka kotak parsel berisi tiga buku dan meletakkan masing-masing buku di rak perpustakaan terpisah.\n\nCara Kerja Database Engine: Fungsi set-returning UNNEST mengubah elemen array menjadi baris-baris data individual, menghasilkan satu rekaman per elemen.\n\nBest Practices & Catatan Penting: UNNEST memungkinkan operasi relasional standar (seperti GROUP BY, DISTINCT, dan COUNT) dijalankan pada data array."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Expand array with UNNEST",
+                                        "id": "Ekspansi array dengan UNNEST"
+                                },
+                                "code": "SELECT UNNEST(tags) AS single_tag FROM article_tags WHERE id = 1;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Unpack all tags from the article with id 1 into individual rows aliased as `single_tag` from `article_tags`.",
+                        "id": "Bongkar semua tag dari artikel dengan id 1 menjadi baris-baris individual beralias `single_tag` dari tabel `article_tags`."
+                },
+                seed_sql: mod9ArraysSeed,
+                "expected_query": "SELECT UNNEST(tags) AS single_tag FROM article_tags WHERE id = 1;",
+                "starterQuery": "SELECT * FROM article_tags WHERE id = 1;",
+                "table_names": [
+                        "article_tags"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Extracting Tag Elements in MySQL (Var #2)",
+                                        "id": "Mengekstrak Elemen Tag di MySQL (Latihan #2)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Cleaning tag delimiters in MySQL.\n\nEngine Processing Behavior: Strips bracket delimiters from text strings.\n\nBest Practices & Gotchas: Normalizes text tags for single-row display.",
+                                        "id": "Analogi Konseptual: Membersihkan pemisah tanda kurung tag di MySQL.\n\nCara Kerja Database Engine: Menghapus karakter kurung kurawal dari string teks.\n\nBest Practices & Catatan Penting: Menormalkan format teks tag untuk penampilan data."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL tag cleaning",
+                                                        "id": "Pembersihan tag MySQL"
+                                                },
+                                                "code": "SELECT TRIM(REPLACE(REPLACE(tags, '{', ''), '}', '')) AS single_tag FROM article_tags WHERE id = 1;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Display cleaned tags from the article with id 1 aliased as `single_tag` from `article_tags`.",
+                                        "id": "Tampilkan tag yang telah dibersihkan dari artikel dengan id 1 beralias `single_tag` dari tabel `article_tags`."
+                                },
+                                "expected_query": "SELECT TRIM(REPLACE(REPLACE(tags, '{', ''), '}', '')) AS single_tag FROM article_tags WHERE id = 1;",
+                                "starterQuery": "SELECT * FROM article_tags WHERE id = 1;"
+                        }
+                }
+        },
+        {
+                "id": 948,
+                "moduleId": 9,
+                "categorySlot": 15,
+                "title": {
+                        "en": "Generating Universal Identifiers with gen_random_uuid (Var #3)",
+                        "id": "Membuat Pengenal Unik Universal dengan gen_random_uuid (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Generating a cryptographic passport number that is mathematically guaranteed to be globally unique across all computers on Earth.\n\nEngine Processing Behavior: Calls the cryptographically secure pseudorandom generator to construct a 128-bit UUID (version 4).\n\nBest Practices & Gotchas: UUIDs prevent ID enumeration attacks and eliminate coordination bottlenecks in distributed multi-node clusters.",
+                        "id": "Analogi Konseptual: Membuat nomor paspor kriptografis yang dijamin secara matematis unik di seluruh komputer di dunia tanpa risiko duplikasi.\n\nCara Kerja Database Engine: Memanggil generator pseudorandom yang aman secara kriptografi untuk menghasilkan 128-bit UUID (versi 4).\n\nBest Practices & Catatan Penting: UUID mencegah eksploitasi tebak ID (enumeration attack) dan menghilangkan kebutuhan koordinasi terpusat pada sistem terdistribusi."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Generate random UUID",
+                                        "id": "Membuat random UUID"
+                                },
+                                "code": "SELECT gen_random_uuid() AS session_token;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Generate a new cryptographic version-4 identifier aliased as `session_token`.",
+                        "id": "Buat pengenal unik versi 4 kriptografis baru beralias `session_token`."
+                },
+                seed_sql: mod9ArraysSeed,
+                "expected_query": "SELECT gen_random_uuid() AS session_token;",
+                "starterQuery": "-- Generate UUID",
+                "table_names": [
+                        "user_accounts"
+                ],
+                "engineOverrides": {
+                        "mysql": {
+                                "title": {
+                                        "en": "Generating Universal Identifiers with UUID in MySQL (Var #3)",
+                                        "id": "Membuat Pengenal Unik Universal dengan UUID di MySQL (Latihan #3)"
+                                },
+                                "conceptExplanation": {
+                                        "en": "Conceptual Analogy: Generating global unique identifiers using MySQL's native UUID function.\n\nEngine Processing Behavior: Computes a 128-bit universal identifier.\n\nBest Practices & Gotchas: Generates standard format UUID strings in MySQL.",
+                                        "id": "Analogi Konseptual: Membuat pengenal unik global menggunakan fungsi bawaan UUID di MySQL.\n\nCara Kerja Database Engine: Menghasilkan 128-bit universal identifier secara instan.\n\nBest Practices & Catatan Penting: Menghasilkan string UUID standar di MySQL."
+                                },
+                                "syntaxPatterns": [
+                                        {
+                                                "label": {
+                                                        "en": "MySQL UUID generation",
+                                                        "id": "Pembuatan UUID MySQL"
+                                                },
+                                                "code": "SELECT UUID() AS session_token;"
+                                        }
+                                ],
+                                "instructions": {
+                                        "en": "Generate a new cryptographic version-4 identifier aliased as `session_token`.",
+                                        "id": "Buat pengenal unik versi 4 kriptografis baru beralias `session_token`."
+                                },
+                                "expected_query": "SELECT UUID() AS session_token;",
+                                "starterQuery": "-- Generate UUID"
+                        }
+                }
+        }
     ];
+}
+
+const mod10OrdersSeed = `CREATE TABLE orders (id INT PRIMARY KEY, customer_id INT, amount NUMERIC, order_date DATE);
+INSERT INTO orders (id, customer_id, amount, order_date)
+SELECT g, (g % 50) + 1, (g * 15.5)::NUMERIC(10,2), '2024-01-01'::DATE + (g % 365)
+FROM generate_series(1, 1000) g;
+ANALYZE orders;`;
+
+const mod10OrderItemsSeed = `CREATE TABLE order_items (id INT PRIMARY KEY, order_id INT, product_id INT, quantity INT, unit_price NUMERIC);
+INSERT INTO order_items (id, order_id, product_id, quantity, unit_price)
+SELECT g, (g % 100) + 1, (g % 20) + 1, (g % 5) + 1, (g * 2.5)::NUMERIC(10,2)
+FROM generate_series(1, 2000) g;
+ANALYZE order_items;`;
+
+const mod10EventsSeed = `CREATE TABLE events (id INT PRIMARY KEY, user_id INT, event_type TEXT, created_at TIMESTAMP);
+INSERT INTO events (id, user_id, event_type, created_at)
+SELECT g, (g % 500) + 1, CASE WHEN g % 2 = 0 THEN 'click' ELSE 'view' END, '2024-01-01 00:00:00'::TIMESTAMP + (g * INTERVAL '1 minute')
+FROM generate_series(1, 5000) g;
+CREATE INDEX idx_events_user_id ON events (user_id);
+ANALYZE events;`;
+
+const mod10JoinSeed = `CREATE TABLE customers (id INT PRIMARY KEY, name TEXT, region TEXT);
+CREATE TABLE invoices (id INT PRIMARY KEY, customer_id INT, total NUMERIC);
+INSERT INTO customers (id, name, region)
+SELECT g, 'Customer ' || g, CASE WHEN g % 2 = 0 THEN 'North' ELSE 'South' END
+FROM generate_series(1, 50) g;
+INSERT INTO invoices (id, customer_id, total)
+SELECT g, (g % 50) + 1, (g * 12.0)::NUMERIC(10,2)
+FROM generate_series(1, 2000) g;
+CREATE INDEX idx_invoices_customer_id ON invoices (customer_id);
+ANALYZE customers;
+ANALYZE invoices;`;
+
+const mod10SubplanSeed = `CREATE TABLE accounts (id INT PRIMARY KEY, username TEXT, balance NUMERIC);
+CREATE TABLE audit_logs (id INT PRIMARY KEY, account_id INT, action TEXT);
+INSERT INTO accounts (id, username, balance)
+SELECT g, 'user_' || g, (g * 100)::NUMERIC
+FROM generate_series(1, 100) g;
+INSERT INTO audit_logs (id, account_id, action)
+SELECT g, (g % 100) + 1, 'login'
+FROM generate_series(1, 1000) g;
+ANALYZE accounts;
+ANALYZE audit_logs;`;
+
+const mod10MetricsSeed = `CREATE TABLE metrics (id INT PRIMARY KEY, sensor_id INT, reading_val NUMERIC);
+INSERT INTO metrics (id, sensor_id, reading_val)
+SELECT g, (g % 25) + 1, (g * 0.75)::NUMERIC(8,2)
+FROM generate_series(1, 2500) g;
+ANALYZE metrics;`;
+
+const mod10ArticlesSeed = `CREATE TABLE articles (id INT PRIMARY KEY, published_at DATE, views INT, title TEXT);
+INSERT INTO articles (id, published_at, views, title)
+SELECT g, '2024-01-01'::DATE + (g % 180), (g * 7) % 500, 'Article #' || g
+FROM generate_series(1, 1000) g;
+CREATE INDEX idx_articles_published_at ON articles (published_at);
+ANALYZE articles;`;
+
+const mod10SkewedSeed = `CREATE TABLE skewed_inventory (id INT PRIMARY KEY, status TEXT, item_name TEXT);
+INSERT INTO skewed_inventory (id, status, item_name)
+SELECT g, CASE WHEN g <= 900 THEN 'in_stock' ELSE 'backordered' END, 'Item ' || g
+FROM generate_series(1, 1000) g;
+ANALYZE skewed_inventory;`;
+
+function generateModule10(): Question[] {
+  return [
+    {
+      id: 1001,
+      moduleId: 10,
+      categorySlot: 1,
+      title: {
+        en: "Inspect Query Execution Plan (Var #1)",
+        id: "Memeriksa Rencana Eksekusi Query (Latihan #1)"
+      },
+      conceptExplanation: {
+        en: "Conceptual Analogy: Before building a house, an architect creates a blueprint. Similarly, before running a query, the database planner generates an execution plan.\n\nEngine Processing Behavior: The EXPLAIN statement displays the planner's selected strategy without executing the query. The output shows tree nodes representing operations like sequential table scans (Seq Scan) or index scans. Each node details estimated startup cost, total cost, estimated rows, and row width in bytes.\n\nBest Practices & Gotchas: Running EXPLAIN helps verify whether filtering predicates take advantage of available indexes or fall back to scanning every page sequentially.",
+        id: "Analogi Konseptual: Sebelum membangun gedung, arsitek membuat denah kerja. Begitu pula database planner, ia menyusun rencana eksekusi sebelum query benar-benar dijalankan.\n\nCara Kerja Database Engine: Perintah EXPLAIN menampilkan strategi eksekusi terpilih tanpa menjalankan query ke data. Output berupa pohon simpul (tree nodes) yang menunjukkan operasi seperti Seq Scan atau Index Scan, lengkap dengan estimasi biaya awal, total biaya, estimasi jumlah baris, dan lebar kolom (width).\n\nBest Practices & Catatan Penting: Gunakan EXPLAIN untuk memverifikasi apakah penyaringan data memanfaatkan indeks secara efektif atau terpaksa membaca seluruh halaman tabel baris demi baris."
+      },
+      syntaxPatterns: [
+        {
+          label: {
+            en: "Inspect Query Plan",
+            id: "Pemeriksaan Rencana Query"
+          },
+          code: "EXPLAIN SELECT * FROM table_name WHERE column_name = value;"
+        }
+      ],
+      instructions: {
+        en: "Inspect the database execution plan for fetching all records from the orders table with customer_id of 5.",
+        id: "Periksa rencana eksekusi database untuk mengambil seluruh data dari tabel orders dengan customer_id bernilai 5."
+      },
+      seed_sql: mod10OrdersSeed,
+      expected_query: "EXPLAIN SELECT * FROM orders WHERE customer_id = 5;",
+      starterQuery: "SELECT * FROM orders WHERE customer_id = 5;",
+      table_names: [
+        "orders"
+      ]
+    },
+    {
+      id: 1002,
+      moduleId: 10,
+      categorySlot: 2,
+      title: {
+        en: "Inspect Actual Rows with EXPLAIN ANALYZE (Var #1)",
+        id: "Memeriksa Baris Aktual dengan EXPLAIN ANALYZE (Latihan #1)"
+      },
+      conceptExplanation: {
+        en: "Conceptual Analogy: EXPLAIN is an estimated travel time from a navigation map, whereas ANALYZE is driving the route to record real-world results.\n\nEngine Processing Behavior: The ANALYZE option forces the engine to actually execute the query and count actual rows processed per plan node alongside planner estimates. Comparing estimated rows against actual rows helps detect planner miscalculations caused by outdated statistics.\n\nBest Practices & Gotchas: Because ANALYZE executes the query, running it on data modification statements (INSERT, UPDATE, DELETE) will apply real changes to the database unless wrapped in a transaction rollback.",
+        id: "Analogi Konseptual: EXPLAIN seperti perkiraan durasi perjalanan di aplikasi peta, sedangkan ANALYZE adalah mengendarai rute tersebut secara langsung untuk mencatat hasil aslinya.\n\nCara Kerja Database Engine: Opsi ANALYZE mengeksekusi query secara penuh dan menghitung jumlah baris nyata yang diproses per simpul rencana di samping estimasi awal. Perbedaan mencolok antara perkiraan dan baris riil menandakan statistik tabel yang sudah kedaluwarsa.\n\nBest Practices & Catatan Penting: Karena ANALYZE benar-benar menjalankan query, berhati-hatilah pada perintah modifikasi (INSERT, UPDATE, DELETE) karena perubahan data akan tersimpan permanen kecuali dibatalkan dalam transaksi."
+      },
+      syntaxPatterns: [
+        {
+          label: {
+            en: "EXPLAIN ANALYZE (Deterministic)",
+            id: "EXPLAIN ANALYZE (Deterministik)"
+          },
+          code: "EXPLAIN (ANALYZE, TIMING OFF, SUMMARY OFF) SELECT * FROM table_name WHERE column_name = value;"
+        }
+      ],
+      instructions: {
+        en: "Inspect actual execution row counts for the orders table with customer_id of 5 by running the plan analyzer with actual row counts enabled and timing disabled.",
+        id: "Periksa jumlah baris eksekusi aktual untuk tabel orders dengan customer_id bernilai 5 dengan menjalankan analisis rencana beserta jumlah baris nyata dan penanda waktu nonaktif."
+      },
+      seed_sql: mod10OrdersSeed,
+      expected_query: "EXPLAIN (ANALYZE, TIMING OFF, SUMMARY OFF) SELECT * FROM orders WHERE customer_id = 5;",
+      starterQuery: "EXPLAIN (ANALYZE, TIMING OFF, SUMMARY OFF) SELECT * FROM orders WHERE customer_id = 5;",
+      table_names: [
+        "orders"
+      ]
+    },
+    {
+      id: 1003,
+      moduleId: 10,
+      categorySlot: 3,
+      title: {
+        en: "Analyze Sorting and Aggregation Bottlenecks (Var #1)",
+        id: "Menganalisis Titik Kritis Pengurutan dan Agregasi (Latihan #1)"
+      },
+      conceptExplanation: {
+        en: "Conceptual Analogy: In a manufacturing assembly line, the slowest workstation determines overall factory throughput.\n\nEngine Processing Behavior: Plan nodes report a cost range in the format 'cost=startup..total'. Operations like HashAggregate, GroupAggregate, and Sort accumulate high startup costs because they must collect or sort entire datasets before emitting the first result row.\n\nBest Practices & Gotchas: When optimizing multi-step queries, inspect each node's incremental cost. A node with a massive leap between startup and total cost is frequently the primary performance bottleneck.",
+        id: "Analogi Konseptual: Pada lini perakitan pabrik, stasiun kerja yang paling lambat menentukan kecepatan keseluruhan alur produksi.\n\nCara Kerja Database Engine: Setiap simpul rencana menampilkan rentang biaya berformat 'cost=startup..total'. Operasi seperti HashAggregate dan Sort memerlukan startup cost tinggi karena harus menampung atau mengurutkan seluruh kumpulan baris sebelum dapat menghasilkan baris pertama.\n\nBest Practices & Catatan Penting: Saat menganalisis query bertingkat, perhatikan lonjakan biaya antar simpul. Simpul dengan selisih biaya terbesar umumnya merupakan sumber bottleneck utama."
+      },
+      syntaxPatterns: [
+        {
+          label: {
+            en: "Explain Grouping and Sorting",
+            id: "Pemeriksaan Rencana Grouping dan Sorting"
+          },
+          code: "EXPLAIN SELECT col, SUM(val) FROM table_name GROUP BY col ORDER BY col;"
+        }
+      ],
+      instructions: {
+        en: "Inspect the execution cost and plan nodes for grouping `order_items` by `order_id` and calculating total item revenue sorted by `order_id`.",
+        id: "Periksa estimasi biaya dan simpul rencana untuk pengelompokan `order_items` berdasarkan `order_id` beserta total pendapatan item yang diurutkan menurut `order_id`."
+      },
+      seed_sql: mod10OrderItemsSeed,
+      expected_query: "EXPLAIN SELECT order_id, SUM(quantity * unit_price) FROM order_items GROUP BY order_id ORDER BY order_id;",
+      starterQuery: "SELECT order_id, SUM(quantity * unit_price) FROM order_items GROUP BY order_id ORDER BY order_id;",
+      table_names: [
+        "order_items"
+      ]
+    },
+    {
+      id: 1004,
+      moduleId: 10,
+      categorySlot: 4,
+      title: {
+        en: "Index Scan vs Sequential Scan Selection (Var #1)",
+        id: "Pemilihan Index Scan vs Sequential Scan (Latihan #1)"
+      },
+      conceptExplanation: {
+        en: "Conceptual Analogy: Looking up a specific phone number in an index is instant, but reading the whole phone directory is only sensible when searching for most residents.\n\nEngine Processing Behavior: When a query filter is highly selective (matching a tiny percentage of rows), the planner chooses Bitmap Index Scan or Index Scan. If a filter matches a large fraction of the table, the planner prefers a sequential scan (Seq Scan) because random disk seeks through an index become slower than sequential page reads.\n\nBest Practices & Gotchas: Having an index on a column does not guarantee the planner will use it; low selectivity predicates intentionally bypass indexes in favor of faster bulk scans.",
+        id: "Analogi Konseptual: Mencari nomor spesifik di buku telepon melalui indeks sangat cepat, tetapi membaca seluruh buku telepon hanya efisien jika kita mencari sebagian besar nama di kota tersebut.\n\nCara Kerja Database Engine: Ketika filter query memiliki selektivitas tinggi (hanya cocok dengan sebagian kecil baris), database engine memilih Index Scan. Sebaliknya jika persentase baris yang cocok sangat besar, engine beralih ke Seq Scan karena pembacaan sekuensial halaman lebih hemat dibanding random I/O melalui indeks.\n\nBest Practices & Catatan Penting: Keberadaan indeks pada kolom tidak menjamin indeks tersebut selalu dipakai; filter dengan selektivitas rendah sengaja mengabaikan indeks demi kecepatan baca massal."
+      },
+      syntaxPatterns: [
+        {
+          label: {
+            en: "Explain Filtered Index Query",
+            id: "Pemeriksaan Query dengan Indeks"
+          },
+          code: "EXPLAIN SELECT * FROM table_name WHERE indexed_column = value;"
+        }
+      ],
+      instructions: {
+        en: "Inspect the execution plan for fetching records from the events table with user_id of 42 to verify that the planner selects an index scan.",
+        id: "Periksa rencana eksekusi untuk mengambil baris dari tabel events dengan user_id bernilai 42 guna memverifikasi bahwa planner memilih pemindaian indeks."
+      },
+      seed_sql: mod10EventsSeed,
+      expected_query: "EXPLAIN SELECT * FROM events WHERE user_id = 42;",
+      starterQuery: "SELECT * FROM events WHERE user_id = 42;",
+      table_names: [
+        "events"
+      ]
+    },
+    {
+      id: 1005,
+      moduleId: 10,
+      categorySlot: 5,
+      title: {
+        en: "Join Execution Strategy Analysis (Var #1)",
+        id: "Analisis Strategi Eksekusi Join (Latihan #1)"
+      },
+      conceptExplanation: {
+        en: "Conceptual Analogy: A Nested Loop is like looking up entries one by one, while a Hash Join builds a quick-reference hash table in memory to match all entries in bulk.\n\nEngine Processing Behavior: PostgreSQL evaluates three primary join algorithms: Nested Loop (optimal for small outer sets with indexed inner sets), Hash Join (ideal for large unindexed equijoins by hashing the smaller relation), and Merge Join (fastest when both inputs are pre-sorted on join keys).\n\nBest Practices & Gotchas: Adding an index on the foreign key column typically turns a heavy Hash Join into an efficient Nested Loop or parameterized Index Scan for selective queries.",
+        id: "Analogi Konseptual: Nested Loop mirip seperti mencocokkan data kartu satu per satu, sedangkan Hash Join menyusun tabel pencocokan kilat di memori untuk mencocokkan semua kartu secara serentak.\n\nCara Kerja Database Engine: PostgreSQL memilih salah satu dari tiga strategi join utama: Nested Loop (terbaik jika baris luar sedikit dan tabel dalam terindeks), Hash Join (efektif untuk equijoin data besar tanpa indeks via hash table memori), dan Merge Join (terbaik jika kedua sisi telah terurut).\n\nBest Practices & Catatan Penting: Menambahkan indeks pada kolom foreign key sering kali mengubah Hash Join yang memakan memori menjadi Nested Loop yang jauh lebih hemat waktu."
+      },
+      syntaxPatterns: [
+        {
+          label: {
+            en: "Explain Join Strategy",
+            id: "Pemeriksaan Rencana Join"
+          },
+          code: "EXPLAIN SELECT * FROM table_a a JOIN table_b b ON a.id = b.a_id WHERE a.id = val;"
+        }
+      ],
+      instructions: {
+        en: "Inspect the execution plan joining customers and invoices for customer identifier 10 to observe the chosen join strategy.",
+        id: "Periksa rencana eksekusi penggabungan tabel customers dan invoices dengan id pelanggan bernilai 10 untuk mengamati strategi join terpilih."
+      },
+      seed_sql: mod10JoinSeed,
+      expected_query: "EXPLAIN SELECT c.name, i.total FROM customers c JOIN invoices i ON c.id = i.customer_id WHERE c.id = 10;",
+      starterQuery: "SELECT c.name, i.total FROM customers c JOIN invoices i ON c.id = i.customer_id WHERE c.id = 10;",
+      table_names: [
+        "customers",
+        "invoices"
+      ]
+    },
+    {
+      id: 1006,
+      moduleId: 10,
+      categorySlot: 6,
+      title: {
+        en: "Detecting Correlated SubPlan Execution (Var #1)",
+        id: "Mendeteksi Eksekusi SubPlan Berkorelasi (Latihan #1)"
+      },
+      conceptExplanation: {
+        en: "Conceptual Analogy: Running an errand individually for every coworker takes far longer than consolidating all requests into one organized trip.\n\nEngine Processing Behavior: In an EXPLAIN tree, an independent subquery displays as an 'InitPlan' (evaluated once before main execution), whereas a correlated subquery dependent on outer row values appears as a 'SubPlan'. A SubPlan executes repeatedly once for every single processed outer row.\n\nBest Practices & Gotchas: Correlated SubPlans create hidden N+1 bottlenecks inside SQL statements. Refactor them into explicit LEFT JOINs with GROUP BY or Common Table Expressions (CTEs) for massive throughput gains.",
+        id: "Analogi Konseptual: Membeli pesanan titipan satu per satu untuk setiap rekan kerja jauh lebih melelahkan daripada mencatat semua pesanan sekaligus dalam satu kali perjalanan belanja.\n\nCara Kerja Database Engine: Pada diagram EXPLAIN, subquery independen ditandai sebagai 'InitPlan' (dijalankan sekali di awal), sedangkan subquery yang bergantung pada nilai kolom luar ditandai sebagai 'SubPlan'. Simpul SubPlan dipanggil ulang untuk setiap baris dari tabel luar.\n\nBest Practices & Catatan Penting: SubPlan berkorelasi memicu masalah performa N+1 tersembunyi di dalam engine database. Restrukturisasi query tersebut menggunakan LEFT JOIN dan GROUP BY agar eksekusi berlangsung set-based dan cepat."
+      },
+      syntaxPatterns: [
+        {
+          label: {
+            en: "Explain Correlated SubPlan",
+            id: "Pemeriksaan SubPlan Berkorelasi"
+          },
+          code: "EXPLAIN SELECT col, (SELECT COUNT(*) FROM child WHERE child.p_id = parent.id) FROM parent;"
+        }
+      ],
+      instructions: {
+        en: "Inspect the execution plan of a correlated subquery counting `audit_logs` per account to detect repeated subplan execution nodes.",
+        id: "Periksa rencana eksekusi subquery berkorelasi yang menghitung `audit_logs` per akun untuk mendeteksi simpul eksekusi subplan berulang."
+      },
+      seed_sql: mod10SubplanSeed,
+      expected_query: "EXPLAIN SELECT id, (SELECT COUNT(*) FROM audit_logs WHERE audit_logs.account_id = accounts.id) AS log_count FROM accounts;",
+      starterQuery: "SELECT id, (SELECT COUNT(*) FROM audit_logs WHERE audit_logs.account_id = accounts.id) AS log_count FROM accounts;",
+      table_names: [
+        "accounts",
+        "audit_logs"
+      ]
+    },
+    {
+      id: 1007,
+      moduleId: 10,
+      categorySlot: 7,
+      title: {
+        en: "Aggregation Strategy and Memory Costs (Var #1)",
+        id: "Strategi Agregasi dan Konsumsi Memori (Latihan #1)"
+      },
+      conceptExplanation: {
+        en: "Conceptual Analogy: Sorting mail into distinct bins on the fly using a hash map is fast, but sorting thousands of letters alphabetically before filing requires more preparatory effort.\n\nEngine Processing Behavior: The planner selects HashAggregate when group keys can fit inside working memory (work_mem), grouping rows via an in-memory hash table in a single pass. If memory is constrained or inputs are already ordered, the planner chooses GroupAggregate, which requires pre-sorted input via a Sort node.\n\nBest Practices & Gotchas: If an EXPLAIN plan reveals an expensive Sort node preceding a GroupAggregate, consider creating an index matching the GROUP BY columns to eliminate the sorting phase.",
+        id: "Analogi Konseptual: Memasukkan surat langsung ke kotak penerima dengan memori cepat sangat efisien, sedangkan mengurutkan seluruh surat dari A-Z sebelum dibagikan memerlukan waktu persiapan tambahan.\n\nCara Kerja Database Engine: Database memilih HashAggregate bila jumlah grup muat di dalam batas memori kerja (work_mem) melalui tabel hash in-memory. Jika data terurut atau memori terbatas, engine memilih GroupAggregate yang mengharuskan simpul Sort mendahuluinya.\n\nBest Practices & Catatan Penting: Jika EXPLAIN menampilkan simpul Sort yang berat sebelum GroupAggregate, buatlah indeks pada kolom GROUP BY untuk meniadakan beban komputasi pengurutan tersebut."
+      },
+      syntaxPatterns: [
+        {
+          label: {
+            en: "Explain Group By Aggregation",
+            id: "Pemeriksaan Rencana Agregasi GROUP BY"
+          },
+          code: "EXPLAIN SELECT group_col, AVG(metric_col) FROM table_name GROUP BY group_col;"
+        }
+      ],
+      instructions: {
+        en: "Inspect the execution plan for calculating average `reading_val` grouped by `sensor_id` across `metrics` to identify the chosen aggregation node.",
+        id: "Periksa rencana eksekusi untuk menghitung rata-rata `reading_val` yang dikelompokkan menurut `sensor_id` pada tabel `metrics` guna mengenali simpul agregasi terpilih."
+      },
+      seed_sql: mod10MetricsSeed,
+      expected_query: "EXPLAIN SELECT sensor_id, AVG(reading_val) FROM metrics GROUP BY sensor_id;",
+      starterQuery: "SELECT sensor_id, AVG(reading_val) FROM metrics GROUP BY sensor_id;",
+      table_names: [
+        "metrics"
+      ]
+    },
+    {
+      id: 1008,
+      moduleId: 10,
+      categorySlot: 8,
+      title: {
+        en: "Ordering Elimination via Index Scans (Var #1)",
+        id: "Peniadaan Beban Sortir Melalui Index Scan (Latihan #1)"
+      },
+      conceptExplanation: {
+        en: "Conceptual Analogy: If an encyclopedia is already printed in alphabetical order, finding the first twenty entries requires no reorganizing.\n\nEngine Processing Behavior: A standard query with ORDER BY on an unindexed column performs a full scan followed by a Sort node (which may spill to temporary files on disk if data exceeds work_mem). When querying an indexed column with ORDER BY, the planner performs an Index Scan directly in order, completely eliminating the Sort operation.\n\nBest Practices & Gotchas: Combining an ordered index with a small LIMIT clause enables PostgreSQL to finish execution immediately after reading the first required rows without scanning the full table.",
+        id: "Analogi Konseptual: Jika ensiklopedia sudah tercetak rapi sesuai abjad, mengambil 20 entri terdepan tidak membutuhkan pengurutan ulang.\n\nCara Kerja Database Engine: Query dengan klausa ORDER BY pada kolom tanpa indeks mengharuskan engine membaca seluruh baris lalu menjalankan simpul Sort. Jika kolom sudah memiliki indeks B-Tree, engine membaca data langsung dari indeks secara berurutan sehingga operasi Sort dapat ditiadakan secara total.\n\nBest Practices & Catatan Penting: Mengombinasikan indeks terurut dengan klausa LIMIT memungkinkan PostgreSQL berhenti membaca data seketika setelah jumlah baris terpenuhi, tanpa menyentuh sisa baris tabel lainnya."
+      },
+      syntaxPatterns: [
+        {
+          label: {
+            en: "Explain Index Ordering with Limit",
+            id: "Pemeriksaan Pengurutan Indeks dengan Limit"
+          },
+          code: "EXPLAIN SELECT col_a, col_b FROM table_name ORDER BY col_b LIMIT 20;"
+        }
+      ],
+      instructions: {
+        en: "Inspect the execution plan for fetching `articles` sorted by `published_at` with a limit of 20 to observe how the index eliminates a separate sort node.",
+        id: "Periksa rencana eksekusi untuk mengambil `articles` terurut `published_at` dengan batas 20 baris guna mengamati bagaimana indeks meniadakan simpul sortir terpisah."
+      },
+      seed_sql: mod10ArticlesSeed,
+      expected_query: "EXPLAIN SELECT id, published_at FROM articles ORDER BY published_at LIMIT 20;",
+      starterQuery: "SELECT id, published_at FROM articles ORDER BY published_at LIMIT 20;",
+      table_names: [
+        "articles"
+      ]
+    },
+    {
+      id: 1009,
+      moduleId: 10,
+      categorySlot: 9,
+      title: {
+        en: "Inspect Shared Buffer Cache Activity (Var #1)",
+        id: "Memeriksa Aktivitas Shared Buffer Cache (Latihan #1)"
+      },
+      conceptExplanation: {
+        en: "Conceptual Analogy: Reading a book already open on your desk (cache hit) is drastically faster than fetching it from a warehouse shelf (disk read).\n\nEngine Processing Behavior: Adding BUFFERS to EXPLAIN ANALYZE reveals memory usage per plan node. 'shared hit' indicates data pages read directly from PostgreSQL's shared memory buffer pool. 'shared read' indicates disk I/O was required because the pages were not in cache.\n\nBest Practices & Gotchas: High shared hit ratios signify healthy caching. If a plan reports massive buffer counts compared to actual rows returned, examine whether an index or query rewrite can reduce scanned pages.",
+        id: "Analogi Konseptual: Membaca dokumen yang sudah terbuka di meja kerja (cache hit) jauh lebih cepat dibanding harus berjalan mengambilnya dari gudang arsip (disk read).\n\nCara Kerja Database Engine: Menambahkan opsi BUFFERS pada EXPLAIN ANALYZE menampilkan data penggunaan halaman memori. 'shared hit' berarti blok halaman tabel dibaca langsung dari shared buffer cache di RAM, sedangkan 'shared read' menunjukkan terjadinya I/O fisik ke storage.\n\nBest Practices & Catatan Penting: Rasio hit yang tinggi menandakan efisiensi memori yang optimal. Bila jumlah buffer hit jauh melampaui baris hasil yang dibutuhkan, periksa apakah ada scan halaman berlebih yang bisa dipangkas lewat indeks."
+      },
+      syntaxPatterns: [
+        {
+          label: {
+            en: "EXPLAIN with BUFFERS",
+            id: "EXPLAIN dengan BUFFERS"
+          },
+          code: "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT * FROM table_name WHERE id = val;"
+        }
+      ],
+      instructions: {
+        en: "Inspect shared buffer cache activity for selecting an article by primary key 100 with buffer statistics enabled and timing disabled.",
+        id: "Periksa aktivitas shared buffer cache untuk seleksi artikel dengan primary key bernilai 100 dengan statistik buffer aktif dan penanda waktu nonaktif."
+      },
+      seed_sql: mod10ArticlesSeed,
+      expected_query: "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT * FROM articles WHERE id = 100;",
+      starterQuery: "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT * FROM articles WHERE id = 100;",
+      table_names: [
+        "articles"
+      ]
+    },
+    {
+      id: 1010,
+      moduleId: 10,
+      categorySlot: 10,
+      title: {
+        en: "Planner Row Estimates and Catalog Statistics (Var #1)",
+        id: "Estimasi Baris Planner dan Statistik Katalog (Latihan #1)"
+      },
+      conceptExplanation: {
+        en: "Conceptual Analogy: A store manager needs an accurate stock audit report to estimate how long restocking will take; inaccurate inventory ledgers lead to misjudged labor.\n\nEngine Processing Behavior: The planner consults system catalog statistics (stored in pg_statistic / pg_stats) to estimate row selectivity for query filters. For skewed distributions, Most Common Values (MCV) lists allow the planner to assign precise row count estimates to uncommon values.\n\nBest Practices & Gotchas: Outdated statistics lead the query planner to choose catastrophic plans, such as selecting nested loops where hash joins are needed. Run ANALYZE after large batch inserts or data imports to refresh statistics.",
+        id: "Analogi Konseptual: Manajer gudang memerlukan data inventaris yang akurat untuk memperkirakan waktu penataan; catatan stok yang keliru akan membuat perkiraan beban kerja meleset jauh.\n\nCara Kerja Database Engine: Database planner mengandalkan statistik sistem (pada pg_statistic / pg_stats) untuk mengestimasi jumlah baris hasil filter. Untuk distribusi data yang miring, daftar Most Common Values (MCV) membantu planner memberikan estimasi akurat pada nilai yang jarang muncul.\n\nBest Practices & Catatan Penting: Statistik data yang usang dapat membuat engine salah memilih rencana eksekusi yang lambat. Jalankan perintah ANALYZE secara berkala setelah perubahan data dalam jumlah besar."
+      },
+      syntaxPatterns: [
+        {
+          label: {
+            en: "Explain Filter Estimate",
+            id: "Pemeriksaan Estimasi Filter"
+          },
+          code: "EXPLAIN SELECT * FROM table_name WHERE category = 'val';"
+        }
+      ],
+      instructions: {
+        en: "Inspect the planner row count estimate for locating items with `status` of 'backordered' in the skewed inventory table.",
+        id: "Periksa estimasi jumlah baris planner saat mencari barang dengan `status` 'backordered' pada tabel inventaris."
+      },
+      seed_sql: mod10SkewedSeed,
+      expected_query: "EXPLAIN SELECT * FROM skewed_inventory WHERE status = 'backordered';",
+      starterQuery: "SELECT * FROM skewed_inventory WHERE status = 'backordered';",
+      table_names: [
+        "skewed_inventory"
+      ]
+    },
+{
+                "id": 1011,
+                "moduleId": 10,
+                "categorySlot": 1,
+                "title": {
+                        "en": "Inspect Execution Plan for High Value Orders (Var #2)",
+                        "id": "Memeriksa Rencana Eksekusi untuk Pesanan Bernilai Tinggi (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Examining the roadmap planned by a delivery driver before the truck starts driving.\n\nEngine Processing Behavior: The EXPLAIN statement details the planner's selected scan path and estimated costs without executing the query.\n\nBest Practices & Gotchas: EXPLAIN is safe to run on production databases because it does not run DML mutations or read disk pages.",
+                        "id": "Analogi Konseptual: Memeriksa peta rute perjalanan kurir sebelum armada pengantar mulai melaju.\n\nCara Kerja Database Engine: Pernyataan EXPLAIN merinci jalur pemindaian dan estimasi biaya yang dipilih planner tanpa menjalankan query ke data riil.\n\nBest Practices & Catatan Penting: EXPLAIN aman dieksekusi di database produksi karena tidak menjalankan perubahan data maupun pembacaan halaman disk berat."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Inspect execution plan with filter",
+                                        "id": "Pemeriksaan rencana eksekusi dengan filter"
+                                },
+                                "code": "EXPLAIN SELECT * FROM orders WHERE amount > 500;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Inspect the database execution plan for fetching all orders with amount greater than 500.",
+                        "id": "Periksa rencana eksekusi database untuk mengambil seluruh pesanan dengan nilai amount lebih dari 500."
+                },
+                seed_sql: mod10OrdersSeed,
+                "expected_query": "EXPLAIN SELECT * FROM orders WHERE amount > 500;",
+                "starterQuery": "SELECT * FROM orders WHERE amount > 500;",
+                "table_names": [
+                        "orders"
+                ]
+        },
+        {
+                "id": 1021,
+                "moduleId": 10,
+                "categorySlot": 1,
+                "title": {
+                        "en": "Inspect Execution Plan for Date Range Filtering (Var #3)",
+                        "id": "Memeriksa Rencana Eksekusi untuk Filter Rentang Tanggal (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Reviewing the blueprint of an archive search before pulling physical ledger books from storage.\n\nEngine Processing Behavior: Displays planner cost estimates and operator tree nodes for date range queries.\n\nBest Practices & Gotchas: Compare estimated startup costs against total cost to identify pipeline delays.",
+                        "id": "Analogi Konseptual: Meninjau denah penelusuran arsip sebelum mengambil buku fisik dari gudang penyimpanan.\n\nCara Kerja Database Engine: Menampilkan estimasi biaya planner dan simpul pohon operator untuk query rentang tanggal.\n\nBest Practices & Catatan Penting: Bandingkan estimasi startup cost terhadap total cost untuk mendeteksi potensi kelambatan pipeline."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Inspect date range plan",
+                                        "id": "Pemeriksaan rencana rentang tanggal"
+                                },
+                                "code": "EXPLAIN SELECT id, customer_id, amount FROM orders WHERE order_date >= '2023-01-01';"
+                        }
+                ],
+                "instructions": {
+                        "en": "Inspect the database execution plan for fetching `id`, `customer_id`, and `amount` from `orders` with `order_date` on or after 2023-01-01.",
+                        "id": "Periksa rencana eksekusi database untuk mengambil `id`, `customer_id`, dan `amount` dari `orders` dengan `order_date` pada atau setelah 2023-01-01."
+                },
+                seed_sql: mod10OrdersSeed,
+                "expected_query": "EXPLAIN SELECT id, customer_id, amount FROM orders WHERE order_date >= '2023-01-01';",
+                "starterQuery": "SELECT id, customer_id, amount FROM orders WHERE order_date >= '2023-01-01';",
+                "table_names": [
+                        "orders"
+                ]
+        },
+        {
+                "id": 1012,
+                "moduleId": 10,
+                "categorySlot": 2,
+                "title": {
+                        "en": "Profile Real Execution Costs on Filtered Orders (Var #2)",
+                        "id": "Profil Biaya Eksekusi Riil pada Pesanan Tersaring (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Driving the delivery truck along the proposed route and timing the actual trip with a stopwatch.\n\nEngine Processing Behavior: Actually executes the query, records true row counts and timing metrics per node, and outputs the comparison against planner estimates.\n\nBest Practices & Gotchas: EXPLAIN ANALYZE executes mutations; never run it blindly with DELETE or UPDATE on production data without wrapping in a rollback block.",
+                        "id": "Analogi Konseptual: Mengemudikan kendaraan pengantar menyusuri rute rencana dan mengukur waktu tempuh sebenarnya dengan stopwatch.\n\nCara Kerja Database Engine: Benar-benar mengeksekusi query ke data riil, mencatat jumlah baris aktual dan metrik durasi per node, lalu membandingkannya dengan estimasi planner.\n\nBest Practices & Catatan Penting: EXPLAIN ANALYZE benar-benar mengeksekusi query; jangan jalankan pada perintah DELETE atau UPDATE di database produksi tanpa transaksi rollback."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "EXPLAIN ANALYZE with options",
+                                        "id": "EXPLAIN ANALYZE dengan opsi"
+                                },
+                                "code": "EXPLAIN (ANALYZE, TIMING OFF, SUMMARY OFF) SELECT * FROM orders WHERE amount > 500;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Analyze actual execution of selecting orders with amount greater than 500 using explain analyze with timing off and summary off.",
+                        "id": "Analisis eksekusi riil pemilihan pesanan dengan amount lebih dari 500 menggunakan explain analyze dengan timing nonaktif dan summary nonaktif."
+                },
+                seed_sql: mod10OrdersSeed,
+                "expected_query": "EXPLAIN (ANALYZE, TIMING OFF, SUMMARY OFF) SELECT * FROM orders WHERE amount > 500;",
+                "starterQuery": "SELECT * FROM orders WHERE amount > 500;",
+                "table_names": [
+                        "orders"
+                ]
+        },
+        {
+                "id": 1022,
+                "moduleId": 10,
+                "categorySlot": 2,
+                "title": {
+                        "en": "Profile Range Query Execution with EXPLAIN ANALYZE (Var #3)",
+                        "id": "Profil Eksekusi Query Rentang dengan EXPLAIN ANALYZE (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Verifying that an estimated crowd size matches actual ticket scans at the stadium gates.\n\nEngine Processing Behavior: Measures actual tuple outputs against the planner's cost model predictions across range scans.\n\nBest Practices & Gotchas: Discrepancies between estimated and actual row counts indicate outdated table statistics in pg_class/pg_statistic.",
+                        "id": "Analogi Konseptual: Memverifikasi bahwa estimasi jumlah penonton stadion benar-benar cocok dengan hasil pindai tiket aktual di gerbang masuk.\n\nCara Kerja Database Engine: Mengukur output jumlah baris aktual terhadap prediksi model biaya planner pada pemindaian rentang data.\n\nBest Practices & Catatan Penting: Selisih besar antara perkiraan dan baris riil menandakan statistik tabel di katalog pg_statistic sudah usang."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Analyze range query execution",
+                                        "id": "Analisis eksekusi query rentang"
+                                },
+                                "code": "EXPLAIN (ANALYZE, TIMING OFF, SUMMARY OFF) SELECT id, amount FROM orders WHERE amount BETWEEN 100 AND 800;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Analyze the actual execution of fetching `id` and `amount` from `orders` with amount between 100 and 800 using explain analyze with timing off and summary off.",
+                        "id": "Analisis eksekusi riil pengambilan `id` dan `amount` dari `orders` dengan amount antara 100 dan 800 menggunakan explain analyze dengan timing nonaktif dan summary nonaktif."
+                },
+                seed_sql: mod10OrdersSeed,
+                "expected_query": "EXPLAIN (ANALYZE, TIMING OFF, SUMMARY OFF) SELECT id, amount FROM orders WHERE amount BETWEEN 100 AND 800;",
+                "starterQuery": "SELECT id, amount FROM orders WHERE amount BETWEEN 100 AND 800;",
+                "table_names": [
+                        "orders"
+                ]
+        },
+        {
+                "id": 1013,
+                "moduleId": 10,
+                "categorySlot": 3,
+                "title": {
+                        "en": "Analyze Product Frequency Aggregation Plan (Var #2)",
+                        "id": "Analisis Rencana Agregasi Frekuensi Produk (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Sorting and counting warehouse boxes on a staging floor to spot logistical bottlenecks.\n\nEngine Processing Behavior: The planner determines whether to employ HashAggregate or Sort followed by GroupAggregate based on work_mem allocation.\n\nBest Practices & Gotchas: When work_mem is too small to fit aggregate hash tables, PostgreSQL spills sort batches to temporary disk files.",
+                        "id": "Analogi Konseptual: Mengelompokkan dan menghitung paket barang di gudang untuk menemukan titik sumbatan logistik.\n\nCara Kerja Database Engine: Planner menentukan apakah akan menggunakan HashAggregate atau Sort diikuti GroupAggregate berdasarkan alokasi memori work_mem.\n\nBest Practices & Catatan Penting: Jika work_mem terlalu kecil untuk menampung hash table agregasi, PostgreSQL akan memindahkan data sortir ke file disk sementara."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Inspect aggregation and sorting plan",
+                                        "id": "Pemeriksaan rencana agregasi dan sortir"
+                                },
+                                "code": "EXPLAIN SELECT product_id, COUNT(*) AS item_count FROM order_items GROUP BY product_id ORDER BY item_count DESC;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Inspect the execution plan for counting order items per `product_id` aliased as `item_count` from `order_items`, grouped by `product_id` and ordered by `item_count` descending.",
+                        "id": "Periksa rencana eksekusi untuk menghitung item pesanan per `product_id` beralias `item_count` dari `order_items`, dikelompokkan berdasarkan `product_id` dan diurutkan berdasarkan `item_count` menurun."
+                },
+                seed_sql: mod10OrderItemsSeed,
+                "expected_query": "EXPLAIN SELECT product_id, COUNT(*) AS item_count FROM order_items GROUP BY product_id ORDER BY item_count DESC;",
+                "starterQuery": "SELECT product_id, COUNT(*) AS item_count FROM order_items GROUP BY product_id ORDER BY item_count DESC;",
+                "table_names": [
+                        "order_items"
+                ]
+        },
+        {
+                "id": 1023,
+                "moduleId": 10,
+                "categorySlot": 3,
+                "title": {
+                        "en": "Analyze Order Quantity Averages and Sorting (Var #3)",
+                        "id": "Analisis Rata-rata Kuantitas Pesanan dan Pengurutan (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Ranking sales reps by their average deal size to highlight top performers.\n\nEngine Processing Behavior: Analyzes the cost of grouping tuples and applying in-memory sorting passes.\n\nBest Practices & Gotchas: Creating an index on the GROUP BY column can eliminate sort overhead entirely.",
+                        "id": "Analogi Konseptual: Mengurutkan tim penjualan berdasarkan rata-rata nilai transaksi untuk mengidentifikasi performa tertinggi.\n\nCara Kerja Database Engine: Menganalisis estimasi biaya pengelompokan baris data dan eksekusi pengurutan di memori kerja.\n\nBest Practices & Catatan Penting: Membangun indeks pada kolom GROUP BY dapat menghilangkan kebutuhan operasi sorting secara menyeluruh."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Inspect average grouping plan",
+                                        "id": "Pemeriksaan rencana agregasi rata-rata"
+                                },
+                                "code": "EXPLAIN SELECT order_id, AVG(quantity) AS avg_qty FROM order_items GROUP BY order_id ORDER BY avg_qty DESC;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Inspect the execution plan for calculating average `quantity` aliased as `avg_qty` grouped by `order_id` from `order_items`, ordered by `avg_qty` descending.",
+                        "id": "Periksa rencana eksekusi untuk menghitung rata-rata `quantity` beralias `avg_qty` dikelompokkan berdasarkan `order_id` dari `order_items`, diurutkan berdasarkan `avg_qty` menurun."
+                },
+                seed_sql: mod10OrderItemsSeed,
+                "expected_query": "EXPLAIN SELECT order_id, AVG(quantity) AS avg_qty FROM order_items GROUP BY order_id ORDER BY avg_qty DESC;",
+                "starterQuery": "SELECT order_id, AVG(quantity) AS avg_qty FROM order_items GROUP BY order_id ORDER BY avg_qty DESC;",
+                "table_names": [
+                        "order_items"
+                ]
+        },
+        {
+                "id": 1014,
+                "moduleId": 10,
+                "categorySlot": 4,
+                "title": {
+                        "en": "Compound Predicate Scan Path Analysis (Var #2)",
+                        "id": "Analisis Jalur Pemindaian Predikat Majemuk (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Choosing between searching the library card index or walking through the entire stacks when looking for a specific author in a specific genre.\n\nEngine Processing Behavior: The planner evaluates index selectivity: if a composite index matches both predicates, an Index Scan is preferred over a full table scan.\n\nBest Practices & Gotchas: If the filter matches a large fraction of the table, sequential scans are faster than jumping between scattered index and heap pages.",
+                        "id": "Analogi Konseptual: Memilih antara melihat kartu indeks katalog atau menyusuri seluruh lorong perpustakaan saat mencari buku pengarang tertentu pada genre tertentu.\n\nCara Kerja Database Engine: Planner mengevaluasi selektivitas indeks: jika filter menyaring sebagian kecil data, Index Scan dipilih alih-alih Sequential Scan.\n\nBest Practices & Catatan Penting: Jika filter mencakup sebagian besar data tabel, Sequential Scan justru lebih cepat daripada membaca halaman heap secara acak."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Inspect compound filter scan plan",
+                                        "id": "Pemeriksaan rencana filter majemuk"
+                                },
+                                "code": "EXPLAIN SELECT * FROM events WHERE user_id = 100 AND event_type = 'login';"
+                        }
+                ],
+                "instructions": {
+                        "en": "Inspect the execution plan for retrieving events where `user_id` is 100 and `event_type` is 'login' from `events`.",
+                        "id": "Periksa rencana eksekusi untuk mengambil data events di mana `user_id` bernilai 100 dan `event_type` bernilai 'login' dari `events`."
+                },
+                seed_sql: mod10EventsSeed,
+                "expected_query": "EXPLAIN SELECT * FROM events WHERE user_id = 100 AND event_type = 'login';",
+                "starterQuery": "SELECT * FROM events WHERE user_id = 100 AND event_type = 'login';",
+                "table_names": [
+                        "events"
+                ]
+        },
+        {
+                "id": 1024,
+                "moduleId": 10,
+                "categorySlot": 4,
+                "title": {
+                        "en": "Selective User Event Lookup Scan Path (Var #3)",
+                        "id": "Jalur Pemindaian Pencarian Riwayat Pengguna Selektif (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Looking up a specific user's file folder directly using their account badge number.\n\nEngine Processing Behavior: Assesses whether B-Tree index traversal on user_id minimizes random I/O reads.\n\nBest Practices & Gotchas: High selectivity favors Index Scan or Bitmap Index Scan nodes.",
+                        "id": "Analogi Konseptual: Mengambil berkas rekam jejak pengguna tertentu langsung menggunakan nomor registrasinya.\n\nCara Kerja Database Engine: Menilai apakah penelusuran indeks B-Tree pada user_id meminimalkan pembacaan I/O acak dari disk.\n\nBest Practices & Catatan Penting: Selektivitas tinggi membuat planner memprioritaskan simpul Index Scan atau Bitmap Index Scan."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Inspect selective user lookup plan",
+                                        "id": "Pemeriksaan rencana pencarian pengguna selektif"
+                                },
+                                "code": "EXPLAIN SELECT id, created_at FROM events WHERE user_id = 7;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Inspect the execution plan for retrieving `id` and `created_at` from `events` for `user_id` 7.",
+                        "id": "Periksa rencana eksekusi untuk mengambil `id` dan `created_at` dari `events` untuk `user_id` bernilai 7."
+                },
+                seed_sql: mod10EventsSeed,
+                "expected_query": "EXPLAIN SELECT id, created_at FROM events WHERE user_id = 7;",
+                "starterQuery": "SELECT id, created_at FROM events WHERE user_id = 7;",
+                "table_names": [
+                        "events"
+                ]
+        },
+        {
+                "id": 1015,
+                "moduleId": 10,
+                "categorySlot": 5,
+                "title": {
+                        "en": "Regional Customer Invoice Join Strategy Analysis (Var #2)",
+                        "id": "Analisis Strategi Join Faktur Pelanggan Regional (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Matching customers in a specific city with their order invoices: the engine chooses between an in-memory hash table, nested loops, or sorted merge.\n\nEngine Processing Behavior: The planner selects Hash Join, Nested Loop, or Merge Join depending on relation sizes, available indexes, and memory limits.\n\nBest Practices & Gotchas: Nested loop joins excel when one side has very few rows and the other has an index on the join key.",
+                        "id": "Analogi Konseptual: Mencocokkan data pelanggan di kota tertentu dengan faktur belanja mereka: engine memilih antara hash table di memori, nested loop, atau merge sort.\n\nCara Kerja Database Engine: Planner memilih simpul Hash Join, Nested Loop, atau Merge Join bergantung pada ukuran data tabel, ketersediaan indeks, dan memori kerja.\n\nBest Practices & Catatan Penting: Nested Loop Join sangat unggul jika satu sisi relasi hanya menghasilkan sedikit baris dan sisi lainnya memiliki indeks pada kolom join."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Inspect regional join plan",
+                                        "id": "Pemeriksaan rencana join regional"
+                                },
+                                "code": "EXPLAIN SELECT c.name, i.total FROM customers c JOIN invoices i ON c.id = i.customer_id WHERE c.region = 'East';"
+                        }
+                ],
+                "instructions": {
+                        "en": "Inspect the execution plan for joining customer and invoice records for entries in the 'East' customer `region`, displaying `name` and `total`.",
+                        "id": "Periksa rencana eksekusi untuk menggabungkan `customers` dan `invoices` di mana `region` pelanggan bernilai 'East', menampilkan `name` dan `total`."
+                },
+                seed_sql: mod10JoinSeed,
+                "expected_query": "EXPLAIN SELECT c.name, i.total FROM customers c JOIN invoices i ON c.id = i.customer_id WHERE c.region = 'East';",
+                "starterQuery": "SELECT c.name, i.total FROM customers c JOIN invoices i ON c.id = i.customer_id WHERE c.region = 'East';",
+                "table_names": [
+                        "customers",
+                        "invoices"
+                ]
+        },
+        {
+                "id": 1025,
+                "moduleId": 10,
+                "categorySlot": 5,
+                "title": {
+                        "en": "High Value Invoice Join Strategy Analysis (Var #3)",
+                        "id": "Analisis Strategi Join Faktur Bernilai Tinggi (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Filtering luxury invoices first before pulling customer contact records from the primary filing cabinet.\n\nEngine Processing Behavior: Evaluates whether to drive the join from invoices (filtered by total) into customers using primary key index lookups.\n\nBest Practices & Gotchas: The query planner frequently flips inner and outer join roles to minimize row throughput.",
+                        "id": "Analogi Konseptual: Menyaring faktur bernilai besar terlebih dahulu sebelum mengambil data kontak pelanggan dari laci utama.\n\nCara Kerja Database Engine: Mengevaluasi apakah memulai join dari tabel faktur (disaring berdasarkan total) menuju tabel pelanggan menggunakan indeks primary key.\n\nBest Practices & Catatan Penting: Query planner sering kali menukar peran inner dan outer relation untuk meminimalkan aliran data yang diproses."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Inspect high-value join plan",
+                                        "id": "Pemeriksaan rencana join nilai tinggi"
+                                },
+                                "code": "EXPLAIN SELECT c.name, i.total FROM customers c JOIN invoices i ON c.id = i.customer_id WHERE i.total > 1000;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Inspect the execution plan for joining `customers` and `invoices` filtering for invoice total greater than 1000, displaying `name` and `total`.",
+                        "id": "Periksa rencana eksekusi untuk menghubungkan `customers` dan `invoices` dengan filter total faktur lebih dari 1000, menampilkan `name` dan `total`."
+                },
+                seed_sql: mod10JoinSeed,
+                "expected_query": "EXPLAIN SELECT c.name, i.total FROM customers c JOIN invoices i ON c.id = i.customer_id WHERE i.total > 1000;",
+                "starterQuery": "SELECT c.name, i.total FROM customers c JOIN invoices i ON c.id = i.customer_id WHERE i.total > 1000;",
+                "table_names": [
+                        "customers",
+                        "invoices"
+                ]
+        },
+        {
+                "id": 1016,
+                "moduleId": 10,
+                "categorySlot": 6,
+                "title": {
+                        "en": "Detecting Correlated Max Timestamp SubPlans (Var #2)",
+                        "id": "Mendeteksi SubPlan Timestamp Maksimum Terikat (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: An investigator walking up to a filing cabinet for each individual client to find their single most recent audit stamp.\n\nEngine Processing Behavior: A SubPlan in the explain output reveals that an inner subquery executes repeatedly once for every outer tuple, resulting in O(N*M) quadratic execution overhead.\n\nBest Practices & Gotchas: Refactor correlated SubPlans into JOINs with GROUP BY or window functions to replace repeated subplan executions with a single vectorized hash pass.",
+                        "id": "Analogi Konseptual: Petugas pemeriksa yang bolak-balik ke lemari arsip untuk setiap klien secara terpisah guna mencari tanggal audit terakhir mereka.\n\nCara Kerja Database Engine: Simpul SubPlan pada output explain menandakan bahwa subquery internal dijalankan berulang-ulang untuk setiap baris tabel luar, menghasilkan kompleksitas kuadratik O(N*M).\n\nBest Practices & Catatan Penting: Lakukan refactor SubPlan terikat menjadi bentuk JOIN dengan GROUP BY atau window function untuk mengubah eksekusi berulang menjadi pemrosesan hash satu kali."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Inspect correlated subplan plan",
+                                        "id": "Pemeriksaan rencana subplan terikat"
+                                },
+                                "code": "EXPLAIN SELECT id, username, (SELECT MAX(created_at) FROM audit_logs WHERE audit_logs.account_id = accounts.id) AS last_audit FROM accounts;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Inspect the execution plan for retrieving `id`, `username`, and the maximum `created_at` timestamp from `audit_logs` correlated to each account aliased as `last_audit` from `accounts`.",
+                        "id": "Periksa rencana eksekusi untuk mengambil `id`, `username`, dan timestamp `created_at` maksimum dari `audit_logs` yang terikat ke setiap akun beralias `last_audit` dari `accounts`."
+                },
+                seed_sql: mod10SubplanSeed,
+                "expected_query": "EXPLAIN SELECT id, username, (SELECT MAX(created_at) FROM audit_logs WHERE audit_logs.account_id = accounts.id) AS last_audit FROM accounts;",
+                "starterQuery": "SELECT id, username, (SELECT MAX(created_at) FROM audit_logs WHERE audit_logs.account_id = accounts.id) AS last_audit FROM accounts;",
+                "table_names": [
+                        "accounts",
+                        "audit_logs"
+                ]
+        },
+        {
+                "id": 1026,
+                "moduleId": 10,
+                "categorySlot": 6,
+                "title": {
+                        "en": "Detecting Correlated Sum SubPlans (Var #3)",
+                        "id": "Mendeteksi SubPlan Penjumlahan Terikat (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Calculating account totals by recounting individual paper receipts one customer at a time.\n\nEngine Processing Behavior: Flags SubPlan nodes where inner aggregations execute per outer tuple.\n\nBest Practices & Gotchas: Correlated scalar subqueries in SELECT clauses are a notorious database performance killer.",
+                        "id": "Analogi Konseptual: Menghitung total saldo dengan menghitung ulang lembaran kwitansi terpisah untuk setiap nasabah satu per satu.\n\nCara Kerja Database Engine: Menandai simpul SubPlan di mana kalkulasi agregasi dijalankan terpisah untuk setiap baris tabel luar.\n\nBest Practices & Catatan Penting: Subquery skalar terikat pada klausa SELECT adalah penyebab umum penurunan performa database yang drastis."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Inspect correlated sum subplan",
+                                        "id": "Pemeriksaan rencana subplan penjumlahan terikat"
+                                },
+                                "code": "EXPLAIN SELECT id, (SELECT SUM(amount) FROM audit_logs WHERE audit_logs.account_id = accounts.id) AS total_audit FROM accounts;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Inspect the execution plan for retrieving account `id` and the correlated sum of `amount` from `audit_logs` aliased as `total_audit` from `accounts`.",
+                        "id": "Periksa rencana eksekusi untuk mengambil `id` akun dan penjumlahan `amount` terikat dari `audit_logs` beralias `total_audit` dari `accounts`."
+                },
+                seed_sql: mod10SubplanSeed,
+                "expected_query": "EXPLAIN SELECT id, (SELECT SUM(amount) FROM audit_logs WHERE audit_logs.account_id = accounts.id) AS total_audit FROM accounts;",
+                "starterQuery": "SELECT id, (SELECT SUM(amount) FROM audit_logs WHERE audit_logs.account_id = accounts.id) AS total_audit FROM accounts;",
+                "table_names": [
+                        "accounts",
+                        "audit_logs"
+                ]
+        },
+        {
+                "id": 1017,
+                "moduleId": 10,
+                "categorySlot": 7,
+                "title": {
+                        "en": "Inspect Peak Metric Aggregation Plan (Var #2)",
+                        "id": "Memeriksa Rencana Agregasi Nilai Sensor Puncak (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Scanning an array of thermometers and noting down only the single hottest temperature recorded by each device.\n\nEngine Processing Behavior: The planner estimates memory consumption and chooses between HashAggregate (in memory) and GroupAggregate (which requires prior sorting).\n\nBest Practices & Gotchas: HashAggregate is preferred when the number of distinct group keys easily fits inside work_mem.",
+                        "id": "Analogi Konseptual: Mengamati deretan termometer dan mencatat nilai suhu tertinggi yang pernah terekam oleh masing-masing sensor.\n\nCara Kerja Database Engine: Planner memperkirakan kebutuhan memori dan memilih antara HashAggregate (di RAM) atau GroupAggregate (yang memerlukan pengurutan terlebih dahulu).\n\nBest Practices & Catatan Penting: HashAggregate dipilih saat jumlah grup unik muat dengan leluasa di dalam alokasi work_mem."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Inspect peak aggregation plan",
+                                        "id": "Pemeriksaan rencana agregasi puncak"
+                                },
+                                "code": "EXPLAIN SELECT sensor_id, MAX(reading_val) AS peak_reading FROM metrics GROUP BY sensor_id;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Inspect the execution plan for finding the maximum `reading_val` aliased as `peak_reading` grouped by `sensor_id` from `metrics`.",
+                        "id": "Periksa rencana eksekusi untuk mencari `reading_val` maksimum beralias `peak_reading` dikelompokkan berdasarkan `sensor_id` dari `metrics`."
+                },
+                seed_sql: mod10MetricsSeed,
+                "expected_query": "EXPLAIN SELECT sensor_id, MAX(reading_val) AS peak_reading FROM metrics GROUP BY sensor_id;",
+                "starterQuery": "SELECT sensor_id, MAX(reading_val) AS peak_reading FROM metrics GROUP BY sensor_id;",
+                "table_names": [
+                        "metrics"
+                ]
+        },
+        {
+                "id": 1027,
+                "moduleId": 10,
+                "categorySlot": 7,
+                "title": {
+                        "en": "Inspect Filtered Group Aggregation Plan (Var #3)",
+                        "id": "Memeriksa Rencana Agregasi Grup Tersaring (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Counting sensor reports and discarding any sensor that submitted fewer than 10 total logs.\n\nEngine Processing Behavior: Evaluates aggregate costs with a post-aggregation filter condition represented by a Filter node above the Aggregate node.\n\nBest Practices & Gotchas: HAVING filters operate strictly after groups are formed; WHERE filters apply prior to grouping and are much cheaper.",
+                        "id": "Analogi Konseptual: Menghitung laporan sensor dan menyingkirkan sensor yang hanya mengirimkan kurang dari 10 rekaman data.\n\nCara Kerja Database Engine: Mengevaluasi biaya agregasi dengan predikat pasca-agregasi yang direpresentasikan oleh simpul Filter di atas simpul Aggregate.\n\nBest Practices & Catatan Penting: Filter HAVING dieksekusi setelah kelompok terbentuk; filter WHERE bekerja sebelum pengelompokan dan jauh lebih hemat sumber daya."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Inspect having aggregation plan",
+                                        "id": "Pemeriksaan rencana agregasi having"
+                                },
+                                "code": "EXPLAIN SELECT sensor_id, COUNT(*) AS read_count FROM metrics GROUP BY sensor_id HAVING COUNT(*) > 10;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Inspect the execution plan for counting readings per `sensor_id` aliased as `read_count`, filtering for sensor groups with more than 10 readings from the metrics table.",
+                        "id": "Periksa rencana eksekusi untuk menghitung jumlah pembacaan per `sensor_id` beralias `read_count` yang memiliki total lebih dari 10 dari `metrics`."
+                },
+                seed_sql: mod10MetricsSeed,
+                "expected_query": "EXPLAIN SELECT sensor_id, COUNT(*) AS read_count FROM metrics GROUP BY sensor_id HAVING COUNT(*) > 10;",
+                "starterQuery": "SELECT sensor_id, COUNT(*) AS read_count FROM metrics GROUP BY sensor_id HAVING COUNT(*) > 10;",
+                "table_names": [
+                        "metrics"
+                ]
+        },
+        {
+                "id": 1018,
+                "moduleId": 10,
+                "categorySlot": 8,
+                "title": {
+                        "en": "Inspect Reverse Index Scan Ordering Elimination (Var #2)",
+                        "id": "Memeriksa Eliminasi Pengurutan via Pemindaian Indeks Terbalik (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Reading a physical index book from the back page forward: the pages are already in perfect order, so no extra sorting is required.\n\nEngine Processing Behavior: B-Tree indexes are bidirectional; an Index Scan Backward node satisfies ORDER BY ... DESC directly without inserting a dedicated Sort operator.\n\nBest Practices & Gotchas: Eliminating Sort nodes prevents sorting spikes in memory and delivers instant startup for LIMIT queries.",
+                        "id": "Analogi Konseptual: Membaca buku indeks dari halaman paling belakang ke depan: datanya sudah tersusun rapi sehingga tidak perlu proses penyortiran ulang.\n\nCara Kerja Database Engine: Indeks B-Tree bersifat dua arah (bidirectional); simpul Index Scan Backward memenuhi klausa ORDER BY ... DESC secara langsung tanpa simpul Sort tambahan.\n\nBest Practices & Catatan Penting: Mengeliminasi simpul Sort mencegah lonjakan alokasi memori dan memberikan waktu respons awal instan pada query ber-LIMIT."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Inspect backwards index ordering plan",
+                                        "id": "Pemeriksaan rencana pengurutan mundur indeks"
+                                },
+                                "code": "EXPLAIN SELECT id, published_at FROM articles ORDER BY published_at DESC LIMIT 10;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Inspect the execution plan for retrieving the top 10 articles ordered by `published_at` descending, showing `id` and `published_at`.",
+                        "id": "Periksa rencana eksekusi untuk mengambil 10 artikel teratas diurutkan berdasarkan `published_at` menurun, menampilkan `id` dan `published_at`."
+                },
+                seed_sql: mod10ArticlesSeed,
+                "expected_query": "EXPLAIN SELECT id, published_at FROM articles ORDER BY published_at DESC LIMIT 10;",
+                "starterQuery": "SELECT id, published_at FROM articles ORDER BY published_at DESC LIMIT 10;",
+                "table_names": [
+                        "articles"
+                ]
+        },
+        {
+                "id": 1028,
+                "moduleId": 10,
+                "categorySlot": 8,
+                "title": {
+                        "en": "Inspect Multi-Column Ordering Plan with Limit (Var #3)",
+                        "id": "Memeriksa Rencana Pengurutan Multi-Kolom dengan Limit (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Grabbing the top 5 newest books from a bookstore display without cataloging the entire inventory.\n\nEngine Processing Behavior: Evaluates whether an index scan satisfies the ordering and limits row retrieval early.\n\nBest Practices & Gotchas: Pairing ORDER BY with a small LIMIT is one of the highest leverage query optimizations in SQL.",
+                        "id": "Analogi Konseptual: Mengambil 5 buku terbaru dari rak display toko buku tanpa perlu menyortir seluruh gudang.\n\nCara Kerja Database Engine: Mengevaluasi apakah pemindaian indeks memenuhi urutan data dan memutus pembacaan baris lebih awal.\n\nBest Practices & Catatan Penting: Memadukan klausa ORDER BY dengan batas LIMIT kecil adalah salah satu teknik optimasi query paling berdampak tinggi di SQL."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Inspect limited order plan",
+                                        "id": "Pemeriksaan rencana sortir terbatas"
+                                },
+                                "code": "EXPLAIN SELECT id, published_at, title FROM articles ORDER BY published_at LIMIT 5;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Inspect the execution plan for retrieving the earliest 5 articles showing `id`, `published_at`, and `title`, ordered by `published_at`.",
+                        "id": "Periksa rencana eksekusi untuk mengambil 5 artikel paling awal yang menampilkan `id`, `published_at`, dan `title`, diurutkan berdasarkan `published_at`."
+                },
+                seed_sql: mod10ArticlesSeed,
+                "expected_query": "EXPLAIN SELECT id, published_at, title FROM articles ORDER BY published_at LIMIT 5;",
+                "starterQuery": "SELECT id, published_at, title FROM articles ORDER BY published_at LIMIT 5;",
+                "table_names": [
+                        "articles"
+                ]
+        },
+        {
+                "id": 1019,
+                "moduleId": 10,
+                "categorySlot": 9,
+                "title": {
+                        "en": "Inspect Cache Hits for Mid-Table Article Lookups (Var #2)",
+                        "id": "Memeriksa Cache Hit pada Pencarian Artikel Tengah (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Checking whether an office document is already sitting on the receptionist's desk (cache hit) or must be fetched from the basement archives (disk read).\n\nEngine Processing Behavior: The BUFFERS option reports exact counts of 8KB page blocks accessed in PostgreSQL shared_buffers cache (hit) versus physical storage reads (read).\n\nBest Practices & Gotchas: A high ratio of shared buffer reads compared to hits indicates memory pressure or lack of effective indexing.",
+                        "id": "Analogi Konseptual: Memeriksa apakah berkas dokumen sudah ada di meja resepsionis (cache hit) atau harus diambil dari gudang arsip bawah tanah (disk read).\n\nCara Kerja Database Engine: Opsi BUFFERS melaporkan jumlah blok halaman 8KB yang dibaca langsung dari shared_buffers RAM (hit) dibandingkan pembacaan disk fisik (read).\n\nBest Practices & Catatan Penting: Rasio pembacaan disk yang tinggi dibandingkan cache hit menandakan tekanan kapasitas memori atau ketiadaan indeks yang tepat."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Inspect buffers activity with analyze",
+                                        "id": "Pemeriksaan aktivitas buffers dengan analyze"
+                                },
+                                "code": "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT * FROM articles WHERE id = 50;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Inspect shared buffer cache activity for fetching the article with id 50 using explain analyze with buffers enabled, timing off, and summary off.",
+                        "id": "Periksa aktivitas shared buffer cache untuk mengambil data artikel dengan id 50 menggunakan explain analyze dengan buffers aktif, timing nonaktif, dan summary nonaktif."
+                },
+                seed_sql: mod10ArticlesSeed,
+                "expected_query": "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT * FROM articles WHERE id = 50;",
+                "starterQuery": "SELECT * FROM articles WHERE id = 50;",
+                "table_names": [
+                        "articles"
+                ]
+        },
+        {
+                "id": 1029,
+                "moduleId": 10,
+                "categorySlot": 9,
+                "title": {
+                        "en": "Inspect Shared Buffer Activity for Primary Key Scan (Var #3)",
+                        "id": "Memeriksa Aktivitas Shared Buffer untuk Pemindaian Kunci Utama (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Measuring the physical effort required to locate the first entry in an indexed directory.\n\nEngine Processing Behavior: Details buffer hits for both the B-Tree root/leaf pages and the heap data page containing row tuple 1.\n\nBest Practices & Gotchas: Primary key lookups generally require only 2-3 shared buffer hits (index traversal + heap fetch).",
+                        "id": "Analogi Konseptual: Mengukur tenaga fisik yang dibutuhkan untuk menemukan baris pertama dalam direktori buku berseri.\n\nCara Kerja Database Engine: Merinci buffer hit untuk halaman akar/daun B-Tree indeks dan halaman data heap yang memuat baris data 1.\n\nBest Practices & Catatan Penting: Pencarian via primary key umumnya hanya memerlukan 2 hingga 3 shared buffer hit (penelusuran indeks + pembacaan heap)."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Analyze primary key buffer hits",
+                                        "id": "Analisis buffer hit kunci utama"
+                                },
+                                "code": "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT id, title FROM articles WHERE id = 1;"
+                        }
+                ],
+                "instructions": {
+                        "en": "Inspect shared buffer activity for fetching `id` and `title` for article id 1 using explain analyze with buffers enabled, timing off, and summary off.",
+                        "id": "Periksa aktivitas shared buffer untuk mengambil `id` dan `title` artikel id 1 menggunakan explain analyze dengan buffers aktif, timing nonaktif, dan summary nonaktif."
+                },
+                seed_sql: mod10ArticlesSeed,
+                "expected_query": "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT id, title FROM articles WHERE id = 1;",
+                "starterQuery": "SELECT id, title FROM articles WHERE id = 1;",
+                "table_names": [
+                        "articles"
+                ]
+        },
+        {
+                "id": 1020,
+                "moduleId": 10,
+                "categorySlot": 10,
+                "title": {
+                        "en": "Planner Row Estimates for In-Stock Inventory (Var #2)",
+                        "id": "Estimasi Baris Planner untuk Inventaris Tersedia (Latihan #2)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: An event coordinator estimating how many seats are filled based on a recent ticket sales tally.\n\nEngine Processing Behavior: The planner consults pg_statistic (via the pg_stats view) to look up the Most Common Values (MCV) list and estimate row counts for skewed status distributions.\n\nBest Practices & Gotchas: If data distribution changes drastically after bulk data loading, execute ANALYZE to update the statistical histograms.",
+                        "id": "Analogi Konseptual: Koordinator acara yang memperkirakan berapa banyak kursi yang terisi berdasarkan rekap penjualan tiket terkini.\n\nCara Kerja Database Engine: Planner membaca katalog statistik pg_statistic (via view pg_stats) untuk memeriksa daftar Most Common Values (MCV) dan mengestimasi jumlah baris pada data yang timpang.\n\nBest Practices & Catatan Penting: Jika distribusi data berubah drastis setelah pemuatan data massal, jalankan perintah ANALYZE untuk memperbarui histogram statistik."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Inspect skewed row estimate plan",
+                                        "id": "Pemeriksaan rencana estimasi baris timpang"
+                                },
+                                "code": "EXPLAIN SELECT * FROM skewed_inventory WHERE status = 'in_stock';"
+                        }
+                ],
+                "instructions": {
+                        "en": "Inspect the execution plan row estimates for selecting items with status 'in_stock' from `skewed_inventory`.",
+                        "id": "Periksa estimasi baris pada rencana eksekusi untuk memilih barang dengan status 'in_stock' dari tabel `skewed_inventory`."
+                },
+                seed_sql: mod10SkewedSeed,
+                "expected_query": "EXPLAIN SELECT * FROM skewed_inventory WHERE status = 'in_stock';",
+                "starterQuery": "SELECT * FROM skewed_inventory WHERE status = 'in_stock';",
+                "table_names": [
+                        "skewed_inventory"
+                ]
+        },
+        {
+                "id": 1030,
+                "moduleId": 10,
+                "categorySlot": 10,
+                "title": {
+                        "en": "Planner Estimates for Discontinued Item Scan (Var #3)",
+                        "id": "Estimasi Planner untuk Pemindaian Barang Dihentikan (Latihan #3)"
+                },
+                "conceptExplanation": {
+                        "en": "Conceptual Analogy: Calculating how few discontinued obsolete spare parts remain in a massive modern auto parts warehouse.\n\nEngine Processing Behavior: Checks the rarity of the candidate value in catalog frequency tables to estimate row counts.\n\nBest Practices & Gotchas: Highly infrequent values often trigger Index Scans while frequent values trigger Sequential Scans.",
+                        "id": "Analogi Konseptual: Menghitung betapa sedikitnya suku cadang usang yang masih tersisa di gudang suku cadang otomotif modern yang sangat luas.\n\nCara Kerja Database Engine: Memeriksa tingkat kelangkaan nilai pencarian di tabel frekuensi statistik katalog untuk mengestimasi jumlah baris hasil.\n\nBest Practices & Catatan Penting: Nilai data yang sangat langka memicu pemilihan Index Scan, sedangkan nilai yang sangat umum memicu Sequential Scan."
+                },
+                "syntaxPatterns": [
+                        {
+                                "label": {
+                                        "en": "Inspect rare value row estimate",
+                                        "id": "Pemeriksaan estimasi baris nilai langka"
+                                },
+                                "code": "EXPLAIN SELECT id, item_name FROM skewed_inventory WHERE status = 'discontinued';"
+                        }
+                ],
+                "instructions": {
+                        "en": "Inspect the execution plan for retrieving `id` and `item_name` from `skewed_inventory` where status is 'discontinued'.",
+                        "id": "Periksa rencana eksekusi untuk mengambil `id` dan `item_name` dari `skewed_inventory` di mana status bernilai 'discontinued'."
+                },
+                seed_sql: mod10SkewedSeed,
+                "expected_query": "EXPLAIN SELECT id, item_name FROM skewed_inventory WHERE status = 'discontinued';",
+                "starterQuery": "SELECT id, item_name FROM skewed_inventory WHERE status = 'discontinued';",
+                "table_names": [
+                        "skewed_inventory"
+                ]
+        }
+    ];
+}
+
+function generateModule11(): Question[] {
+  return [
+    {
+        "id": 1101,
+        "moduleId": 11,
+        "categorySlot": 1,
+        "title": {
+            "en": "Scalar PL/pgSQL Function: Discount Calculation (Var #1)",
+            "id": "Fungsi Skalar PL/pgSQL: Perhitungan Diskon (Latihan #1)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a cashier with a programmable calculator. Instead of manually punching discount formulas for every receipt, the cashier presses a single custom button that takes the price and discount percentage and immediately outputs the finalized price.\n\nEngine Processing Behavior: PostgreSQL user-defined functions encapsulate procedural logic on the database server. When defined with LANGUAGE plpgsql, the engine compiles the block into an internal execution tree. Scalar functions return a single atomic value and can be embedded directly in SELECT expressions, WHERE clauses, or computed column transformations.\n\nBest Practices & Gotchas: Always mark functions deterministic or immutable when possible for planner optimizations. Use standard dollar quoting ($$) around function bodies to avoid awkward single-quote escaping.",
+            "id": "Analogi Konseptual: Bayangkan seorang kasir dengan kalkulator terprogram. Alih-alih menghitung rumus diskon manual pada setiap struk, kasir menekan satu tombol khusus yang menerima harga dan persentase diskon lalu seketika menampilkan harga akhir.\n\nCara Kerja Database Engine: Fungsi buatan pengguna (UDF) di PostgreSQL merangkum logika prosedural langsung di server database. Saat didefinisikan dengan LANGUAGE plpgsql, engine mengompilasi blok program ke dalam pohon eksekusi internal. Fungsi skalar mengembalikan satu nilai atomik tunggal dan dapat digunakan langsung di ekspresi SELECT, klausa WHERE, atau transformasi kolom.\n\nBest Practices & Catatan Penting: Buat fungsi bersifat deterministik jika memungkinkan agar perencana query dapat mengoptimalkan eksekusinya. Gunakan dollar quoting ($$) pada badan fungsi untuk menghindari kerumitan tanda kutip tunggal."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Create Scalar Function",
+                    "id": "Membuat Fungsi Skalar"
+                },
+                "code": "CREATE OR REPLACE FUNCTION func_name(param1 TYPE, param2 TYPE)\nRETURNS RETURN_TYPE AS $$\nBEGIN\n    RETURN computed_expression;\nEND;\n$$ LANGUAGE plpgsql;"
+            }
+        ],
+        "instructions": {
+            "en": "Create a function named `calculate_discount` that accepts parameters `price` (numeric) and `discount_pct` (numeric) and returns the discounted price rounded to 2 decimal places using plpgsql.",
+            "id": "Buat fungsi bernama `calculate_discount` yang menerima parameter `price` (numeric) dan `discount_pct` (numeric) serta mengembalikan harga setelah diskon yang dibulatkan hingga 2 tempat desimal menggunakan plpgsql."
+        },
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE products (\n    id INT PRIMARY KEY,\n    name TEXT NOT NULL,\n    price NUMERIC(10,2) NOT NULL\n);\nINSERT INTO products VALUES (1, 'Widget', 100.00), (2, 'Gadget', 250.00), (3, 'Cable', 20.00);\n\nCREATE TABLE invoices (\n    id INT PRIMARY KEY,\n    invoice_number TEXT NOT NULL,\n    subtotal NUMERIC(10,2) NOT NULL\n);\nINSERT INTO invoices VALUES (1, 'INV-2024-001', 500.00), (2, 'INV-2024-002', 1250.00), (3, 'INV-2024-003', 80.00);\n\nCREATE TABLE staff_members (\n    id INT PRIMARY KEY,\n    first_name TEXT NOT NULL,\n    last_name TEXT NOT NULL,\n    title TEXT NOT NULL\n);\nINSERT INTO staff_members VALUES (1, 'sarah', 'connor', 'Dr.'), (2, 'john', 'matrix', 'Col.'), (3, 'ellen', 'ripley', 'Lt.');",
+        "expected_query": "CREATE OR REPLACE FUNCTION calculate_discount(price NUMERIC, discount_pct NUMERIC)\nRETURNS NUMERIC AS $$\nBEGIN\n    RETURN ROUND(price * (1 - discount_pct / 100.0), 2);\nEND;\n$$ LANGUAGE plpgsql;",
+        "verification_query": "SELECT id, name, price, calculate_discount(price, 15) AS discounted_price FROM products ORDER BY id;",
+        "starterQuery": "-- Define your scalar function here",
+        "table_names": [
+            "products"
+        ]
+    },
+    {
+        "id": 1102,
+        "moduleId": 11,
+        "categorySlot": 1,
+        "title": {
+            "en": "Scalar PL/pgSQL Function: Sales Tax Calculation (Var #2)",
+            "id": "Fungsi Skalar PL/pgSQL: Perhitungan Pajak Penjualan (Latihan #2)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a specialized tax calculator at a billing kiosk. Given a transaction subtotal and the jurisdiction's tax percentage, it reliably evaluates the exact tax charge without repetitive application logic.\n\nEngine Processing Behavior: A PL/pgSQL function runs within the server's transactional context. The database engine parses variables declared in the function signature and executes statements between BEGIN and END sequentially. Returning a NUMERIC type preserves precise fixed-point decimal arithmetic necessary for financial calculations.\n\nBest Practices & Gotchas: Always round currency calculations to appropriate precision (e.g. 2 decimal places) using ROUND() to avoid fractional-cent floating discrepancies.",
+            "id": "Analogi Konseptual: Bayangkan kalkulator pajak khusus di kasir pembayaran. Dengan menerima subtotal transaksi dan persentase tarif pajak wilayah, kalkulator ini secara konsisten menghitung nilai pajak yang tepat tanpa perlu menulis ulang formula di kode aplikasi.\n\nCara Kerja Database Engine: Fungsi PL/pgSQL dieksekusi di dalam konteks transaksional server. Database engine mem-parsing variabel yang dideklarasikan pada signature fungsi lalu menjalankan baris pernyataan antara blok BEGIN dan END secara sekuensial. Mengembalikan tipe NUMERIC menjaga ketelitian desimal yang sangat penting untuk kalkulasi keuangan.\n\nBest Practices & Catatan Penting: Selalu bulatkan perhitungan keuangan ke presisi yang sesuai (misalnya 2 tempat desimal) menggunakan ROUND() untuk menghindari selisih pecahan nilai."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Scalar Tax Calculator",
+                    "id": "Kalkulator Pajak Skalar"
+                },
+                "code": "CREATE OR REPLACE FUNCTION calculate_tax(subtotal NUMERIC, rate NUMERIC)\nRETURNS NUMERIC AS $$\nBEGIN\n    RETURN ROUND(subtotal * (rate / 100.0), 2);\nEND;\n$$ LANGUAGE plpgsql;"
+            }
+        ],
+        "instructions": {
+            "en": "Create a function named `calculate_sales_tax` that accepts parameters `subtotal` (numeric) and `tax_rate` (numeric) and returns the tax amount rounded to 2 decimal places using plpgsql.",
+            "id": "Buat fungsi bernama `calculate_sales_tax` yang menerima parameter `subtotal` (numeric) dan `tax_rate` (numeric) serta mengembalikan nominal pajak yang dibulatkan hingga 2 tempat desimal menggunakan plpgsql."
+        },
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE products (\n    id INT PRIMARY KEY,\n    name TEXT NOT NULL,\n    price NUMERIC(10,2) NOT NULL\n);\nINSERT INTO products VALUES (1, 'Widget', 100.00), (2, 'Gadget', 250.00), (3, 'Cable', 20.00);\n\nCREATE TABLE invoices (\n    id INT PRIMARY KEY,\n    invoice_number TEXT NOT NULL,\n    subtotal NUMERIC(10,2) NOT NULL\n);\nINSERT INTO invoices VALUES (1, 'INV-2024-001', 500.00), (2, 'INV-2024-002', 1250.00), (3, 'INV-2024-003', 80.00);\n\nCREATE TABLE staff_members (\n    id INT PRIMARY KEY,\n    first_name TEXT NOT NULL,\n    last_name TEXT NOT NULL,\n    title TEXT NOT NULL\n);\nINSERT INTO staff_members VALUES (1, 'sarah', 'connor', 'Dr.'), (2, 'john', 'matrix', 'Col.'), (3, 'ellen', 'ripley', 'Lt.');",
+        "expected_query": "CREATE OR REPLACE FUNCTION calculate_sales_tax(subtotal NUMERIC, tax_rate NUMERIC)\nRETURNS NUMERIC AS $$\nBEGIN\n    RETURN ROUND(subtotal * (tax_rate / 100.0), 2);\nEND;\n$$ LANGUAGE plpgsql;",
+        "verification_query": "SELECT id, invoice_number, subtotal, calculate_sales_tax(subtotal, 8.5) AS tax_amount FROM invoices ORDER BY id;",
+        "starterQuery": "-- Define your scalar function here",
+        "table_names": [
+            "invoices"
+        ]
+    },
+    {
+        "id": 1103,
+        "moduleId": 11,
+        "categorySlot": 1,
+        "title": {
+            "en": "Scalar PL/pgSQL Function: Full Name Formatter (Var #3)",
+            "id": "Fungsi Skalar PL/pgSQL: Pemformat Nama Lengkap (Latihan #3)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of an automated badge printer that standardizes employee badges. No matter how messy the input casing is, the machine standardizes the honorific prefix and capitalizes each name component cleanly.\n\nEngine Processing Behavior: String processing functions in PL/pgSQL leverage PostgreSQL built-in string handlers like INITCAP() and TRIM(). Moving text normalization into the database guarantees that all connected clients receive uniform formatting regardless of their upstream programming language.\n\nBest Practices & Gotchas: String concatenation with NULL values in standard SQL yields NULL. When concatenating optional prefixes or middle names, use string functions or coalesce expressions if fields may be absent.",
+            "id": "Analogi Konseptual: Bayangkan mesin pencetak kartu identitas otomatis yang membakukan nama karyawan. Bagaimanapun format huruf input yang dimasukkan, mesin selalu merapikan gelar kehormatan dan mengubah tiap kata nama menjadi format huruf kapital di awal.\n\nCara Kerja Database Engine: Fungsi pemrosesan teks di PL/pgSQL memanfaatkan fungsi string bawaan PostgreSQL seperti INITCAP() dan TRIM(). Memindahkan standardisasi teks ke dalam database menjamin seluruh aplikasi klien memperoleh format seragam terlepas dari bahasa pemrograman yang digunakan.\n\nBest Practices & Catatan Penting: Penggabungan string dengan nilai NULL pada SQL standar menghasilkan NULL. Saat menggabungkan gelar atau nama tengah opsional, pertimbangkan fungsi penggabungan yang aman dari nilai NULL."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Format Name String",
+                    "id": "Format String Nama"
+                },
+                "code": "CREATE OR REPLACE FUNCTION format_title_name(fname TEXT, lname TEXT, honorific TEXT)\nRETURNS TEXT AS $$\nBEGIN\n    RETURN TRIM(honorific || ' ' || INITCAP(fname) || ' ' || INITCAP(lname));\nEND;\n$$ LANGUAGE plpgsql;"
+            }
+        ],
+        "instructions": {
+            "en": "Create a function named `format_full_name` accepting parameters `first_name` (text), `last_name` (text), and `title` (text) that returns a trimmed string with title followed by space and capitalized first and last names.",
+            "id": "Buat fungsi bernama `format_full_name` yang menerima parameter `first_name` (text), `last_name` (text), dan `title` (text) serta mengembalikan string rapi berisi gelar diikuti spasi dan nama depan serta nama belakang berhuruf kapital di awal."
+        },
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE products (\n    id INT PRIMARY KEY,\n    name TEXT NOT NULL,\n    price NUMERIC(10,2) NOT NULL\n);\nINSERT INTO products VALUES (1, 'Widget', 100.00), (2, 'Gadget', 250.00), (3, 'Cable', 20.00);\n\nCREATE TABLE invoices (\n    id INT PRIMARY KEY,\n    invoice_number TEXT NOT NULL,\n    subtotal NUMERIC(10,2) NOT NULL\n);\nINSERT INTO invoices VALUES (1, 'INV-2024-001', 500.00), (2, 'INV-2024-002', 1250.00), (3, 'INV-2024-003', 80.00);\n\nCREATE TABLE staff_members (\n    id INT PRIMARY KEY,\n    first_name TEXT NOT NULL,\n    last_name TEXT NOT NULL,\n    title TEXT NOT NULL\n);\nINSERT INTO staff_members VALUES (1, 'sarah', 'connor', 'Dr.'), (2, 'john', 'matrix', 'Col.'), (3, 'ellen', 'ripley', 'Lt.');",
+        "expected_query": "CREATE OR REPLACE FUNCTION format_full_name(first_name TEXT, last_name TEXT, title TEXT)\nRETURNS TEXT AS $$\nBEGIN\n    RETURN TRIM(title || ' ' || INITCAP(first_name) || ' ' || INITCAP(last_name));\nEND;\n$$ LANGUAGE plpgsql;",
+        "verification_query": "SELECT id, format_full_name(first_name, last_name, title) AS full_name FROM staff_members ORDER BY id;",
+        "starterQuery": "-- Define your scalar function here",
+        "table_names": [
+            "staff_members"
+        ]
+    },
+    {
+        "id": 1104,
+        "moduleId": 11,
+        "categorySlot": 2,
+        "title": {
+            "en": "Table-Returning Function: Customer Orders Filter (Var #1)",
+            "id": "Fungsi Mengembalikan Tabel: Filter Pesanan Pelanggan (Latihan #1)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a pre-filtered ledger view in an office filing cabinet. Instead of opening the entire company binder and scanning every page manually, you ask the archivist for a specific customer folder, and they immediately hand you a curated multi-row table.\n\nEngine Processing Behavior: A function declared with RETURNS TABLE specifies an exact column blueprint for returned rows. Inside the function body, RETURN QUERY executes a SELECT query and streams the resulting tuples directly to the caller. Callers can query this function in the FROM clause just like a regular table or view.\n\nBest Practices & Gotchas: To prevent ambiguous column reference collisions between function output column names and table column names, qualify table column references with the table name (e.g. customer_orders.total_amount).",
+            "id": "Analogi Konseptual: Bayangkan map arsip pesanan di kantor administrasi. Alih-alih membuka seluruh buku besar perusahaan dan menyisir tiap lembar, Anda meminta arsip milik satu pelanggan tertentu, dan petugas arsip langsung menyerahkan tabel ringkasan beberapa baris transaksi yang sesuai.\n\nCara Kerja Database Engine: Fungsi dengan deklarasi RETURNS TABLE menetapkan cetak biru kolom untuk baris-baris data yang dihasilkan. Di dalam badan fungsi, perintah RETURN QUERY mengeksekusi query SELECT dan mengalirkan baris hasil langsung ke pemanggil. Pemanggil dapat menaruh fungsi ini di klausa FROM layaknya tabel atau view biasa.\n\nBest Practices & Catatan Penting: Untuk menghindari kerancuan nama kolom antara output fungsi dan kolom tabel sumber, selalu sertakan nama tabel pada referensi kolom (misalnya customer_orders.total_amount)."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Returns Table Function",
+                    "id": "Fungsi Mengembalikan Tabel"
+                },
+                "code": "CREATE OR REPLACE FUNCTION get_data_by_id(p_id INT)\nRETURNS TABLE(col1 INT, col2 NUMERIC) AS $$\nBEGIN\n    RETURN QUERY\n    SELECT t.col1, t.col2 FROM my_table t WHERE t.ref_id = p_id;\nEND;\n$$ LANGUAGE plpgsql;"
+            }
+        ],
+        "instructions": {
+            "en": "Create a function named `get_customer_orders` that accepts integer parameter `p_customer_id` and returns a table with columns `order_id` (integer), `total_amount` (numeric), and `status` (text) containing all orders for that customer ordered by order ID.",
+            "id": "Buat fungsi bernama `get_customer_orders` yang menerima parameter integer `p_customer_id` dan mengembalikan tabel dengan kolom `order_id` (integer), `total_amount` (numeric), dan `status` (text) berisi seluruh pesanan pelanggan tersebut yang diurutkan berdasarkan ID pesanan."
+        },
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE customer_orders (\n    id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    total_amount NUMERIC(10,2) NOT NULL,\n    status TEXT NOT NULL\n);\nINSERT INTO customer_orders VALUES \n    (1, 101, 150.00, 'completed'),\n    (2, 102, 300.00, 'pending'),\n    (3, 101, 75.00, 'completed'),\n    (4, 103, 420.00, 'processing'),\n    (5, 101, 210.00, 'completed');\n\nCREATE TABLE catalog_items (\n    id INT PRIMARY KEY,\n    item_name TEXT NOT NULL,\n    category TEXT NOT NULL,\n    price NUMERIC(10,2) NOT NULL\n);\nINSERT INTO catalog_items VALUES \n    (1, 'Gaming Laptop', 'Electronics', 1200.00),\n    (2, 'Wireless Mouse', 'Electronics', 35.00),\n    (3, '4K Monitor', 'Electronics', 350.00),\n    (4, 'Desk Lamp', 'Office', 45.00),\n    (5, 'Ergonomic Desk', 'Office', 450.00);\n\nCREATE TABLE member_subscriptions (\n    id INT PRIMARY KEY,\n    user_email TEXT NOT NULL,\n    plan_tier TEXT NOT NULL,\n    is_active BOOLEAN NOT NULL\n);\nINSERT INTO member_subscriptions VALUES\n    (1, 'alice@example.com', 'Premium', TRUE),\n    (2, 'bob@example.com', 'Basic', TRUE),\n    (3, 'carol@example.com', 'Premium', FALSE),\n    (4, 'david@example.com', 'Premium', TRUE),\n    (5, 'eva@example.com', 'Basic', FALSE);",
+        "expected_query": "CREATE OR REPLACE FUNCTION get_customer_orders(p_customer_id INT)\nRETURNS TABLE (order_id INT, total_amount NUMERIC, status TEXT) AS $$\nBEGIN\n    RETURN QUERY\n    SELECT id, customer_orders.total_amount, customer_orders.status\n    FROM customer_orders\n    WHERE customer_id = p_customer_id\n    ORDER BY id;\nEND;\n$$ LANGUAGE plpgsql;",
+        "verification_query": "SELECT * FROM get_customer_orders(101);",
+        "starterQuery": "-- Define your table-returning function here",
+        "table_names": [
+            "customer_orders"
+        ]
+    },
+    {
+        "id": 1105,
+        "moduleId": 11,
+        "categorySlot": 2,
+        "title": {
+            "en": "Table-Returning Function: High-Value Inventory (Var #2)",
+            "id": "Fungsi Mengembalikan Tabel: Inventaris Bernilai Tinggi (Latihan #2)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a warehouse supervisor generating a high-value catalog report. By specifying a department and minimum price threshold, the system prints a filtered list containing only premium merchandise.\n\nEngine Processing Behavior: PostgreSQL compiles table-returning functions into parameterized set-returning query plans. The engine evaluates the caller-supplied arguments and executes the inner query, efficiently returning the filtered result set without transferring unneeded records to the client.\n\nBest Practices & Gotchas: Always qualify columns with the underlying table name inside RETURN QUERY when column names match the declared return table schema.",
+            "id": "Analogi Konseptual: Bayangkan pengawas gudang yang mencetak laporan barang mewah. Dengan menentukan kategori barang dan ambang batas harga minimum, sistem langsung mencetak daftar barang khusus bernilai tinggi.\n\nCara Kerja Database Engine: PostgreSQL mengompilasi fungsi pengembali tabel menjadi rencana query parametrik penghasil himpunan baris (set-returning). Engine mengevaluasi argumen dari pemanggil lalu menjalankan query internal secara efisien tanpa mengirim data yang tidak diperlukan ke aplikasi klien.\n\nBest Practices & Catatan Penting: Selalu kualifikasi kolom dengan nama tabel sumber di dalam RETURN QUERY jika nama kolom tabel sama dengan deklarasi kolom output fungsi."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Filtered Multi-Row Function",
+                    "id": "Fungsi Multi-Baris Terfilter"
+                },
+                "code": "CREATE OR REPLACE FUNCTION get_items_by_filter(p_cat TEXT, p_min NUMERIC)\nRETURNS TABLE(product_id INT, item_name TEXT, price NUMERIC) AS $$\nBEGIN\n    RETURN QUERY\n    SELECT t.id, t.item_name, t.price FROM catalog_items t\n    WHERE t.category = p_cat AND t.price >= p_min\n    ORDER BY t.id;\nEND;\n$$ LANGUAGE plpgsql;"
+            }
+        ],
+        "instructions": {
+            "en": "Create a function named `get_high_value_products` accepting `p_category` (text) and `p_min_price` (numeric) that returns a table with `product_id` (integer), `item_name` (text), and `price` (numeric) for matching items with price greater than or equal to the minimum, ordered by item ID.",
+            "id": "Buat fungsi bernama `get_high_value_products` yang menerima `p_category` (text) dan `p_min_price` (numeric) serta mengembalikan tabel berisi `product_id` (integer), `item_name` (text), dan `price` (numeric) untuk barang yang sesuai dengan harga lebih besar atau sama dengan batas minimum, diurutkan berdasarkan ID barang."
+        },
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE customer_orders (\n    id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    total_amount NUMERIC(10,2) NOT NULL,\n    status TEXT NOT NULL\n);\nINSERT INTO customer_orders VALUES \n    (1, 101, 150.00, 'completed'),\n    (2, 102, 300.00, 'pending'),\n    (3, 101, 75.00, 'completed'),\n    (4, 103, 420.00, 'processing'),\n    (5, 101, 210.00, 'completed');\n\nCREATE TABLE catalog_items (\n    id INT PRIMARY KEY,\n    item_name TEXT NOT NULL,\n    category TEXT NOT NULL,\n    price NUMERIC(10,2) NOT NULL\n);\nINSERT INTO catalog_items VALUES \n    (1, 'Gaming Laptop', 'Electronics', 1200.00),\n    (2, 'Wireless Mouse', 'Electronics', 35.00),\n    (3, '4K Monitor', 'Electronics', 350.00),\n    (4, 'Desk Lamp', 'Office', 45.00),\n    (5, 'Ergonomic Desk', 'Office', 450.00);\n\nCREATE TABLE member_subscriptions (\n    id INT PRIMARY KEY,\n    user_email TEXT NOT NULL,\n    plan_tier TEXT NOT NULL,\n    is_active BOOLEAN NOT NULL\n);\nINSERT INTO member_subscriptions VALUES\n    (1, 'alice@example.com', 'Premium', TRUE),\n    (2, 'bob@example.com', 'Basic', TRUE),\n    (3, 'carol@example.com', 'Premium', FALSE),\n    (4, 'david@example.com', 'Premium', TRUE),\n    (5, 'eva@example.com', 'Basic', FALSE);",
+        "expected_query": "CREATE OR REPLACE FUNCTION get_high_value_products(p_category TEXT, p_min_price NUMERIC)\nRETURNS TABLE (product_id INT, item_name TEXT, price NUMERIC) AS $$\nBEGIN\n    RETURN QUERY\n    SELECT id, catalog_items.item_name, catalog_items.price\n    FROM catalog_items\n    WHERE category = p_category AND catalog_items.price >= p_min_price\n    ORDER BY id;\nEND;\n$$ LANGUAGE plpgsql;",
+        "verification_query": "SELECT * FROM get_high_value_products('Electronics', 200.00);",
+        "starterQuery": "-- Define your table-returning function here",
+        "table_names": [
+            "catalog_items"
+        ]
+    },
+    {
+        "id": 1106,
+        "moduleId": 11,
+        "categorySlot": 2,
+        "title": {
+            "en": "Table-Returning Function: Active Subscribers by Tier (Var #3)",
+            "id": "Fungsi Mengembalikan Tabel: Pelanggan Aktif per Paket (Latihan #3)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a customer success manager requesting an active subscriber roster for a specific membership level. The database handles the logic and outputs the matching directory directly.\n\nEngine Processing Behavior: When querying a function with RETURNS TABLE, the database engine treats the function invocation as a row producer in the execution plan tree. This allows seamless composability with other SQL clauses like JOIN, LIMIT, or aggregates.\n\nBest Practices & Gotchas: Return only the necessary columns in the TABLE declaration to avoid unnecessary memory overhead during row buffering.",
+            "id": "Analogi Konseptual: Bayangkan manajer hubungan pelanggan yang meminta daftar anggota aktif untuk tingkatan langganan tertentu. Database memproses seluruh logika penyaringan dan langsung menyajikan tabel anggota yang sesuai.\n\nCara Kerja Database Engine: Saat mengeksekusi fungsi dengan RETURNS TABLE, engine menganggap fungsi tersebut sebagai produsen baris data di pohon rencana eksekusi. Ini memungkinkan output fungsi digabungkan secara fleksibel dengan klausa SQL lain seperti JOIN, LIMIT, atau agregasi.\n\nBest Practices & Catatan Penting: Deklarasikan hanya kolom-kolom yang benar-benar dibutuhkan pada definisi RETURNS TABLE untuk menghemat alokasi memori buffer eksekusi."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Active Roster Function",
+                    "id": "Fungsi Daftar Aktif"
+                },
+                "code": "CREATE OR REPLACE FUNCTION get_members(p_tier TEXT)\nRETURNS TABLE(subscriber_id INT, user_email TEXT, is_active BOOLEAN) AS $$\nBEGIN\n    RETURN QUERY\n    SELECT s.id, s.user_email, s.is_active FROM member_subscriptions s\n    WHERE s.plan_tier = p_tier AND s.is_active = TRUE\n    ORDER BY s.id;\nEND;\n$$ LANGUAGE plpgsql;"
+            }
+        ],
+        "instructions": {
+            "en": "Create a function named `get_subscribers_by_tier` accepting parameter `p_tier` (text) that returns a table with `subscriber_id` (integer), `user_email` (text), and `is_active` (boolean) for all active members in that tier, ordered by ID.",
+            "id": "Buat fungsi bernama `get_subscribers_by_tier` yang menerima parameter `p_tier` (text) serta mengembalikan tabel dengan kolom `subscriber_id` (integer), `user_email` (text), dan `is_active` (boolean) untuk seluruh anggota aktif pada paket tersebut, diurutkan berdasarkan ID."
+        },
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE customer_orders (\n    id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    total_amount NUMERIC(10,2) NOT NULL,\n    status TEXT NOT NULL\n);\nINSERT INTO customer_orders VALUES \n    (1, 101, 150.00, 'completed'),\n    (2, 102, 300.00, 'pending'),\n    (3, 101, 75.00, 'completed'),\n    (4, 103, 420.00, 'processing'),\n    (5, 101, 210.00, 'completed');\n\nCREATE TABLE catalog_items (\n    id INT PRIMARY KEY,\n    item_name TEXT NOT NULL,\n    category TEXT NOT NULL,\n    price NUMERIC(10,2) NOT NULL\n);\nINSERT INTO catalog_items VALUES \n    (1, 'Gaming Laptop', 'Electronics', 1200.00),\n    (2, 'Wireless Mouse', 'Electronics', 35.00),\n    (3, '4K Monitor', 'Electronics', 350.00),\n    (4, 'Desk Lamp', 'Office', 45.00),\n    (5, 'Ergonomic Desk', 'Office', 450.00);\n\nCREATE TABLE member_subscriptions (\n    id INT PRIMARY KEY,\n    user_email TEXT NOT NULL,\n    plan_tier TEXT NOT NULL,\n    is_active BOOLEAN NOT NULL\n);\nINSERT INTO member_subscriptions VALUES\n    (1, 'alice@example.com', 'Premium', TRUE),\n    (2, 'bob@example.com', 'Basic', TRUE),\n    (3, 'carol@example.com', 'Premium', FALSE),\n    (4, 'david@example.com', 'Premium', TRUE),\n    (5, 'eva@example.com', 'Basic', FALSE);",
+        "expected_query": "CREATE OR REPLACE FUNCTION get_subscribers_by_tier(p_tier TEXT)\nRETURNS TABLE (subscriber_id INT, user_email TEXT, is_active BOOLEAN) AS $$\nBEGIN\n    RETURN QUERY\n    SELECT id, member_subscriptions.user_email, member_subscriptions.is_active\n    FROM member_subscriptions\n    WHERE plan_tier = p_tier AND member_subscriptions.is_active = TRUE\n    ORDER BY id;\nEND;\n$$ LANGUAGE plpgsql;",
+        "verification_query": "SELECT * FROM get_subscribers_by_tier('Premium');",
+        "starterQuery": "-- Define your table-returning function here",
+        "table_names": [
+            "member_subscriptions"
+        ]
+    },
+    {
+        "id": 1107,
+        "moduleId": 11,
+        "categorySlot": 3,
+        "title": {
+            "en": "Stored Procedure: Atomic Balance Transfer (Var #1)",
+            "id": "Stored Procedure: Transfer Saldo Atomik (Latihan #1)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a wire transfer teller who debits money from sender account A and credits recipient account B in a single atomic transaction. Either both operations succeed completely, or neither happens.\n\nEngine Processing Behavior: Introduced in PostgreSQL 11, CREATE PROCEDURE defines routines that do not return a value and are invoked using the CALL command. Unlike functions, procedures are specifically designed for operational data mutations and can manage transaction boundaries.\n\nBest Practices & Gotchas: Procedures do not use a RETURNS clause. Always invoke procedures using CALL procedure_name(arguments);.",
+            "id": "Analogi Konseptual: Bayangkan petugas transfer bank yang mendebit saldo pengirim akun A lalu mengkredit saldo penerima akun B dalam satu rangkaian transaksi atomik. Kedua langkah harus berhasil sepenuhnya, atau transaksi dibatalkan seluruhnya.\n\nCara Kerja Database Engine: Mulai diperkenalkan pada PostgreSQL 11, perintah CREATE PROCEDURE membuat rutin operasional yang tidak mengembalikan nilai dan dipanggil menggunakan perintah CALL. Berbeda dengan fungsi biasa, stored procedure dirancang khusus untuk mutasi data dan pengelolaan transaksi.\n\nBest Practices & Catatan Penting: Stored procedure tidak menggunakan klausa RETURNS. Selalu jalankan procedure dengan perintah CALL nama_procedure(argumen);."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Create Procedure & Call",
+                    "id": "Membuat Prosedur & Memanggilnya"
+                },
+                "code": "CREATE OR REPLACE PROCEDURE transfer_balance(sender INT, receiver INT, amt NUMERIC)\nLANGUAGE plpgsql AS $$\nBEGIN\n    UPDATE accounts SET balance = balance - amt WHERE id = sender;\n    UPDATE accounts SET balance = balance + amt WHERE id = receiver;\nEND;\n$$;\nCALL transfer_balance(1, 2, 100.00);"
+            }
+        ],
+        "instructions": {
+            "en": "Create a stored procedure named `transfer_funds` accepting `sender_id` (integer), `receiver_id` (integer), and `transfer_amount` (numeric) that decrements the sender balance and increments the receiver balance. Then call the procedure to transfer 120.00 from account 1 to account 2.",
+            "id": "Buat stored procedure bernama `transfer_funds` yang menerima `sender_id` (integer), `receiver_id` (integer), dan `transfer_amount` (numeric) yang mengurangi saldo pengirim dan menambah saldo penerima. Kemudian panggil prosedur tersebut untuk mentransfer dana sebesar 120.00 dari akun 1 ke akun 2."
+        },
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE bank_accounts (\n    id INT PRIMARY KEY,\n    owner_name TEXT NOT NULL,\n    balance NUMERIC(10,2) NOT NULL\n);\nINSERT INTO bank_accounts VALUES (1, 'Alice', 500.00), (2, 'Bob', 200.00), (3, 'Charlie', 1000.00);\n\nCREATE TABLE store_orders (\n    id INT PRIMARY KEY,\n    status TEXT NOT NULL\n);\nCREATE TABLE inventory_stock (\n    id INT PRIMARY KEY,\n    stock_count INT NOT NULL\n);\nINSERT INTO store_orders VALUES (1, 'pending'), (2, 'pending');\nINSERT INTO inventory_stock VALUES (101, 50), (102, 20);\n\nCREATE TABLE coupons (\n    id INT PRIMARY KEY,\n    code TEXT NOT NULL,\n    expiration_date DATE NOT NULL,\n    is_active BOOLEAN NOT NULL\n);\nINSERT INTO coupons VALUES\n    (1, 'SUMMER2024', '2024-05-15', TRUE),\n    (2, 'WELCOME10', '2024-07-01', TRUE),\n    (3, 'SPRINGPROMO', '2024-04-30', TRUE),\n    (4, 'FALLSALE', '2024-09-01', TRUE);",
+        "expected_query": "CREATE OR REPLACE PROCEDURE transfer_funds(sender_id INT, receiver_id INT, transfer_amount NUMERIC)\nLANGUAGE plpgsql AS $$\nBEGIN\n    UPDATE bank_accounts SET balance = balance - transfer_amount WHERE id = sender_id;\n    UPDATE bank_accounts SET balance = balance + transfer_amount WHERE id = receiver_id;\nEND;\n$$;\nCALL transfer_funds(1, 2, 120.00);",
+        "verification_query": "SELECT id, owner_name, balance FROM bank_accounts ORDER BY id;",
+        "starterQuery": "-- Define your stored procedure here",
+        "table_names": [
+            "bank_accounts"
+        ]
+    },
+    {
+        "id": 1108,
+        "moduleId": 11,
+        "categorySlot": 3,
+        "title": {
+            "en": "Stored Procedure: Order Fulfillment & Inventory Decrement (Var #2)",
+            "id": "Stored Procedure: Pemenuhan Pesanan & Pengurangan Stok (Latihan #2)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a warehouse fulfillment station. When an order is processed, the clerk stamps the shipping manifest as completed and deducts the shipped quantity from the inventory bin simultaneously.\n\nEngine Processing Behavior: A stored procedure bundles multiple DML mutations into a single network call to the database. The engine executes each statement sequentially within the same context, reducing client-server round-trip latency and ensuring uniform mutation rules.\n\nBest Practices & Gotchas: Use clear descriptive parameter names prefixed with a prefix like p_ to prevent shadowing table column identifiers in UPDATE statements.",
+            "id": "Analogi Konseptual: Bayangkan loket pengiriman barang di gudang. Ketika pesanan selesai diproses, staf menandai status pesanan menjadi selesai dan sekaligus memotong jumlah stok fisik di rak persediaan.\n\nCara Kerja Database Engine: Stored procedure membungkus beberapa operasi mutasi DML dalam satu instruksi eksekusi di server database. Database engine mengeksekusi tiap pernyataan secara berurutan dalam konteks yang sama, menghemat latensi komunikasi bolak-balik antara aplikasi dan server.\n\nBest Practices & Catatan Penting: Beri nama parameter yang jelas dengan awalan seperti p_ agar tidak bentrok dengan nama kolom tabel pada klausa UPDATE."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Multi-Step Mutation Procedure",
+                    "id": "Prosedur Mutasi Multi-Langkah"
+                },
+                "code": "CREATE OR REPLACE PROCEDURE fulfill_order(p_oid INT, p_pid INT, p_qty INT)\nLANGUAGE plpgsql AS $$\nBEGIN\n    UPDATE orders SET status = 'completed' WHERE id = p_oid;\n    UPDATE stock SET stock_count = stock_count - p_qty WHERE id = p_pid;\nEND;\n$$;\nCALL fulfill_order(1, 101, 5);"
+            }
+        ],
+        "instructions": {
+            "en": "Create a stored procedure named `fulfill_order` accepting `p_order_id` (integer), `p_product_id` (integer), and `p_quantity` (integer) that marks the specified order as completed and decrements the product stock count by the given quantity. Then invoke the procedure for order 1, product 101, quantity 5.",
+            "id": "Buat stored procedure bernama `fulfill_order` yang menerima parameter `p_order_id` (integer), `p_product_id` (integer), dan `p_quantity` (integer) yang memperbarui status pesanan terkait menjadi completed dan memotong stok produk sejumlah kuantitas tersebut. Kemudian panggil prosedur untuk pesanan 1, produk 101, sejumlah 5."
+        },
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE bank_accounts (\n    id INT PRIMARY KEY,\n    owner_name TEXT NOT NULL,\n    balance NUMERIC(10,2) NOT NULL\n);\nINSERT INTO bank_accounts VALUES (1, 'Alice', 500.00), (2, 'Bob', 200.00), (3, 'Charlie', 1000.00);\n\nCREATE TABLE store_orders (\n    id INT PRIMARY KEY,\n    status TEXT NOT NULL\n);\nCREATE TABLE inventory_stock (\n    id INT PRIMARY KEY,\n    stock_count INT NOT NULL\n);\nINSERT INTO store_orders VALUES (1, 'pending'), (2, 'pending');\nINSERT INTO inventory_stock VALUES (101, 50), (102, 20);\n\nCREATE TABLE coupons (\n    id INT PRIMARY KEY,\n    code TEXT NOT NULL,\n    expiration_date DATE NOT NULL,\n    is_active BOOLEAN NOT NULL\n);\nINSERT INTO coupons VALUES\n    (1, 'SUMMER2024', '2024-05-15', TRUE),\n    (2, 'WELCOME10', '2024-07-01', TRUE),\n    (3, 'SPRINGPROMO', '2024-04-30', TRUE),\n    (4, 'FALLSALE', '2024-09-01', TRUE);",
+        "expected_query": "CREATE OR REPLACE PROCEDURE fulfill_order(p_order_id INT, p_product_id INT, p_quantity INT)\nLANGUAGE plpgsql AS $$\nBEGIN\n    UPDATE store_orders SET status = 'completed' WHERE id = p_order_id;\n    UPDATE inventory_stock SET stock_count = stock_count - p_quantity WHERE id = p_product_id;\nEND;\n$$;\nCALL fulfill_order(1, 101, 5);",
+        "verification_query": "SELECT o.id AS order_id, o.status, s.id AS product_id, s.stock_count FROM store_orders o JOIN inventory_stock s ON s.id = 101 WHERE o.id = 1;",
+        "starterQuery": "-- Define your stored procedure here",
+        "table_names": [
+            "store_orders",
+            "inventory_stock"
+        ]
+    },
+    {
+        "id": 1109,
+        "moduleId": 11,
+        "categorySlot": 3,
+        "title": {
+            "en": "Stored Procedure: Deactivate Expired Coupons (Var #3)",
+            "id": "Stored Procedure: Penonaktifan Kupon Kedaluwarsa (Latihan #3)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a nightly maintenance cleaner in a grocery store who sweeps through the coupon bins and archives all vouchers whose expiration date has elapsed.\n\nEngine Processing Behavior: Procedures are often scheduled as recurring cron maintenance jobs inside the database. Performing bulk conditional updates inside a procedure encapsulates maintenance business rules directly in database metadata.\n\nBest Practices & Gotchas: Always ensure input date parameters are explicitly cast or formatted to avoid locale-dependent date parsing errors.",
+            "id": "Analogi Konseptual: Bayangkan petugas pemeriksaan berkala di toko swalayan yang menyortir kotak kupon promosi setiap malam dan menonaktifkan semua kupon yang tanggal berlakunya telah terlewati.\n\nCara Kerja Database Engine: Stored procedure sering digunakan sebagai rutin pemeliharaan berkala (batch maintenance). Menjalankan pembaruan data bersyarat di dalam stored procedure memusatkan aturan bisnis pemeliharaan data langsung di dalam skema database.\n\nBest Practices & Catatan Penting: Pastikan parameter tipe tanggal dicocokkan atau di-cast secara eksplisit agar terhindar dari ketidaksesuaian format penanggalan wilayah."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Batch Deactivation Procedure",
+                    "id": "Prosedur Deaktivasi Massal"
+                },
+                "code": "CREATE OR REPLACE PROCEDURE expire_coupons(p_cutoff DATE)\nLANGUAGE plpgsql AS $$\nBEGIN\n    UPDATE coupons SET is_active = FALSE WHERE expiration_date < p_cutoff AND is_active = TRUE;\nEND;\n$$;\nCALL expire_coupons('2024-06-01'::DATE);"
+            }
+        ],
+        "instructions": {
+            "en": "Create a stored procedure named `deactivate_expired_coupons` accepting `p_cutoff_date` (date) that sets the active flag to false for all coupons with expiration date earlier than the cutoff date that are currently active. Then invoke the procedure with cutoff date 2024-06-01.",
+            "id": "Buat stored procedure bernama `deactivate_expired_coupons` yang menerima `p_cutoff_date` (date) yang mengubah status aktif menjadi false untuk semua kupon dengan tanggal kedaluwarsa sebelum tanggal batas tersebut yang saat ini masih aktif. Kemudian panggil prosedur tersebut dengan tanggal batas 2024-06-01."
+        },
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE bank_accounts (\n    id INT PRIMARY KEY,\n    owner_name TEXT NOT NULL,\n    balance NUMERIC(10,2) NOT NULL\n);\nINSERT INTO bank_accounts VALUES (1, 'Alice', 500.00), (2, 'Bob', 200.00), (3, 'Charlie', 1000.00);\n\nCREATE TABLE store_orders (\n    id INT PRIMARY KEY,\n    status TEXT NOT NULL\n);\nCREATE TABLE inventory_stock (\n    id INT PRIMARY KEY,\n    stock_count INT NOT NULL\n);\nINSERT INTO store_orders VALUES (1, 'pending'), (2, 'pending');\nINSERT INTO inventory_stock VALUES (101, 50), (102, 20);\n\nCREATE TABLE coupons (\n    id INT PRIMARY KEY,\n    code TEXT NOT NULL,\n    expiration_date DATE NOT NULL,\n    is_active BOOLEAN NOT NULL\n);\nINSERT INTO coupons VALUES\n    (1, 'SUMMER2024', '2024-05-15', TRUE),\n    (2, 'WELCOME10', '2024-07-01', TRUE),\n    (3, 'SPRINGPROMO', '2024-04-30', TRUE),\n    (4, 'FALLSALE', '2024-09-01', TRUE);",
+        "expected_query": "CREATE OR REPLACE PROCEDURE deactivate_expired_coupons(p_cutoff_date DATE)\nLANGUAGE plpgsql AS $$\nBEGIN\n    UPDATE coupons\n    SET is_active = FALSE\n    WHERE expiration_date < p_cutoff_date AND is_active = TRUE;\nEND;\n$$;\nCALL deactivate_expired_coupons('2024-06-01'::DATE);",
+        "verification_query": "SELECT id, code, expiration_date, is_active FROM coupons ORDER BY id;",
+        "starterQuery": "-- Define your stored procedure here",
+        "table_names": [
+            "coupons"
+        ]
+    },
+    {
+        "id": 1110,
+        "moduleId": 11,
+        "categorySlot": 4,
+        "title": {
+            "en": "BEFORE Trigger: Normalize User Credentials (Var #1)",
+            "id": "Trigger BEFORE: Normalisasi Kredensial Pengguna (Latihan #1)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of an automated bouncer at an office entrance who checks every badge and trims extraneous spaces and normalizes names to lowercase before handing it to the front desk ledger.\n\nEngine Processing Behavior: A BEFORE INSERT OR UPDATE trigger fires before the row data is written to disk or index pages. Inside a trigger function returning TRIGGER, the record variable NEW represents the candidate row. Modifying fields on NEW directly mutates the row before it commits, and returning NEW allows the write to proceed.\n\nBest Practices & Gotchas: Always RETURN NEW from a BEFORE INSERT OR UPDATE trigger. Returning NULL aborts the insertion or update silently without throwing an error.",
+            "id": "Analogi Konseptual: Bayangkan petugas pemeriksa di pintu masuk kantor yang memeriksa formulir pendaftaran, memotong spasi liar dan mengubah huruf menjadi kecil sebelum menyerahkannya ke buku induk.\n\nCara Kerja Database Engine: Trigger BEFORE INSERT OR UPDATE dieksekusi sebelum data baris benar-benar ditulis ke disk atau halaman indeks. Pada fungsi trigger yang mengembalikan tipe TRIGGER, variabel rekam NEW mewakili data baris baru. Mengubah nilai kolom pada NEW langsung mengubah data baris sebelum disimpan, dan mengembalikan NEW mengizinkan proses penyimpanan dilanjutkan.\n\nBest Practices & Catatan Penting: Selalu gunakan RETURN NEW pada trigger BEFORE INSERT OR UPDATE. Jika fungsi mengembalikan NULL, engine akan membatalkan operasi penyimpanan baris secara diam-diam tanpa memunculkan pesan error."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "BEFORE Trigger Normalization",
+                    "id": "Normalisasi Trigger BEFORE"
+                },
+                "code": "CREATE OR REPLACE FUNCTION sanitize_func()\nRETURNS TRIGGER AS $$\nBEGIN\n    NEW.col = LOWER(TRIM(NEW.col));\n    RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql;\n\nCREATE TRIGGER trg_sanitize\nBEFORE INSERT OR UPDATE ON target_table\nFOR EACH ROW EXECUTE FUNCTION sanitize_func();"
+            }
+        ],
+        "instructions": {
+            "en": "Create a trigger function named `normalize_user_credentials` that trims whitespace and converts both `username` and `email` to lowercase on the incoming record and returns the new record. Then create a BEFORE INSERT OR UPDATE trigger named `trg_normalize_user_credentials` on `user_profiles` for each row executing this function.",
+            "id": "Buat fungsi trigger bernama `normalize_user_credentials` yang memotong spasi dan mengubah nilai `username` serta `email` menjadi huruf kecil pada data yang masuk lalu mengembalikan data baru tersebut. Kemudian buat trigger BEFORE INSERT OR UPDATE bernama `trg_normalize_user_credentials` pada tabel `user_profiles` untuk setiap baris yang menjalankan fungsi ini."
+        },
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE user_profiles (\n    id SERIAL PRIMARY KEY,\n    username TEXT NOT NULL,\n    email TEXT NOT NULL,\n    role TEXT NOT NULL\n);\n\nCREATE TABLE staff_contracts (\n    id SERIAL PRIMARY KEY,\n    employee_name TEXT NOT NULL,\n    salary NUMERIC(10,2) NOT NULL\n);\n\nCREATE TABLE line_items (\n    id SERIAL PRIMARY KEY,\n    item_name TEXT NOT NULL,\n    unit_price NUMERIC(10,2) NOT NULL,\n    quantity INT NOT NULL,\n    line_total NUMERIC(10,2)\n);",
+        "expected_query": "CREATE OR REPLACE FUNCTION normalize_user_credentials()\nRETURNS TRIGGER AS $$\nBEGIN\n    NEW.username := LOWER(TRIM(NEW.username));\n    NEW.email := LOWER(TRIM(NEW.email));\n    RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql;\n\nCREATE TRIGGER trg_normalize_user_credentials\nBEFORE INSERT OR UPDATE ON user_profiles\nFOR EACH ROW\nEXECUTE FUNCTION normalize_user_credentials();",
+        "verification_query": "INSERT INTO user_profiles (username, email, role) VALUES \n    ('  AliceAdmin ', ' ALICE@Domain.COM  ', 'admin'),\n    (' BobDev  ', 'bob.dev@work.NET ', 'developer');\nSELECT username, email, role FROM user_profiles ORDER BY id;",
+        "starterQuery": "-- Define your trigger function and BEFORE trigger here",
+        "table_names": [
+            "user_profiles"
+        ]
+    },
+    {
+        "id": 1111,
+        "moduleId": 11,
+        "categorySlot": 4,
+        "title": {
+            "en": "BEFORE Trigger: Enforce Salary Floor with Exception (Var #2)",
+            "id": "Trigger BEFORE: Penegakan Batas Gaji Minimum dengan Eksepsi (Latihan #2)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a payroll auditor who stops any contract from being signed if the promised compensation falls below the legal minimum wage threshold, instantly rejecting the submission with an alert.\n\nEngine Processing Behavior: When a BEFORE trigger encounters invalid business state, it can invoke RAISE EXCEPTION. This aborts the current statement and immediately rolls back the current transaction, preventing illegal data from entering the database tables.\n\nBest Practices & Gotchas: Triggers with exceptions are ideal for enforcing cross-table or complex algorithmic rules that simple static CHECK constraints cannot express.",
+            "id": "Analogi Konseptual: Bayangkan auditor penggajian yang menolak pengesahan kontrak kerja jika besaran kompensasi yang tercantum berada di bawah batas upah minimum legal, langsung menggagalkan pendaftaran dengan peringatan keras.\n\nCara Kerja Database Engine: Ketika trigger BEFORE mendeteksi pelanggaran aturan bisnis, fungsi trigger dapat memanggil perintah RAISE EXCEPTION. Ini seketika membatalkan pernyataan yang sedang berjalan dan me-rollback transaksi, memastikan data tidak valid tidak tersimpan ke database.\n\nBest Practices & Catatan Penting: Trigger dengan eksepsi sangat cocok untuk menegakkan aturan bisnis kompleks yang tidak dapat ditangani oleh batasan CHECK statis sederhana."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Validation & Raise Exception",
+                    "id": "Validasi & Memunculkan Eksepsi"
+                },
+                "code": "CREATE OR REPLACE FUNCTION check_threshold()\nRETURNS TRIGGER AS $$\nBEGIN\n    IF NEW.val < 1000 THEN\n        RAISE EXCEPTION 'Value % is below threshold', NEW.val;\n    END IF;\n    RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql;\n\nCREATE TRIGGER trg_check\nBEFORE INSERT OR UPDATE ON table_name\nFOR EACH ROW EXECUTE FUNCTION check_threshold();"
+            }
+        ],
+        "instructions": {
+            "en": "Create a trigger function named `enforce_salary_floor` that checks if `salary` on the incoming row is strictly less than 3000.00. If so, raise an exception indicating the salary is below baseline, otherwise return the new row. Then create a BEFORE INSERT OR UPDATE trigger named `trg_enforce_salary_floor` on `staff_contracts` for each row.",
+            "id": "Buat fungsi trigger bernama `enforce_salary_floor` yang memeriksa apakah nilai `salary` pada baris baru kurang dari 3000.00. Jika ya, munculkan eksepsi yang menyatakan gaji di bawah batas minimum, jika tidak, kembalikan baris baru. Kemudian buat trigger BEFORE INSERT OR UPDATE bernama `trg_enforce_salary_floor` pada tabel `staff_contracts` untuk setiap baris."
+        },
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE user_profiles (\n    id SERIAL PRIMARY KEY,\n    username TEXT NOT NULL,\n    email TEXT NOT NULL,\n    role TEXT NOT NULL\n);\n\nCREATE TABLE staff_contracts (\n    id SERIAL PRIMARY KEY,\n    employee_name TEXT NOT NULL,\n    salary NUMERIC(10,2) NOT NULL\n);\n\nCREATE TABLE line_items (\n    id SERIAL PRIMARY KEY,\n    item_name TEXT NOT NULL,\n    unit_price NUMERIC(10,2) NOT NULL,\n    quantity INT NOT NULL,\n    line_total NUMERIC(10,2)\n);",
+        "expected_query": "CREATE OR REPLACE FUNCTION enforce_salary_floor()\nRETURNS TRIGGER AS $$\nBEGIN\n    IF NEW.salary < 3000.00 THEN\n        RAISE EXCEPTION 'Salary % is below the required baseline of 3000.00', NEW.salary;\n    END IF;\n    RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql;\n\nCREATE TRIGGER trg_enforce_salary_floor\nBEFORE INSERT OR UPDATE ON staff_contracts\nFOR EACH ROW\nEXECUTE FUNCTION enforce_salary_floor();",
+        "verification_query": "INSERT INTO staff_contracts (employee_name, salary) VALUES ('Carol Danvers', 4500.00), ('David Miller', 3200.00);\nSELECT employee_name, salary FROM staff_contracts ORDER BY id;",
+        "starterQuery": "-- Define your trigger function and BEFORE trigger here",
+        "table_names": [
+            "staff_contracts"
+        ]
+    },
+    {
+        "id": 1112,
+        "moduleId": 11,
+        "categorySlot": 4,
+        "title": {
+            "en": "BEFORE Trigger: Compute Line Item Total (Var #3)",
+            "id": "Trigger BEFORE: Hitung Total Baris Transaksi (Latihan #3)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of an automatic cash register barcode scanner. As each item is scanned, the register calculates the extended line total from unit price times quantity before saving the receipt record.\n\nEngine Processing Behavior: A BEFORE trigger computes derived attributes on the NEW record in memory before the tuple is committed to table storage. This avoids downstream inconsistency where application layers might compute conflicting totals.\n\nBest Practices & Gotchas: While generated columns exist in modern SQL, triggers allow richer procedural logic like checking discounts, tiered price tables, or applying conditional overrides.",
+            "id": "Analogi Konseptual: Bayangkan pemindai kasir otomatis. Saat barang dipindai, mesin kasir langsung mengalikan harga satuan dengan kuantitas barang untuk mengisi total harga baris transaksi sebelum mencetak struk belanja.\n\nCara Kerja Database Engine: Trigger BEFORE menghitung nilai turunan langsung pada rekam NEW di memori sebelum baris data disimpan ke media penyimpanan tabel. Hal ini mencegah inkonsistensi data yang bisa terjadi bila kalkulasi dilakukan di berbagai aplikasi klien yang berbeda.\n\nBest Practices & Catatan Penting: Meskipun generated column tersedia di SQL modern, trigger memberikan fleksibilitas logika prosedural yang jauh lebih kaya seperti pengecekan tabel diskon bertingkat atau kondisi bersyarat."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Auto-Compute Row Field",
+                    "id": "Kalkulasi Otomatis Kolom Baris"
+                },
+                "code": "CREATE OR REPLACE FUNCTION compute_total()\nRETURNS TRIGGER AS $$\nBEGIN\n    NEW.total = NEW.price * NEW.quantity;\n    RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql;\n\nCREATE TRIGGER trg_compute\nBEFORE INSERT OR UPDATE ON line_items\nFOR EACH ROW EXECUTE FUNCTION compute_total();"
+            }
+        ],
+        "instructions": {
+            "en": "Create a trigger function named `calculate_line_total` that sets `line_total` on the incoming row to the product of `unit_price` and `quantity` and returns the new row. Then create a BEFORE INSERT OR UPDATE trigger named `trg_calculate_line_total` on `line_items` for each row.",
+            "id": "Buat fungsi trigger bernama `calculate_line_total` yang menetapkan kolom `line_total` pada baris baru sebagai hasil perkalian antara `unit_price` dan `quantity` lalu mengembalikan baris baru. Kemudian buat trigger BEFORE INSERT OR UPDATE bernama `trg_calculate_line_total` pada tabel `line_items` untuk setiap baris."
+        },
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE user_profiles (\n    id SERIAL PRIMARY KEY,\n    username TEXT NOT NULL,\n    email TEXT NOT NULL,\n    role TEXT NOT NULL\n);\n\nCREATE TABLE staff_contracts (\n    id SERIAL PRIMARY KEY,\n    employee_name TEXT NOT NULL,\n    salary NUMERIC(10,2) NOT NULL\n);\n\nCREATE TABLE line_items (\n    id SERIAL PRIMARY KEY,\n    item_name TEXT NOT NULL,\n    unit_price NUMERIC(10,2) NOT NULL,\n    quantity INT NOT NULL,\n    line_total NUMERIC(10,2)\n);",
+        "expected_query": "CREATE OR REPLACE FUNCTION calculate_line_total()\nRETURNS TRIGGER AS $$\nBEGIN\n    NEW.line_total := NEW.unit_price * NEW.quantity;\n    RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql;\n\nCREATE TRIGGER trg_calculate_line_total\nBEFORE INSERT OR UPDATE ON line_items\nFOR EACH ROW\nEXECUTE FUNCTION calculate_line_total();",
+        "verification_query": "INSERT INTO line_items (item_name, unit_price, quantity) VALUES ('Mechanical Keyboard', 85.00, 2), ('USB-C Cable', 12.50, 4);\nSELECT item_name, unit_price, quantity, line_total FROM line_items ORDER BY id;",
+        "starterQuery": "-- Define your trigger function and BEFORE trigger here",
+        "table_names": [
+            "line_items"
+        ]
+    },
+    {
+        "id": 1113,
+        "moduleId": 11,
+        "categorySlot": 5,
+        "title": {
+            "en": "AFTER UPDATE Trigger: Order Status Audit (Var #1)",
+            "id": "Trigger AFTER UPDATE: Audit Status Pesanan (Latihan #1)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a security guard writing in an incident logbook every time a vault door status changes. The vault door changes state first, and immediately afterward, the guard records the exact prior state and new state into the immutable logbook.\n\nEngine Processing Behavior: An AFTER UPDATE trigger fires after the core table row has been updated and internal constraint checks have succeeded. The trigger function receives the special record variables OLD (containing values prior to update) and NEW (containing newly updated values), as well as TG_OP containing the operation string 'UPDATE'. Because the row mutation is already committed to the current transaction buffer, AFTER triggers are ideal for inserting secondary audit log rows without risking partial mutations.\n\nBest Practices & Gotchas: Always specify FOR EACH ROW when row-level field tracking is required. For AFTER triggers, returning NEW or NULL is conventional because the row modification on the primary table is already finalized.",
+            "id": "Analogi Konseptual: Bayangkan petugas keamanan yang mencatat di buku log setiap kali status pintu brankas berubah. Pintu berubah status terlebih dahulu, dan sesaat setelahnya petugas mencatat status lama dan status baru ke dalam buku audit permanen.\n\nCara Kerja Database Engine: Trigger AFTER UPDATE dieksekusi setelah baris tabel utama berhasil diperbarui dan seluruh pemeriksaan constraint terpenuhi. Fungsi trigger menerima variabel rekam khusus OLD (data sebelum pembaruan) dan NEW (data hasil pembaruan), serta TG_OP yang menyimpan teks jenis operasi 'UPDATE'. Karena pembaruan data utama sudah valid dalam buffer transaksi, AFTER trigger sangat ideal untuk mencatat riwayat audit tanpa risiko mengganggu konsistensi baris utama.\n\nBest Practices & Catatan Penting: Selalu sertakan klausa FOR EACH ROW jika pelacakan membutuhkan akses ke tiap baris individual. Pada AFTER trigger, fungsi trigger umumnya mengembalikan nilai NEW atau NULL karena pembaruan pada tabel utama sudah selesai diproses."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Create Audit Trigger Function",
+                    "id": "Membuat Fungsi Trigger Audit"
+                },
+                "code": "CREATE OR REPLACE FUNCTION audit_func()\nRETURNS TRIGGER AS $$\nBEGIN\n    INSERT INTO audit_log (ref_id, old_val, new_val, operation)\n    VALUES (OLD.id, OLD.status, NEW.status, TG_OP);\n    RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql;"
+            },
+            {
+                "label": {
+                    "en": "Attach AFTER UPDATE Trigger",
+                    "id": "Memasang Trigger AFTER UPDATE"
+                },
+                "code": "CREATE TRIGGER trg_audit\nAFTER UPDATE ON target_table\nFOR EACH ROW\nEXECUTE FUNCTION audit_func();"
+            }
+        ],
+        "instructions": {
+            "en": "Create a trigger function named `log_order_status_change` that inserts an audit record into `order_audit_logs` containing `order_id` (from the original row ID), `old_status`, `new_status`, and `action` (using the trigger operation name). Then create an AFTER UPDATE trigger named `trg_order_status_audit` on the `orders` table that executes this function for each row.",
+            "id": "Buat fungsi trigger bernama `log_order_status_change` yang memasukkan catatan riwayat ke tabel `order_audit_logs` dengan kolom `order_id` (dari ID baris asal), `old_status`, `new_status`, dan `action` (dari nama operasi trigger). Selanjutnya buat trigger AFTER UPDATE bernama `trg_order_status_audit` pada tabel `orders` yang menjalankan fungsi tersebut untuk setiap baris."
+        },
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE orders (\n    id SERIAL PRIMARY KEY,\n    customer_name TEXT NOT NULL,\n    total_amount NUMERIC(10,2) NOT NULL,\n    status TEXT NOT NULL\n);\nCREATE TABLE order_audit_logs (\n    id SERIAL PRIMARY KEY,\n    order_id INT NOT NULL,\n    old_status TEXT NOT NULL,\n    new_status TEXT NOT NULL,\n    action TEXT NOT NULL\n);\nINSERT INTO orders (customer_name, total_amount, status) VALUES\n    ('Alice Smith', 120.00, 'pending'),\n    ('Bob Jones', 250.50, 'processing'),\n    ('Charlie Brown', 85.00, 'pending');\n\nCREATE TABLE product_catalog (\n    id SERIAL PRIMARY KEY,\n    product_name TEXT NOT NULL,\n    price NUMERIC(10,2) NOT NULL\n);\nCREATE TABLE product_price_logs (\n    id SERIAL PRIMARY KEY,\n    product_id INT NOT NULL,\n    old_price NUMERIC(10,2) NOT NULL,\n    new_price NUMERIC(10,2) NOT NULL,\n    action TEXT NOT NULL\n);\nINSERT INTO product_catalog (product_name, price) VALUES\n    ('Ergonomic Chair', 250.00),\n    ('Standing Desk', 450.00);\n\nCREATE TABLE club_members (\n    id INT PRIMARY KEY,\n    member_name TEXT NOT NULL,\n    membership_tier TEXT NOT NULL\n);\nCREATE TABLE member_deletions_archive (\n    id SERIAL PRIMARY KEY,\n    deleted_member_id INT NOT NULL,\n    member_name TEXT NOT NULL,\n    membership_tier TEXT NOT NULL,\n    action TEXT NOT NULL\n);\nINSERT INTO club_members VALUES (101, 'Franklin', 'Gold'), (102, 'Grace', 'Silver'), (103, 'Hector', 'Platinum');",
+        "expected_query": "CREATE OR REPLACE FUNCTION log_order_status_change()\nRETURNS TRIGGER AS $$\nBEGIN\n    INSERT INTO order_audit_logs (order_id, old_status, new_status, action)\n    VALUES (OLD.id, OLD.status, NEW.status, TG_OP);\n    RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql;\n\nCREATE TRIGGER trg_order_status_audit\nAFTER UPDATE ON orders\nFOR EACH ROW\nEXECUTE FUNCTION log_order_status_change();",
+        "verification_query": "UPDATE orders SET status = 'shipped' WHERE id = 1;\nUPDATE orders SET status = 'cancelled' WHERE id = 3;\nSELECT order_id, old_status, new_status, action FROM order_audit_logs ORDER BY id;",
+        "starterQuery": "-- Define your audit trigger function and AFTER trigger here",
+        "table_names": [
+            "orders",
+            "order_audit_logs"
+        ]
+    },
+    {
+        "id": 1114,
+        "moduleId": 11,
+        "categorySlot": 5,
+        "title": {
+            "en": "AFTER UPDATE Trigger: Product Price Audit History (Var #2)",
+            "id": "Trigger AFTER UPDATE: Riwayat Audit Perubahan Harga Produk (Latihan #2)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a retail chain price tag monitor. Whenever a store manager adjusts a price tag on a shelf, an electronic tracker automatically logs the previous price and the newly posted price to historical analytics.\n\nEngine Processing Behavior: AFTER triggers guarantee that changes to primary entity rows are confirmed before secondary logging is initiated. Accessing OLD.price and NEW.price provides complete visibility into numeric deltas.\n\nBest Practices & Gotchas: Recording TG_OP in audit tables documents whether the modification originated from an INSERT, UPDATE, or DELETE.",
+            "id": "Analogi Konseptual: Bayangkan sistem pemantau label harga di toko ritel. Setiap kali manajer toko mengubah harga barang di etalase, sistem elektronik otomatis mencatat harga lama dan harga baru ke dalam arsip riwayat harga.\n\nCara Kerja Database Engine: Trigger AFTER menjamin perubahan pada entitas utama telah tervalidasi sebelum pencatatan sekunder dijalankan. Mengakses OLD.price dan NEW.price memberikan visibilitas lengkap terhadap perubahan nilai angka.\n\nBest Practices & Catatan Penting: Mencatat nilai TG_OP pada tabel riwayat audit sangat bermanfaat untuk mendokumentasikan apakah perubahan berasal dari INSERT, UPDATE, atau DELETE."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Price Change Audit Trigger",
+                    "id": "Trigger Audit Perubahan Harga"
+                },
+                "code": "CREATE OR REPLACE FUNCTION log_price_change()\nRETURNS TRIGGER AS $$\nBEGIN\n    INSERT INTO price_logs (item_id, old_p, new_p, op)\n    VALUES (OLD.id, OLD.price, NEW.price, TG_OP);\n    RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql;\n\nCREATE TRIGGER trg_price_audit\nAFTER UPDATE ON items\nFOR EACH ROW EXECUTE FUNCTION log_price_change();"
+            }
+        ],
+        "instructions": {
+            "en": "Create a trigger function named `log_product_price_change` that inserts a row into `product_price_logs` containing `product_id` (from the original ID), `old_price`, `new_price`, and `action` (from the trigger operation). Then create an AFTER UPDATE trigger named `trg_product_price_audit` on `product_catalog` executing this function for each row.",
+            "id": "Buat fungsi trigger bernama `log_product_price_change` yang memasukkan baris baru ke tabel `product_price_logs` dengan kolom `product_id` (dari ID asal), `old_price`, `new_price`, dan `action` (dari operasi trigger). Kemudian buat trigger AFTER UPDATE bernama `trg_product_price_audit` pada tabel `product_catalog` yang menjalankan fungsi ini untuk setiap baris."
+        },
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE orders (\n    id SERIAL PRIMARY KEY,\n    customer_name TEXT NOT NULL,\n    total_amount NUMERIC(10,2) NOT NULL,\n    status TEXT NOT NULL\n);\nCREATE TABLE order_audit_logs (\n    id SERIAL PRIMARY KEY,\n    order_id INT NOT NULL,\n    old_status TEXT NOT NULL,\n    new_status TEXT NOT NULL,\n    action TEXT NOT NULL\n);\nINSERT INTO orders (customer_name, total_amount, status) VALUES\n    ('Alice Smith', 120.00, 'pending'),\n    ('Bob Jones', 250.50, 'processing'),\n    ('Charlie Brown', 85.00, 'pending');\n\nCREATE TABLE product_catalog (\n    id SERIAL PRIMARY KEY,\n    product_name TEXT NOT NULL,\n    price NUMERIC(10,2) NOT NULL\n);\nCREATE TABLE product_price_logs (\n    id SERIAL PRIMARY KEY,\n    product_id INT NOT NULL,\n    old_price NUMERIC(10,2) NOT NULL,\n    new_price NUMERIC(10,2) NOT NULL,\n    action TEXT NOT NULL\n);\nINSERT INTO product_catalog (product_name, price) VALUES\n    ('Ergonomic Chair', 250.00),\n    ('Standing Desk', 450.00);\n\nCREATE TABLE club_members (\n    id INT PRIMARY KEY,\n    member_name TEXT NOT NULL,\n    membership_tier TEXT NOT NULL\n);\nCREATE TABLE member_deletions_archive (\n    id SERIAL PRIMARY KEY,\n    deleted_member_id INT NOT NULL,\n    member_name TEXT NOT NULL,\n    membership_tier TEXT NOT NULL,\n    action TEXT NOT NULL\n);\nINSERT INTO club_members VALUES (101, 'Franklin', 'Gold'), (102, 'Grace', 'Silver'), (103, 'Hector', 'Platinum');",
+        "expected_query": "CREATE OR REPLACE FUNCTION log_product_price_change()\nRETURNS TRIGGER AS $$\nBEGIN\n    INSERT INTO product_price_logs (product_id, old_price, new_price, action)\n    VALUES (OLD.id, OLD.price, NEW.price, TG_OP);\n    RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql;\n\nCREATE TRIGGER trg_product_price_audit\nAFTER UPDATE ON product_catalog\nFOR EACH ROW\nEXECUTE FUNCTION log_product_price_change();",
+        "verification_query": "UPDATE product_catalog SET price = 280.00 WHERE id = 1;\nUPDATE product_catalog SET price = 420.00 WHERE id = 2;\nSELECT product_id, old_price, new_price, action FROM product_price_logs ORDER BY id;",
+        "starterQuery": "-- Define your audit trigger function and AFTER trigger here",
+        "table_names": [
+            "product_catalog",
+            "product_price_logs"
+        ]
+    },
+    {
+        "id": 1115,
+        "moduleId": 11,
+        "categorySlot": 5,
+        "title": {
+            "en": "AFTER DELETE Trigger: Archive Deleted Accounts (Var #3)",
+            "id": "Trigger AFTER DELETE: Arsipkan Akun yang Dihapus (Latihan #3)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a membership club secretary who copies an outgoing member file into an archival cabinet whenever a member record is purged from active files, ensuring compliance and historic traceability.\n\nEngine Processing Behavior: On a DELETE statement, the NEW variable is NULL, while the OLD variable contains the full tuple just before deletion. An AFTER DELETE trigger reads OLD fields to populate an archival or tombstone table safely.\n\nBest Practices & Gotchas: Return OLD from an AFTER DELETE trigger function. Never attempt to reference fields on NEW during a DELETE operation.",
+            "id": "Analogi Konseptual: Bayangkan sekretaris klub keanggotaan yang menyalin berkas anggota ke lemari arsip setiap kali ada akun anggota yang dihapus dari daftar aktif, memastikan kepatuhan regulasi dan keterlacakan riwayat.\n\nCara Kerja Database Engine: Pada perintah DELETE, variabel NEW bernilai NULL, sedangkan variabel OLD menyimpan seluruh data baris sesaat sebelum dihapus. Trigger AFTER DELETE membaca kolom-kolom OLD untuk mengisi tabel arsip dengan aman.\n\nBest Practices & Catatan Penting: Kembalikan nilai OLD pada fungsi trigger AFTER DELETE. Jangan pernah mencoba mengakses variabel NEW saat menangani operasi DELETE karena nilainya tidak terdefinisi."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Archive on Deletion Trigger",
+                    "id": "Trigger Arsip Saat Penghapusan"
+                },
+                "code": "CREATE OR REPLACE FUNCTION archive_record()\nRETURNS TRIGGER AS $$\nBEGIN\n    INSERT INTO archive_table (ref_id, name, op)\n    VALUES (OLD.id, OLD.name, TG_OP);\n    RETURN OLD;\nEND;\n$$ LANGUAGE plpgsql;\n\nCREATE TRIGGER trg_archive\nAFTER DELETE ON main_table\nFOR EACH ROW EXECUTE FUNCTION archive_record();"
+            }
+        ],
+        "instructions": {
+            "en": "Create a trigger function named `archive_deleted_member` that inserts a record into `member_deletions_archive` containing `deleted_member_id` (from the deleted ID), `member_name`, `membership_tier`, and `action` (using the trigger operation name). Then attach an AFTER DELETE trigger named `trg_archive_deleted_member` to `club_members` for each row.",
+            "id": "Buat fungsi trigger bernama `archive_deleted_member` yang memasukkan data ke tabel `member_deletions_archive` dengan kolom `deleted_member_id` (dari ID yang dihapus), `member_name`, `membership_tier`, dan `action` (dari operasi trigger). Kemudian pasang trigger AFTER DELETE bernama `trg_archive_deleted_member` pada tabel `club_members` untuk setiap baris."
+        },
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE orders (\n    id SERIAL PRIMARY KEY,\n    customer_name TEXT NOT NULL,\n    total_amount NUMERIC(10,2) NOT NULL,\n    status TEXT NOT NULL\n);\nCREATE TABLE order_audit_logs (\n    id SERIAL PRIMARY KEY,\n    order_id INT NOT NULL,\n    old_status TEXT NOT NULL,\n    new_status TEXT NOT NULL,\n    action TEXT NOT NULL\n);\nINSERT INTO orders (customer_name, total_amount, status) VALUES\n    ('Alice Smith', 120.00, 'pending'),\n    ('Bob Jones', 250.50, 'processing'),\n    ('Charlie Brown', 85.00, 'pending');\n\nCREATE TABLE product_catalog (\n    id SERIAL PRIMARY KEY,\n    product_name TEXT NOT NULL,\n    price NUMERIC(10,2) NOT NULL\n);\nCREATE TABLE product_price_logs (\n    id SERIAL PRIMARY KEY,\n    product_id INT NOT NULL,\n    old_price NUMERIC(10,2) NOT NULL,\n    new_price NUMERIC(10,2) NOT NULL,\n    action TEXT NOT NULL\n);\nINSERT INTO product_catalog (product_name, price) VALUES\n    ('Ergonomic Chair', 250.00),\n    ('Standing Desk', 450.00);\n\nCREATE TABLE club_members (\n    id INT PRIMARY KEY,\n    member_name TEXT NOT NULL,\n    membership_tier TEXT NOT NULL\n);\nCREATE TABLE member_deletions_archive (\n    id SERIAL PRIMARY KEY,\n    deleted_member_id INT NOT NULL,\n    member_name TEXT NOT NULL,\n    membership_tier TEXT NOT NULL,\n    action TEXT NOT NULL\n);\nINSERT INTO club_members VALUES (101, 'Franklin', 'Gold'), (102, 'Grace', 'Silver'), (103, 'Hector', 'Platinum');",
+        "expected_query": "CREATE OR REPLACE FUNCTION archive_deleted_member()\nRETURNS TRIGGER AS $$\nBEGIN\n    INSERT INTO member_deletions_archive (deleted_member_id, member_name, membership_tier, action)\n    VALUES (OLD.id, OLD.member_name, OLD.membership_tier, TG_OP);\n    RETURN OLD;\nEND;\n$$ LANGUAGE plpgsql;\n\nCREATE TRIGGER trg_archive_deleted_member\nAFTER DELETE ON club_members\nFOR EACH ROW\nEXECUTE FUNCTION archive_deleted_member();",
+        "verification_query": "DELETE FROM club_members WHERE id = 101;\nDELETE FROM club_members WHERE id = 103;\nSELECT deleted_member_id, member_name, membership_tier, action FROM member_deletions_archive ORDER BY id;",
+        "starterQuery": "-- Define your audit trigger function and AFTER trigger here",
+        "table_names": [
+            "club_members",
+            "member_deletions_archive"
+        ]
+    },
+    {
+        "id": 1116,
+        "moduleId": 11,
+        "categorySlot": 6,
+        "title": {
+            "en": "Schema Refactoring: Extract 2NF Products Table (Var #1)",
+            "id": "Refaktor Skema: Ekstraksi Tabel Produk 2NF (Latihan #1)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Imagine an invoice spreadsheet where every line item repeats the product name, category, and price over and over. If the price changes, you have to update multiple lines. Second Normal Form (2NF) fixes this by moving product details into a separate catalog table so each product is defined exactly once.\n\nEngine Processing Behavior: A table is in 2NF if it is in 1NF and every non-key column is fully functionally dependent on the entire primary key. In a table with a composite primary key (order_id, item_id), attributes like item_name and unit_price depend only on item_id (a partial key dependency). Normalizing into 2NF decomposes the relation into two tables, eliminating update anomalies and redundant storage.\n\nBest Practices & Gotchas: Use INSERT INTO ... SELECT DISTINCT to extract clean reference records from denormalized source tables without duplicating primary keys.",
+            "id": "Analogi Konseptual: Bayangkan lembar kerja faktur belanja di mana tiap baris barang selalu mengulang nama produk, kategori, dan harga berulang kali. Jika harga berubah, Anda harus memperbarui banyak baris sekaligus. Bentuk Normal Kedua (2NF) mengatasi masalah ini dengan memisahkan rincian produk ke tabel katalog tersendiri sehingga tiap produk hanya tercatat satu kali.\n\nCara Kerja Database Engine: Suatu tabel berada dalam 2NF jika memenuhi 1NF dan setiap kolom non-kunci bergantung secara fungsional penuh pada seluruh primary key. Pada tabel dengan primary key komposit (order_id, item_id), kolom seperti item_name dan unit_price hanya bergantung pada item_id (ketergantungan parsial). Normalisasi ke 2NF memecah relasi menjadi dua tabel, melenyapkan anomali pembaruan dan redundansi data.\n\nBest Practices & Catatan Penting: Gunakan INSERT INTO ... SELECT DISTINCT untuk mengekstrak data unik dari tabel yang belum ternormalisasi agar tidak terjadi duplikasi kunci utama."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Refactor to 2NF",
+                    "id": "Refaktorisasi ke 2NF"
+                },
+                "code": "CREATE TABLE new_entity (\n    entity_id INT PRIMARY KEY,\n    col1 TEXT NOT NULL,\n    col2 NUMERIC NOT NULL\n);\n\nINSERT INTO new_entity (entity_id, col1, col2)\nSELECT DISTINCT source_id, source_col1, source_col2\nFROM denorm_table\nORDER BY source_id;"
+            }
+        ],
+        "instructions": {
+            "en": "Refactor the composite-key table `order_items_denorm` into 2NF by creating a new table named `products_2nf` with primary key `product_id` (integer), `product_name` (text), `category` (text), and `unit_price` (numeric). Then populate `products_2nf` with distinct item records from `order_items_denorm` ordered by item ID.",
+            "id": "Refaktor tabel berkunci komposit `order_items_denorm` ke dalam bentuk 2NF dengan membuat tabel baru bernama `products_2nf` dengan primary key `product_id` (integer), `product_name` (text), `category` (text), dan `unit_price` (numeric). Kemudian isi tabel `products_2nf` dengan data item unik dari `order_items_denorm` yang diurutkan berdasarkan ID item."
+        },
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE order_items_denorm (\n    order_id INT NOT NULL,\n    item_id INT NOT NULL,\n    item_name TEXT NOT NULL,\n    item_category TEXT NOT NULL,\n    unit_price NUMERIC(10,2) NOT NULL,\n    quantity INT NOT NULL,\n    PRIMARY KEY (order_id, item_id)\n);\nINSERT INTO order_items_denorm VALUES\n    (1, 101, 'Laptop', 'Electronics', 1200.00, 1),\n    (1, 102, 'Mouse', 'Electronics', 25.00, 2),\n    (2, 101, 'Laptop', 'Electronics', 1200.00, 1),\n    (2, 103, 'Desk Pad', 'Stationery', 15.00, 3);\n\nCREATE TABLE student_course_enrollments (\n    student_id INT NOT NULL,\n    course_code TEXT NOT NULL,\n    course_title TEXT NOT NULL,\n    instructor_name TEXT NOT NULL,\n    semester TEXT NOT NULL,\n    final_grade TEXT NOT NULL,\n    PRIMARY KEY (student_id, course_code)\n);\nINSERT INTO student_course_enrollments VALUES\n    (201, 'CS101', 'Intro to Computer Science', 'Prof. Turing', 'Fall 2024', 'A'),\n    (201, 'MATH201', 'Linear Algebra', 'Prof. Euler', 'Fall 2024', 'B+'),\n    (202, 'CS101', 'Intro to Computer Science', 'Prof. Turing', 'Fall 2024', 'A-'),\n    (203, 'MATH201', 'Linear Algebra', 'Prof. Euler', 'Fall 2024', 'A');\n\nCREATE TABLE warehouse_inventory_flat (\n    warehouse_id INT NOT NULL,\n    sku_code TEXT NOT NULL,\n    warehouse_city TEXT NOT NULL,\n    warehouse_capacity INT NOT NULL,\n    quantity_on_hand INT NOT NULL,\n    PRIMARY KEY (warehouse_id, sku_code)\n);\nINSERT INTO warehouse_inventory_flat VALUES\n    (1, 'SKU-A1', 'Chicago', 50000, 120),\n    (1, 'SKU-B2', 'Chicago', 50000, 450),\n    (2, 'SKU-A1', 'Dallas', 35000, 80),\n    (3, 'SKU-C3', 'Seattle', 42000, 310);",
+        "expected_query": "CREATE TABLE products_2nf (\n    product_id INT PRIMARY KEY,\n    product_name TEXT NOT NULL,\n    category TEXT NOT NULL,\n    unit_price NUMERIC(10,2) NOT NULL\n);\n\nINSERT INTO products_2nf (product_id, product_name, category, unit_price)\nSELECT DISTINCT item_id, item_name, item_category, unit_price\nFROM order_items_denorm\nORDER BY item_id;",
+        "verification_query": "SELECT product_id, product_name, category, unit_price FROM products_2nf ORDER BY product_id;",
+        "starterQuery": "-- Define 2NF table and populate distinct records here",
+        "table_names": [
+            "order_items_denorm",
+            "products_2nf"
+        ]
+    },
+    {
+        "id": 1117,
+        "moduleId": 11,
+        "categorySlot": 6,
+        "title": {
+            "en": "Schema Refactoring: Extract 2NF Courses Table (Var #2)",
+            "id": "Refaktor Skema: Ekstraksi Tabel Mata Kuliah 2NF (Latihan #2)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a university enrollment ledger. In a table keyed by student ID and course code, the course title and instructor name are repeated for every enrolled student. Normalizing to 2NF separates the course curriculum from student enrollments.\n\nEngine Processing Behavior: Partial dependencies cause deletion anomalies: if all students drop a course, the course title and instructor details would be inadvertently wiped out. Separating the partially dependent attributes into a parent relation preserves the entity independently.\n\nBest Practices & Gotchas: Always establish primary key constraints on the newly extracted table before referencing it via foreign keys.",
+            "id": "Analogi Konseptual: Bayangkan buku daftar pendaftaran mahasiswa. Pada tabel dengan kunci gabungan ID mahasiswa dan kode mata kuliah, judul mata kuliah dan nama dosen diulang untuk setiap mahasiswa yang mendaftar. Normalisasi 2NF memisahkan informasi kurikulum mata kuliah dari transaksi pendaftaran mahasiswa.\n\nCara Kerja Database Engine: Ketergantungan parsial memicu anomali penghapusan: jika semua mahasiswa membatalkan pendaftaran suatu mata kuliah, data nama mata kuliah dan dosen akan ikut terhapus tanpa sengaja. Memisahkan atribut tersebut ke tabel induk menjaga data entitas tetap utuh secara mandiri.\n\nBest Practices & Catatan Penting: Selalu tetapkan batasan primary key pada tabel hasil ekstraksi baru sebelum menghubungkannya kembali dengan foreign key."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Extract 2NF Course Catalog",
+                    "id": "Ekstraksi Katalog Kursus 2NF"
+                },
+                "code": "CREATE TABLE courses_2nf (\n    course_code TEXT PRIMARY KEY,\n    course_title TEXT NOT NULL,\n    instructor_name TEXT NOT NULL\n);\n\nINSERT INTO courses_2nf (course_code, course_title, instructor_name)\nSELECT DISTINCT course_code, course_title, instructor_name\nFROM student_course_enrollments\nORDER BY course_code;"
+            }
+        ],
+        "instructions": {
+            "en": "Refactor `student_course_enrollments` into 2NF by creating a table named `courses_2nf` with primary key `course_code` (text), `course_title` (text), and `instructor_name` (text). Then populate `courses_2nf` with distinct course records from the enrollment table ordered by course code.",
+            "id": "Refaktor tabel `student_course_enrollments` ke dalam bentuk 2NF dengan membuat tabel bernama `courses_2nf` dengan primary key `course_code` (text), `course_title` (text), dan `instructor_name` (text). Kemudian isi tabel `courses_2nf` dengan data mata kuliah unik dari tabel pendaftaran yang diurutkan berdasarkan kode mata kuliah."
+        },
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE order_items_denorm (\n    order_id INT NOT NULL,\n    item_id INT NOT NULL,\n    item_name TEXT NOT NULL,\n    item_category TEXT NOT NULL,\n    unit_price NUMERIC(10,2) NOT NULL,\n    quantity INT NOT NULL,\n    PRIMARY KEY (order_id, item_id)\n);\nINSERT INTO order_items_denorm VALUES\n    (1, 101, 'Laptop', 'Electronics', 1200.00, 1),\n    (1, 102, 'Mouse', 'Electronics', 25.00, 2),\n    (2, 101, 'Laptop', 'Electronics', 1200.00, 1),\n    (2, 103, 'Desk Pad', 'Stationery', 15.00, 3);\n\nCREATE TABLE student_course_enrollments (\n    student_id INT NOT NULL,\n    course_code TEXT NOT NULL,\n    course_title TEXT NOT NULL,\n    instructor_name TEXT NOT NULL,\n    semester TEXT NOT NULL,\n    final_grade TEXT NOT NULL,\n    PRIMARY KEY (student_id, course_code)\n);\nINSERT INTO student_course_enrollments VALUES\n    (201, 'CS101', 'Intro to Computer Science', 'Prof. Turing', 'Fall 2024', 'A'),\n    (201, 'MATH201', 'Linear Algebra', 'Prof. Euler', 'Fall 2024', 'B+'),\n    (202, 'CS101', 'Intro to Computer Science', 'Prof. Turing', 'Fall 2024', 'A-'),\n    (203, 'MATH201', 'Linear Algebra', 'Prof. Euler', 'Fall 2024', 'A');\n\nCREATE TABLE warehouse_inventory_flat (\n    warehouse_id INT NOT NULL,\n    sku_code TEXT NOT NULL,\n    warehouse_city TEXT NOT NULL,\n    warehouse_capacity INT NOT NULL,\n    quantity_on_hand INT NOT NULL,\n    PRIMARY KEY (warehouse_id, sku_code)\n);\nINSERT INTO warehouse_inventory_flat VALUES\n    (1, 'SKU-A1', 'Chicago', 50000, 120),\n    (1, 'SKU-B2', 'Chicago', 50000, 450),\n    (2, 'SKU-A1', 'Dallas', 35000, 80),\n    (3, 'SKU-C3', 'Seattle', 42000, 310);",
+        "expected_query": "CREATE TABLE courses_2nf (\n    course_code TEXT PRIMARY KEY,\n    course_title TEXT NOT NULL,\n    instructor_name TEXT NOT NULL\n);\n\nINSERT INTO courses_2nf (course_code, course_title, instructor_name)\nSELECT DISTINCT course_code, course_title, instructor_name\nFROM student_course_enrollments\nORDER BY course_code;",
+        "verification_query": "SELECT course_code, course_title, instructor_name FROM courses_2nf ORDER BY course_code;",
+        "starterQuery": "-- Define 2NF table and populate distinct records here",
+        "table_names": [
+            "student_course_enrollments",
+            "courses_2nf"
+        ]
+    },
+    {
+        "id": 1118,
+        "moduleId": 11,
+        "categorySlot": 6,
+        "title": {
+            "en": "Schema Refactoring: Extract 2NF Warehouses Table (Var #3)",
+            "id": "Refaktor Skema: Ekstraksi Tabel Gudang 2NF (Latihan #3)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a logistics sheet tracking inventory across distribution centers. Recording warehouse city and capacity repeatedly for every single stored SKU creates redundancy. Extracting warehouses into their own master table ensures each facility metadata is stored once.\n\nEngine Processing Behavior: By removing partial dependencies on the composite key (warehouse_id, sku_code), the storage engine avoids duplicating text strings across index and data pages, improving cache density and query throughput.\n\nBest Practices & Gotchas: When extracting master entities from operational tables, enforce NOT NULL constraints on critical business attributes.",
+            "id": "Analogi Konseptual: Bayangkan catatan logistik persediaan barang di berbagai pusat distribusi. Mencatat kota dan kapasitas gudang berulang kali untuk setiap nomor SKU menimbulkan pemborosan data. Mengekstrak gudang ke tabel master tersendiri memastikan profil tiap fasilitas tersimpan satu kali saja.\n\nCara Kerja Database Engine: Dengan melenyapkan ketergantungan parsial pada kunci gabungan (warehouse_id, sku_code), storage engine terhindar dari duplikasi string teks pada halaman indeks dan data, meningkatkan kepadatan memori cache dan kinerja query.\n\nBest Practices & Catatan Penting: Saat mengekstrak entitas master dari tabel operasional, selalu pasang batasan NOT NULL pada atribut bisnis yang krusial."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Extract Master Table",
+                    "id": "Ekstraksi Tabel Master"
+                },
+                "code": "CREATE TABLE warehouses_2nf (\n    warehouse_id INT PRIMARY KEY,\n    city TEXT NOT NULL,\n    capacity INT NOT NULL\n);\n\nINSERT INTO warehouses_2nf (warehouse_id, city, capacity)\nSELECT DISTINCT warehouse_id, warehouse_city, warehouse_capacity\nFROM warehouse_inventory_flat\nORDER BY warehouse_id;"
+            }
+        ],
+        "instructions": {
+            "en": "Refactor `warehouse_inventory_flat` into 2NF by creating a table named `warehouses_2nf` with primary key `warehouse_id` (integer), `city` (text), and `capacity` (integer). Then populate `warehouses_2nf` with distinct warehouse entries from the flat table ordered by warehouse ID.",
+            "id": "Refaktor tabel `warehouse_inventory_flat` ke dalam bentuk 2NF dengan membuat tabel bernama `warehouses_2nf` dengan primary key `warehouse_id` (integer), `city` (text), dan `capacity` (integer). Kemudian isi tabel `warehouses_2nf` dengan data gudang unik dari tabel flat tersebut yang diurutkan berdasarkan ID gudang."
+        },
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE order_items_denorm (\n    order_id INT NOT NULL,\n    item_id INT NOT NULL,\n    item_name TEXT NOT NULL,\n    item_category TEXT NOT NULL,\n    unit_price NUMERIC(10,2) NOT NULL,\n    quantity INT NOT NULL,\n    PRIMARY KEY (order_id, item_id)\n);\nINSERT INTO order_items_denorm VALUES\n    (1, 101, 'Laptop', 'Electronics', 1200.00, 1),\n    (1, 102, 'Mouse', 'Electronics', 25.00, 2),\n    (2, 101, 'Laptop', 'Electronics', 1200.00, 1),\n    (2, 103, 'Desk Pad', 'Stationery', 15.00, 3);\n\nCREATE TABLE student_course_enrollments (\n    student_id INT NOT NULL,\n    course_code TEXT NOT NULL,\n    course_title TEXT NOT NULL,\n    instructor_name TEXT NOT NULL,\n    semester TEXT NOT NULL,\n    final_grade TEXT NOT NULL,\n    PRIMARY KEY (student_id, course_code)\n);\nINSERT INTO student_course_enrollments VALUES\n    (201, 'CS101', 'Intro to Computer Science', 'Prof. Turing', 'Fall 2024', 'A'),\n    (201, 'MATH201', 'Linear Algebra', 'Prof. Euler', 'Fall 2024', 'B+'),\n    (202, 'CS101', 'Intro to Computer Science', 'Prof. Turing', 'Fall 2024', 'A-'),\n    (203, 'MATH201', 'Linear Algebra', 'Prof. Euler', 'Fall 2024', 'A');\n\nCREATE TABLE warehouse_inventory_flat (\n    warehouse_id INT NOT NULL,\n    sku_code TEXT NOT NULL,\n    warehouse_city TEXT NOT NULL,\n    warehouse_capacity INT NOT NULL,\n    quantity_on_hand INT NOT NULL,\n    PRIMARY KEY (warehouse_id, sku_code)\n);\nINSERT INTO warehouse_inventory_flat VALUES\n    (1, 'SKU-A1', 'Chicago', 50000, 120),\n    (1, 'SKU-B2', 'Chicago', 50000, 450),\n    (2, 'SKU-A1', 'Dallas', 35000, 80),\n    (3, 'SKU-C3', 'Seattle', 42000, 310);",
+        "expected_query": "CREATE TABLE warehouses_2nf (\n    warehouse_id INT PRIMARY KEY,\n    city TEXT NOT NULL,\n    capacity INT NOT NULL\n);\n\nINSERT INTO warehouses_2nf (warehouse_id, city, capacity)\nSELECT DISTINCT warehouse_id, warehouse_city, warehouse_capacity\nFROM warehouse_inventory_flat\nORDER BY warehouse_id;",
+        "verification_query": "SELECT warehouse_id, city, capacity FROM warehouses_2nf ORDER BY warehouse_id;",
+        "starterQuery": "-- Define 2NF table and populate distinct records here",
+        "table_names": [
+            "warehouse_inventory_flat",
+            "warehouses_2nf"
+        ]
+    },
+    {
+        "id": 1119,
+        "moduleId": 11,
+        "categorySlot": 7,
+        "title": {
+            "en": "Schema Refactoring: Eliminate Transitive Dependencies (Var #1)",
+            "id": "Refaktor Skema: Melenyapkan Ketergantungan Transitif (Latihan #1)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of an employee directory where each worker record contains their department code, department name, and department budget. The department budget does not depend on the employee; it depends on the department. Third Normal Form (3NF) removes these 'transitive' dependencies so department facts live only in a department table.\n\nEngine Processing Behavior: A table is in 3NF if it is in 2NF and has no transitive dependencies (where non-key column A determines non-key column B). In employee_records, emp_id -> dept_code -> (dept_name, dept_budget). Extracting departments into departments_3nf ensures department budget updates require modifying only a single row.\n\nBest Practices & Gotchas: Decomposing into 3NF eliminates update anomalies where modifying a department budget would otherwise require updating hundreds of employee rows.",
+            "id": "Analogi Konseptual: Bayangkan buku daftar karyawan di mana setiap profil karyawan memuat kode departemen, nama departemen, dan anggaran departemen. Anggaran departemen sebenarnya tidak bergantung pada individu karyawan, melainkan pada departemen itu sendiri. Bentuk Normal Ketiga (3NF) menghapus ketergantungan 'transitif' ini sehingga informasi departemen berada di tabel khusus departemen.\n\nCara Kerja Database Engine: Suatu tabel berada dalam 3NF jika memenuhi 2NF dan tidak memiliki ketergantungan transitif (kondisi di mana kolom non-kunci A menentukan kolom non-kunci B). Pada employee_records, relasinya adalah emp_id -> dept_code -> (dept_name, dept_budget). Mengekstrak departemen ke departments_3nf memastikan perubahan anggaran departemen hanya perlu memperbarui satu baris saja.\n\nBest Practices & Catatan Penting: Dekomposisi ke 3NF melenyapkan anomali pembaruan di mana perubahan anggaran departemen sebelumnya harus mengubah ratusan baris data karyawan."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Extract 3NF Lookup Table",
+                    "id": "Ekstraksi Tabel Lookup 3NF"
+                },
+                "code": "CREATE TABLE departments_3nf (\n    dept_code TEXT PRIMARY KEY,\n    dept_name TEXT NOT NULL,\n    dept_budget NUMERIC(12,2) NOT NULL\n);\n\nINSERT INTO departments_3nf (dept_code, dept_name, dept_budget)\nSELECT DISTINCT dept_code, dept_name, dept_budget\nFROM employee_records\nORDER BY dept_code;"
+            }
+        ],
+        "instructions": {
+            "en": "Eliminate the transitive dependency in `employee_records` by creating a 3NF lookup table named `departments_3nf` with primary key `dept_code` (text), `dept_name` (text), and `dept_budget` (numeric). Then populate `departments_3nf` with distinct department records from `employee_records` ordered by department code.",
+            "id": "Hilangkan ketergantungan transitif pada tabel `employee_records` dengan membuat tabel lookup 3NF bernama `departments_3nf` dengan primary key `dept_code` (text), `dept_name` (text), dan `dept_budget` (numeric). Kemudian isi tabel `departments_3nf` dengan data departemen unik dari `employee_records` yang diurutkan berdasarkan kode departemen."
+        },
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE employee_records (\n    emp_id INT PRIMARY KEY,\n    emp_name TEXT NOT NULL,\n    dept_code TEXT NOT NULL,\n    dept_name TEXT NOT NULL,\n    dept_budget NUMERIC(12,2) NOT NULL\n);\nINSERT INTO employee_records VALUES\n    (1, 'Alice Smith', 'ENG', 'Engineering', 500000.00),\n    (2, 'Bob Jones', 'ENG', 'Engineering', 500000.00),\n    (3, 'Charlie Brown', 'MKT', 'Marketing', 250000.00),\n    (4, 'Diana Prince', 'FIN', 'Finance', 300000.00);\n\nCREATE TABLE store_locations (\n    store_id INT PRIMARY KEY,\n    store_name TEXT NOT NULL,\n    postal_code TEXT NOT NULL,\n    city_name TEXT NOT NULL,\n    state_code TEXT NOT NULL,\n    tax_rate NUMERIC(4,2) NOT NULL\n);\nINSERT INTO store_locations VALUES\n    (1, 'Downtown Outlet', '94101', 'San Francisco', 'CA', 8.50),\n    (2, 'Bayview Branch', '94101', 'San Francisco', 'CA', 8.50),\n    (3, 'Sunset Store', '94122', 'San Francisco', 'CA', 8.50),\n    (4, 'Austin Hub', '73301', 'Austin', 'TX', 6.25);\n\nCREATE TABLE account_subscriptions (\n    account_id INT PRIMARY KEY,\n    subscriber_name TEXT NOT NULL,\n    plan_code TEXT NOT NULL,\n    plan_name TEXT NOT NULL,\n    monthly_fee NUMERIC(6,2) NOT NULL,\n    storage_limit_gb INT NOT NULL\n);\nINSERT INTO account_subscriptions VALUES\n    (101, 'Acme Corp', 'BIZ', 'Business Tier', 79.99, 1000),\n    (102, 'Beta LLC', 'BIZ', 'Business Tier', 79.99, 1000),\n    (103, 'Charlie Co', 'PRO', 'Professional Tier', 29.99, 250),\n    (104, 'Delta Inc', 'ENT', 'Enterprise Tier', 199.99, 5000);",
+        "expected_query": "CREATE TABLE departments_3nf (\n    dept_code TEXT PRIMARY KEY,\n    dept_name TEXT NOT NULL,\n    dept_budget NUMERIC(12,2) NOT NULL\n);\n\nINSERT INTO departments_3nf (dept_code, dept_name, dept_budget)\nSELECT DISTINCT dept_code, dept_name, dept_budget\nFROM employee_records\nORDER BY dept_code;",
+        "verification_query": "SELECT dept_code, dept_name, dept_budget FROM departments_3nf ORDER BY dept_code;",
+        "starterQuery": "-- Define 3NF lookup table and populate distinct records here",
+        "table_names": [
+            "employee_records",
+            "departments_3nf"
+        ]
+    },
+    {
+        "id": 1120,
+        "moduleId": 11,
+        "categorySlot": 7,
+        "title": {
+            "en": "Schema Refactoring: Extract 3NF Postal Regions Table (Var #2)",
+            "id": "Refaktor Skema: Ekstraksi Tabel Wilayah Pos 3NF (Latihan #2)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a retail chain storing store outlets. In addition to the store name and zip code, each store record duplicates the city name, state, and tax rate. Since city, state, and tax rate are determined by postal code rather than the store itself, extracting a postal lookup table resolves transitive redundancy.\n\nEngine Processing Behavior: Normalizing transitive dependencies prevents insertion anomalies: you can define a new postal district and tax rate in the database before any physical retail store is opened there.\n\nBest Practices & Gotchas: Use concise primary keys (such as postal code strings) for geographic reference tables to keep foreign key index footprint minimal.",
+            "id": "Analogi Konseptual: Bayangkan jaringan toko ritel yang mencatat cabang gerai. Selain nama toko dan kode pos, tiap baris mengulang nama kota, provinsi, dan persentase pajak. Karena kota, provinsi, dan pajak ditentukan oleh kode pos dan bukan oleh toko itu sendiri, memisahkan data pos ke tabel lookup memecahkan redundansi transitif.\n\nCara Kerja Database Engine: Menormalkan ketergantungan transitif mencegah anomali penyisipan: Anda dapat mendaftarkan wilayah pos dan tarif pajak baru ke database sebelum ada toko fisik yang dibuka di lokasi tersebut.\n\nBest Practices & Catatan Penting: Gunakan primary key ringkas (seperti kode pos teks) untuk tabel referensi geografis agar ukuran indeks foreign key tetap hemat memori."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Extract 3NF Postal Table",
+                    "id": "Ekstraksi Tabel Pos 3NF"
+                },
+                "code": "CREATE TABLE postal_regions_3nf (\n    postal_code TEXT PRIMARY KEY,\n    city_name TEXT NOT NULL,\n    state_code TEXT NOT NULL,\n    tax_rate NUMERIC(4,2) NOT NULL\n);\n\nINSERT INTO postal_regions_3nf (postal_code, city_name, state_code, tax_rate)\nSELECT DISTINCT postal_code, city_name, state_code, tax_rate\nFROM store_locations\nORDER BY postal_code;"
+            }
+        ],
+        "instructions": {
+            "en": "Eliminate transitive dependency in `store_locations` by creating a 3NF table named `postal_regions_3nf` with primary key `postal_code` (text), `city_name` (text), `state_code` (text), and `tax_rate` (numeric). Then populate it with distinct postal records from `store_locations` ordered by postal code.",
+            "id": "Hilangkan ketergantungan transitif pada tabel `store_locations` dengan membuat tabel 3NF bernama `postal_regions_3nf` dengan primary key `postal_code` (text), `city_name` (text), `state_code` (text), dan `tax_rate` (numeric). Kemudian isi tabel dengan data pos unik dari `store_locations` yang diurutkan berdasarkan kode pos."
+        },
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE employee_records (\n    emp_id INT PRIMARY KEY,\n    emp_name TEXT NOT NULL,\n    dept_code TEXT NOT NULL,\n    dept_name TEXT NOT NULL,\n    dept_budget NUMERIC(12,2) NOT NULL\n);\nINSERT INTO employee_records VALUES\n    (1, 'Alice Smith', 'ENG', 'Engineering', 500000.00),\n    (2, 'Bob Jones', 'ENG', 'Engineering', 500000.00),\n    (3, 'Charlie Brown', 'MKT', 'Marketing', 250000.00),\n    (4, 'Diana Prince', 'FIN', 'Finance', 300000.00);\n\nCREATE TABLE store_locations (\n    store_id INT PRIMARY KEY,\n    store_name TEXT NOT NULL,\n    postal_code TEXT NOT NULL,\n    city_name TEXT NOT NULL,\n    state_code TEXT NOT NULL,\n    tax_rate NUMERIC(4,2) NOT NULL\n);\nINSERT INTO store_locations VALUES\n    (1, 'Downtown Outlet', '94101', 'San Francisco', 'CA', 8.50),\n    (2, 'Bayview Branch', '94101', 'San Francisco', 'CA', 8.50),\n    (3, 'Sunset Store', '94122', 'San Francisco', 'CA', 8.50),\n    (4, 'Austin Hub', '73301', 'Austin', 'TX', 6.25);\n\nCREATE TABLE account_subscriptions (\n    account_id INT PRIMARY KEY,\n    subscriber_name TEXT NOT NULL,\n    plan_code TEXT NOT NULL,\n    plan_name TEXT NOT NULL,\n    monthly_fee NUMERIC(6,2) NOT NULL,\n    storage_limit_gb INT NOT NULL\n);\nINSERT INTO account_subscriptions VALUES\n    (101, 'Acme Corp', 'BIZ', 'Business Tier', 79.99, 1000),\n    (102, 'Beta LLC', 'BIZ', 'Business Tier', 79.99, 1000),\n    (103, 'Charlie Co', 'PRO', 'Professional Tier', 29.99, 250),\n    (104, 'Delta Inc', 'ENT', 'Enterprise Tier', 199.99, 5000);",
+        "expected_query": "CREATE TABLE postal_regions_3nf (\n    postal_code TEXT PRIMARY KEY,\n    city_name TEXT NOT NULL,\n    state_code TEXT NOT NULL,\n    tax_rate NUMERIC(4,2) NOT NULL\n);\n\nINSERT INTO postal_regions_3nf (postal_code, city_name, state_code, tax_rate)\nSELECT DISTINCT postal_code, city_name, state_code, tax_rate\nFROM store_locations\nORDER BY postal_code;",
+        "verification_query": "SELECT postal_code, city_name, state_code, tax_rate FROM postal_regions_3nf ORDER BY postal_code;",
+        "starterQuery": "-- Define 3NF lookup table and populate distinct records here",
+        "table_names": [
+            "store_locations",
+            "postal_regions_3nf"
+        ]
+    },
+    {
+        "id": 1121,
+        "moduleId": 11,
+        "categorySlot": 7,
+        "title": {
+            "en": "Schema Refactoring: Extract 3NF Subscription Plans (Var #3)",
+            "id": "Refaktor Skema: Ekstraksi Paket Berlangganan 3NF (Latihan #3)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a cloud SaaS company recording customer accounts. If every customer record embeds the tier name, monthly price, and quota limit, updating the price for a tier requires scanning all accounts. Extracting subscription plans into a 3NF table establishes a single source of truth for pricing.\n\nEngine Processing Behavior: In 3NF, non-key attributes depend only on the primary key, directly and non-transitively. Moving pricing configuration into dedicated tables allows schema changes (like adding promo quotas) to affect plan definitions without altering individual customer account rows.\n\nBest Practices & Gotchas: Always ensure plan codes are uniquely indexed and immutable so existing customer accounts maintain unbroken historical integrity.",
+            "id": "Analogi Konseptual: Bayangkan perusahaan cloud SaaS yang mencatat akun pelanggan. Jika setiap baris akun mencantumkan nama paket, biaya bulanan, dan kuota penyimpanan, pembaruan harga paket akan menuntut pemindaian seluruh akun pelanggan. Mengekstrak paket berlangganan ke tabel 3NF menciptakan satu sumber kebenaran tunggal untuk tarif paket.\n\nCara Kerja Database Engine: Dalam 3NF, atribut non-kunci hanya bergantung pada primary key secara langsung dan tanpa perantara transitif. Memindahkan konfigurasi harga ke tabel khusus memungkinkan perubahan skema (seperti penambahan kuota bonus) dikelola langsung di definisi paket tanpa menyentuh data akun pelanggan.\n\nBest Practices & Catatan Penting: Pastikan kode paket memiliki indeks unik dan tidak sering berubah agar relasi akun pelanggan tetap terjaga konsistensinya."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Extract 3NF Plan Table",
+                    "id": "Ekstraksi Tabel Paket 3NF"
+                },
+                "code": "CREATE TABLE subscription_plans_3nf (\n    plan_code TEXT PRIMARY KEY,\n    plan_name TEXT NOT NULL,\n    monthly_fee NUMERIC(6,2) NOT NULL,\n    storage_limit_gb INT NOT NULL\n);\n\nINSERT INTO subscription_plans_3nf (plan_code, plan_name, monthly_fee, storage_limit_gb)\nSELECT DISTINCT plan_code, plan_name, monthly_fee, storage_limit_gb\nFROM account_subscriptions\nORDER BY plan_code;"
+            }
+        ],
+        "instructions": {
+            "en": "Eliminate transitive dependency in `account_subscriptions` by creating a 3NF table named `subscription_plans_3nf` with primary key `plan_code` (text), `plan_name` (text), `monthly_fee` (numeric), and `storage_limit_gb` (integer). Then populate it with distinct plan configurations from `account_subscriptions` ordered by plan code.",
+            "id": "Hilangkan ketergantungan transitif pada tabel `account_subscriptions` dengan membuat tabel 3NF bernama `subscription_plans_3nf` dengan primary key `plan_code` (text), `plan_name` (text), `monthly_fee` (numeric), dan `storage_limit_gb` (integer). Kemudian isi dengan konfigurasi paket unik dari `account_subscriptions` yang diurutkan berdasarkan kode paket."
+        },
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE employee_records (\n    emp_id INT PRIMARY KEY,\n    emp_name TEXT NOT NULL,\n    dept_code TEXT NOT NULL,\n    dept_name TEXT NOT NULL,\n    dept_budget NUMERIC(12,2) NOT NULL\n);\nINSERT INTO employee_records VALUES\n    (1, 'Alice Smith', 'ENG', 'Engineering', 500000.00),\n    (2, 'Bob Jones', 'ENG', 'Engineering', 500000.00),\n    (3, 'Charlie Brown', 'MKT', 'Marketing', 250000.00),\n    (4, 'Diana Prince', 'FIN', 'Finance', 300000.00);\n\nCREATE TABLE store_locations (\n    store_id INT PRIMARY KEY,\n    store_name TEXT NOT NULL,\n    postal_code TEXT NOT NULL,\n    city_name TEXT NOT NULL,\n    state_code TEXT NOT NULL,\n    tax_rate NUMERIC(4,2) NOT NULL\n);\nINSERT INTO store_locations VALUES\n    (1, 'Downtown Outlet', '94101', 'San Francisco', 'CA', 8.50),\n    (2, 'Bayview Branch', '94101', 'San Francisco', 'CA', 8.50),\n    (3, 'Sunset Store', '94122', 'San Francisco', 'CA', 8.50),\n    (4, 'Austin Hub', '73301', 'Austin', 'TX', 6.25);\n\nCREATE TABLE account_subscriptions (\n    account_id INT PRIMARY KEY,\n    subscriber_name TEXT NOT NULL,\n    plan_code TEXT NOT NULL,\n    plan_name TEXT NOT NULL,\n    monthly_fee NUMERIC(6,2) NOT NULL,\n    storage_limit_gb INT NOT NULL\n);\nINSERT INTO account_subscriptions VALUES\n    (101, 'Acme Corp', 'BIZ', 'Business Tier', 79.99, 1000),\n    (102, 'Beta LLC', 'BIZ', 'Business Tier', 79.99, 1000),\n    (103, 'Charlie Co', 'PRO', 'Professional Tier', 29.99, 250),\n    (104, 'Delta Inc', 'ENT', 'Enterprise Tier', 199.99, 5000);",
+        "expected_query": "CREATE TABLE subscription_plans_3nf (\n    plan_code TEXT PRIMARY KEY,\n    plan_name TEXT NOT NULL,\n    monthly_fee NUMERIC(6,2) NOT NULL,\n    storage_limit_gb INT NOT NULL\n);\n\nINSERT INTO subscription_plans_3nf (plan_code, plan_name, monthly_fee, storage_limit_gb)\nSELECT DISTINCT plan_code, plan_name, monthly_fee, storage_limit_gb\nFROM account_subscriptions\nORDER BY plan_code;",
+        "verification_query": "SELECT plan_code, plan_name, monthly_fee, storage_limit_gb FROM subscription_plans_3nf ORDER BY plan_code;",
+        "starterQuery": "-- Define 3NF lookup table and populate distinct records here",
+        "table_names": [
+            "account_subscriptions",
+            "subscription_plans_3nf"
+        ]
+    },
+    {
+        "id": 1122,
+        "moduleId": 11,
+        "categorySlot": 8,
+        "title": {
+            "en": "End-to-End Normalization: Patient Consultation Architecture (Var #1)",
+            "id": "Normalisasi End-to-End: Arsitektur Konsultasi Pasien (Latihan #1)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a hospital electronic medical record system refactoring an exported flat spreadsheet into an enterprise relational database. Patient demographics and clinic branch details are separated into clean lookup tables, linked together through relational foreign keys.\n\nEngine Processing Behavior: A complete schema migration involves: 1) defining target 3NF parent entity tables with primary keys, 2) populating unique parent tuples using SELECT DISTINCT, and 3) verifying relational integrity by querying the normalized model with JOIN operations. The planner optimizes these queries into index lookups and hash joins.\n\nBest Practices & Gotchas: In production migrations, create indexes on foreign key columns in child tables to ensure JOIN performance matches expectations.",
+            "id": "Analogi Konseptual: Bayangkan sistem rekam medis rumah sakit yang merombak lembar kerja flat mentah menjadi database relasional enterprise. Data demografi pasien dan profil klinik cabang dipisahkan ke tabel lookup tersendiri yang terhubung rapi melalui foreign key relasional.\n\nCara Kerja Database Engine: Migrasi skema komprehensif mencakup: 1) mendefinisikan tabel induk 3NF dengan primary key, 2) mengisi data unik entitas induk menggunakan SELECT DISTINCT, dan 3) memverifikasi integritas relasi dengan query JOIN multi-tabel. Database planner mengoptimalkan eksekusi ini menggunakan index scan dan hash join.\n\nBest Practices & Catatan Penting: Pada migrasi skema riil, selalu buat indeks pada kolom foreign key di tabel anak untuk memastikan efisiensi operasi JOIN tetap optimal."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Multi-Table Migration Pipeline",
+                    "id": "Pipeline Migrasi Multi-Tabel"
+                },
+                "code": "CREATE TABLE parent1 (id INT PRIMARY KEY, name TEXT);\nINSERT INTO parent1 SELECT DISTINCT id, name FROM flat_source ORDER BY id;\n\nCREATE TABLE parent2 (id INT PRIMARY KEY, name TEXT);\nINSERT INTO parent2 SELECT DISTINCT id, name FROM flat_source ORDER BY id;"
+            }
+        ],
+        "instructions": {
+            "en": "Perform a full schema normalization on `raw_patient_consultations`: 1) Define table `patients_normalized` with primary key `patient_id` (integer), `patient_name` (text), and `patient_gender` (text), and populate it with distinct patients ordered by `patient_id`. 2) Define table `clinics_normalized` with primary key `clinic_id` (integer), `clinic_name` (text), and `clinic_city` (text), and populate it with distinct clinics ordered by `clinic_id`.",
+            "id": "Lakukan normalisasi skema lengkap pada tabel `raw_patient_consultations`: 1) Buat tabel `patients_normalized` dengan primary key `patient_id` (integer), `patient_name` (text), dan `patient_gender` (text), lalu isi dengan data pasien unik yang diurutkan berdasarkan `patient_id`. 2) Buat tabel `clinics_normalized` dengan primary key `clinic_id` (integer), `clinic_name` (text), dan `clinic_city` (text), lalu isi dengan data klinik unik yang diurutkan berdasarkan `clinic_id`."
+        },
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE raw_patient_consultations (\n    consultation_id INT PRIMARY KEY,\n    patient_id INT NOT NULL,\n    patient_name TEXT NOT NULL,\n    patient_gender TEXT NOT NULL,\n    clinic_id INT NOT NULL,\n    clinic_name TEXT NOT NULL,\n    clinic_city TEXT NOT NULL,\n    fee NUMERIC(8,2) NOT NULL\n);\nINSERT INTO raw_patient_consultations VALUES\n    (1, 501, 'Arthur Dent', 'M', 10, 'Central Health', 'London', 150.00),\n    (2, 502, 'Tricia McMillan', 'F', 10, 'Central Health', 'London', 200.00),\n    (3, 501, 'Arthur Dent', 'M', 20, 'Metro Clinic', 'Bristol', 120.00),\n    (4, 503, 'Ford Prefect', 'M', 20, 'Metro Clinic', 'Bristol', 180.00);\n\nCREATE TABLE raw_hotel_reservations (\n    reservation_id INT PRIMARY KEY,\n    guest_id INT NOT NULL,\n    guest_name TEXT NOT NULL,\n    guest_email TEXT NOT NULL,\n    room_id INT NOT NULL,\n    room_type TEXT NOT NULL,\n    nightly_rate NUMERIC(8,2) NOT NULL,\n    total_nights INT NOT NULL\n);\nINSERT INTO raw_hotel_reservations VALUES\n    (101, 701, 'Eleanor Vance', 'eleanor@hill.org', 301, 'Deluxe Suite', 220.00, 3),\n    (102, 702, 'Luke Sanderson', 'luke@hill.org', 302, 'Standard King', 140.00, 2),\n    (103, 701, 'Eleanor Vance', 'eleanor@hill.org', 302, 'Standard King', 140.00, 4),\n    (104, 703, 'Theodora', 'theo@hill.org', 301, 'Deluxe Suite', 220.00, 1);\n\nCREATE TABLE raw_vendor_invoices (\n    invoice_id INT PRIMARY KEY,\n    vendor_id INT NOT NULL,\n    vendor_name TEXT NOT NULL,\n    vendor_city TEXT NOT NULL,\n    item_id INT NOT NULL,\n    item_description TEXT NOT NULL,\n    item_unit_cost NUMERIC(8,2) NOT NULL,\n    units_billed INT NOT NULL\n);\nINSERT INTO raw_vendor_invoices VALUES\n    (1001, 801, 'Apex Industrial', 'Detroit', 901, 'Steel Bolts M8', 1.25, 500),\n    (1002, 802, 'Belmont Precision', 'Cleveland', 902, 'Copper Washers 10mm', 0.85, 1200),\n    (1003, 801, 'Apex Industrial', 'Detroit', 903, 'Titanium Rod 1m', 45.00, 20),\n    (1004, 802, 'Belmont Precision', 'Cleveland', 901, 'Steel Bolts M8', 1.25, 300);",
+        "expected_query": "CREATE TABLE patients_normalized (\n    patient_id INT PRIMARY KEY,\n    patient_name TEXT NOT NULL,\n    patient_gender TEXT NOT NULL\n);\n\nINSERT INTO patients_normalized (patient_id, patient_name, patient_gender)\nSELECT DISTINCT patient_id, patient_name, patient_gender\nFROM raw_patient_consultations\nORDER BY patient_id;\n\nCREATE TABLE clinics_normalized (\n    clinic_id INT PRIMARY KEY,\n    clinic_name TEXT NOT NULL,\n    clinic_city TEXT NOT NULL\n);\n\nINSERT INTO clinics_normalized (clinic_id, clinic_name, clinic_city)\nSELECT DISTINCT clinic_id, clinic_name, clinic_city\nFROM raw_patient_consultations\nORDER BY clinic_id;",
+        "verification_query": "SELECT c.consultation_id, p.patient_name, cl.clinic_name, cl.clinic_city, c.fee\nFROM raw_patient_consultations c\nJOIN patients_normalized p ON c.patient_id = p.patient_id\nJOIN clinics_normalized cl ON c.clinic_id = cl.clinic_id\nORDER BY c.consultation_id;",
+        "starterQuery": "-- Define normalized tables and migrate data here",
+        "table_names": [
+            "raw_patient_consultations",
+            "patients_normalized",
+            "clinics_normalized"
+        ]
+    },
+    {
+        "id": 1123,
+        "moduleId": 11,
+        "categorySlot": 8,
+        "title": {
+            "en": "End-to-End Normalization: Hotel Reservation Architecture (Var #2)",
+            "id": "Normalisasi End-to-End: Arsitektur Reservasi Hotel (Latihan #2)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a luxury resort migrating from an old booking CSV into a relational hospitality system. Guest identity and room specifications are migrated into dedicated master tables so reservations cleanly connect guests to rooms.\n\nEngine Processing Behavior: Normalization separates entity lifecycles: a hotel room exists regardless of whether it is booked, and a repeat guest profile remains intact after checking out. The database enforces consistency and eliminates transitive update vulnerabilities.\n\nBest Practices & Gotchas: Order distinct extraction by primary key to ensure deterministic migration logging and consistent sequential page population on disk.",
+            "id": "Analogi Konseptual: Bayangkan resor wisata yang memigrasikan data reservasi dari berkas CSV lama ke dalam sistem perhotelan relasional. Identitas tamu dan spesifikasi kamar dipisahkan ke tabel master khusus sehingga transaksi reservasi menghubungkan tamu dengan kamar secara rapi.\n\nCara Kerja Database Engine: Normalisasi memisahkan siklus hidup entitas: kamar hotel tetap ada meskipun sedang tidak dipesan, dan profil tamu langganan tetap tersimpan setelah check-out. Database menjaga konsistensi data dan menghilangkan kerentanan pembaruan transitif.\n\nBest Practices & Catatan Penting: Urutkan ekstraksi DISTINCT berdasarkan primary key untuk memastikan keteraturan pencatatan dan penulisan halaman data di disk."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "Hotel Schema Migration",
+                    "id": "Migrasi Skema Hotel"
+                },
+                "code": "CREATE TABLE guests (id INT PRIMARY KEY, name TEXT, email TEXT);\nINSERT INTO guests SELECT DISTINCT id, name, email FROM raw_table ORDER BY id;\n\nCREATE TABLE rooms (id INT PRIMARY KEY, r_type TEXT, rate NUMERIC);\nINSERT INTO rooms SELECT DISTINCT id, r_type, rate FROM raw_table ORDER BY id;"
+            }
+        ],
+        "instructions": {
+            "en": "Normalize `raw_hotel_reservations`: 1) Define table `hotel_guests_clean` with primary key `guest_id` (integer), `guest_name` (text), and `guest_email` (text), and populate it with distinct guests ordered by `guest_id`. 2) Define table `hotel_rooms_clean` with primary key `room_id` (integer), `room_type` (text), and `nightly_rate` (numeric), and populate it with distinct rooms ordered by `room_id`.",
+            "id": "Lakukan normalisasi pada `raw_hotel_reservations`: 1) Buat tabel `hotel_guests_clean` dengan primary key `guest_id` (integer), `guest_name` (text), dan `guest_email` (text), lalu isi dengan data tamu unik yang diurutkan berdasarkan `guest_id`. 2) Buat tabel `hotel_rooms_clean` dengan primary key `room_id` (integer), `room_type` (text), dan `nightly_rate` (numeric), lalu isi dengan data kamar unik yang diurutkan berdasarkan `room_id`."
+        },
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE raw_patient_consultations (\n    consultation_id INT PRIMARY KEY,\n    patient_id INT NOT NULL,\n    patient_name TEXT NOT NULL,\n    patient_gender TEXT NOT NULL,\n    clinic_id INT NOT NULL,\n    clinic_name TEXT NOT NULL,\n    clinic_city TEXT NOT NULL,\n    fee NUMERIC(8,2) NOT NULL\n);\nINSERT INTO raw_patient_consultations VALUES\n    (1, 501, 'Arthur Dent', 'M', 10, 'Central Health', 'London', 150.00),\n    (2, 502, 'Tricia McMillan', 'F', 10, 'Central Health', 'London', 200.00),\n    (3, 501, 'Arthur Dent', 'M', 20, 'Metro Clinic', 'Bristol', 120.00),\n    (4, 503, 'Ford Prefect', 'M', 20, 'Metro Clinic', 'Bristol', 180.00);\n\nCREATE TABLE raw_hotel_reservations (\n    reservation_id INT PRIMARY KEY,\n    guest_id INT NOT NULL,\n    guest_name TEXT NOT NULL,\n    guest_email TEXT NOT NULL,\n    room_id INT NOT NULL,\n    room_type TEXT NOT NULL,\n    nightly_rate NUMERIC(8,2) NOT NULL,\n    total_nights INT NOT NULL\n);\nINSERT INTO raw_hotel_reservations VALUES\n    (101, 701, 'Eleanor Vance', 'eleanor@hill.org', 301, 'Deluxe Suite', 220.00, 3),\n    (102, 702, 'Luke Sanderson', 'luke@hill.org', 302, 'Standard King', 140.00, 2),\n    (103, 701, 'Eleanor Vance', 'eleanor@hill.org', 302, 'Standard King', 140.00, 4),\n    (104, 703, 'Theodora', 'theo@hill.org', 301, 'Deluxe Suite', 220.00, 1);\n\nCREATE TABLE raw_vendor_invoices (\n    invoice_id INT PRIMARY KEY,\n    vendor_id INT NOT NULL,\n    vendor_name TEXT NOT NULL,\n    vendor_city TEXT NOT NULL,\n    item_id INT NOT NULL,\n    item_description TEXT NOT NULL,\n    item_unit_cost NUMERIC(8,2) NOT NULL,\n    units_billed INT NOT NULL\n);\nINSERT INTO raw_vendor_invoices VALUES\n    (1001, 801, 'Apex Industrial', 'Detroit', 901, 'Steel Bolts M8', 1.25, 500),\n    (1002, 802, 'Belmont Precision', 'Cleveland', 902, 'Copper Washers 10mm', 0.85, 1200),\n    (1003, 801, 'Apex Industrial', 'Detroit', 903, 'Titanium Rod 1m', 45.00, 20),\n    (1004, 802, 'Belmont Precision', 'Cleveland', 901, 'Steel Bolts M8', 1.25, 300);",
+        "expected_query": "CREATE TABLE hotel_guests_clean (\n    guest_id INT PRIMARY KEY,\n    guest_name TEXT NOT NULL,\n    guest_email TEXT NOT NULL\n);\n\nINSERT INTO hotel_guests_clean (guest_id, guest_name, guest_email)\nSELECT DISTINCT guest_id, guest_name, guest_email\nFROM raw_hotel_reservations\nORDER BY guest_id;\n\nCREATE TABLE hotel_rooms_clean (\n    room_id INT PRIMARY KEY,\n    room_type TEXT NOT NULL,\n    nightly_rate NUMERIC(8,2) NOT NULL\n);\n\nINSERT INTO hotel_rooms_clean (room_id, room_type, nightly_rate)\nSELECT DISTINCT room_id, room_type, nightly_rate\nFROM raw_hotel_reservations\nORDER BY room_id;",
+        "verification_query": "SELECT r.reservation_id, g.guest_name, rm.room_type, rm.nightly_rate, r.total_nights\nFROM raw_hotel_reservations r\nJOIN hotel_guests_clean g ON r.guest_id = g.guest_id\nJOIN hotel_rooms_clean rm ON r.room_id = rm.room_id\nORDER BY r.reservation_id;",
+        "starterQuery": "-- Define normalized tables and migrate data here",
+        "table_names": [
+            "raw_hotel_reservations",
+            "hotel_guests_clean",
+            "hotel_rooms_clean"
+        ]
+    },
+    {
+        "id": 1124,
+        "moduleId": 11,
+        "categorySlot": 8,
+        "title": {
+            "en": "End-to-End Normalization: Vendor Invoice Architecture (Var #3)",
+            "id": "Normalisasi End-to-End: Arsitektur Faktur Vendor (Latihan #3)"
+        },
+        "conceptExplanation": {
+            "en": "Conceptual Analogy: Think of a manufacturing plant converting spreadsheet purchase logs into an ERP database. Vendor identities and part catalog definitions are decoupled from invoice line items, establishing clear relational boundaries.\n\nEngine Processing Behavior: Normalizing operational tables guarantees that supplier contact information is maintained in a single location. Deleting an erroneous invoice line does not accidentally purge the underlying vendor or product definition from the database.\n\nBest Practices & Gotchas: Verify data types and constraints on target tables match business rules before migrating high volumes of denormalized records.",
+            "id": "Analogi Konseptual: Bayangkan pabrik manufaktur yang mengubah catatan pembelian lembar kerja ke dalam database ERP. Profil vendor dan katalog komponen dipisahkan dari rincian faktur pembelian, menciptakan batasan relasional yang kokoh.\n\nCara Kerja Database Engine: Menormalkan tabel operasional menjamin informasi kontak pemasok dikelola pada satu lokasi terpusat. Menghapus baris faktur yang keliru tidak akan menghapus data vendor atau definisi komponen dari database.\n\nBest Practices & Catatan Penting: Verifikasi kecocokan tipe data dan batasan constraint pada tabel tujuan sebelum menjalankan migrasi data dalam jumlah besar."
+        },
+        "syntaxPatterns": [
+            {
+                "label": {
+                    "en": "ERP Schema Normalization",
+                    "id": "Normalisasi Skema ERP"
+                },
+                "code": "CREATE TABLE vendors (id INT PRIMARY KEY, name TEXT, city TEXT);\nINSERT INTO vendors SELECT DISTINCT id, name, city FROM raw_source ORDER BY id;\n\nCREATE TABLE items (id INT PRIMARY KEY, descr TEXT, cost NUMERIC);\nINSERT INTO items SELECT DISTINCT id, descr, cost FROM raw_source ORDER BY id;"
+            }
+        ],
+        "instructions": {
+            "en": "Normalize `raw_vendor_invoices`: 1) Define table `vendors_clean` with primary key `vendor_id` (integer), `vendor_name` (text), and `vendor_city` (text), and populate it with distinct vendors ordered by `vendor_id`. 2) Define table `items_catalog_clean` with primary key `item_id` (integer), `item_description` (text), and `item_unit_cost` (numeric), and populate it with distinct items ordered by `item_id`.",
+            "id": "Lakukan normalisasi pada `raw_vendor_invoices`: 1) Buat tabel `vendors_clean` dengan primary key `vendor_id` (integer), `vendor_name` (text), dan `vendor_city` (text), lalu isi dengan data vendor unik yang diurutkan berdasarkan `vendor_id`. 2) Buat tabel `items_catalog_clean` dengan primary key `item_id` (integer), `item_description` (text), dan `item_unit_cost` (numeric), lalu isi dengan data barang unik yang diurutkan berdasarkan `item_id`."
+        },
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE raw_patient_consultations (\n    consultation_id INT PRIMARY KEY,\n    patient_id INT NOT NULL,\n    patient_name TEXT NOT NULL,\n    patient_gender TEXT NOT NULL,\n    clinic_id INT NOT NULL,\n    clinic_name TEXT NOT NULL,\n    clinic_city TEXT NOT NULL,\n    fee NUMERIC(8,2) NOT NULL\n);\nINSERT INTO raw_patient_consultations VALUES\n    (1, 501, 'Arthur Dent', 'M', 10, 'Central Health', 'London', 150.00),\n    (2, 502, 'Tricia McMillan', 'F', 10, 'Central Health', 'London', 200.00),\n    (3, 501, 'Arthur Dent', 'M', 20, 'Metro Clinic', 'Bristol', 120.00),\n    (4, 503, 'Ford Prefect', 'M', 20, 'Metro Clinic', 'Bristol', 180.00);\n\nCREATE TABLE raw_hotel_reservations (\n    reservation_id INT PRIMARY KEY,\n    guest_id INT NOT NULL,\n    guest_name TEXT NOT NULL,\n    guest_email TEXT NOT NULL,\n    room_id INT NOT NULL,\n    room_type TEXT NOT NULL,\n    nightly_rate NUMERIC(8,2) NOT NULL,\n    total_nights INT NOT NULL\n);\nINSERT INTO raw_hotel_reservations VALUES\n    (101, 701, 'Eleanor Vance', 'eleanor@hill.org', 301, 'Deluxe Suite', 220.00, 3),\n    (102, 702, 'Luke Sanderson', 'luke@hill.org', 302, 'Standard King', 140.00, 2),\n    (103, 701, 'Eleanor Vance', 'eleanor@hill.org', 302, 'Standard King', 140.00, 4),\n    (104, 703, 'Theodora', 'theo@hill.org', 301, 'Deluxe Suite', 220.00, 1);\n\nCREATE TABLE raw_vendor_invoices (\n    invoice_id INT PRIMARY KEY,\n    vendor_id INT NOT NULL,\n    vendor_name TEXT NOT NULL,\n    vendor_city TEXT NOT NULL,\n    item_id INT NOT NULL,\n    item_description TEXT NOT NULL,\n    item_unit_cost NUMERIC(8,2) NOT NULL,\n    units_billed INT NOT NULL\n);\nINSERT INTO raw_vendor_invoices VALUES\n    (1001, 801, 'Apex Industrial', 'Detroit', 901, 'Steel Bolts M8', 1.25, 500),\n    (1002, 802, 'Belmont Precision', 'Cleveland', 902, 'Copper Washers 10mm', 0.85, 1200),\n    (1003, 801, 'Apex Industrial', 'Detroit', 903, 'Titanium Rod 1m', 45.00, 20),\n    (1004, 802, 'Belmont Precision', 'Cleveland', 901, 'Steel Bolts M8', 1.25, 300);",
+        "expected_query": "CREATE TABLE vendors_clean (\n    vendor_id INT PRIMARY KEY,\n    vendor_name TEXT NOT NULL,\n    vendor_city TEXT NOT NULL\n);\n\nINSERT INTO vendors_clean (vendor_id, vendor_name, vendor_city)\nSELECT DISTINCT vendor_id, vendor_name, vendor_city\nFROM raw_vendor_invoices\nORDER BY vendor_id;\n\nCREATE TABLE items_catalog_clean (\n    item_id INT PRIMARY KEY,\n    item_description TEXT NOT NULL,\n    item_unit_cost NUMERIC(8,2) NOT NULL\n);\n\nINSERT INTO items_catalog_clean (item_id, item_description, item_unit_cost)\nSELECT DISTINCT item_id, item_description, item_unit_cost\nFROM raw_vendor_invoices\nORDER BY item_id;",
+        "verification_query": "SELECT inv.invoice_id, v.vendor_name, it.item_description, it.item_unit_cost, inv.units_billed\nFROM raw_vendor_invoices inv\nJOIN vendors_clean v ON inv.vendor_id = v.vendor_id\nJOIN items_catalog_clean it ON inv.item_id = it.item_id\nORDER BY inv.invoice_id;",
+        "starterQuery": "-- Define normalized tables and migrate data here",
+        "table_names": [
+            "raw_vendor_invoices",
+            "vendors_clean",
+            "items_catalog_clean"
+        ]
+    }
+];
 }
 
 export const MODULES: Module[] = [
@@ -15790,6 +20734,24 @@ export const MODULES: Module[] = [
             id: "Optimalkan query dengan index B-Tree/GIN, Full-Text Search, JSONB, skema, role, hak akses, dan pembuatan database."
         },
         questions: generateModule9()
+    },
+    {
+        id: 10,
+        title: { en: "Module 10: EXPLAIN ANALYZE & Query Performance", id: "Modul 10: EXPLAIN ANALYZE & Kinerja Query" },
+        description: {
+            en: "Analyze and optimize execution plans using EXPLAIN, EXPLAIN ANALYZE, cost metrics, index effectiveness, join strategies, and buffer usage.",
+            id: "Analisis dan optimalkan rencana eksekusi menggunakan EXPLAIN, EXPLAIN ANALYZE, metrik biaya, efektivitas indeks, strategi join, serta penggunaan buffer."
+        },
+        questions: generateModule10()
+    },
+    {
+        id: 11,
+        title: { en: "Module 11: PL/pgSQL, Automation & Schema Normalization", id: "Modul 11: PL/pgSQL, Otomasi & Normalisasi Skema" },
+        description: {
+            en: "Master PL/pgSQL functions, table-returning queries, stored procedures, BEFORE/AFTER triggers, audit logging, and progressive 1NF-to-3NF schema normalization.",
+            id: "Kuasai fungsi PL/pgSQL, fungsi tabel, stored procedure, trigger BEFORE/AFTER, audit logging, serta normalisasi skema 1NF hingga 3NF."
+        },
+        questions: generateModule11()
     }
 ];
 
@@ -15813,3 +20775,3910 @@ export function resolveQuestionForEngine(q: Question, engine: string): Question 
         verification_query: override.verification_query ?? q.verification_query
     };
 }
+
+// ===== EXAM BANK START =====
+import type { ExamQuestion } from './types';
+export type { ExamQuestion };
+
+export const EXAM_QUESTIONS: ExamQuestion[] = [
+    {
+        "id": 1001,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 1,
+        "title": {
+            "en": "Customer Reorder Gaps",
+            "id": "Jeda Pemesanan Ulang Pelanggan"
+        },
+        "conceptExplanation": {
+            "en": "The retention team wants to understand how long customers wait between purchases. Only customers placing 3 or more orders are relevant. A customer's very first order has nothing before it, and the report must show 0 days there instead of leaving it empty.",
+            "id": "Tim retensi ingin tahu berapa lama pelanggan menunggu di antara pembelian. Hanya pelanggan yang memiliki minimal 3 pesanan yang relevan. Pesanan pertama seorang pelanggan tidak punya pesanan sebelumnya, dan laporan harus menampilkan 0 hari di sana, bukan kosong."
+        },
+        "instructions": {
+            "en": "For each order of eligible customers, show `customer_id`, `order_date`, and the number of days since that customer's previous order (`days_since_prev`). Sort by customer, then date.",
+            "id": "Untuk setiap pesanan pelanggan yang memenuhi syarat, tampilkan `customer_id`, `order_date`, dan jumlah hari sejak pesanan sebelumnya milik pelanggan itu (`days_since_prev`). Urutkan berdasarkan pelanggan lalu tanggal."
+        },
+        "topics": [
+            "window-lag",
+            "coalesce",
+            "cte",
+            "having",
+            "date-arithmetic"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE orders (id SERIAL PRIMARY KEY, customer_id INT NOT NULL, order_date DATE NOT NULL, amount INT NOT NULL);\nINSERT INTO orders (customer_id, order_date, amount)\nSELECT (g % 800) + 1, DATE '2024-01-01' + (g % 400), (g % 90) + 10 FROM generate_series(1, 20000) g;\nCREATE INDEX idx_orders_customer ON orders (customer_id);\nANALYZE orders;",
+        "referenceQuery": "WITH eligible AS (SELECT customer_id FROM orders GROUP BY customer_id HAVING COUNT(*) >= 3)\nSELECT o.customer_id, o.order_date,\n       COALESCE(o.order_date - LAG(o.order_date) OVER (PARTITION BY o.customer_id ORDER BY o.order_date), 0) AS days_since_prev\nFROM orders o JOIN eligible e ON e.customer_id = o.customer_id\nORDER BY o.customer_id, o.order_date;",
+        "expected_query": "WITH eligible AS (SELECT customer_id FROM orders GROUP BY customer_id HAVING COUNT(*) >= 3)\nSELECT o.customer_id, o.order_date,\n       COALESCE(o.order_date - LAG(o.order_date) OVER (PARTITION BY o.customer_id ORDER BY o.order_date), 0) AS days_since_prev\nFROM orders o JOIN eligible e ON e.customer_id = o.customer_id\nORDER BY o.customer_id, o.order_date;",
+        "starterQuery": "",
+        "table_names": [
+            "orders"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1002,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 1,
+        "title": {
+            "en": "Invoice Registry Design",
+            "id": "Perancangan Registri Tagihan"
+        },
+        "conceptExplanation": {
+            "en": "The billing department requires a reliable table structure for customer invoices. Every invoice must belong to an organization and have an invoice code. Within any single organization, invoice codes cannot repeat. Furthermore, invoice totals must stay strictly positive, and processing status is restricted to draft, posted, or settled.",
+            "id": "Departemen penagihan memerlukan struktur tabel yang andal untuk tagihan pelanggan. Setiap tagihan harus terhubung ke organisasi dan memiliki kode tagihan. Di dalam satu organisasi, kode tagihan tidak boleh berulang. Selain itu, nominal tagihan harus bernilai positif, dan status proses dibatasi hanya draft, posted, atau settled."
+        },
+        "instructions": {
+            "en": "Define a table named `billing_invoices` featuring `id` as auto-increment unique identifier, `org_id INT NOT NULL`, `invoice_num TEXT NOT NULL`, `total_amount NUMERIC(10,2) NOT NULL` (positive), `status TEXT NOT NULL DEFAULT 'draft'` (must be draft, posted, or settled), and a two-column unique rule on `(org_id, invoice_num)`.",
+            "id": "Definisikan tabel bernama `billing_invoices` yang memuat `id` sebagai pengenal unik otomatis, `org_id INT NOT NULL`, `invoice_num TEXT NOT NULL`, `total_amount NUMERIC(10,2) NOT NULL` (positif), `status TEXT NOT NULL DEFAULT 'draft'` (draft, posted, atau settled), dan aturan unik dua kolom pada `(org_id, invoice_num)`."
+        },
+        "topics": [
+            "ddl",
+            "composite-unique",
+            "check-constraints"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "",
+        "referenceQuery": "CREATE TABLE billing_invoices (\n    id SERIAL PRIMARY KEY,\n    org_id INT NOT NULL,\n    invoice_num TEXT NOT NULL,\n    total_amount NUMERIC(10,2) NOT NULL CHECK (total_amount > 0),\n    status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'posted', 'settled')),\n    CONSTRAINT uq_billing_org_invoice UNIQUE (org_id, invoice_num)\n);",
+        "expected_query": "CREATE TABLE billing_invoices (\n    id SERIAL PRIMARY KEY,\n    org_id INT NOT NULL,\n    invoice_num TEXT NOT NULL,\n    total_amount NUMERIC(10,2) NOT NULL CHECK (total_amount > 0),\n    status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'posted', 'settled')),\n    CONSTRAINT uq_billing_org_invoice UNIQUE (org_id, invoice_num)\n);",
+        "starterQuery": "",
+        "table_names": [
+            "billing_invoices"
+        ],
+        "isDdlCreate": true,
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM information_schema.tables WHERE table_name = 'billing_invoices' AND table_schema = 'public';",
+                    "weight": 34,
+                    "description": {
+                        "en": "Table billing_invoices exists",
+                        "id": "Tabel billing_invoices terbuat"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) >= 1 FROM information_schema.table_constraints WHERE table_name = 'billing_invoices' AND constraint_type = 'UNIQUE';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Composite unique rule exists on org_id and invoice_num",
+                        "id": "Aturan unik komposit tersedia"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) >= 2 FROM information_schema.check_constraints WHERE constraint_name LIKE '%billing_invoices%' OR constraint_name LIKE '%total_amount%' OR constraint_name LIKE '%status%';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Check rules enforce positive total and valid status",
+                        "id": "Pengecekan nilai positif dan status valid terpasang"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1003,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 1,
+        "title": {
+            "en": "Warehouse Product Catalog Structure",
+            "id": "Struktur Katalog Produk Gudang"
+        },
+        "conceptExplanation": {
+            "en": "Logistics operations demand strict catalog integrity. Standard serial identifiers sometimes create gaps if sequence permissions fluctuate. The modern architecture requires a system-generated identity key. Every item also carries a universal barcode that must never duplicate, and quantity on hand cannot fall below zero.",
+            "id": "Operasi logistik menuntut integritas katalog yang ketat. Pengenal serial standar terkadang menyisakan celah jika hak akses sequence berubah. Arsitektur modern menginginkan kunci identitas yang diatur sistem. Setiap barang juga memiliki kode batang universal yang tidak boleh kembar, dan jumlah stok tidak boleh di bawah nol."
+        },
+        "instructions": {
+            "en": "Create table `warehouse_items` containing `item_id INT` as unique generated identity column, `barcode TEXT NOT NULL UNIQUE`, `title TEXT NOT NULL`, and `stock_qty INT NOT NULL DEFAULT 0` (requiring non-negative quantity).",
+            "id": "Buat tabel `warehouse_items` berisi `item_id INT` sebagai kolom identitas unik otomatis, `barcode TEXT NOT NULL UNIQUE`, `title TEXT NOT NULL`, dan `stock_qty INT NOT NULL DEFAULT 0` (wajib bernilai non-negatif)."
+        },
+        "topics": [
+            "ddl",
+            "identity-column",
+            "check-constraints"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "",
+        "referenceQuery": "CREATE TABLE warehouse_items (\n    item_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,\n    barcode TEXT NOT NULL UNIQUE,\n    title TEXT NOT NULL,\n    stock_qty INT NOT NULL DEFAULT 0 CHECK (stock_qty >= 0)\n);",
+        "expected_query": "CREATE TABLE warehouse_items (\n    item_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,\n    barcode TEXT NOT NULL UNIQUE,\n    title TEXT NOT NULL,\n    stock_qty INT NOT NULL DEFAULT 0 CHECK (stock_qty >= 0)\n);",
+        "starterQuery": "",
+        "table_names": [
+            "warehouse_items"
+        ],
+        "isDdlCreate": true,
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM information_schema.tables WHERE table_name = 'warehouse_items';",
+                    "weight": 34,
+                    "description": {
+                        "en": "Table warehouse_items exists",
+                        "id": "Tabel warehouse_items terbuat"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM information_schema.columns WHERE table_name = 'warehouse_items' AND column_name = 'item_id' AND is_identity = 'YES';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Identity generator established on item_id",
+                        "id": "Kolom identity terkonfigurasi pada item_id"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) >= 1 FROM information_schema.table_constraints WHERE table_name = 'warehouse_items' AND constraint_type = 'CHECK';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Stock non-negative check exists",
+                        "id": "Pengecekan stok non-negatif aktif"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1004,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 1,
+        "title": {
+            "en": "Project Milestone Dependency Model",
+            "id": "Model Dependensi Mileston Proyek"
+        },
+        "conceptExplanation": {
+            "en": "To prevent accidental loss of operational history, project milestones cannot be orphaned when a client or manager attempts deletion. If an active project record has linked tasks, direct removal of that main project should be blocked immediately by the relational engine.",
+            "id": "Guna mencegah hilangnya riwayat operasional secara tidak sengaja, mileston proyek tidak boleh terlantar saat klien atau manajer mencoba menghapus data. Jika data proyek utama memiliki tugas terhubung, penghapusan langsung proyek utama tersebut harus segera dicegah oleh sistem relasional."
+        },
+        "instructions": {
+            "en": "Construct table `project_milestones` featuring `milestone_id` as auto-increment identifier, `project_id INT NOT NULL` connecting to `company_projects(id)` configured to prevent parent project removal if milestones exist, `milestone_name TEXT NOT NULL`, and `target_date DATE NOT NULL`.",
+            "id": "Bangun tabel `project_milestones` memuat `milestone_id` sebagai pengenal unik otomatis, `project_id INT NOT NULL` terhubung ke `company_projects(id)` dengan aturan pencegahan penghapusan proyek induk bila milestone masih ada, `milestone_name TEXT NOT NULL`, dan `target_date DATE NOT NULL`."
+        },
+        "topics": [
+            "ddl",
+            "foreign-key",
+            "restrict-rule"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE company_projects (id SERIAL PRIMARY KEY, name TEXT NOT NULL);\nINSERT INTO company_projects (name) VALUES ('Alpha'), ('Beta');",
+        "referenceQuery": "CREATE TABLE project_milestones (\n    milestone_id SERIAL PRIMARY KEY,\n    project_id INT NOT NULL REFERENCES company_projects(id) ON DELETE RESTRICT,\n    milestone_name TEXT NOT NULL,\n    target_date DATE NOT NULL\n);",
+        "expected_query": "CREATE TABLE project_milestones (\n    milestone_id SERIAL PRIMARY KEY,\n    project_id INT NOT NULL REFERENCES company_projects(id) ON DELETE RESTRICT,\n    milestone_name TEXT NOT NULL,\n    target_date DATE NOT NULL\n);",
+        "starterQuery": "",
+        "table_names": [
+            "project_milestones"
+        ],
+        "isDdlCreate": true,
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM information_schema.tables WHERE table_name = 'project_milestones';",
+                    "weight": 34,
+                    "description": {
+                        "en": "Table project_milestones exists",
+                        "id": "Tabel project_milestones terbuat"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM information_schema.table_constraints WHERE table_name = 'project_milestones' AND constraint_type = 'FOREIGN KEY';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Foreign link constraint to company_projects configured",
+                        "id": "Relasi foreign key ke company_projects terpasang"
+                    }
+                },
+                {
+                    "sql": "SELECT confdeltype = 'r' FROM pg_constraint WHERE conname LIKE '%project_milestones%' OR conrelid = 'project_milestones'::regclass LIMIT 1;",
+                    "weight": 33,
+                    "description": {
+                        "en": "Deletion rule configured as restrict",
+                        "id": "Aturan penghapusan disetel restrict"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1005,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 1,
+        "title": {
+            "en": "Campaign Flight Timeline Integrity",
+            "id": "Integritas Rentang Waktu Kampanye"
+        },
+        "conceptExplanation": {
+            "en": "The marketing department frequently schedules quarterly promotion periods. Erroneous human data entry sometimes sets completion dates that precede the rollout start time. The schema must enforce chronological consistency automatically at the row level.",
+            "id": "Departemen pemasaran kerap menjadwalkan periode promosi triwulanan. Kesalahan input manual kadang menetapkan tanggal selesai yang mendahului waktu mulai peluncuran. Skema harus menegakkan konsistensi kronologis secara otomatis di tingkat baris."
+        },
+        "instructions": {
+            "en": "Build table `marketing_campaigns` featuring `id` as auto-increment identifier, `campaign_slug TEXT NOT NULL UNIQUE`, `budget INT NOT NULL` (strictly positive), `start_date DATE NOT NULL`, `finish_date DATE NOT NULL`, and a row verification ensuring `finish_date >= start_date`.",
+            "id": "Bangun tabel `marketing_campaigns` memuat `id` sebagai pengenal unik otomatis, `campaign_slug TEXT NOT NULL UNIQUE`, `budget INT NOT NULL` (positif), `start_date DATE NOT NULL`, `finish_date DATE NOT NULL`, serta aturan baris yang memastikan `finish_date >= start_date`."
+        },
+        "topics": [
+            "ddl",
+            "row-constraints",
+            "date-validation"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "",
+        "referenceQuery": "CREATE TABLE marketing_campaigns (\n    id SERIAL PRIMARY KEY,\n    campaign_slug TEXT NOT NULL UNIQUE,\n    budget INT NOT NULL CHECK (budget > 0),\n    start_date DATE NOT NULL,\n    finish_date DATE NOT NULL,\n    CONSTRAINT chk_campaign_dates CHECK (finish_date >= start_date)\n);",
+        "expected_query": "CREATE TABLE marketing_campaigns (\n    id SERIAL PRIMARY KEY,\n    campaign_slug TEXT NOT NULL UNIQUE,\n    budget INT NOT NULL CHECK (budget > 0),\n    start_date DATE NOT NULL,\n    finish_date DATE NOT NULL,\n    CONSTRAINT chk_campaign_dates CHECK (finish_date >= start_date)\n);",
+        "starterQuery": "",
+        "table_names": [
+            "marketing_campaigns"
+        ],
+        "isDdlCreate": true,
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM information_schema.tables WHERE table_name = 'marketing_campaigns';",
+                    "weight": 34,
+                    "description": {
+                        "en": "Table marketing_campaigns exists",
+                        "id": "Tabel marketing_campaigns terbuat"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) >= 2 FROM information_schema.check_constraints WHERE constraint_name LIKE '%campaign%' OR constraint_name LIKE '%budget%';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Both budget and timeline rules exist",
+                        "id": "Aturan anggaran dan rentang tanggal terpasang"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) >= 1 FROM information_schema.table_constraints WHERE table_name = 'marketing_campaigns' AND constraint_type = 'UNIQUE';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Campaign slug unique rule present",
+                        "id": "Aturan unik slug kampanye tersedia"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1006,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 1,
+        "title": {
+            "en": "Departmental Subunit Linkage",
+            "id": "Keterkaitan Sub-unit Departemen"
+        },
+        "conceptExplanation": {
+            "en": "Corporate divisions identify work units using compound identifiers combining a division identifier and team identifier. Roster allocation tables must reference this exact compound key to guarantee that team assignments map to active structural units.",
+            "id": "Divisi perusahaan mengidentifikasi unit kerja menggunakan tanda pengenal gabungan antara id divisi dan id tim. Tabel alokasi personel harus mengacu pada pasangan kunci gabungan ini demi memastikan penugasan tim tepat sasaran."
+        },
+        "instructions": {
+            "en": "Create table `team_allocations` featuring `allocation_id` as auto-increment identifier, `emp_id INT NOT NULL`, `div_id INT NOT NULL`, `unit_id INT NOT NULL`, and a referential connection linking `(div_id, unit_id)` to `division_units(div_id, unit_id)`.",
+            "id": "Buat tabel `team_allocations` memuat `allocation_id` sebagai pengenal unik otomatis, `emp_id INT NOT NULL`, `div_id INT NOT NULL`, `unit_id INT NOT NULL`, serta relasi referensi gabungan yang mengikat `(div_id, unit_id)` ke `division_units(div_id, unit_id)`."
+        },
+        "topics": [
+            "ddl",
+            "composite-foreign-key",
+            "integrity"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE division_units (\n    div_id INT NOT NULL,\n    unit_id INT NOT NULL,\n    unit_name TEXT NOT NULL,\n    PRIMARY KEY (div_id, unit_id)\n);\nINSERT INTO division_units VALUES (1, 10, 'Core Engineering'), (1, 20, 'Platform Reliability');",
+        "referenceQuery": "CREATE TABLE team_allocations (\n    allocation_id SERIAL PRIMARY KEY,\n    emp_id INT NOT NULL,\n    div_id INT NOT NULL,\n    unit_id INT NOT NULL,\n    CONSTRAINT fk_team_unit FOREIGN KEY (div_id, unit_id) REFERENCES division_units (div_id, unit_id)\n);",
+        "expected_query": "CREATE TABLE team_allocations (\n    allocation_id SERIAL PRIMARY KEY,\n    emp_id INT NOT NULL,\n    div_id INT NOT NULL,\n    unit_id INT NOT NULL,\n    CONSTRAINT fk_team_unit FOREIGN KEY (div_id, unit_id) REFERENCES division_units (div_id, unit_id)\n);",
+        "starterQuery": "",
+        "table_names": [
+            "team_allocations"
+        ],
+        "isDdlCreate": true,
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM information_schema.tables WHERE table_name = 'team_allocations';",
+                    "weight": 34,
+                    "description": {
+                        "en": "Table team_allocations exists",
+                        "id": "Tabel team_allocations terbuat"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM information_schema.table_constraints WHERE table_name = 'team_allocations' AND constraint_type = 'FOREIGN KEY';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Compound foreign key defined",
+                        "id": "Foreign key komposit terdefinisi"
+                    }
+                },
+                {
+                    "sql": "SELECT array_length(conkey, 1) = 2 FROM pg_constraint WHERE conname = 'fk_team_unit' OR conrelid = 'team_allocations'::regclass AND contype = 'f';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Foreign key binds two columns",
+                        "id": "Foreign key mengikat dua kolom"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1007,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 1,
+        "title": {
+            "en": "Tenant Storage Quota Specification",
+            "id": "Spesifikasi Kuota Ruang Penyimpanan Tenant"
+        },
+        "conceptExplanation": {
+            "en": "Multi-tenant cloud infrastructure requires strict boundaries on storage allocations. Each tenant organization is assigned a plan tier and gigabyte limit. Limits cannot exceed 10,000 GB, and usage percentage cannot exceed 100.",
+            "id": "Infrastruktur cloud multi-tenant mewajibkan batas ketat pada alokasi penyimpanan. Setiap organisasi penyewa diberikan tingkatan paket dan batasan gigabyte. Batasan tidak boleh melampaui 10.000 GB, dan persentase penggunaan tidak boleh melebihi 100."
+        },
+        "instructions": {
+            "en": "Define table `tenant_quotas` featuring `tenant_id INT` as unique identifier, `tier_name TEXT NOT NULL`, `max_gb INT NOT NULL` (between 1 and 10000 inclusive), and `usage_pct NUMERIC(5,2) NOT NULL DEFAULT 0.00` (between 0.00 and 100.00 inclusive).",
+            "id": "Definisikan tabel `tenant_quotas` memuat `tenant_id INT` sebagai pengenal unik, `tier_name TEXT NOT NULL`, `max_gb INT NOT NULL` (antara 1 dan 10000 inklusif), dan `usage_pct NUMERIC(5,2) NOT NULL DEFAULT 0.00` (antara 0.00 dan 100.00 inklusif)."
+        },
+        "topics": [
+            "ddl",
+            "numeric-check",
+            "multi-column-rules"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "",
+        "referenceQuery": "CREATE TABLE tenant_quotas (\n    tenant_id INT PRIMARY KEY,\n    tier_name TEXT NOT NULL,\n    max_gb INT NOT NULL CHECK (max_gb > 0 AND max_gb <= 10000),\n    usage_pct NUMERIC(5,2) NOT NULL DEFAULT 0.00 CHECK (usage_pct >= 0.00 AND usage_pct <= 100.00)\n);",
+        "expected_query": "CREATE TABLE tenant_quotas (\n    tenant_id INT PRIMARY KEY,\n    tier_name TEXT NOT NULL,\n    max_gb INT NOT NULL CHECK (max_gb > 0 AND max_gb <= 10000),\n    usage_pct NUMERIC(5,2) NOT NULL DEFAULT 0.00 CHECK (usage_pct >= 0.00 AND usage_pct <= 100.00)\n);",
+        "starterQuery": "",
+        "table_names": [
+            "tenant_quotas"
+        ],
+        "isDdlCreate": true,
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM information_schema.tables WHERE table_name = 'tenant_quotas';",
+                    "weight": 34,
+                    "description": {
+                        "en": "Table tenant_quotas exists",
+                        "id": "Tabel tenant_quotas terbuat"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) >= 2 FROM information_schema.check_constraints WHERE constraint_name LIKE '%tenant%' OR constraint_name LIKE '%gb%' OR constraint_name LIKE '%usage%';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Storage and percentage bounds configured",
+                        "id": "Batas penyimpanan dan persentase terpasang"
+                    }
+                },
+                {
+                    "sql": "SELECT column_default LIKE '%0.00%' FROM information_schema.columns WHERE table_name = 'tenant_quotas' AND column_name = 'usage_pct';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Default decimal value established",
+                        "id": "Nilai default desimal terpasang"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1008,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 1,
+        "title": {
+            "en": "Support Ticket Escalation Schema",
+            "id": "Skema Eskalasi Tiket Bantuan"
+        },
+        "conceptExplanation": {
+            "en": "Customer satisfaction teams trace high-urgency incidents. A ticket record requires an auto-generated tracking key, an incident category, and urgency level between 1 and 5. Whenever a ticket closes, resolution notes become mandatory.",
+            "id": "Tim kepuasan pelanggan menelusuri insiden berurgensi tinggi. Catatan tiket membutuhkan nomor pelacak otomatis, kategori insiden, dan tingkat urgensi antara 1 dan 5. Setiap kali tiket ditutup, catatan penyelesaian wajib terisi."
+        },
+        "instructions": {
+            "en": "Construct table `support_tickets` featuring `ticket_id` as auto-increment identifier, `category TEXT NOT NULL`, `urgency INT NOT NULL` (between 1 and 5), `is_closed BOOLEAN NOT NULL DEFAULT FALSE`, `resolution_notes TEXT`, and a condition requiring `resolution_notes` when `is_closed` is true.",
+            "id": "Bangun tabel `support_tickets` memuat `ticket_id` sebagai pengenal unik otomatis, `category TEXT NOT NULL`, `urgency INT NOT NULL` (antara 1 dan 5), `is_closed BOOLEAN NOT NULL DEFAULT FALSE`, `resolution_notes TEXT`, serta kondisi bahwa bila `is_closed` bernilai true maka `resolution_notes` tidak boleh null."
+        },
+        "topics": [
+            "ddl",
+            "conditional-check",
+            "boolean-defaults"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "",
+        "referenceQuery": "CREATE TABLE support_tickets (\n    ticket_id SERIAL PRIMARY KEY,\n    category TEXT NOT NULL,\n    urgency INT NOT NULL CHECK (urgency BETWEEN 1 AND 5),\n    is_closed BOOLEAN NOT NULL DEFAULT FALSE,\n    resolution_notes TEXT,\n    CONSTRAINT chk_closed_notes CHECK (NOT is_closed OR resolution_notes IS NOT NULL)\n);",
+        "expected_query": "CREATE TABLE support_tickets (\n    ticket_id SERIAL PRIMARY KEY,\n    category TEXT NOT NULL,\n    urgency INT NOT NULL CHECK (urgency BETWEEN 1 AND 5),\n    is_closed BOOLEAN NOT NULL DEFAULT FALSE,\n    resolution_notes TEXT,\n    CONSTRAINT chk_closed_notes CHECK (NOT is_closed OR resolution_notes IS NOT NULL)\n);",
+        "starterQuery": "",
+        "table_names": [
+            "support_tickets"
+        ],
+        "isDdlCreate": true,
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM information_schema.tables WHERE table_name = 'support_tickets';",
+                    "weight": 34,
+                    "description": {
+                        "en": "Table support_tickets exists",
+                        "id": "Tabel support_tickets terbuat"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) >= 2 FROM information_schema.check_constraints WHERE constraint_name LIKE '%support%' OR constraint_name LIKE '%urgency%' OR constraint_name LIKE '%notes%';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Urgency and conditional notes checks defined",
+                        "id": "Pengecekan urgensi dan catatan kondisional terdefinisi"
+                    }
+                },
+                {
+                    "sql": "SELECT column_default LIKE '%false%' FROM information_schema.columns WHERE table_name = 'support_tickets' AND column_name = 'is_closed';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Closed flag defaults to false",
+                        "id": "Flag penutupan default ke false"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1009,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 1,
+        "title": {
+            "en": "Security Badge Assignment Blueprint",
+            "id": "Cetak Biru Penugasan Lencana Keamanan"
+        },
+        "conceptExplanation": {
+            "en": "Facility security requires tracking electronic badge passes issued to personnel. Each physical card serial code must remain unique across the entire building, and access privilege tier numbers must stay between 10 and 99.",
+            "id": "Keamanan fasilitas mengharuskan pelacakan kartu akses elektronik yang diberikan kepada personel. Setiap kode seri kartu fisik harus tetap unik di seluruh gedung, dan nomor tingkat akses harus berada di antara 10 dan 99."
+        },
+        "instructions": {
+            "en": "Create table `access_badges` featuring `badge_id` as auto-increment identifier, `card_serial TEXT NOT NULL UNIQUE`, `assigned_user_id INT NOT NULL`, `clearance_level INT NOT NULL` (between 10 and 99 inclusive), and `issued_date DATE` defaulting to current calendar date.",
+            "id": "Buat tabel `access_badges` memuat `badge_id` sebagai pengenal unik otomatis, `card_serial TEXT NOT NULL UNIQUE`, `assigned_user_id INT NOT NULL`, `clearance_level INT NOT NULL` (antara 10 dan 99 inklusif), dan `issued_date DATE` bernilai bawaan tanggal saat ini."
+        },
+        "topics": [
+            "ddl",
+            "unique-constraint",
+            "date-defaults"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "",
+        "referenceQuery": "CREATE TABLE access_badges (\n    badge_id SERIAL PRIMARY KEY,\n    card_serial TEXT NOT NULL UNIQUE,\n    assigned_user_id INT NOT NULL,\n    clearance_level INT NOT NULL CHECK (clearance_level >= 10 AND clearance_level <= 99),\n    issued_date DATE NOT NULL DEFAULT CURRENT_DATE\n);",
+        "expected_query": "CREATE TABLE access_badges (\n    badge_id SERIAL PRIMARY KEY,\n    card_serial TEXT NOT NULL UNIQUE,\n    assigned_user_id INT NOT NULL,\n    clearance_level INT NOT NULL CHECK (clearance_level >= 10 AND clearance_level <= 99),\n    issued_date DATE NOT NULL DEFAULT CURRENT_DATE\n);",
+        "starterQuery": "",
+        "table_names": [
+            "access_badges"
+        ],
+        "isDdlCreate": true,
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM information_schema.tables WHERE table_name = 'access_badges';",
+                    "weight": 34,
+                    "description": {
+                        "en": "Table access_badges exists",
+                        "id": "Tabel access_badges terbuat"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) >= 1 FROM information_schema.table_constraints WHERE table_name = 'access_badges' AND constraint_type = 'UNIQUE';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Serial uniqueness constraint present",
+                        "id": "Aturan unik nomor seri tersedia"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) >= 1 FROM information_schema.check_constraints WHERE constraint_name LIKE '%access%' OR constraint_name LIKE '%clearance%';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Clearance range rule present",
+                        "id": "Aturan rentang hak akses terpasang"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1010,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 1,
+        "title": {
+            "en": "Merchant Settlement Account Specification",
+            "id": "Spesifikasi Akun Rekening Merchant"
+        },
+        "conceptExplanation": {
+            "en": "A payment gateway manages merchant payout accounts. A merchant can register multiple bank routing pairs, but the exact bank code and account number combination must be unique across the platform. Currency is restricted to three-letter codes.",
+            "id": "Payment gateway mengelola rekening pencairan dana merchant. Seorang merchant dapat mendaftarkan beberapa rekening bank, namun kombinasi kode bank dan nomor rekening harus unik di seluruh sistem. Mata uang dibatasi kode tiga huruf."
+        },
+        "instructions": {
+            "en": "Create table `merchant_bank_accounts` containing `id` as auto-increment identifier, `merchant_id INT NOT NULL`, `bank_code VARCHAR(10) NOT NULL`, `account_num VARCHAR(34) NOT NULL`, `currency CHAR(3) NOT NULL` (requiring exactly 3 characters), and a two-column unique rule on `(bank_code, account_num)`.",
+            "id": "Definisikan tabel `merchant_bank_accounts` dengan pengenal unik otomatis `id`, `merchant_id INT NOT NULL`, `bank_code VARCHAR(10) NOT NULL`, `account_num VARCHAR(34) NOT NULL`, `currency CHAR(3) NOT NULL` (panjang tepat 3 karakter), serta aturan unik dua kolom pada `(bank_code, account_num)`."
+        },
+        "topics": [
+            "ddl",
+            "composite-unique",
+            "text-length-check"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "",
+        "referenceQuery": "CREATE TABLE merchant_bank_accounts (\n    id SERIAL PRIMARY KEY,\n    merchant_id INT NOT NULL,\n    bank_code VARCHAR(10) NOT NULL,\n    account_num VARCHAR(34) NOT NULL,\n    currency CHAR(3) NOT NULL CHECK (length(currency) = 3),\n    CONSTRAINT uq_bank_account UNIQUE (bank_code, account_num)\n);",
+        "expected_query": "CREATE TABLE merchant_bank_accounts (\n    id SERIAL PRIMARY KEY,\n    merchant_id INT NOT NULL,\n    bank_code VARCHAR(10) NOT NULL,\n    account_num VARCHAR(34) NOT NULL,\n    currency CHAR(3) NOT NULL CHECK (length(currency) = 3),\n    CONSTRAINT uq_bank_account UNIQUE (bank_code, account_num)\n);",
+        "starterQuery": "",
+        "table_names": [
+            "merchant_bank_accounts"
+        ],
+        "isDdlCreate": true,
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM information_schema.tables WHERE table_name = 'merchant_bank_accounts';",
+                    "weight": 34,
+                    "description": {
+                        "en": "Table merchant_bank_accounts exists",
+                        "id": "Tabel merchant_bank_accounts terbuat"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) >= 1 FROM information_schema.table_constraints WHERE table_name = 'merchant_bank_accounts' AND constraint_type = 'UNIQUE';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Account pair uniqueness enforced",
+                        "id": "Keunikan pasangan rekening terpasang"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) >= 1 FROM information_schema.check_constraints WHERE constraint_name LIKE '%currency%' OR constraint_name LIKE '%merchant%';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Currency length check active",
+                        "id": "Pengecekan panjang mata uang aktif"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1011,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 2,
+        "title": {
+            "en": "Subscription Churn Risk Profiling",
+            "id": "Profil Risiko Churn Berlangganan"
+        },
+        "conceptExplanation": {
+            "en": "Account managers need to identify clients who show warning signs of discontinuing their plans. Relevant accounts are active accounts paying 50 or more per month whose last activity happened more than 45 days prior to June 1, 2024. For those accounts, distinguish accounts paying 100 or more as Critical, and all others as Elevated.",
+            "id": "Manajer akun perlu mengidentifikasi klien yang memperlihatkan tanda peringatan akan berhenti berlangganan. Akun yang relevan adalah akun aktif dengan biaya 50 atau lebih per bulan yang aktivitas terakhirnya berlangsung lebih dari 45 hari sebelum 1 Juni 2024. Untuk akun tersebut, bedakan akun bertarif 100 atau lebih sebagai Critical, dan lainnya sebagai Elevated."
+        },
+        "instructions": {
+            "en": "Show `customer_id`, `monthly_fee`, `last_login_date`, and the risk label `risk_tier` ('Critical' for monthly fee at least 100, otherwise 'Elevated') for active subscriptions (`cancel_requested` is false) where `monthly_fee >= 50` and `last_login_date < DATE '2024-06-01' - 45`. Sort by customer then monthly fee descending.",
+            "id": "Tampilkan `customer_id`, `monthly_fee`, `last_login_date`, dan label risiko `risk_tier` ('Critical' bila monthly fee minimal 100, selain itu 'Elevated') untuk langganan aktif (`cancel_requested` bernilai false) dengan `monthly_fee >= 50` dan `last_login_date < DATE '2024-06-01' - 45`. Urutkan berdasarkan pelanggan lalu biaya bulanan menurun."
+        },
+        "topics": [
+            "conditional-case",
+            "date-arithmetic",
+            "multi-filtering"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE subscriptions (\n    id SERIAL PRIMARY KEY,\n    customer_id INT NOT NULL,\n    plan_tier TEXT NOT NULL,\n    monthly_fee INT NOT NULL,\n    last_login_date DATE NOT NULL,\n    cancel_requested BOOLEAN NOT NULL\n);\nINSERT INTO subscriptions (customer_id, plan_tier, monthly_fee, last_login_date, cancel_requested)\nSELECT (g % 500) + 1,\n       CASE WHEN g % 3 = 0 THEN 'Enterprise' WHEN g % 3 = 1 THEN 'Pro' ELSE 'Basic' END,\n       (g % 140) + 20,\n       DATE '2024-01-01' + (g % 150),\n       (g % 5 = 0)\nFROM generate_series(1, 2500) g;\nCREATE INDEX idx_subs_active_fee ON subscriptions (cancel_requested, monthly_fee, last_login_date);\nANALYZE subscriptions;",
+        "referenceQuery": "SELECT customer_id, monthly_fee, last_login_date,\n       CASE WHEN monthly_fee >= 100 THEN 'Critical' ELSE 'Elevated' END AS risk_tier\nFROM subscriptions\nWHERE cancel_requested = FALSE\n  AND monthly_fee >= 50\n  AND last_login_date < DATE '2024-06-01' - 45\nORDER BY customer_id ASC, monthly_fee DESC;",
+        "expected_query": "SELECT customer_id, monthly_fee, last_login_date,\n       CASE WHEN monthly_fee >= 100 THEN 'Critical' ELSE 'Elevated' END AS risk_tier\nFROM subscriptions\nWHERE cancel_requested = FALSE\n  AND monthly_fee >= 50\n  AND last_login_date < DATE '2024-06-01' - 45\nORDER BY customer_id ASC, monthly_fee DESC;",
+        "starterQuery": "",
+        "table_names": [
+            "subscriptions"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1012,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 2,
+        "title": {
+            "en": "Warehouse Stale Inventory Detection",
+            "id": "Deteksi Inventaris Usang Gudang"
+        },
+        "conceptExplanation": {
+            "en": "Logistics supervisors need to detect batches taking up costly storage space. Batches received at least 90 days before July 1, 2024 where remaining stock represents more than 80 percent of original intake must be flagged. Batches holding 100 or more remaining units need Urgent action, while smaller ones get Routine priority.",
+            "id": "Penyelia logistik perlu mendeteksi stok yang memakan ruang simpan berbiaya tinggi. Batch yang diterima setidaknya 90 hari sebelum 1 Juli 2024 di mana sisa stok melebihi 80 persen dari unit awal harus ditandai. Batch dengan sisa 100 unit atau lebih memerlukan penanganan Urgent, sedangkan sisanya Routine."
+        },
+        "instructions": {
+            "en": "Retrieve `warehouse_id`, `product_name`, `units_received - units_sold` as `remaining_stock`, and action label `action_priority` ('Urgent' when remaining stock is 100 or greater, otherwise 'Routine') for batches where `received_date <= DATE '2024-07-01' - 90` and `(units_received - units_sold) * 1.0 / units_received > 0.80`. Sort by warehouse, then remaining stock descending.",
+            "id": "Dapatkan `warehouse_id`, `product_name`, `units_received - units_sold` sebagai `remaining_stock`, dan label `action_priority` ('Urgent' bila sisa stok 100 ke atas, selain itu 'Routine') untuk batch dengan `received_date <= DATE '2024-07-01' - 90` dan `(units_received - units_sold) * 1.0 / units_received > 0.80`. Urutkan berdasarkan gudang, lalu sisa stok menurun."
+        },
+        "topics": [
+            "arithmetic-expressions",
+            "conditional-case",
+            "date-arithmetic"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE stock_batches (\n    batch_id SERIAL PRIMARY KEY,\n    warehouse_id INT NOT NULL,\n    product_name TEXT NOT NULL,\n    units_received INT NOT NULL,\n    units_sold INT NOT NULL,\n    received_date DATE NOT NULL\n);\nINSERT INTO stock_batches (warehouse_id, product_name, units_received, units_sold, received_date)\nSELECT (g % 30) + 1,\n       'SKU-' || ((g % 100) + 1),\n       (g % 300) + 50,\n       (g % 80),\n       DATE '2024-01-01' + (g % 180)\nFROM generate_series(1, 2500) g;\nCREATE INDEX idx_stock_dates ON stock_batches (received_date);\nANALYZE stock_batches;",
+        "referenceQuery": "SELECT warehouse_id, product_name,\n       (units_received - units_sold) AS remaining_stock,\n       CASE WHEN (units_received - units_sold) >= 100 THEN 'Urgent' ELSE 'Routine' END AS action_priority\nFROM stock_batches\nWHERE received_date <= DATE '2024-07-01' - 90\n  AND (units_received - units_sold) * 1.0 / units_received > 0.80\nORDER BY warehouse_id ASC, remaining_stock DESC;",
+        "expected_query": "SELECT warehouse_id, product_name,\n       (units_received - units_sold) AS remaining_stock,\n       CASE WHEN (units_received - units_sold) >= 100 THEN 'Urgent' ELSE 'Routine' END AS action_priority\nFROM stock_batches\nWHERE received_date <= DATE '2024-07-01' - 90\n  AND (units_received - units_sold) * 1.0 / units_received > 0.80\nORDER BY warehouse_id ASC, remaining_stock DESC;",
+        "starterQuery": "",
+        "table_names": [
+            "stock_batches"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1013,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 2,
+        "title": {
+            "en": "Supplier Consignment Disruption Audit",
+            "id": "Audit Gangguan Pengiriman Pemasok"
+        },
+        "conceptExplanation": {
+            "en": "Quality assurance audits vendor consignments. Any consignment that arrived after its promised delivery date or incurred damaged goods must be reviewed. The team categorizes shipments arriving 4 or more days late as Severe Delay, shipments arriving 1 to 3 days late as Minor Delay, and shipments arriving on time but carrying damaged cargo as Damaged Only.",
+            "id": "Tim penjamin mutu memeriksa pengiriman pemasok. Setiap kiriman yang tiba melampaui tanggal janji atau mengalami kerusakan barang harus ditinjau. Tim mengelompokkan kiriman terlambat 4 hari atau lebih sebagai Severe Delay, keterlambatan 1 hingga 3 hari sebagai Minor Delay, dan kiriman tepat waktu namun rusak sebagai Damaged Only."
+        },
+        "instructions": {
+            "en": "Show `vendor_id`, `delivery_id`, `actual_date - expected_date` as `days_late`, `damaged_items`, and `incident_class` ('Severe Delay' for 4 or more days late, 'Minor Delay' for 1 to 3 days late, 'Damaged Only' otherwise) for consignments where `actual_date > expected_date` or `damaged_items > 0`. Sort by vendor, then days late descending.",
+            "id": "Tampilkan `vendor_id`, `delivery_id`, `actual_date - expected_date` sebagai `days_late`, `damaged_items`, dan `incident_class` ('Severe Delay' untuk keterlambatan 4 hari ke atas, 'Minor Delay' untuk 1 hingga 3 hari, 'Damaged Only' untuk kasus lainnya) bagi kiriman di mana `actual_date > expected_date` atau `damaged_items > 0`. Urutkan berdasarkan pemasok, lalu hari terlambat menurun."
+        },
+        "topics": [
+            "case-mapping",
+            "date-arithmetic",
+            "compound-filter"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE shipment_deliveries (\n    delivery_id SERIAL PRIMARY KEY,\n    vendor_id INT NOT NULL,\n    expected_date DATE NOT NULL,\n    actual_date DATE NOT NULL,\n    damaged_items INT NOT NULL\n);\nINSERT INTO shipment_deliveries (vendor_id, expected_date, actual_date, damaged_items)\nSELECT (g % 80) + 1,\n       DATE '2024-03-01' + (g % 100),\n       DATE '2024-03-01' + (g % 100) + ((g % 9) - 2),\n       CASE WHEN g % 7 = 0 THEN (g % 5) + 1 ELSE 0 END\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_deliveries_dates ON shipment_deliveries (actual_date, expected_date, damaged_items);\nANALYZE shipment_deliveries;",
+        "referenceQuery": "SELECT vendor_id, delivery_id,\n       (actual_date - expected_date) AS days_late,\n       damaged_items,\n       CASE\n           WHEN (actual_date - expected_date) >= 4 THEN 'Severe Delay'\n           WHEN (actual_date - expected_date) >= 1 THEN 'Minor Delay'\n           ELSE 'Damaged Only'\n       END AS incident_class\nFROM shipment_deliveries\nWHERE actual_date > expected_date OR damaged_items > 0\nORDER BY vendor_id ASC, days_late DESC;",
+        "expected_query": "SELECT vendor_id, delivery_id,\n       (actual_date - expected_date) AS days_late,\n       damaged_items,\n       CASE\n           WHEN (actual_date - expected_date) >= 4 THEN 'Severe Delay'\n           WHEN (actual_date - expected_date) >= 1 THEN 'Minor Delay'\n           ELSE 'Damaged Only'\n       END AS incident_class\nFROM shipment_deliveries\nWHERE actual_date > expected_date OR damaged_items > 0\nORDER BY vendor_id ASC, days_late DESC;",
+        "starterQuery": "",
+        "table_names": [
+            "shipment_deliveries"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1014,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 2,
+        "title": {
+            "en": "Clinical Admission Vital Signs Triage",
+            "id": "Triase Tanda Vital Pasien Masuk"
+        },
+        "conceptExplanation": {
+            "en": "An emergency clinic classifies incoming patients based on biometric readings taken during daytime operating shifts between 08:00 and 17:59. Patients recording blood pressure 160 or higher or pulse 110 or higher represent Code Red. Blood pressure between 140 and 159 represents Code Yellow. All remaining eligible admissions are Code Green.",
+            "id": "Klinik darurat mengklasifikasikan pasien masuk berdasarkan tanda vital selama jam operasional siang antara 08:00 dan 17:59. Pasien dengan tekanan darah 160 ke atas atau detak jantung 110 ke atas berstatus Code Red. Tekanan darah antara 140 dan 159 berstatus Code Yellow. Pasien lainnya berstatus Code Green."
+        },
+        "instructions": {
+            "en": "Display `admission_id`, `patient_code`, `systolic_bp`, `heart_rate`, and `triage_level` ('Code Red' for systolic 160 or higher or heart rate 110 or higher; 'Code Yellow' for systolic 140 to 159; 'Code Green' otherwise) for admissions where the admission timestamp falls between hour 8 and 17 inclusive. Sort by admission_id ascending.",
+            "id": "Tampilkan `admission_id`, `patient_code`, `systolic_bp`, `heart_rate`, dan `triage_level` ('Code Red' jika sistolik 160 ke atas atau detak jantung 110 ke atas; 'Code Yellow' jika sistolik 140 hingga 159; 'Code Green' lainnya) untuk kedatangan dengan waktu antara jam 8 hingga 17 inklusif. Urutkan berdasarkan admission_id menaik."
+        },
+        "topics": [
+            "conditional-case",
+            "time-extraction",
+            "complex-filtering"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE clinic_admissions (\n    admission_id SERIAL PRIMARY KEY,\n    patient_code TEXT NOT NULL,\n    systolic_bp INT NOT NULL,\n    heart_rate INT NOT NULL,\n    admission_time TIMESTAMP NOT NULL\n);\nINSERT INTO clinic_admissions (patient_code, systolic_bp, heart_rate, admission_time)\nSELECT 'P-' || ((g % 900) + 100),\n       110 + (g % 65),\n       60 + (g % 65),\n       TIMESTAMP '2024-05-01 00:00:00' + (g * INTERVAL '17 minutes')\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_clinic_time ON clinic_admissions (admission_time);\nANALYZE clinic_admissions;",
+        "referenceQuery": "SELECT admission_id, patient_code, systolic_bp, heart_rate,\n       CASE\n           WHEN systolic_bp >= 160 OR heart_rate >= 110 THEN 'Code Red'\n           WHEN systolic_bp >= 140 THEN 'Code Yellow'\n           ELSE 'Code Green'\n       END AS triage_level\nFROM clinic_admissions\nWHERE EXTRACT(HOUR FROM admission_time) >= 8\n  AND EXTRACT(HOUR FROM admission_time) <= 17\nORDER BY admission_id ASC;",
+        "expected_query": "SELECT admission_id, patient_code, systolic_bp, heart_rate,\n       CASE\n           WHEN systolic_bp >= 160 OR heart_rate >= 110 THEN 'Code Red'\n           WHEN systolic_bp >= 140 THEN 'Code Yellow'\n           ELSE 'Code Green'\n       END AS triage_level\nFROM clinic_admissions\nWHERE EXTRACT(HOUR FROM admission_time) >= 8\n  AND EXTRACT(HOUR FROM admission_time) <= 17\nORDER BY admission_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "clinic_admissions"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1015,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 2,
+        "title": {
+            "en": "Overdue Loan Repayment Classification",
+            "id": "Klasifikasi Keterlambatan Pembayaran Angsuran"
+        },
+        "conceptExplanation": {
+            "en": "A credit risk auditor reviews loan installments that were not settled on time. Unsettled installments or installments paid after the scheduled due date are scrutinized. For unsettled rows, overdue days are calculated relative to the review benchmark August 1, 2024. Delays past 30 days are flagged as Critical Default, while shorter delays are Grace Period.",
+            "id": "Auditor risiko kredit memeriksa angsuran pinjaman yang tidak dilunasi tepat waktu. Angsuran belum terbayar atau terbayar setelah tanggal jatuh tempo harus diperiksa. Untuk baris belum terbayar, hari terlambat dihitung relatif terhadap patokan 1 Agustus 2024. Keterlambatan di atas 30 hari ditandai Critical Default, sedangkan keterlambatan lebih singkat Grace Period."
+        },
+        "instructions": {
+            "en": "For installments due before August 1, 2024 where `payment_date IS NULL` or `payment_date > due_date`, show `borrower_id`, `installment_id`, `principal_due`, and `overdue_status` ('Critical Default' when overdue days exceed 30, otherwise 'Grace Period'). Compute overdue days using the payment date (defaulting to August 1, 2024 if unpaid) minus the due date. Sort by borrower, then principal_due descending.",
+            "id": "Untuk angsuran jatuh tempo sebelum 1 Agustus 2024 di mana `payment_date IS NULL` atau `payment_date > due_date`, tampilkan `borrower_id`, `installment_id`, `principal_due`, dan `overdue_status` ('Critical Default' bila hari terlambat melebihi 30, selain itu 'Grace Period'). Hitung hari terlambat menggunakan tanggal bayar (default 1 Agustus 2024 jika belum bayar) dikurangi jatuh tempo. Urutkan berdasarkan peminjam, lalu pokok angsuran menurun."
+        },
+        "topics": [
+            "null-handling",
+            "date-arithmetic",
+            "conditional-case"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE loan_installments (\n    installment_id SERIAL PRIMARY KEY,\n    borrower_id INT NOT NULL,\n    due_date DATE NOT NULL,\n    payment_date DATE,\n    principal_due INT NOT NULL\n);\nINSERT INTO loan_installments (borrower_id, due_date, payment_date, principal_due)\nSELECT (g % 600) + 1,\n       DATE '2024-05-01' + (g % 75),\n       CASE\n           WHEN g % 5 = 0 THEN NULL\n           WHEN g % 3 = 0 THEN DATE '2024-05-01' + (g % 75) + ((g % 45) + 1)\n           ELSE DATE '2024-05-01' + (g % 75) - (g % 3)\n       END,\n       (g % 500) + 100\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_loans_dates ON loan_installments (due_date, payment_date);\nANALYZE loan_installments;",
+        "referenceQuery": "SELECT borrower_id, installment_id, principal_due,\n       CASE\n           WHEN (COALESCE(payment_date, DATE '2024-08-01') - due_date) > 30 THEN 'Critical Default'\n           ELSE 'Grace Period'\n       END AS overdue_status\nFROM loan_installments\nWHERE due_date < DATE '2024-08-01'\n  AND (payment_date IS NULL OR payment_date > due_date)\nORDER BY borrower_id ASC, principal_due DESC;",
+        "expected_query": "SELECT borrower_id, installment_id, principal_due,\n       CASE\n           WHEN (COALESCE(payment_date, DATE '2024-08-01') - due_date) > 30 THEN 'Critical Default'\n           ELSE 'Grace Period'\n       END AS overdue_status\nFROM loan_installments\nWHERE due_date < DATE '2024-08-01'\n  AND (payment_date IS NULL OR payment_date > due_date)\nORDER BY borrower_id ASC, principal_due DESC;",
+        "starterQuery": "",
+        "table_names": [
+            "loan_installments"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1016,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 2,
+        "title": {
+            "en": "Night Shift Differential Compensation",
+            "id": "Kompensasi Diferensial Jam Kerja Malam"
+        },
+        "conceptExplanation": {
+            "en": "Payroll policies apply special wage premiums for extended shifts or shifts starting late in the evening. Shifts starting at or after 19:00 receive a 25 percent bonus multiplier, shifts lasting strictly longer than 8 hours receive a 15 percent bonus multiplier, and all other shifts receive standard regular base pay.",
+            "id": "Kebijakan penggajian menerapkan premi khusus untuk giliran kerja panjang atau yang dimulai larut malam. Shift yang dimulai pukul 19:00 ke atas menerima pengali bonus 25 persen, shift yang berdurasi lebih dari 8 jam menerima pengali 15 persen, dan shift lainnya mendapat upah standar."
+        },
+        "instructions": {
+            "en": "Show `employee_id`, `entry_id`, `base_rate`, and calculated `effective_rate` (base_rate * 1.25 for shifts starting at 19:00 or later; base_rate * 1.15 for shifts where duration exceeds 8 hours; base_rate * 1.0 otherwise, rounded to 2 decimals) for timecards during June 2024. Sort by employee, then entry_id.",
+            "id": "Tampilkan `employee_id`, `entry_id`, `base_rate`, dan hasil hitung `effective_rate` (base_rate * 1.25 untuk shift mulai jam 19:00 ke atas; base_rate * 1.15 untuk durasi melampaui 8 jam; base_rate * 1.0 lainnya, dibulatkan 2 desimal) untuk pencatatan waktu selama Juni 2024. Urutkan berdasarkan karyawan, lalu entry_id."
+        },
+        "topics": [
+            "interval-arithmetic",
+            "case-expressions",
+            "numeric-rounding"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE timecard_entries (\n    entry_id SERIAL PRIMARY KEY,\n    employee_id INT NOT NULL,\n    shift_start TIMESTAMP NOT NULL,\n    shift_end TIMESTAMP NOT NULL,\n    base_rate NUMERIC(8,2) NOT NULL\n);\nINSERT INTO timecard_entries (employee_id, shift_start, shift_end, base_rate)\nSELECT (g % 400) + 1,\n       TIMESTAMP '2024-06-01 06:00:00' + (g * INTERVAL '3 hours'),\n       TIMESTAMP '2024-06-01 06:00:00' + (g * INTERVAL '3 hours') + (((g % 5) + 6) * INTERVAL '1 hour'),\n       20.00 + (g % 30)\nFROM generate_series(1, 2000) g;\nCREATE INDEX idx_timecard_dates ON timecard_entries (shift_start);\nANALYZE timecard_entries;",
+        "referenceQuery": "SELECT employee_id, entry_id, base_rate,\n       ROUND(\n           CASE\n               WHEN EXTRACT(HOUR FROM shift_start) >= 19 THEN base_rate * 1.25\n               WHEN shift_end - shift_start > INTERVAL '8 hours' THEN base_rate * 1.15\n               ELSE base_rate * 1.00\n           END, 2\n       ) AS effective_rate\nFROM timecard_entries\nWHERE shift_start >= '2024-06-01' AND shift_start < '2024-07-01'\nORDER BY employee_id ASC, entry_id ASC;",
+        "expected_query": "SELECT employee_id, entry_id, base_rate,\n       ROUND(\n           CASE\n               WHEN EXTRACT(HOUR FROM shift_start) >= 19 THEN base_rate * 1.25\n               WHEN shift_end - shift_start > INTERVAL '8 hours' THEN base_rate * 1.15\n               ELSE base_rate * 1.00\n           END, 2\n       ) AS effective_rate\nFROM timecard_entries\nWHERE shift_start >= '2024-06-01' AND shift_start < '2024-07-01'\nORDER BY employee_id ASC, entry_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "timecard_entries"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1017,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 2,
+        "title": {
+            "en": "International Cargo Surcharge Banding",
+            "id": "Penetapan Tingkat Biaya Kargo Internasional"
+        },
+        "conceptExplanation": {
+            "en": "Freight dispatch systems assess handling surcharges on cross-border shipments. Shipments bound outside the domestic destination of Canada (destination not equal to CA) carrying gross mass of 25 kilograms or higher must be rated. Hazardous cargo carries the Highest Band, while non-hazardous heavy cargo carries Heavy Standard.",
+            "id": "Sistem ekspedisi kargo menentukan biaya penanganan untuk pengiriman antarnegara. Kiriman ke luar wilayah domestik Kanada (tujuan bukan CA) dengan berat kotor 25 kilogram ke atas harus dinilai. Kargo berbahaya masuk kategori Highest Band, sedangkan kargo berat tanpa bahaya masuk Heavy Standard."
+        },
+        "instructions": {
+            "en": "Display `package_id`, `dest_country`, `weight_kg`, and handling indicator `surcharge_tier` ('Highest Band' when `is_hazardous` is true, otherwise 'Heavy Standard') for packages where `weight_kg >= 25.0` destined outside `'CA'`. Sort by destination country, then weight descending.",
+            "id": "Tampilkan `package_id`, `dest_country`, `weight_kg`, dan indikator penanganan `surcharge_tier` ('Highest Band' jika `is_hazardous` bernilai true, selain itu 'Heavy Standard') untuk paket dengan `weight_kg >= 25.0` berdestinasi selain `'CA'`. Urutkan berdasarkan negara tujuan, lalu berat menurun."
+        },
+        "topics": [
+            "conditional-case",
+            "multi-criteria-filter",
+            "text-matching"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE freight_packages (\n    package_id SERIAL PRIMARY KEY,\n    dest_country CHAR(2) NOT NULL,\n    weight_kg NUMERIC(6,2) NOT NULL,\n    is_hazardous BOOLEAN NOT NULL\n);\nINSERT INTO freight_packages (dest_country, weight_kg, is_hazardous)\nSELECT CASE WHEN g % 4 = 0 THEN 'CA' WHEN g % 4 = 1 THEN 'MX' WHEN g % 4 = 2 THEN 'DE' ELSE 'JP' END,\n       10.0 + (g % 50),\n       (g % 6 = 0)\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_freight_dest_wt ON freight_packages (dest_country, weight_kg);\nANALYZE freight_packages;",
+        "referenceQuery": "SELECT package_id, dest_country, weight_kg,\n       CASE WHEN is_hazardous THEN 'Highest Band' ELSE 'Heavy Standard' END AS surcharge_tier\nFROM freight_packages\nWHERE dest_country <> 'CA' AND weight_kg >= 25.0\nORDER BY dest_country ASC, weight_kg DESC;",
+        "expected_query": "SELECT package_id, dest_country, weight_kg,\n       CASE WHEN is_hazardous THEN 'Highest Band' ELSE 'Heavy Standard' END AS surcharge_tier\nFROM freight_packages\nWHERE dest_country <> 'CA' AND weight_kg >= 25.0\nORDER BY dest_country ASC, weight_kg DESC;",
+        "starterQuery": "",
+        "table_names": [
+            "freight_packages"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1018,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 2,
+        "title": {
+            "en": "Hospitality Late Cancellation Forfeiture",
+            "id": "Pemotongan Biaya Pembatalan Reservasi Hotel"
+        },
+        "conceptExplanation": {
+            "en": "Hotel reservation systems enforce progressive refund policies on cancelled bookings during 2024. If a guest cancelled 3 or fewer days before their scheduled arrival, the penalty equals 100 percent of one night rate. If cancellation occurred between 4 and 7 days prior, the penalty equals 50 percent of one night. Earlier cancellations incur no forfeiture (0).",
+            "id": "Sistem reservasi perhotelan memberlakukan kebijakan pengembalian dana bertingkat atas pembatalan reservasi selama tahun 2024. Jika tamu membatalkan 3 hari atau kurang sebelum jadwal kedatangan, denda setara 100 persen tarif satu malam. Bila pembatalan antara 4 hingga 7 hari sebelumnya, denda sebesar 50 persen satu malam. Pembatalan lebih awal tidak dikenakan denda (0)."
+        },
+        "instructions": {
+            "en": "Show `booking_id`, `guest_id`, `nightly_rate`, and calculated `forfeiture_amount` (nightly_rate * 1.0 for arrival minus cancellation <= 3; nightly_rate * 0.5 for arrival minus cancellation between 4 and 7; 0.0 otherwise) for cancelled bookings during 2024 (`cancellation_date >= '2024-01-01' AND cancellation_date <= '2024-12-31'`). Sort by guest then booking_id.",
+            "id": "Tampilkan `booking_id`, `guest_id`, `nightly_rate`, dan hasil hitung `forfeiture_amount` (nightly_rate * 1.0 jika selisih kedatangan dan pembatalan <= 3; nightly_rate * 0.5 untuk selisih 4 hingga 7; 0.0 untuk lainnya) bagi reservasi yang dibatalkan selama tahun 2024. Urutkan berdasarkan tamu lalu booking_id."
+        },
+        "topics": [
+            "date-difference",
+            "numeric-calculation",
+            "case-expressions"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE hotel_bookings (\n    booking_id SERIAL PRIMARY KEY,\n    guest_id INT NOT NULL,\n    checkin_date DATE NOT NULL,\n    cancellation_date DATE,\n    nightly_rate NUMERIC(8,2) NOT NULL\n);\nINSERT INTO hotel_bookings (guest_id, checkin_date, cancellation_date, nightly_rate)\nSELECT (g % 500) + 1,\n       DATE '2024-04-01' + (g % 180),\n       CASE WHEN g % 3 = 0 THEN DATE '2024-04-01' + (g % 180) - ((g % 14) + 1) ELSE NULL END,\n       100.00 + (g % 150)\nFROM generate_series(1, 2500) g;\nCREATE INDEX idx_bookings_cancel ON hotel_bookings (cancellation_date);\nANALYZE hotel_bookings;",
+        "referenceQuery": "SELECT booking_id, guest_id, nightly_rate,\n       ROUND(\n           CASE\n               WHEN (checkin_date - cancellation_date) <= 3 THEN nightly_rate * 1.00\n               WHEN (checkin_date - cancellation_date) <= 7 THEN nightly_rate * 0.50\n               ELSE 0.00\n           END, 2\n       ) AS forfeiture_amount\nFROM hotel_bookings\nWHERE cancellation_date >= '2024-01-01' AND cancellation_date <= '2024-12-31'\nORDER BY guest_id ASC, booking_id ASC;",
+        "expected_query": "SELECT booking_id, guest_id, nightly_rate,\n       ROUND(\n           CASE\n               WHEN (checkin_date - cancellation_date) <= 3 THEN nightly_rate * 1.00\n               WHEN (checkin_date - cancellation_date) <= 7 THEN nightly_rate * 0.50\n               ELSE 0.00\n           END, 2\n       ) AS forfeiture_amount\nFROM hotel_bookings\nWHERE cancellation_date >= '2024-01-01' AND cancellation_date <= '2024-12-31'\nORDER BY guest_id ASC, booking_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "hotel_bookings"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1019,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 2,
+        "title": {
+            "en": "Grid Energy Summer Surcharge Calculation",
+            "id": "Perhitungan Biaya Tambahan Listrik Musim Panas"
+        },
+        "conceptExplanation": {
+            "en": "An electric power distributor issues seasonal demand adjustments. Commercial accounts consuming 500 kilowatt-hours or more during peak summer months of July and August receive an energy adjustment fee. Consumption at or above 1000 kWh adds 0.08 per unit, while consumption between 500 and 999 kWh adds 0.04 per unit.",
+            "id": "Distributor tenaga listrik menerbitkan penyesuaian tarif musiman. Akun komersial dengan konsumsi 500 kilowatt-jam atau lebih selama bulan musim panas Juli dan Agustus dikenai biaya tambahan. Penggunaan 1000 kWh ke atas menambah 0.08 per unit, sedangkan 500 hingga 999 kWh menambah 0.04 per unit."
+        },
+        "instructions": {
+            "en": "Show `meter_code`, `reading_date`, `kwh_consumed`, and total billing `total_charge` calculated as `ROUND(kwh_consumed * (0.15 + surcharge_rate), 2)` where surcharge_rate is 0.08 for kwh 1000 or greater and 0.04 for kwh 500 to 999, for commercial meters (`customer_type = 'commercial'`) during months 7 and 8 of 2024. Sort by meter_code, then reading_date.",
+            "id": "Tampilkan `meter_code`, `reading_date`, `kwh_consumed`, dan total tagihan `total_charge` yang dihitung sebagai `ROUND(kwh_consumed * (0.15 + surcharge_rate), 2)` di mana surcharge_rate bernilai 0.08 untuk kwh 1000 ke atas dan 0.04 untuk kwh 500 hingga 999, pada meter komersial (`customer_type = 'commercial'`) selama bulan 7 dan 8 tahun 2024. Urutkan berdasarkan meter_code, lalu reading_date."
+        },
+        "topics": [
+            "date-part-extraction",
+            "tiered-pricing",
+            "conditional-expressions"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE meter_readings (\n    reading_id SERIAL PRIMARY KEY,\n    meter_code TEXT NOT NULL,\n    reading_date DATE NOT NULL,\n    kwh_consumed INT NOT NULL,\n    customer_type TEXT NOT NULL\n);\nINSERT INTO meter_readings (meter_code, reading_date, kwh_consumed, customer_type)\nSELECT 'MTR-' || ((g % 400) + 100),\n       DATE '2024-05-01' + (g % 120),\n       200 + (g % 1100),\n       CASE WHEN g % 2 = 0 THEN 'commercial' ELSE 'residential' END\nFROM generate_series(1, 2500) g;\nCREATE INDEX idx_meter_type_date ON meter_readings (customer_type, reading_date);\nANALYZE meter_readings;",
+        "referenceQuery": "SELECT meter_code, reading_date, kwh_consumed,\n       ROUND(\n           kwh_consumed * (\n               0.15 + CASE\n                   WHEN kwh_consumed >= 1000 THEN 0.08\n                   WHEN kwh_consumed >= 500 THEN 0.04\n                   ELSE 0.00\n               END\n           ), 2\n       ) AS total_charge\nFROM meter_readings\nWHERE customer_type = 'commercial'\n  AND reading_date >= '2024-07-01' AND reading_date <= '2024-08-31'\n  AND kwh_consumed >= 500\nORDER BY meter_code ASC, reading_date ASC;",
+        "expected_query": "SELECT meter_code, reading_date, kwh_consumed,\n       ROUND(\n           kwh_consumed * (\n               0.15 + CASE\n                   WHEN kwh_consumed >= 1000 THEN 0.08\n                   WHEN kwh_consumed >= 500 THEN 0.04\n                   ELSE 0.00\n               END\n           ), 2\n       ) AS total_charge\nFROM meter_readings\nWHERE customer_type = 'commercial'\n  AND reading_date >= '2024-07-01' AND reading_date <= '2024-08-31'\n  AND kwh_consumed >= 500\nORDER BY meter_code ASC, reading_date ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "meter_readings"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1020,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 2,
+        "title": {
+            "en": "Fleet Maintenance Urgency Audit",
+            "id": "Audit Urgensi Pemeliharaan Kendaraan Armada"
+        },
+        "conceptExplanation": {
+            "en": "A transport operations company audits service records as of September 1, 2024. Vehicles whose most recent maintenance occurred more than 180 days prior to the audit benchmark or whose odometer readings exceed 60,000 miles require scheduling. If both conditions trigger simultaneously, mark Urgent Immediate, otherwise mark Regular Due.",
+            "id": "Perusahaan transportasi mengaudit catatan servis armada per 1 September 2024. Kendaraan yang pemeliharaan terakhirnya melebihi 180 hari sebelum patokan audit atau odometernya melampaui 60.000 mil perlu dijadwalkan. Jika kedua kondisi terpenuhi bersamaan, tandai Urgent Immediate, bila salah satu tandai Regular Due."
+        },
+        "instructions": {
+            "en": "Show `vin`, `vehicle_type`, `odometer_miles`, `last_service_date`, and `service_urgency` ('Urgent Immediate' if last_service_date is more than 180 days before September 1, 2024 AND odometer_miles > 60000; 'Regular Due' if only one condition applies) for vehicles meeting at least one condition. Sort by vin ascending.",
+            "id": "Tampilkan `vin`, `vehicle_type`, `odometer_miles`, `last_service_date`, dan `service_urgency` ('Urgent Immediate' jika last_service_date lebih dari 180 hari sebelum 1 September 2024 DAN odometer_miles > 60000; 'Regular Due' bila hanya satu kondisi terpenuhi) untuk kendaraan yang memenuhi minimal satu kondisi. Urutkan berdasarkan vin menaik."
+        },
+        "topics": [
+            "date-arithmetic",
+            "case-mapping",
+            "compound-filter"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE fleet_vehicles (\n    vin TEXT PRIMARY KEY,\n    vehicle_type TEXT NOT NULL,\n    odometer_miles INT NOT NULL,\n    last_service_date DATE NOT NULL\n);\nINSERT INTO fleet_vehicles (vin, vehicle_type, odometer_miles, last_service_date)\nSELECT '1FT-' || ((g % 9000) + 1000),\n       CASE WHEN g % 2 = 0 THEN 'Van' ELSE 'Truck' END,\n       30000 + (g % 50000),\n       DATE '2024-01-01' + (g % 240)\nFROM generate_series(1, 2500) g;\nCREATE INDEX idx_fleet_audit ON fleet_vehicles (last_service_date, odometer_miles);\nANALYZE fleet_vehicles;",
+        "referenceQuery": "SELECT vin, vehicle_type, odometer_miles, last_service_date,\n       CASE\n           WHEN last_service_date < DATE '2024-09-01' - 180 AND odometer_miles > 60000 THEN 'Urgent Immediate'\n           ELSE 'Regular Due'\n       END AS service_urgency\nFROM fleet_vehicles\nWHERE last_service_date < DATE '2024-09-01' - 180 OR odometer_miles > 60000\nORDER BY vin ASC;",
+        "expected_query": "SELECT vin, vehicle_type, odometer_miles, last_service_date,\n       CASE\n           WHEN last_service_date < DATE '2024-09-01' - 180 AND odometer_miles > 60000 THEN 'Urgent Immediate'\n           ELSE 'Regular Due'\n       END AS service_urgency\nFROM fleet_vehicles\nWHERE last_service_date < DATE '2024-09-01' - 180 OR odometer_miles > 60000\nORDER BY vin ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "fleet_vehicles"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1021,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 3,
+        "title": {
+            "en": "Corporate Supervisory Hierarchy Mapping",
+            "id": "Pemetaan Hirarki Penyelia Perusahaan"
+        },
+        "conceptExplanation": {
+            "en": "Human resources requires a directory presenting personnel alongside their direct designated supervisors. Certain senior directors report directly to the board and do not have an internal staff supervisor recorded; their supervisory designation must present 'Executive Office' instead of remaining unassigned.",
+            "id": "Divisi sumber daya manusia memerlukan direktori yang menyajikan personel beserta penyelia langsung mereka. Beberapa direktur senior bertanggung jawab langsung kepada dewan komisaris dan tidak memiliki penyelia internal di database; data penyelia mereka harus tertulis 'Executive Office', bukan dibiarkan kosong."
+        },
+        "instructions": {
+            "en": "Show employee `emp_id`, `emp_name`, `department`, and `supervisor_name` (displaying supervisor name or 'Executive Office' when no supervisor is assigned). Sort by department, then employee name.",
+            "id": "Tampilkan `emp_id`, `emp_name`, `department`, dan `supervisor_name` (tampilkan nama penyelia atau 'Executive Office' bila tidak memiliki penyelia). Urutkan berdasarkan departemen, lalu nama karyawan."
+        },
+        "topics": [
+            "self-join",
+            "coalesce",
+            "outer-join"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE staff_directory (\n    emp_id SERIAL PRIMARY KEY,\n    emp_name TEXT NOT NULL,\n    department TEXT NOT NULL,\n    supervisor_id INT REFERENCES staff_directory(emp_id)\n);\nINSERT INTO staff_directory (emp_name, department, supervisor_id)\nVALUES ('Elena Vance', 'Executive', NULL),\n       ('Marcus Brody', 'Finance', 1),\n       ('Sophia Chen', 'Engineering', 1);\nINSERT INTO staff_directory (emp_name, department, supervisor_id)\nSELECT 'Staff-' || g,\n       CASE WHEN g % 2 = 0 THEN 'Finance' ELSE 'Engineering' END,\n       CASE WHEN g % 2 = 0 THEN 2 ELSE 3 END\nFROM generate_series(4, 2000) g;\nCREATE INDEX idx_staff_sup ON staff_directory (supervisor_id);\nANALYZE staff_directory;",
+        "referenceQuery": "SELECT e.emp_id, e.emp_name, e.department,\n       COALESCE(m.emp_name, 'Executive Office') AS supervisor_name\nFROM staff_directory e\nLEFT JOIN staff_directory m ON e.supervisor_id = m.emp_id\nORDER BY e.department ASC, e.emp_name ASC;",
+        "expected_query": "SELECT e.emp_id, e.emp_name, e.department,\n       COALESCE(m.emp_name, 'Executive Office') AS supervisor_name\nFROM staff_directory e\nLEFT JOIN staff_directory m ON e.supervisor_id = m.emp_id\nORDER BY e.department ASC, e.emp_name ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "staff_directory"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1022,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 3,
+        "title": {
+            "en": "Unfilled Backorder Deficit Evaluation",
+            "id": "Evaluasi Defisit Pesanan Tertunda"
+        },
+        "conceptExplanation": {
+            "en": "Fulfillment supervisors trace products where pending customer backorders exceed on-hand stockroom reserves. Comparing total ordered quantities on pending purchase requests against physical quantities on hand reveals deficit risks. Only items experiencing an actual deficit (pending demand greater than on-hand stock) are reported.",
+            "id": "Penyelia pemenuhan pesanan menelusuri produk dengan pesanan tertunda yang melampaui persediaan gudang. Membandingkan total kuantitas pada pesanan pending terhadap stok fisik mengungkap risiko defisit. Hanya barang yang mengalami defisit (permintaan pending melebihi persediaan) yang dilaporkan."
+        },
+        "instructions": {
+            "en": "For items where pending order quantity exceeds current stock, display `item_sku`, `item_title`, `on_hand_qty`, `pending_demand_qty`, and deficit `shortfall_qty` (pending demand minus on-hand stock). Sort by shortfall descending, then item_sku.",
+            "id": "Untuk barang di mana jumlah pesanan pending melebihi persediaan saat ini, tampilkan `item_sku`, `item_title`, `on_hand_qty`, `pending_demand_qty`, dan defisit `shortfall_qty` (permintaan pending dikurangi stok tersedia). Urutkan berdasarkan shortfall menurun, lalu item_sku."
+        },
+        "topics": [
+            "relational-join",
+            "group-aggregation",
+            "having-filter"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE catalog_products (\n    item_sku TEXT PRIMARY KEY,\n    item_title TEXT NOT NULL,\n    on_hand_qty INT NOT NULL\n);\nCREATE TABLE customer_backorders (\n    order_id SERIAL PRIMARY KEY,\n    item_sku TEXT NOT NULL REFERENCES catalog_products(item_sku),\n    order_qty INT NOT NULL,\n    is_fulfilled BOOLEAN NOT NULL\n);\nINSERT INTO catalog_products (item_sku, item_title, on_hand_qty)\nSELECT 'SKU-' || g, 'Product ' || g, (g % 200) + 10 FROM generate_series(1, 1000) g;\nINSERT INTO customer_backorders (item_sku, order_qty, is_fulfilled)\nSELECT 'SKU-' || ((g % 1000) + 1), (g % 50) + 5, (g % 4 = 0) FROM generate_series(1, 5000) g;\nCREATE INDEX idx_backorders_sku_pending ON customer_backorders (item_sku) WHERE is_fulfilled = FALSE;\nANALYZE catalog_products;\nANALYZE customer_backorders;",
+        "referenceQuery": "SELECT p.item_sku, p.item_title, p.on_hand_qty,\n       SUM(b.order_qty) AS pending_demand_qty,\n       (SUM(b.order_qty) - p.on_hand_qty) AS shortfall_qty\nFROM catalog_products p\nJOIN customer_backorders b ON p.item_sku = b.item_sku\nWHERE b.is_fulfilled = FALSE\nGROUP BY p.item_sku, p.item_title, p.on_hand_qty\nHAVING SUM(b.order_qty) > p.on_hand_qty\nORDER BY shortfall_qty DESC, p.item_sku ASC;",
+        "expected_query": "SELECT p.item_sku, p.item_title, p.on_hand_qty,\n       SUM(b.order_qty) AS pending_demand_qty,\n       (SUM(b.order_qty) - p.on_hand_qty) AS shortfall_qty\nFROM catalog_products p\nJOIN customer_backorders b ON p.item_sku = b.item_sku\nWHERE b.is_fulfilled = FALSE\nGROUP BY p.item_sku, p.item_title, p.on_hand_qty\nHAVING SUM(b.order_qty) > p.on_hand_qty\nORDER BY shortfall_qty DESC, p.item_sku ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "catalog_products",
+            "customer_backorders"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1023,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 3,
+        "title": {
+            "en": "Clinical Practitioner Specialty Mismatch",
+            "id": "Ketidaksesuaian Spesialisasi Praktisi Medis"
+        },
+        "conceptExplanation": {
+            "en": "Hospital administration conducts clinical compliance reviews on scheduled consultations. Each consultation designates an intake clinical classification, and each medical provider possesses an authorized area of expertise. Identify consultations where the attending provider's expertise area does not match the intake classification.",
+            "id": "Administrasi rumah sakit melakukan peninjauan kepatuhan klinis pada jadwal konsultasi. Setiap konsultasi menetapkan klasifikasi medis awal, dan setiap dokter memiliki bidang keahlian resmi. Temukan konsultasi di mana bidang keahlian dokter yang menangani tidak cocok dengan klasifikasi awal pasien."
+        },
+        "instructions": {
+            "en": "Show `consult_id`, `patient_id`, `practitioner_name`, `intake_category`, and `provider_specialty` for consultations scheduled in July 2024 where the practitioner's specialty does not equal the intake category. Sort by practitioner_name, then consult_id.",
+            "id": "Tampilkan `consult_id`, `patient_id`, `practitioner_name`, `intake_category`, dan `provider_specialty` untuk jadwal konsultasi selama Juli 2024 di mana spesialisasi dokter tidak sama dengan kategori awal. Urutkan berdasarkan practitioner_name, lalu consult_id."
+        },
+        "topics": [
+            "multi-table-join",
+            "equality-filter",
+            "date-filtering"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE practitioners (\n    practitioner_id SERIAL PRIMARY KEY,\n    practitioner_name TEXT NOT NULL,\n    provider_specialty TEXT NOT NULL\n);\nCREATE TABLE medical_consultations (\n    consult_id SERIAL PRIMARY KEY,\n    patient_id INT NOT NULL,\n    practitioner_id INT NOT NULL REFERENCES practitioners(practitioner_id),\n    intake_category TEXT NOT NULL,\n    scheduled_date DATE NOT NULL\n);\nINSERT INTO practitioners (practitioner_name, provider_specialty)\nSELECT 'Dr. ' || g, CASE WHEN g % 3 = 0 THEN 'Cardiology' WHEN g % 3 = 1 THEN 'Neurology' ELSE 'Pediatrics' END\nFROM generate_series(1, 100) g;\nINSERT INTO medical_consultations (patient_id, practitioner_id, intake_category, scheduled_date)\nSELECT (g % 500) + 1,\n       (g % 100) + 1,\n       CASE WHEN g % 2 = 0 THEN 'Cardiology' ELSE 'Orthopedics' END,\n       DATE '2024-06-15' + (g % 60)\nFROM generate_series(1, 2500) g;\nCREATE INDEX idx_consult_date_prac ON medical_consultations (scheduled_date, practitioner_id);\nANALYZE practitioners;\nANALYZE medical_consultations;",
+        "referenceQuery": "SELECT c.consult_id, c.patient_id, p.practitioner_name,\n       c.intake_category, p.provider_specialty\nFROM medical_consultations c\nJOIN practitioners p ON c.practitioner_id = p.practitioner_id\nWHERE c.scheduled_date >= '2024-07-01' AND c.scheduled_date <= '2024-07-31'\n  AND c.intake_category <> p.provider_specialty\nORDER BY p.practitioner_name ASC, c.consult_id ASC;",
+        "expected_query": "SELECT c.consult_id, c.patient_id, p.practitioner_name,\n       c.intake_category, p.provider_specialty\nFROM medical_consultations c\nJOIN practitioners p ON c.practitioner_id = p.practitioner_id\nWHERE c.scheduled_date >= '2024-07-01' AND c.scheduled_date <= '2024-07-31'\n  AND c.intake_category <> p.provider_specialty\nORDER BY p.practitioner_name ASC, c.consult_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "medical_consultations",
+            "practitioners"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1024,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 3,
+        "title": {
+            "en": "Academic Prerequisite Completion Verification",
+            "id": "Verifikasi Kelulusan Prasyarat Akademik"
+        },
+        "conceptExplanation": {
+            "en": "University registrars check student registrations for upper-division lectures. Courses requiring prerequisite preparation mandate that enrolling students completed that prerequisite earning a passing score of 70 or higher. Identify registrations where a student attempted registration without achieving the required passing prerequisite score.",
+            "id": "Bagian akademik universitas memverifikasi pendaftaran mahasiswa pada mata kuliah tingkat lanjut. Mata kuliah dengan prasyarat mewajibkan mahasiswa telah menuntaskan mata kuliah prasyarat dengan nilai kelulusan 70 ke atas. Temukan pendaftaran di mana mahasiswa mendaftar tanpa mencapai nilai kelulusan yang diwajibkan."
+        },
+        "instructions": {
+            "en": "Show `student_id`, `course_code`, `prereq_code`, and prerequisite grade `prereq_score` (showing 0 if no prerequisite completion record exists) for term '2024-Fall' registrations where prerequisite score is strictly less than 70. Sort by student_id, then course_code.",
+            "id": "Tampilkan `student_id`, `course_code`, `prereq_code`, dan nilai prasyarat `prereq_score` (tampilkan 0 jika catatan kelulusan prasyarat tidak ditemukan) untuk pendaftaran semester '2024-Fall' di mana nilai prasyarat lebih kecil dari 70. Urutkan berdasarkan student_id, lalu course_code."
+        },
+        "topics": [
+            "multi-table-join",
+            "left-join",
+            "coalesce",
+            "filtering"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE course_requirements (\n    course_code TEXT PRIMARY KEY,\n    prereq_code TEXT NOT NULL\n);\nCREATE TABLE student_registrations (\n    reg_id SERIAL PRIMARY KEY,\n    student_id INT NOT NULL,\n    course_code TEXT NOT NULL REFERENCES course_requirements(course_code),\n    academic_term TEXT NOT NULL\n);\nCREATE TABLE completed_courses (\n    record_id SERIAL PRIMARY KEY,\n    student_id INT NOT NULL,\n    course_code TEXT NOT NULL,\n    final_score INT NOT NULL\n);\nINSERT INTO course_requirements VALUES ('CS201', 'CS101'), ('CS301', 'CS201'), ('MATH202', 'MATH101');\nINSERT INTO student_registrations (student_id, course_code, academic_term)\nSELECT (g % 300) + 1,\n       CASE WHEN g % 3 = 0 THEN 'CS201' WHEN g % 3 = 1 THEN 'CS301' ELSE 'MATH202' END,\n       '2024-Fall'\nFROM generate_series(1, 1500) g;\nINSERT INTO completed_courses (student_id, course_code, final_score)\nSELECT (g % 300) + 1,\n       CASE WHEN g % 3 = 0 THEN 'CS101' WHEN g % 3 = 1 THEN 'CS201' ELSE 'MATH101' END,\n       50 + (g % 45)\nFROM generate_series(1, 1200) g;\nCREATE INDEX idx_student_completed ON completed_courses (student_id, course_code);\nANALYZE course_requirements;\nANALYZE student_registrations;\nANALYZE completed_courses;",
+        "referenceQuery": "SELECT r.student_id, r.course_code, req.prereq_code,\n       COALESCE(c.final_score, 0) AS prereq_score\nFROM student_registrations r\nJOIN course_requirements req ON r.course_code = req.course_code\nLEFT JOIN completed_courses c ON r.student_id = c.student_id AND req.prereq_code = c.course_code\nWHERE r.academic_term = '2024-Fall'\n  AND COALESCE(c.final_score, 0) < 70\nORDER BY r.student_id ASC, r.course_code ASC;",
+        "expected_query": "SELECT r.student_id, r.course_code, req.prereq_code,\n       COALESCE(c.final_score, 0) AS prereq_score\nFROM student_registrations r\nJOIN course_requirements req ON r.course_code = req.course_code\nLEFT JOIN completed_courses c ON r.student_id = c.student_id AND req.prereq_code = c.course_code\nWHERE r.academic_term = '2024-Fall'\n  AND COALESCE(c.final_score, 0) < 70\nORDER BY r.student_id ASC, r.course_code ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "student_registrations",
+            "course_requirements",
+            "completed_courses"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1025,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 3,
+        "title": {
+            "en": "Cross-Docking Inbound-Outbound Pairing",
+            "id": "Penyandingan Pengiriman Masuk dan Keluar Cross-Docking"
+        },
+        "conceptExplanation": {
+            "en": "A logistics transit hub pairs inbound freight pallets directly to waiting outward distribution trucks to minimize handling storage. Both inbound deliveries and outbound manifests must share identical item SKUs, identical transit hub facilities, and schedule on the exact same arrival date.",
+            "id": "Pusat transit logistik menyandingkan palet kargo masuk langsung ke armada distribusi keluar demi memangkas biaya penyimpanan. Pengiriman masuk dan manifest pengiriman keluar harus memiliki SKU barang yang sama, fasilitas transit hub yang sama, serta tanggal kedatangan yang sama persis."
+        },
+        "instructions": {
+            "en": "Display `hub_id`, `item_sku`, `inbound_shipment_id`, `outbound_truck_id`, `inbound_qty`, `outbound_qty`, and transfer volume `matched_transfer_qty` (the minimum between inbound and outbound quantities) for transfers occurring on '2024-08-15'. Sort by hub_id, then item_sku.",
+            "id": "Tampilkan `hub_id`, `item_sku`, `inbound_shipment_id`, `outbound_truck_id`, `inbound_qty`, `outbound_qty`, dan volume transfer `matched_transfer_qty` (nilai terkecil antara kuantitas masuk dan keluar) untuk pemindahan pada '2024-08-15'. Urutkan berdasarkan hub_id, lalu item_sku."
+        },
+        "topics": [
+            "multi-column-join",
+            "conditional-least",
+            "date-filtering"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE inbound_pallets (\n    inbound_shipment_id SERIAL PRIMARY KEY,\n    hub_id INT NOT NULL,\n    item_sku TEXT NOT NULL,\n    dock_date DATE NOT NULL,\n    inbound_qty INT NOT NULL\n);\nCREATE TABLE outbound_manifests (\n    outbound_truck_id SERIAL PRIMARY KEY,\n    hub_id INT NOT NULL,\n    item_sku TEXT NOT NULL,\n    dock_date DATE NOT NULL,\n    outbound_qty INT NOT NULL\n);\nINSERT INTO inbound_pallets (hub_id, item_sku, dock_date, inbound_qty)\nSELECT (g % 10) + 1, 'SKU-' || ((g % 80) + 1), DATE '2024-08-15', 50 + (g % 100) FROM generate_series(1, 1500) g;\nINSERT INTO outbound_manifests (hub_id, item_sku, dock_date, outbound_qty)\nSELECT (g % 10) + 1, 'SKU-' || ((g % 80) + 1), DATE '2024-08-15', 40 + (g % 120) FROM generate_series(1, 1500) g;\nCREATE INDEX idx_inbound_pair ON inbound_pallets (hub_id, item_sku, dock_date);\nCREATE INDEX idx_outbound_pair ON outbound_manifests (hub_id, item_sku, dock_date);\nANALYZE inbound_pallets;\nANALYZE outbound_manifests;",
+        "referenceQuery": "SELECT i.hub_id, i.item_sku, i.inbound_shipment_id, o.outbound_truck_id,\n       i.inbound_qty, o.outbound_qty,\n       LEAST(i.inbound_qty, o.outbound_qty) AS matched_transfer_qty\nFROM inbound_pallets i\nJOIN outbound_manifests o ON i.hub_id = o.hub_id AND i.item_sku = o.item_sku AND i.dock_date = o.dock_date\nWHERE i.dock_date = '2024-08-15'\nORDER BY i.hub_id ASC, i.item_sku ASC;",
+        "expected_query": "SELECT i.hub_id, i.item_sku, i.inbound_shipment_id, o.outbound_truck_id,\n       i.inbound_qty, o.outbound_qty,\n       LEAST(i.inbound_qty, o.outbound_qty) AS matched_transfer_qty\nFROM inbound_pallets i\nJOIN outbound_manifests o ON i.hub_id = o.hub_id AND i.item_sku = o.item_sku AND i.dock_date = o.dock_date\nWHERE i.dock_date = '2024-08-15'\nORDER BY i.hub_id ASC, i.item_sku ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "inbound_pallets",
+            "outbound_manifests"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1026,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 3,
+        "title": {
+            "en": "Agency Partner Commission Split Allocation",
+            "id": "Alokasi Pembagian Komisi Mitra Agensi"
+        },
+        "conceptExplanation": {
+            "en": "An enterprise software vendor distributes deal commissions across selling agents and their parent consulting agencies. On closed deals settled in Q2 2024 (April through June), the individual sales agent receives 70 percent of commission proceeds, while the parent agency earns 30 percent. Calculate both shares rounded to 2 decimals.",
+            "id": "Vendor perangkat lunak mendistribusikan komisi transaksi penjualan kepada sales agent dan agensi induk mereka. Pada transaksi sukses di kuartal 2 tahun 2024 (April hingga Juni), sales agent menerima 70 persen bagian komisi dan agensi induk menerima 30 persen. Hitung kedua bagian tersebut dibulatkan 2 desimal."
+        },
+        "instructions": {
+            "en": "Display `deal_id`, `agent_name`, `agency_name`, `total_commission`, `ROUND(total_commission * 0.70, 2)` as `agent_share`, and `ROUND(total_commission * 0.30, 2)` as `agency_share` for deals closed between '2024-04-01' and '2024-06-30'. Sort by total_commission descending, then deal_id.",
+            "id": "Tampilkan `deal_id`, `agent_name`, `agency_name`, `total_commission`, `ROUND(total_commission * 0.70, 2)` sebagai `agent_share`, dan `ROUND(total_commission * 0.30, 2)` sebagai `agency_share` untuk transaksi antara '2024-04-01' dan '2024-06-30'. Urutkan berdasarkan total_commission menurun, lalu deal_id."
+        },
+        "topics": [
+            "three-table-join",
+            "numeric-calculation",
+            "date-range-filter"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE consulting_agencies (\n    agency_id SERIAL PRIMARY KEY,\n    agency_name TEXT NOT NULL\n);\nCREATE TABLE sales_representatives (\n    agent_id SERIAL PRIMARY KEY,\n    agent_name TEXT NOT NULL,\n    agency_id INT NOT NULL REFERENCES consulting_agencies(agency_id)\n);\nCREATE TABLE settled_deals (\n    deal_id SERIAL PRIMARY KEY,\n    agent_id INT NOT NULL REFERENCES sales_representatives(agent_id),\n    close_date DATE NOT NULL,\n    total_commission NUMERIC(10,2) NOT NULL\n);\nINSERT INTO consulting_agencies (agency_name) SELECT 'Agency ' || g FROM generate_series(1, 40) g;\nINSERT INTO sales_representatives (agent_name, agency_id) SELECT 'Agent ' || g, (g % 40) + 1 FROM generate_series(1, 300) g;\nINSERT INTO settled_deals (agent_id, close_date, total_commission)\nSELECT (g % 300) + 1, DATE '2024-03-01' + (g % 120), 1000.00 + (g % 8000) FROM generate_series(1, 2000) g;\nCREATE INDEX idx_deals_date ON settled_deals (close_date);\nANALYZE consulting_agencies;\nANALYZE sales_representatives;\nANALYZE settled_deals;",
+        "referenceQuery": "SELECT d.deal_id, r.agent_name, a.agency_name, d.total_commission,\n       ROUND(d.total_commission * 0.70, 2) AS agent_share,\n       ROUND(d.total_commission * 0.30, 2) AS agency_share\nFROM settled_deals d\nJOIN sales_representatives r ON d.agent_id = r.agent_id\nJOIN consulting_agencies a ON r.agency_id = a.agency_id\nWHERE d.close_date >= '2024-04-01' AND d.close_date <= '2024-06-30'\nORDER BY d.total_commission DESC, d.deal_id ASC;",
+        "expected_query": "SELECT d.deal_id, r.agent_name, a.agency_name, d.total_commission,\n       ROUND(d.total_commission * 0.70, 2) AS agent_share,\n       ROUND(d.total_commission * 0.30, 2) AS agency_share\nFROM settled_deals d\nJOIN sales_representatives r ON d.agent_id = r.agent_id\nJOIN consulting_agencies a ON r.agency_id = a.agency_id\nWHERE d.close_date >= '2024-04-01' AND d.close_date <= '2024-06-30'\nORDER BY d.total_commission DESC, d.deal_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "settled_deals",
+            "sales_representatives",
+            "consulting_agencies"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1027,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 3,
+        "title": {
+            "en": "Unapproved Equipment Service Provider Audit",
+            "id": "Audit Penyedia Servis Peralatan Tanpa Izin"
+        },
+        "conceptExplanation": {
+            "en": "Plant operations auditors investigate unauthorized maintenance activities. Mission-critical industrial equipment carries service contracts designating exclusive authorized vendors. When equipment receives maintenance from a contractor not listed on the machine's active service contract, compliance flags must trigger.",
+            "id": "Auditor operasional pabrik menginvestigasi aktivitas pemeliharaan tanpa otorisasi. Peralatan industri berkategori penting memiliki kontrak servis yang menetapkan vendor resmi eksklusif. Ketika mesin diservis oleh penyedia yang tidak tercantum dalam kontrak resmi aktif, peringatan kepatuhan harus dicatat."
+        },
+        "instructions": {
+            "en": "Display `service_id`, `machine_serial`, `contractor_name`, `authorized_vendor`, and `maintenance_date` for service events where equipment is classified as 'Mission Critical' and the contractor performing service does not match the authorized contract vendor. Sort by maintenance_date, then service_id.",
+            "id": "Tampilkan `service_id`, `machine_serial`, `contractor_name`, `authorized_vendor`, dan `maintenance_date` untuk pemeliharaan mesin berkategori 'Mission Critical' di mana kontraktor pelaksana tidak sesuai dengan vendor resmi pada kontrak. Urutkan berdasarkan maintenance_date, lalu service_id."
+        },
+        "topics": [
+            "multi-table-join",
+            "filtering",
+            "audit-matching"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE industrial_machines (\n    machine_serial TEXT PRIMARY KEY,\n    criticality TEXT NOT NULL,\n    authorized_vendor TEXT NOT NULL\n);\nCREATE TABLE maintenance_records (\n    service_id SERIAL PRIMARY KEY,\n    machine_serial TEXT NOT NULL REFERENCES industrial_machines(machine_serial),\n    contractor_name TEXT NOT NULL,\n    maintenance_date DATE NOT NULL\n);\nINSERT INTO industrial_machines (machine_serial, criticality, authorized_vendor)\nSELECT 'MCH-' || g,\n       CASE WHEN g % 3 = 0 THEN 'Mission Critical' ELSE 'Standard' END,\n       'Vendor-' || ((g % 10) + 1)\nFROM generate_series(1, 500) g;\nINSERT INTO maintenance_records (machine_serial, contractor_name, maintenance_date)\nSELECT 'MCH-' || ((g % 500) + 1),\n       'Vendor-' || ((g % 15) + 1),\n       DATE '2024-01-01' + (g % 200)\nFROM generate_series(1, 2500) g;\nCREATE INDEX idx_maint_serial ON maintenance_records (machine_serial);\nANALYZE industrial_machines;\nANALYZE maintenance_records;",
+        "referenceQuery": "SELECT m.service_id, m.machine_serial, m.contractor_name,\n       i.authorized_vendor, m.maintenance_date\nFROM maintenance_records m\nJOIN industrial_machines i ON m.machine_serial = i.machine_serial\nWHERE i.criticality = 'Mission Critical'\n  AND m.contractor_name <> i.authorized_vendor\nORDER BY m.maintenance_date ASC, m.service_id ASC;",
+        "expected_query": "SELECT m.service_id, m.machine_serial, m.contractor_name,\n       i.authorized_vendor, m.maintenance_date\nFROM maintenance_records m\nJOIN industrial_machines i ON m.machine_serial = i.machine_serial\nWHERE i.criticality = 'Mission Critical'\n  AND m.contractor_name <> i.authorized_vendor\nORDER BY m.maintenance_date ASC, m.service_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "maintenance_records",
+            "industrial_machines"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1028,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 3,
+        "title": {
+            "en": "Corporate Travel Voucher Variance Audit",
+            "id": "Audit Selisih Voucher Perjalanan Dinas"
+        },
+        "conceptExplanation": {
+            "en": "Financial controllers audit employee corporate travel settlements. A travel voucher claims a total reimbursement figure. The finance database tracks individual itemized flight invoices and lodging invoices tied to that trip. Flag trips where claimed reimbursement exceeds the sum of booked flights and hotels by more than 25 percent.",
+            "id": "Bagian keuangan mengaudit penggantian biaya perjalanan dinas karyawan. Sebuah voucher perjalanan mengajukan nominal tertentu. Database menyimpan bukti tagihan tiket pesawat dan hotel yang terhubung. Tandai perjalanan di mana klaim reimbursement melampaui jumlah total tiket dan hotel lebih dari 25 persen."
+        },
+        "instructions": {
+            "en": "Show `voucher_id`, `claimant_id`, `claimed_amount`, `booked_total`, and `excess_pct` calculated as `ROUND(((claimed_amount - booked_total) * 100.0 / booked_total), 1)` for vouchers where `claimed_amount > booked_total * 1.25`. Sort by excess_pct descending, then voucher_id.",
+            "id": "Tampilkan `voucher_id`, `claimant_id`, `claimed_amount`, `booked_total`, dan `excess_pct` yang dihitung sebagai `ROUND(((claimed_amount - booked_total) * 100.0 / booked_total), 1)` untuk voucher di mana `claimed_amount > booked_total * 1.25`. Urutkan berdasarkan excess_pct menurun, lalu voucher_id."
+        },
+        "topics": [
+            "subquery-aggregation",
+            "relational-join",
+            "numeric-variance"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE travel_vouchers (\n    voucher_id SERIAL PRIMARY KEY,\n    claimant_id INT NOT NULL,\n    claimed_amount NUMERIC(10,2) NOT NULL\n);\nCREATE TABLE trip_bookings (\n    booking_id SERIAL PRIMARY KEY,\n    voucher_id INT NOT NULL REFERENCES travel_vouchers(voucher_id),\n    service_type TEXT NOT NULL,\n    cost NUMERIC(10,2) NOT NULL\n);\nINSERT INTO travel_vouchers (claimant_id, claimed_amount)\nSELECT (g % 300) + 1, 1000.00 + (g % 2000) FROM generate_series(1, 1000) g;\nINSERT INTO trip_bookings (voucher_id, service_type, cost)\nSELECT (g % 1000) + 1, CASE WHEN g % 2 = 0 THEN 'flight' ELSE 'hotel' END, 300.00 + (g % 600)\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_bookings_voucher ON trip_bookings (voucher_id);\nANALYZE travel_vouchers;\nANALYZE trip_bookings;",
+        "referenceQuery": "WITH booking_sums AS (\n    SELECT voucher_id, SUM(cost) AS booked_total\n    FROM trip_bookings\n    GROUP BY voucher_id\n)\nSELECT v.voucher_id, v.claimant_id, v.claimed_amount, b.booked_total,\n       ROUND(((v.claimed_amount - b.booked_total) * 100.0 / b.booked_total), 1) AS excess_pct\nFROM travel_vouchers v\nJOIN booking_sums b ON v.voucher_id = b.voucher_id\nWHERE v.claimed_amount > b.booked_total * 1.25\nORDER BY excess_pct DESC, v.voucher_id ASC;",
+        "expected_query": "WITH booking_sums AS (\n    SELECT voucher_id, SUM(cost) AS booked_total\n    FROM trip_bookings\n    GROUP BY voucher_id\n)\nSELECT v.voucher_id, v.claimant_id, v.claimed_amount, b.booked_total,\n       ROUND(((v.claimed_amount - b.booked_total) * 100.0 / b.booked_total), 1) AS excess_pct\nFROM travel_vouchers v\nJOIN booking_sums b ON v.voucher_id = b.voucher_id\nWHERE v.claimed_amount > b.booked_total * 1.25\nORDER BY excess_pct DESC, v.voucher_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "travel_vouchers",
+            "trip_bookings"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1029,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 3,
+        "title": {
+            "en": "Assembly Bill of Materials Discontinued Component Alert",
+            "id": "Peringatan Komponen Usang pada Perakitan Produk"
+        },
+        "conceptExplanation": {
+            "en": "Industrial engineering managers evaluate finished manufactured goods. Each product consists of multiple subcomponents defined in a bill of materials linkage. Parts suppliers periodically discontinue components. Products depending on discontinued parts must be listed so substitution parts can be requisitioned.",
+            "id": "Manajer rekayasa industri mengevaluasi barang jadi manufaktur. Setiap produk tersusun atas beberapa subkomponen pada daftar bill of materials. Pemasok suku cadang secara berkala menghentikan produksi komponen tertentu. Produk yang bergantung pada komponen usang harus didata agar penggantian segera disiapkan."
+        },
+        "instructions": {
+            "en": "Display `product_id`, `product_name`, `part_code`, and `part_desc` for finished products that incorporate components marked as discontinued (`is_discontinued` is true). Sort by product_name, then part_code.",
+            "id": "Tampilkan `product_id`, `product_name`, `part_code`, dan `part_desc` untuk produk jadi yang memuat komponen berstatus dihentikan (`is_discontinued` bernilai true). Urutkan berdasarkan product_name, lalu part_code."
+        },
+        "topics": [
+            "three-table-join",
+            "filtering",
+            "distinct-projections"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE product_catalog (\n    product_id SERIAL PRIMARY KEY,\n    product_name TEXT NOT NULL\n);\nCREATE TABLE parts_inventory (\n    part_code TEXT PRIMARY KEY,\n    part_desc TEXT NOT NULL,\n    is_discontinued BOOLEAN NOT NULL\n);\nCREATE TABLE bill_of_materials (\n    product_id INT NOT NULL REFERENCES product_catalog(product_id),\n    part_code TEXT NOT NULL REFERENCES parts_inventory(part_code),\n    required_qty INT NOT NULL,\n    PRIMARY KEY (product_id, part_code)\n);\nINSERT INTO product_catalog (product_name) SELECT 'Assembly-' || g FROM generate_series(1, 300) g;\nINSERT INTO parts_inventory (part_code, part_desc, is_discontinued)\nSELECT 'PRT-' || g, 'Component ' || g, (g % 5 = 0) FROM generate_series(1, 800) g;\nINSERT INTO bill_of_materials (product_id, part_code, required_qty)\nSELECT (g % 300) + 1, 'PRT-' || ((g % 800) + 1), (g % 4) + 1 FROM generate_series(1, 2000) g\nON CONFLICT DO NOTHING;\nANALYZE product_catalog;\nANALYZE parts_inventory;\nANALYZE bill_of_materials;",
+        "referenceQuery": "SELECT p.product_id, p.product_name, pi.part_code, pi.part_desc\nFROM product_catalog p\nJOIN bill_of_materials b ON p.product_id = b.product_id\nJOIN parts_inventory pi ON b.part_code = pi.part_code\nWHERE pi.is_discontinued = TRUE\nORDER BY p.product_name ASC, pi.part_code ASC;",
+        "expected_query": "SELECT p.product_id, p.product_name, pi.part_code, pi.part_desc\nFROM product_catalog p\nJOIN bill_of_materials b ON p.product_id = b.product_id\nJOIN parts_inventory pi ON b.part_code = pi.part_code\nWHERE pi.is_discontinued = TRUE\nORDER BY p.product_name ASC, pi.part_code ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "product_catalog",
+            "bill_of_materials",
+            "parts_inventory"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1030,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 3,
+        "title": {
+            "en": "Customer Ticket Tier Escalation Latency",
+            "id": "Latensi Eskalasi Tingkat Tiket Bantuan Pelanggan"
+        },
+        "conceptExplanation": {
+            "en": "Support operations managers track escalations from front-line representatives to tier-two senior engineers. For tickets resolved in August 2024, compute the elapsed duration in hours between the front-line initial intake timestamp and the final tier-two resolution timestamp. Filter for tickets taking longer than 24 hours.",
+            "id": "Manajer layanan pelanggan melacak eskalasi penanganan dari perwakilan lini pertama ke teknisi senior tingkat dua. Untuk tiket yang terselesaikan pada Agustus 2024, hitung rentang waktu dalam jam antara waktu penerimaan awal dan penyelesaian teknisi senior. Saring tiket dengan durasi penyelesaian melampaui 24 jam."
+        },
+        "instructions": {
+            "en": "Show `ticket_id`, `issue_summary`, `intake_agent`, `senior_engineer`, and elapsed duration `duration_hours` calculated as `ROUND(EXTRACT(EPOCH FROM (r.resolved_time - t.created_time)) / 3600, 1)` for tickets resolved in August 2024 where duration exceeds 24 hours. Sort by duration_hours descending, then ticket_id.",
+            "id": "Tampilkan `ticket_id`, `issue_summary`, `intake_agent`, `senior_engineer`, dan durasi `duration_hours` yang dihitung sebagai `ROUND(EXTRACT(EPOCH FROM (r.resolved_time - t.created_time)) / 3600, 1)` untuk tiket terselesaikan pada Agustus 2024 dengan durasi melebihi 24 jam. Urutkan berdasarkan duration_hours menurun, lalu ticket_id."
+        },
+        "topics": [
+            "multi-table-join",
+            "timestamp-epoch-calculation",
+            "filtering"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE intake_tickets (\n    ticket_id SERIAL PRIMARY KEY,\n    issue_summary TEXT NOT NULL,\n    intake_agent TEXT NOT NULL,\n    created_time TIMESTAMP NOT NULL\n);\nCREATE TABLE escalation_resolutions (\n    resolution_id SERIAL PRIMARY KEY,\n    ticket_id INT NOT NULL REFERENCES intake_tickets(ticket_id),\n    senior_engineer TEXT NOT NULL,\n    resolved_time TIMESTAMP NOT NULL\n);\nINSERT INTO intake_tickets (issue_summary, intake_agent, created_time)\nSELECT 'Incident ' || g, 'Agent-' || ((g % 20) + 1), TIMESTAMP '2024-07-25 00:00:00' + (g * INTERVAL '2 hours')\nFROM generate_series(1, 2000) g;\nINSERT INTO escalation_resolutions (ticket_id, senior_engineer, resolved_time)\nSELECT g, 'Eng-' || ((g % 10) + 1),\n       (SELECT created_time FROM intake_tickets WHERE ticket_id = g) + (((g % 40) + 5) * INTERVAL '1 hour')\nFROM generate_series(1, 1800) g;\nCREATE INDEX idx_intake_created ON intake_tickets (created_time);\nCREATE INDEX idx_esc_resolved ON escalation_resolutions (resolved_time);\nANALYZE intake_tickets;\nANALYZE escalation_resolutions;",
+        "referenceQuery": "SELECT t.ticket_id, t.issue_summary, t.intake_agent, r.senior_engineer,\n       ROUND(EXTRACT(EPOCH FROM (r.resolved_time - t.created_time)) / 3600.0, 1) AS duration_hours\nFROM intake_tickets t\nJOIN escalation_resolutions r ON t.ticket_id = r.ticket_id\nWHERE r.resolved_time >= '2024-08-01' AND r.resolved_time < '2024-09-01'\n  AND EXTRACT(EPOCH FROM (r.resolved_time - t.created_time)) / 3600.0 > 24.0\nORDER BY duration_hours DESC, t.ticket_id ASC;",
+        "expected_query": "SELECT t.ticket_id, t.issue_summary, t.intake_agent, r.senior_engineer,\n       ROUND(EXTRACT(EPOCH FROM (r.resolved_time - t.created_time)) / 3600.0, 1) AS duration_hours\nFROM intake_tickets t\nJOIN escalation_resolutions r ON t.ticket_id = r.ticket_id\nWHERE r.resolved_time >= '2024-08-01' AND r.resolved_time < '2024-09-01'\n  AND EXTRACT(EPOCH FROM (r.resolved_time - t.created_time)) / 3600.0 > 24.0\nORDER BY duration_hours DESC, t.ticket_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "intake_tickets",
+            "escalation_resolutions"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1031,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 3,
+        "title": {
+            "en": "Consultant Project Capacity Overcommitment",
+            "id": "Kelebihan Komitmen Kapasitas Proyek Konsultan"
+        },
+        "conceptExplanation": {
+            "en": "Resource managers monitor staff staffing across concurrent assignments. A consultant can participate on multiple engagements simultaneously. When total weekly allocated hours across all ongoing engagements strictly exceed standard 40-hour limits, project scheduling conflicts must be flagged.",
+            "id": "Manajer sumber daya memantau alokasi personel di berbagai proyek bersamaan. Seorang konsultan dapat ditugaskan pada beberapa penugasan sekaligus. Ketika total jam kerja mingguan di seluruh proyek yang berjalan melampaui batas standar 40 jam, potensi konflik jadwal harus dicatat."
+        },
+        "instructions": {
+            "en": "Show `consultant_id`, `consultant_name`, total allocated hours `total_committed_hours`, and count of assigned engagements `engagement_count` for consultants assigned to ongoing projects whose total committed hours exceed 40. Sort by total_committed_hours descending, then consultant_id.",
+            "id": "Tampilkan `consultant_id`, `consultant_name`, total jam dialokasikan `total_committed_hours`, dan jumlah penugasan `engagement_count` untuk konsultan pada proyek berjalan yang total jam komitmennya melebihi 40 jam. Urutkan berdasarkan total_committed_hours menurun, lalu consultant_id."
+        },
+        "topics": [
+            "relational-join",
+            "group-aggregation",
+            "having-filter"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE professional_consultants (\n    consultant_id SERIAL PRIMARY KEY,\n    consultant_name TEXT NOT NULL\n);\nCREATE TABLE engagement_staffing (\n    staffing_id SERIAL PRIMARY KEY,\n    consultant_id INT NOT NULL REFERENCES professional_consultants(consultant_id),\n    project_code TEXT NOT NULL,\n    weekly_hours INT NOT NULL,\n    is_active BOOLEAN NOT NULL\n);\nINSERT INTO professional_consultants (consultant_name) SELECT 'Consultant ' || g FROM generate_series(1, 300) g;\nINSERT INTO engagement_staffing (consultant_id, project_code, weekly_hours, is_active)\nSELECT (g % 300) + 1, 'PRJ-' || ((g % 50) + 1), (g % 25) + 10, (g % 4 <> 0) FROM generate_series(1, 2000) g;\nCREATE INDEX idx_staffing_active ON engagement_staffing (consultant_id) WHERE is_active = TRUE;\nANALYZE professional_consultants;\nANALYZE engagement_staffing;",
+        "referenceQuery": "SELECT c.consultant_id, c.consultant_name,\n       SUM(s.weekly_hours) AS total_committed_hours,\n       COUNT(s.project_code) AS engagement_count\nFROM professional_consultants c\nJOIN engagement_staffing s ON c.consultant_id = s.consultant_id\nWHERE s.is_active = TRUE\nGROUP BY c.consultant_id, c.consultant_name\nHAVING SUM(s.weekly_hours) > 40\nORDER BY total_committed_hours DESC, c.consultant_id ASC;",
+        "expected_query": "SELECT c.consultant_id, c.consultant_name,\n       SUM(s.weekly_hours) AS total_committed_hours,\n       COUNT(s.project_code) AS engagement_count\nFROM professional_consultants c\nJOIN engagement_staffing s ON c.consultant_id = s.consultant_id\nWHERE s.is_active = TRUE\nGROUP BY c.consultant_id, c.consultant_name\nHAVING SUM(s.weekly_hours) > 40\nORDER BY total_committed_hours DESC, c.consultant_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "professional_consultants",
+            "engagement_staffing"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1032,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 4,
+        "title": {
+            "en": "Regional Commercial Revenue and Refund Ratio",
+            "id": "Pendapatan Komersial dan Rasio Pengembalian Dana Regional"
+        },
+        "conceptExplanation": {
+            "en": "Commercial controllers assess store sales efficiency across operational territories. Territory performance evaluates gross merchandise volume alongside refund claim frequency. Territories generating at least 50,000 in gross merchandise volume are scrutinized for refund ratios exceeding 5 percent.",
+            "id": "Pengawas komersial menilai efisiensi penjualan toko di berbagai wilayah operasional. Kinerja wilayah mengevaluasi volume penjualan kotor serta frekuensi klaim pengembalian dana. Wilayah yang membukukan penjualan kotor minimal 50.000 diperiksa jika memiliki rasio pengembalian dana melampaui 5 persen."
+        },
+        "instructions": {
+            "en": "Show `sales_region`, gross revenue `gross_sales`, count of refunded orders `refund_count`, and `refund_rate_pct` calculated as `ROUND(COUNT(CASE WHEN is_refunded THEN 1 END) * 100.0 / COUNT(*), 2)` for regions where `SUM(order_amount) >= 50000` and refund rate exceeding 5.0 percent. Sort by gross_sales descending, then region.",
+            "id": "Tampilkan `sales_region`, total pendapatan `gross_sales`, jumlah pesanan dikembalikan `refund_count`, dan `refund_rate_pct` yang dihitung sebagai `ROUND(COUNT(CASE WHEN is_refunded THEN 1 END) * 100.0 / COUNT(*), 2)` untuk wilayah dengan `SUM(order_amount) >= 50000` dan persentase pengembalian melebihi 5.0 persen. Urutkan berdasarkan gross_sales menurun, lalu wilayah."
+        },
+        "topics": [
+            "group-aggregation",
+            "conditional-aggregation",
+            "having-filter"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE regional_orders (\n    order_id SERIAL PRIMARY KEY,\n    sales_region TEXT NOT NULL,\n    order_amount NUMERIC(10,2) NOT NULL,\n    is_refunded BOOLEAN NOT NULL\n);\nINSERT INTO regional_orders (sales_region, order_amount, is_refunded)\nSELECT CASE\n           WHEN g % 5 = 0 THEN 'North'\n           WHEN g % 5 = 1 THEN 'South'\n           WHEN g % 5 = 2 THEN 'East'\n           WHEN g % 5 = 3 THEN 'West'\n           ELSE 'Central'\n       END,\n       50.00 + (g % 300),\n       (g % 12 = 0)\nFROM generate_series(1, 3500) g;\nCREATE INDEX idx_orders_region ON regional_orders (sales_region);\nANALYZE regional_orders;",
+        "referenceQuery": "SELECT sales_region,\n       SUM(order_amount) AS gross_sales,\n       COUNT(CASE WHEN is_refunded THEN 1 END) AS refund_count,\n       ROUND(COUNT(CASE WHEN is_refunded THEN 1 END) * 100.0 / COUNT(*), 2) AS refund_rate_pct\nFROM regional_orders\nGROUP BY sales_region\nHAVING SUM(order_amount) >= 50000\n   AND COUNT(CASE WHEN is_refunded THEN 1 END) * 100.0 / COUNT(*) > 5.00\nORDER BY gross_sales DESC, sales_region ASC;",
+        "expected_query": "SELECT sales_region,\n       SUM(order_amount) AS gross_sales,\n       COUNT(CASE WHEN is_refunded THEN 1 END) AS refund_count,\n       ROUND(COUNT(CASE WHEN is_refunded THEN 1 END) * 100.0 / COUNT(*), 2) AS refund_rate_pct\nFROM regional_orders\nGROUP BY sales_region\nHAVING SUM(order_amount) >= 50000\n   AND COUNT(CASE WHEN is_refunded THEN 1 END) * 100.0 / COUNT(*) > 5.00\nORDER BY gross_sales DESC, sales_region ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "regional_orders"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1033,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 4,
+        "title": {
+            "en": "Product Feature Interaction Breadth Classification",
+            "id": "Klasifikasi Keluasan Interaksi Fitur Produk"
+        },
+        "conceptExplanation": {
+            "en": "Product management reviews user engagement breadth across system modules. For each recorded module name, calculate the number of distinct customer accounts interacting and total event volume. Classify modules adopted by 150 or more unique accounts as Broadly Adopted, and others as Specialized.",
+            "id": "Manajemen produk meninjau keluasan keterlibatan pengguna pada modul sistem. Untuk setiap modul tercatat, hitung jumlah akun unik yang berinteraksi dan total frekuensi kegiatan. Kelompokkan modul yang digunakan oleh 150 akun unik ke atas sebagai Broadly Adopted, dan lainnya Specialized."
+        },
+        "instructions": {
+            "en": "Show `feature_name`, count of unique users `unique_account_count`, total interactions `interaction_volume`, and classification `adoption_tier` ('Broadly Adopted' for at least 150 unique accounts, otherwise 'Specialized') for events logged during 2024. Sort by unique_account_count descending, then feature_name.",
+            "id": "Tampilkan `feature_name`, jumlah pengguna unik `unique_account_count`, total interaksi `interaction_volume`, dan klasifikasi `adoption_tier` ('Broadly Adopted' bila minimal 150 akun unik, selain itu 'Specialized') untuk log kegiatan selama tahun 2024. Urutkan berdasarkan unique_account_count menurun, lalu feature_name."
+        },
+        "topics": [
+            "group-aggregation",
+            "count-distinct",
+            "conditional-case"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE feature_telemetry (\n    event_id SERIAL PRIMARY KEY,\n    account_id INT NOT NULL,\n    feature_name TEXT NOT NULL,\n    event_time TIMESTAMP NOT NULL\n);\nINSERT INTO feature_telemetry (account_id, feature_name, event_time)\nSELECT (g % 350) + 1,\n       CASE\n           WHEN g % 4 = 0 THEN 'Analytics Dashboard'\n           WHEN g % 4 = 1 THEN 'CSV Exporter'\n           WHEN g % 4 = 2 THEN 'Automated Billing'\n           ELSE 'API Keys Manager'\n       END,\n       TIMESTAMP '2024-01-01 00:00:00' + (g * INTERVAL '25 minutes')\nFROM generate_series(1, 4000) g;\nCREATE INDEX idx_telemetry_feature ON feature_telemetry (feature_name, event_time);\nANALYZE feature_telemetry;",
+        "referenceQuery": "SELECT feature_name,\n       COUNT(DISTINCT account_id) AS unique_account_count,\n       COUNT(*) AS interaction_volume,\n       CASE\n           WHEN COUNT(DISTINCT account_id) >= 150 THEN 'Broadly Adopted'\n           ELSE 'Specialized'\n       END AS adoption_tier\nFROM feature_telemetry\nWHERE event_time >= '2024-01-01' AND event_time < '2025-01-01'\nGROUP BY feature_name\nORDER BY unique_account_count DESC, feature_name ASC;",
+        "expected_query": "SELECT feature_name,\n       COUNT(DISTINCT account_id) AS unique_account_count,\n       COUNT(*) AS interaction_volume,\n       CASE\n           WHEN COUNT(DISTINCT account_id) >= 150 THEN 'Broadly Adopted'\n           ELSE 'Specialized'\n       END AS adoption_tier\nFROM feature_telemetry\nWHERE event_time >= '2024-01-01' AND event_time < '2025-01-01'\nGROUP BY feature_name\nORDER BY unique_account_count DESC, feature_name ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "feature_telemetry"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1034,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 4,
+        "title": {
+            "en": "Contact Center Hourly Hold Duration Metrics",
+            "id": "Metrik Durasi Menunggu Panggilan Setiap Jam"
+        },
+        "conceptExplanation": {
+            "en": "Customer service leadership analyzes hold delays across the working day. Grouping call inquiries by the hour of day reveals call congestion patterns. Supervisors focus on peak hours receiving 100 or more calls where the average queue delay strictly exceeds 45 seconds.",
+            "id": "Pimpinan layanan pelanggan menganalisis waktu tunggu panggilan di sepanjang hari kerja. Pengelompokan panggilan berdasarkan jam mengungkapkan pola kepadatan antrean. Penyelia menitikberatkan pada jam sibuk yang menerima 100 panggilan ke atas dengan rata-rata waktu antrean melampaui 45 detik."
+        },
+        "instructions": {
+            "en": "Show the hour of day `call_hour`, call volume `total_calls`, average delay `avg_wait_seconds` rounded to 1 decimal, and longest delay `max_wait_seconds` for hours where `COUNT(*) >= 100` and average wait strictly greater than 45.0. Sort by avg_wait_seconds descending, then call_hour.",
+            "id": "Tampilkan jam panggilan `call_hour`, volume panggilan `total_calls`, rata-rata waktu tunggu `avg_wait_seconds` dibulatkan 1 desimal, dan waktu tunggu terlama `max_wait_seconds` untuk jam dengan `COUNT(*) >= 100` dan rata-rata waktu tunggu lebih besar dari 45.0. Urutkan berdasarkan avg_wait_seconds menurun, lalu call_hour."
+        },
+        "topics": [
+            "date-extraction",
+            "group-aggregation",
+            "having-filter"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE customer_calls (\n    call_id SERIAL PRIMARY KEY,\n    call_time TIMESTAMP NOT NULL,\n    wait_seconds INT NOT NULL\n);\nINSERT INTO customer_calls (call_time, wait_seconds)\nSELECT TIMESTAMP '2024-06-01 00:00:00' + (g * INTERVAL '7 minutes'),\n       20 + (g % 90)\nFROM generate_series(1, 4000) g;\nCREATE INDEX idx_calls_time ON customer_calls (call_time);\nANALYZE customer_calls;",
+        "referenceQuery": "SELECT EXTRACT(HOUR FROM call_time) AS call_hour,\n       COUNT(*) AS total_calls,\n       ROUND(AVG(wait_seconds), 1) AS avg_wait_seconds,\n       MAX(wait_seconds) AS max_wait_seconds\nFROM customer_calls\nGROUP BY EXTRACT(HOUR FROM call_time)\nHAVING COUNT(*) >= 100 AND AVG(wait_seconds) > 45.0\nORDER BY avg_wait_seconds DESC, call_hour ASC;",
+        "expected_query": "SELECT EXTRACT(HOUR FROM call_time) AS call_hour,\n       COUNT(*) AS total_calls,\n       ROUND(AVG(wait_seconds), 1) AS avg_wait_seconds,\n       MAX(wait_seconds) AS max_wait_seconds\nFROM customer_calls\nGROUP BY EXTRACT(HOUR FROM call_time)\nHAVING COUNT(*) >= 100 AND AVG(wait_seconds) > 45.0\nORDER BY avg_wait_seconds DESC, call_hour ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "customer_calls"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1035,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 4,
+        "title": {
+            "en": "Server Infrastructure Error Ratio Monitoring",
+            "id": "Pemantauan Rasio Kesalahan Infrastruktur Server"
+        },
+        "conceptExplanation": {
+            "en": "Site reliability engineers supervise web service cluster availability. HTTP responses where status codes of 400 or higher indicate errors. Compute total requests, error requests, and error rate percentage across clusters handling 200 or more requests. Filter for clusters whose error rate exceeding 8 percent.",
+            "id": "Teknisi keandalan sistem memantau ketersediaan kluster server web. Respons HTTP berkode 400 ke atas mengindikasikan adanya galat. Hitung total permintaan, jumlah galat, dan persentase tingkat galat pada kluster yang menangani 200 permintaan ke atas. Saring kluster dengan persentase galat melebihi 8 persen."
+        },
+        "instructions": {
+            "en": "Display `cluster_id`, `total_requests`, `error_requests`, and `error_rate_pct` calculated as `ROUND(SUM(CASE WHEN http_status >= 400 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2)` for clusters where `COUNT(*) >= 200` and error rate exceeds 8.00. Sort by error_rate_pct descending, then cluster_id.",
+            "id": "Tampilkan `cluster_id`, `total_requests`, `error_requests`, dan `error_rate_pct` yang dihitung sebagai `ROUND(SUM(CASE WHEN http_status >= 400 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2)` untuk kluster dengan `COUNT(*) >= 200` dan rasio galat melebihi 8.00. Urutkan berdasarkan error_rate_pct menurun, lalu cluster_id."
+        },
+        "topics": [
+            "conditional-aggregation",
+            "group-aggregation",
+            "having-filter"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE server_access_logs (\n    log_id SERIAL PRIMARY KEY,\n    cluster_id TEXT NOT NULL,\n    http_status INT NOT NULL,\n    response_ms INT NOT NULL\n);\nINSERT INTO server_access_logs (cluster_id, http_status, response_ms)\nSELECT 'Cluster-' || ((g % 15) + 1),\n       CASE WHEN g % 11 = 0 THEN 500 WHEN g % 17 = 0 THEN 404 ELSE 200 END,\n       15 + (g % 200)\nFROM generate_series(1, 4500) g;\nCREATE INDEX idx_access_cluster ON server_access_logs (cluster_id);\nANALYZE server_access_logs;",
+        "referenceQuery": "SELECT cluster_id,\n       COUNT(*) AS total_requests,\n       SUM(CASE WHEN http_status >= 400 THEN 1 ELSE 0 END) AS error_requests,\n       ROUND(SUM(CASE WHEN http_status >= 400 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS error_rate_pct\nFROM server_access_logs\nGROUP BY cluster_id\nHAVING COUNT(*) >= 200\n   AND SUM(CASE WHEN http_status >= 400 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) > 8.00\nORDER BY error_rate_pct DESC, cluster_id ASC;",
+        "expected_query": "SELECT cluster_id,\n       COUNT(*) AS total_requests,\n       SUM(CASE WHEN http_status >= 400 THEN 1 ELSE 0 END) AS error_requests,\n       ROUND(SUM(CASE WHEN http_status >= 400 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS error_rate_pct\nFROM server_access_logs\nGROUP BY cluster_id\nHAVING COUNT(*) >= 200\n   AND SUM(CASE WHEN http_status >= 400 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) > 8.00\nORDER BY error_rate_pct DESC, cluster_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "server_access_logs"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1036,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 4,
+        "title": {
+            "en": "Payment Gateway Merchant Settlement Balancing",
+            "id": "Rekonsiliasi Pencairan Dana Merchant Gateway Pembayaran"
+        },
+        "conceptExplanation": {
+            "en": "Treasury settlement reconciles daily merchant disbursements. Daily batch proceeds sum successful transaction amounts and subtract processing fees. For settlements conducted on August 20, 2024, identify merchants clearing net disbursements of 10,000 or more.",
+            "id": "Bagian perbendaharaan merekonsiliasi pencairan dana harian merchant. Total dana harian menjumlahkan transaksi sukses dikurangi biaya pemrosesan. Untuk pencairan pada 20 Agustus 2024, identifikasi merchant dengan pencairan bersih 10.000 ke atas."
+        },
+        "instructions": {
+            "en": "Display `merchant_id`, transaction count `successful_tx_count`, gross volume `gross_volume`, total fees `total_fees`, and net disbursement `net_payout` calculated as `SUM(amount - fee)` for settlements on '2024-08-20' (`settlement_date = '2024-08-20'`) where net payout is at least 10000. Sort by net_payout descending, then merchant_id.",
+            "id": "Tampilkan `merchant_id`, jumlah transaksi `successful_tx_count`, volume kotor `gross_volume`, total biaya `total_fees`, dan pencairan bersih `net_payout` yang dihitung sebagai `SUM(amount - fee)` untuk tanggal '2024-08-20' di mana net payout minimal 10000. Urutkan berdasarkan net_payout menurun, lalu merchant_id."
+        },
+        "topics": [
+            "group-aggregation",
+            "arithmetic-sum",
+            "having-filter"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE merchant_tx_records (\n    tx_id SERIAL PRIMARY KEY,\n    merchant_id INT NOT NULL,\n    settlement_date DATE NOT NULL,\n    amount NUMERIC(10,2) NOT NULL,\n    fee NUMERIC(10,2) NOT NULL,\n    status TEXT NOT NULL\n);\nINSERT INTO merchant_tx_records (merchant_id, settlement_date, amount, fee, status)\nSELECT (g % 80) + 1,\n       DATE '2024-08-20',\n       100.00 + (g % 400),\n       2.50 + (g % 5),\n       CASE WHEN g % 10 = 0 THEN 'declined' ELSE 'success' END\nFROM generate_series(1, 3500) g;\nCREATE INDEX idx_merchant_settle ON merchant_tx_records (settlement_date, status);\nANALYZE merchant_tx_records;",
+        "referenceQuery": "SELECT merchant_id,\n       COUNT(*) AS successful_tx_count,\n       SUM(amount) AS gross_volume,\n       SUM(fee) AS total_fees,\n       SUM(amount - fee) AS net_payout\nFROM merchant_tx_records\nWHERE settlement_date = '2024-08-20' AND status = 'success'\nGROUP BY merchant_id\nHAVING SUM(amount - fee) >= 10000.00\nORDER BY net_payout DESC, merchant_id ASC;",
+        "expected_query": "SELECT merchant_id,\n       COUNT(*) AS successful_tx_count,\n       SUM(amount) AS gross_volume,\n       SUM(fee) AS total_fees,\n       SUM(amount - fee) AS net_payout\nFROM merchant_tx_records\nWHERE settlement_date = '2024-08-20' AND status = 'success'\nGROUP BY merchant_id\nHAVING SUM(amount - fee) >= 10000.00\nORDER BY net_payout DESC, merchant_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "merchant_tx_records"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1037,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 4,
+        "title": {
+            "en": "Warehouse Logistics Picker Productivity Benchmarking",
+            "id": "Tolok Ukur Produktivitas Petugas Pengambil Barang Gudang"
+        },
+        "conceptExplanation": {
+            "en": "Fulfillment supervisors evaluate warehouse picker efficiency across operational shifts. For staff members recording at least 50 pick runs, calculate total items picked, total minutes invested, and hourly pick speed (items picked per 60 minutes). Identify pickers sustaining an hourly speed strictly greater than 120 items per hour.",
+            "id": "Penyelia logistik mengevaluasi efisiensi petugas pengambil barang di setiap giliran kerja. Untuk petugas dengan catatan minimal 50 kegiatan pengambilan, hitung total barang terambil, total menit terpakai, dan kecepatan per jam (barang terambil per 60 menit). Identifikasi petugas dengan kecepatan melebihi 120 barang per jam."
+        },
+        "instructions": {
+            "en": "Show `picker_id`, `total_runs`, `total_items`, `total_minutes`, and `items_per_hour` calculated as `ROUND(SUM(items_picked) * 60.0 / SUM(duration_minutes), 1)` for pickers where `COUNT(*) >= 50` and items_per_hour exceeds 120.0. Sort by items_per_hour descending, then picker_id.",
+            "id": "Tampilkan `picker_id`, `total_runs`, `total_items`, `total_minutes`, dan `items_per_hour` yang dihitung sebagai `ROUND(SUM(items_picked) * 60.0 / SUM(duration_minutes), 1)` untuk petugas dengan `COUNT(*) >= 50` dan items_per_hour melebihi 120.0. Urutkan berdasarkan items_per_hour menurun, lalu picker_id."
+        },
+        "topics": [
+            "group-aggregation",
+            "numeric-rate-calculation",
+            "having-filter"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE picker_task_logs (\n    task_id SERIAL PRIMARY KEY,\n    picker_id INT NOT NULL,\n    items_picked INT NOT NULL,\n    duration_minutes INT NOT NULL\n);\nINSERT INTO picker_task_logs (picker_id, items_picked, duration_minutes)\nSELECT (g % 40) + 1,\n       20 + (g % 50),\n       10 + (g % 20)\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_picker_tasks ON picker_task_logs (picker_id);\nANALYZE picker_task_logs;",
+        "referenceQuery": "SELECT picker_id,\n       COUNT(*) AS total_runs,\n       SUM(items_picked) AS total_items,\n       SUM(duration_minutes) AS total_minutes,\n       ROUND(SUM(items_picked) * 60.0 / SUM(duration_minutes), 1) AS items_per_hour\nFROM picker_task_logs\nGROUP BY picker_id\nHAVING COUNT(*) >= 50\n   AND SUM(items_picked) * 60.0 / SUM(duration_minutes) > 120.0\nORDER BY items_per_hour DESC, picker_id ASC;",
+        "expected_query": "SELECT picker_id,\n       COUNT(*) AS total_runs,\n       SUM(items_picked) AS total_items,\n       SUM(duration_minutes) AS total_minutes,\n       ROUND(SUM(items_picked) * 60.0 / SUM(duration_minutes), 1) AS items_per_hour\nFROM picker_task_logs\nGROUP BY picker_id\nHAVING COUNT(*) >= 50\n   AND SUM(items_picked) * 60.0 / SUM(duration_minutes) > 120.0\nORDER BY items_per_hour DESC, picker_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "picker_task_logs"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1038,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 4,
+        "title": {
+            "en": "Consumer Feedback Category Sentiment Balance",
+            "id": "Keseimbangan Sentimen Kategori Ulasan Konsumen"
+        },
+        "conceptExplanation": {
+            "en": "Market researchers evaluate product satisfaction across merchandise sectors. Ratings of 4 or 5 denote positive sentiment, whereas ratings of 1 or 2 denote negative sentiment. For sectors accumulating at least 100 consumer ratings, determine total ratings, positive ratings, and satisfaction ratio percentage. Report sectors reporting satisfaction percentage strictly below 60 percent.",
+            "id": "Peneliti pasar mengevaluasi kepuasan produk di berbagai kategori barang. Penilaian 4 atau 5 menunjukkan sentimen positif, sedangkan 1 atau 2 menunjukkan sentimen negatif. Untuk kategori yang mengumpulkan minimal 100 ulasan, tentukan total ulasan, ulasan positif, dan persentase kepuasan. Laporkan kategori dengan kepuasan di bawah 60 persen."
+        },
+        "instructions": {
+            "en": "Show `category_name`, `total_reviews`, `positive_reviews`, and `satisfaction_pct` calculated as `ROUND(SUM(CASE WHEN star_rating >= 4 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1)` for categories where `COUNT(*) >= 100` and satisfaction percentage less than 60.0. Sort by satisfaction_pct ASC, then category_name.",
+            "id": "Tampilkan `category_name`, `total_reviews`, `positive_reviews`, dan `satisfaction_pct` yang dihitung sebagai `ROUND(SUM(CASE WHEN star_rating >= 4 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1)` untuk kategori dengan `COUNT(*) >= 100` dan persentase kepuasan kurang dari 60.0. Urutkan berdasarkan satisfaction_pct menaik, lalu category_name."
+        },
+        "topics": [
+            "conditional-aggregation",
+            "group-aggregation",
+            "having-filter"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE product_reviews (\n    review_id SERIAL PRIMARY KEY,\n    category_name TEXT NOT NULL,\n    star_rating INT NOT NULL\n);\nINSERT INTO product_reviews (category_name, star_rating)\nSELECT CASE\n           WHEN g % 6 = 0 THEN 'Audio'\n           WHEN g % 6 = 1 THEN 'Wearables'\n           WHEN g % 6 = 2 THEN 'Kitchen'\n           WHEN g % 6 = 3 THEN 'Gaming'\n           WHEN g % 6 = 4 THEN 'Outdoor'\n           ELSE 'Smart Home'\n       END,\n       (g % 5) + 1\nFROM generate_series(1, 3500) g;\nCREATE INDEX idx_reviews_cat ON product_reviews (category_name);\nANALYZE product_reviews;",
+        "referenceQuery": "SELECT category_name,\n       COUNT(*) AS total_reviews,\n       SUM(CASE WHEN star_rating >= 4 THEN 1 ELSE 0 END) AS positive_reviews,\n       ROUND(SUM(CASE WHEN star_rating >= 4 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1) AS satisfaction_pct\nFROM product_reviews\nGROUP BY category_name\nHAVING COUNT(*) >= 100\n   AND SUM(CASE WHEN star_rating >= 4 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) < 60.0\nORDER BY satisfaction_pct ASC, category_name ASC;",
+        "expected_query": "SELECT category_name,\n       COUNT(*) AS total_reviews,\n       SUM(CASE WHEN star_rating >= 4 THEN 1 ELSE 0 END) AS positive_reviews,\n       ROUND(SUM(CASE WHEN star_rating >= 4 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1) AS satisfaction_pct\nFROM product_reviews\nGROUP BY category_name\nHAVING COUNT(*) >= 100\n   AND SUM(CASE WHEN star_rating >= 4 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) < 60.0\nORDER BY satisfaction_pct ASC, category_name ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "product_reviews"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1039,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 4,
+        "title": {
+            "en": "Digital Advertising Channel Engagement Performance",
+            "id": "Kinerja Keterlibatan Saluran Iklan Digital"
+        },
+        "conceptExplanation": {
+            "en": "Growth marketing teams analyze engagement performance across publisher placements. Total delivered impressions and visitor clicks determine engagement ratios. Placements delivering at least 25,000 impressions achieving an engagement ratio of 2.0 percent or higher represent premium performers.",
+            "id": "Tim pemasaran menganalisis kinerja keterlibatan iklan di berbagai penempatan penerbit. Total tayangan dan klik pengunjung menentukan rasio keterlibatan. Penempatan yang menayangkan minimal 25.000 tayangan dengan rasio 2.0 persen ke atas dikategorikan berperforma tinggi."
+        },
+        "instructions": {
+            "en": "Display `placement_id`, `total_impressions`, `total_clicks`, and `engagement_rate_pct` calculated as `ROUND(SUM(clicks) * 100.0 / SUM(impressions), 2)` for placements where `SUM(impressions) >= 25000` and engagement rate of at least 2.00. Sort by engagement_rate_pct descending, then placement_id.",
+            "id": "Tampilkan `placement_id`, `total_impressions`, `total_clicks`, dan `engagement_rate_pct` yang dihitung sebagai `ROUND(SUM(clicks) * 100.0 / SUM(impressions), 2)` untuk penempatan dengan `SUM(impressions) >= 25000` dan rasio minimal 2.00. Urutkan berdasarkan engagement_rate_pct menurun, lalu placement_id."
+        },
+        "topics": [
+            "group-aggregation",
+            "ratio-calculation",
+            "having-filter"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE ad_impressions_daily (\n    entry_id SERIAL PRIMARY KEY,\n    placement_id TEXT NOT NULL,\n    impressions INT NOT NULL,\n    clicks INT NOT NULL\n);\nINSERT INTO ad_impressions_daily (placement_id, impressions, clicks)\nSELECT 'PLC-' || ((g % 25) + 1),\n       1000 + (g % 2000),\n       15 + (g % 60)\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_ad_placement ON ad_impressions_daily (placement_id);\nANALYZE ad_impressions_daily;",
+        "referenceQuery": "SELECT placement_id,\n       SUM(impressions) AS total_impressions,\n       SUM(clicks) AS total_clicks,\n       ROUND(SUM(clicks) * 100.0 / SUM(impressions), 2) AS engagement_rate_pct\nFROM ad_impressions_daily\nGROUP BY placement_id\nHAVING SUM(impressions) >= 25000\n   AND SUM(clicks) * 100.0 / SUM(impressions) >= 2.00\nORDER BY engagement_rate_pct DESC, placement_id ASC;",
+        "expected_query": "SELECT placement_id,\n       SUM(impressions) AS total_impressions,\n       SUM(clicks) AS total_clicks,\n       ROUND(SUM(clicks) * 100.0 / SUM(impressions), 2) AS engagement_rate_pct\nFROM ad_impressions_daily\nGROUP BY placement_id\nHAVING SUM(impressions) >= 25000\n   AND SUM(clicks) * 100.0 / SUM(impressions) >= 2.00\nORDER BY engagement_rate_pct DESC, placement_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "ad_impressions_daily"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1040,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 4,
+        "title": {
+            "en": "Clinical Ward Capacity Utilization Threshold",
+            "id": "Ambang Batas Pemanfaatan Kapasitas Bangsal Medis"
+        },
+        "conceptExplanation": {
+            "en": "Hospital operations directors monitor patient occupancy across medical units. For wards where physical bed capacity of 20 or higher, calculate average occupied bed count and capacity utilization percentage. Identify units maintaining an occupancy utilization percentage exceeding 85 percent.",
+            "id": "Direktur operasional rumah sakit memantau okupansi pasien di berbagai unit medis. Untuk bangsal dengan kapasitas tempat tidur minimal 20, hitung rata-rata tempat tidur terisi dan persentase utilisasi kapasitas. Identifikasi unit yang mencatat utilisasi okupansi di atas 85 persen."
+        },
+        "instructions": {
+            "en": "Show `ward_code`, `bed_capacity`, average occupied beds `avg_occupied` rounded to 1 decimal, and `utilization_pct` calculated as `ROUND(AVG(occupied_beds) * 100.0 / bed_capacity, 1)` for wards where `bed_capacity >= 20` and utilization exceeds 85.0. Sort by utilization_pct descending, then ward_code.",
+            "id": "Tampilkan `ward_code`, `bed_capacity`, rata-rata tempat tidur terisi `avg_occupied` dibulatkan 1 desimal, dan `utilization_pct` yang dihitung sebagai `ROUND(AVG(occupied_beds) * 100.0 / bed_capacity, 1)` untuk bangsal dengan `bed_capacity >= 20` dan utilisasi melebihi 85.0. Urutkan berdasarkan utilization_pct menurun, lalu ward_code."
+        },
+        "topics": [
+            "group-aggregation",
+            "ratio-calculation",
+            "having-filter"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE ward_daily_census (\n    census_id SERIAL PRIMARY KEY,\n    ward_code TEXT NOT NULL,\n    bed_capacity INT NOT NULL,\n    occupied_beds INT NOT NULL\n);\nINSERT INTO ward_daily_census (ward_code, bed_capacity, occupied_beds)\nSELECT 'WRD-' || ((g % 20) + 1),\n       15 + (g % 25),\n       10 + (g % 20)\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_ward_census ON ward_daily_census (ward_code);\nANALYZE ward_daily_census;",
+        "referenceQuery": "SELECT ward_code, bed_capacity,\n       ROUND(AVG(occupied_beds), 1) AS avg_occupied,\n       ROUND(AVG(occupied_beds) * 100.0 / bed_capacity, 1) AS utilization_pct\nFROM ward_daily_census\nWHERE bed_capacity >= 20\nGROUP BY ward_code, bed_capacity\nHAVING AVG(occupied_beds) * 100.0 / bed_capacity > 85.0\nORDER BY utilization_pct DESC, ward_code ASC;",
+        "expected_query": "SELECT ward_code, bed_capacity,\n       ROUND(AVG(occupied_beds), 1) AS avg_occupied,\n       ROUND(AVG(occupied_beds) * 100.0 / bed_capacity, 1) AS utilization_pct\nFROM ward_daily_census\nWHERE bed_capacity >= 20\nGROUP BY ward_code, bed_capacity\nHAVING AVG(occupied_beds) * 100.0 / bed_capacity > 85.0\nORDER BY utilization_pct DESC, ward_code ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "ward_daily_census"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1041,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 4,
+        "title": {
+            "en": "Logistics Corridor Fuel Surcharge Aggregation",
+            "id": "Agregasi Biaya Bahan Bakar Koridor Logistik"
+        },
+        "conceptExplanation": {
+            "en": "Freight dispatch analysts evaluate transport efficiency across transport corridors. For corridors carrying 40 or more completed dispatches, compute average payload tonnage, total fuel surcharges collected, and average transit days. Corridors averaging 4 or more transit days require scheduling intervention.",
+            "id": "Analis ekspedisi kargo mengevaluasi efisiensi transportasi di berbagai koridor pengiriman. Untuk koridor dengan 40 pengiriman tuntas ke atas, hitung rata-rata tonase muatan, total biaya bahan bakar yang dikumpulkan, dan rata-rata hari tempuh. Koridor dengan rata-rata waktu tempuh 4 hari ke atas memerlukan penyesuaian jadwal."
+        },
+        "instructions": {
+            "en": "Display `corridor_code`, `dispatch_count`, `avg_weight_tons` rounded to 1 decimal, total fuel surcharge `total_fuel_surcharge`, and `avg_transit_days` rounded to 1 decimal for corridors where `COUNT(*) >= 40` and average transit days of at least 4.0. Sort by total_fuel_surcharge descending, then corridor_code.",
+            "id": "Tampilkan `corridor_code`, `dispatch_count`, `avg_weight_tons` dibulatkan 1 desimal, total biaya bahan bakar `total_fuel_surcharge`, dan `avg_transit_days` dibulatkan 1 desimal untuk koridor dengan `COUNT(*) >= 40` dan rata-rata hari tempuh minimal 4.0. Urutkan berdasarkan total_fuel_surcharge menurun, lalu corridor_code."
+        },
+        "topics": [
+            "group-aggregation",
+            "numeric-averaging",
+            "having-filter"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE freight_dispatches (\n    dispatch_id SERIAL PRIMARY KEY,\n    corridor_code TEXT NOT NULL,\n    weight_tons NUMERIC(6,2) NOT NULL,\n    fuel_surcharge NUMERIC(8,2) NOT NULL,\n    transit_days INT NOT NULL\n);\nINSERT INTO freight_dispatches (corridor_code, weight_tons, fuel_surcharge, transit_days)\nSELECT 'CORR-' || ((g % 30) + 1),\n       12.0 + (g % 20),\n       200.00 + (g % 400),\n       2 + (g % 5)\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_dispatches_corridor ON freight_dispatches (corridor_code);\nANALYZE freight_dispatches;",
+        "referenceQuery": "SELECT corridor_code,\n       COUNT(*) AS dispatch_count,\n       ROUND(AVG(weight_tons), 1) AS avg_weight_tons,\n       SUM(fuel_surcharge) AS total_fuel_surcharge,\n       ROUND(AVG(transit_days), 1) AS avg_transit_days\nFROM freight_dispatches\nGROUP BY corridor_code\nHAVING COUNT(*) >= 40 AND AVG(transit_days) >= 4.0\nORDER BY total_fuel_surcharge DESC, corridor_code ASC;",
+        "expected_query": "SELECT corridor_code,\n       COUNT(*) AS dispatch_count,\n       ROUND(AVG(weight_tons), 1) AS avg_weight_tons,\n       SUM(fuel_surcharge) AS total_fuel_surcharge,\n       ROUND(AVG(transit_days), 1) AS avg_transit_days\nFROM freight_dispatches\nGROUP BY corridor_code\nHAVING COUNT(*) >= 40 AND AVG(transit_days) >= 4.0\nORDER BY total_fuel_surcharge DESC, corridor_code ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "freight_dispatches"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1042,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 4,
+        "title": {
+            "en": "Subscription Plan Movement Revenue Migration",
+            "id": "Migrasi Pendapatan Perubahan Paket Langganan"
+        },
+        "conceptExplanation": {
+            "en": "Finance directors analyze customer subscription migrations. When accounts transition from an old tier to a new tier, monthly contract value changes. Tally total migrations, upward expansions, and downward reductions starting from each prior tier.",
+            "id": "Direktur keuangan menganalisis migrasi paket langganan pelanggan. Saat akun berpindah dari paket lama ke paket baru, nilai kontrak bulanan berubah. Hitung total migrasi, jumlah peningkatan ke paket lebih tinggi, dan jumlah penurunan dari setiap paket asal."
+        },
+        "instructions": {
+            "en": "Show `prior_tier`, total migrations `total_migrations`, upward migrations `expansion_count`, downward migrations `contraction_count`, and `net_mrr_impact` calculated as `SUM(new_monthly_fee - old_monthly_fee)` for tiers accumulating at least 50 recorded migrations. Sort by net_mrr_impact descending, then prior_tier.",
+            "id": "Tampilkan `prior_tier`, total migrasi `total_migrations`, migrasi peningkatan `expansion_count`, migrasi penurunan `contraction_count`, dan `net_mrr_impact` yang dihitung sebagai `SUM(new_monthly_fee - old_monthly_fee)` untuk paket asal dengan minimal 50 migrasi tercatat. Urutkan berdasarkan net_mrr_impact menurun, lalu prior_tier."
+        },
+        "topics": [
+            "conditional-aggregation",
+            "group-aggregation",
+            "having-filter"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE subscription_migrations (\n    migration_id SERIAL PRIMARY KEY,\n    account_id INT NOT NULL,\n    prior_tier TEXT NOT NULL,\n    subsequent_tier TEXT NOT NULL,\n    old_monthly_fee NUMERIC(8,2) NOT NULL,\n    new_monthly_fee NUMERIC(8,2) NOT NULL\n);\nINSERT INTO subscription_migrations (account_id, prior_tier, subsequent_tier, old_monthly_fee, new_monthly_fee)\nSELECT (g % 500) + 1,\n       CASE WHEN g % 3 = 0 THEN 'Basic' WHEN g % 3 = 1 THEN 'Pro' ELSE 'Team' END,\n       CASE WHEN g % 2 = 0 THEN 'Enterprise' ELSE 'Custom' END,\n       50.00 + (g % 100),\n       40.00 + (g % 200)\nFROM generate_series(1, 2500) g;\nCREATE INDEX idx_migrations_prior ON subscription_migrations (prior_tier);\nANALYZE subscription_migrations;",
+        "referenceQuery": "SELECT prior_tier,\n       COUNT(*) AS total_migrations,\n       SUM(CASE WHEN new_monthly_fee > old_monthly_fee THEN 1 ELSE 0 END) AS expansion_count,\n       SUM(CASE WHEN new_monthly_fee < old_monthly_fee THEN 1 ELSE 0 END) AS contraction_count,\n       SUM(new_monthly_fee - old_monthly_fee) AS net_mrr_impact\nFROM subscription_migrations\nGROUP BY prior_tier\nHAVING COUNT(*) >= 50\nORDER BY net_mrr_impact DESC, prior_tier ASC;",
+        "expected_query": "SELECT prior_tier,\n       COUNT(*) AS total_migrations,\n       SUM(CASE WHEN new_monthly_fee > old_monthly_fee THEN 1 ELSE 0 END) AS expansion_count,\n       SUM(CASE WHEN new_monthly_fee < old_monthly_fee THEN 1 ELSE 0 END) AS contraction_count,\n       SUM(new_monthly_fee - old_monthly_fee) AS net_mrr_impact\nFROM subscription_migrations\nGROUP BY prior_tier\nHAVING COUNT(*) >= 50\nORDER BY net_mrr_impact DESC, prior_tier ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "subscription_migrations"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1043,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 5,
+        "title": {
+            "en": "Dormant High-Value Customer Capital Identification",
+            "id": "Identifikasi Modal Pelanggan Bernilai Tinggi yang Tidak Aktif"
+        },
+        "conceptExplanation": {
+            "en": "Private banking relationship managers identify premium account holders holding substantial credit balances who registered zero trading orders throughout 2024. Clients maintaining balances of at least 50,000 without any recent trading transactions represent retention re-engagement priorities.",
+            "id": "Manajer nasabah perbankan memprioritaskan pemilik akun premium bersaldo kredit besar yang tidak mencatatkan transaksi sepanjang tahun 2024. Nasabah dengan saldo minimal 50.000 tanpa aktivitas transaksi terkini merupakan target utama program aktivasi kembali."
+        },
+        "instructions": {
+            "en": "Retrieve `client_id`, `client_name`, and `account_balance` for clients maintaining balances of at least 50000 who placed no transactions during 2024 (`tx_date >= '2024-01-01' AND tx_date < '2025-01-01'`). Sort by account_balance descending, then client_id.",
+            "id": "Dapatkan `client_id`, `client_name`, dan `account_balance` untuk nasabah dengan saldo minimal 50000 yang tidak melakukan transaksi selama 2024 (`tx_date >= '2024-01-01' AND tx_date < '2025-01-01'`). Urutkan berdasarkan account_balance menurun, lalu client_id."
+        },
+        "topics": [
+            "subquery-not-exists",
+            "correlated-subquery",
+            "filtering"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE private_clients (\n    client_id SERIAL PRIMARY KEY,\n    client_name TEXT NOT NULL,\n    account_balance NUMERIC(12,2) NOT NULL\n);\nCREATE TABLE client_transactions (\n    tx_id SERIAL PRIMARY KEY,\n    client_id INT NOT NULL REFERENCES private_clients(client_id),\n    tx_date DATE NOT NULL,\n    amount NUMERIC(10,2) NOT NULL\n);\nINSERT INTO private_clients (client_name, account_balance)\nSELECT 'Client-' || g, 20000.00 + (g % 80000) FROM generate_series(1, 1000) g;\nINSERT INTO client_transactions (client_id, tx_date, amount)\nSELECT (g % 800) + 1, DATE '2024-01-01' + (g % 300), 500.00 + (g % 2000) FROM generate_series(1, 3500) g;\nCREATE INDEX idx_client_tx_date ON client_transactions (client_id, tx_date);\nANALYZE private_clients;\nANALYZE client_transactions;",
+        "referenceQuery": "SELECT c.client_id, c.client_name, c.account_balance\nFROM private_clients c\nWHERE c.account_balance >= 50000.00\n  AND NOT EXISTS (\n      SELECT 1\n      FROM client_transactions t\n      WHERE t.client_id = c.client_id\n        AND t.tx_date >= '2024-01-01' AND t.tx_date < '2025-01-01'\n  )\nORDER BY c.account_balance DESC, c.client_id ASC;",
+        "expected_query": "SELECT c.client_id, c.client_name, c.account_balance\nFROM private_clients c\nWHERE c.account_balance >= 50000.00\n  AND NOT EXISTS (\n      SELECT 1\n      FROM client_transactions t\n      WHERE t.client_id = c.client_id\n        AND t.tx_date >= '2024-01-01' AND t.tx_date < '2025-01-01'\n  )\nORDER BY c.account_balance DESC, c.client_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "private_clients",
+            "client_transactions"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1044,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 5,
+        "title": {
+            "en": "Multi-Store Omnichannel Patronage Exclusivity",
+            "id": "Eksklusivitas Patronase Pelanggan Multi-Toko"
+        },
+        "conceptExplanation": {
+            "en": "A retail chain analyzes cross-store purchasing behavior. Marketing seeks patrons who patronized both downtown Flagship location (store 1) and suburban Galleria location (store 2), but have never made any transactions at the airport Terminal outlet (store 3).",
+            "id": "Jaringan ritel menganalisis perilaku belanja lintas gerai. Bagian pemasaran mencari pelanggan yang pernah berbelanja di gerai Flagship (toko 1) dan gerai Galleria (toko 2), tetapi sama sekali tidak pernah bertransaksi di gerai Terminal bandara (toko 3)."
+        },
+        "instructions": {
+            "en": "Show distinct `patron_id` for patrons who made purchases at `store_id = 1` and also made purchases at `store_id = 2`, but never made purchases at `store_id = 3`. Sort by patron_id ascending.",
+            "id": "Tampilkan `patron_id` unik untuk pelanggan yang pernah berbelanja di `store_id = 1` serta pernah berbelanja di `store_id = 2`, namun belum pernah berbelanja di `store_id = 3`. Urutkan berdasarkan patron_id menaik."
+        },
+        "topics": [
+            "set-operations",
+            "intersect",
+            "subquery-not-in"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE retail_receipts (\n    receipt_id SERIAL PRIMARY KEY,\n    patron_id INT NOT NULL,\n    store_id INT NOT NULL,\n    purchase_total NUMERIC(8,2) NOT NULL\n);\nINSERT INTO retail_receipts (patron_id, store_id, purchase_total)\nSELECT (g % 500) + 1,\n       (g % 4) + 1,\n       25.00 + (g % 150)\nFROM generate_series(1, 4000) g;\nCREATE INDEX idx_receipts_patron_store ON retail_receipts (patron_id, store_id);\nANALYZE retail_receipts;",
+        "referenceQuery": "SELECT patron_id FROM retail_receipts WHERE store_id = 1\nINTERSECT\nSELECT patron_id FROM retail_receipts WHERE store_id = 2\nEXCEPT\nSELECT patron_id FROM retail_receipts WHERE store_id = 3\nORDER BY patron_id ASC;",
+        "expected_query": "SELECT patron_id FROM retail_receipts WHERE store_id = 1\nINTERSECT\nSELECT patron_id FROM retail_receipts WHERE store_id = 2\nEXCEPT\nSELECT patron_id FROM retail_receipts WHERE store_id = 3\nORDER BY patron_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "retail_receipts"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1045,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 5,
+        "title": {
+            "en": "Departmental Compensation Outlier Benchmark",
+            "id": "Tolok Ukur Kompensasi Tertinggi Antar Departemen"
+        },
+        "conceptExplanation": {
+            "en": "Executive compensation committees review pay equity across operational divisions. Personnel whose compensation outpaces their specific department's average baseline salary by 20,000 or more are flagged for committee evaluation.",
+            "id": "Komite kompensasi meninjau kesetaraan upah di seluruh divisi. Karyawan yang upahnya melampaui rata-rata upah departemennya sendiri sebesar 20.000 ke atas ditandai untuk evaluasi khusus komite."
+        },
+        "instructions": {
+            "en": "Display `staff_id`, `full_name`, `dept_code`, `base_salary`, department average `dept_avg_salary` rounded to 2 decimals, and difference `salary_gap` (base_salary minus dept_avg_salary) for personnel whose salary exceeds their department's average by at least 20000. Sort by salary_gap descending, then staff_id.",
+            "id": "Tampilkan `staff_id`, `full_name`, `dept_code`, `base_salary`, rata-rata departemen `dept_avg_salary` dibulatkan 2 desimal, dan selisih `salary_gap` (base_salary dikurangi dept_avg_salary) untuk staf yang gajinya melebihi rata-rata departemen minimal 20000. Urutkan berdasarkan salary_gap menurun, lalu staff_id."
+        },
+        "topics": [
+            "correlated-subquery",
+            "cte",
+            "numeric-difference"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE organizational_staff (\n    staff_id SERIAL PRIMARY KEY,\n    full_name TEXT NOT NULL,\n    dept_code TEXT NOT NULL,\n    base_salary NUMERIC(10,2) NOT NULL\n);\nINSERT INTO organizational_staff (full_name, dept_code, base_salary)\nSELECT 'Staff-' || g,\n       CASE WHEN g % 4 = 0 THEN 'FIN' WHEN g % 4 = 1 THEN 'ENG' WHEN g % 4 = 2 THEN 'HR' ELSE 'OPS' END,\n       45000.00 + (g % 60000)\nFROM generate_series(1, 2500) g;\nCREATE INDEX idx_staff_dept ON organizational_staff (dept_code, base_salary);\nANALYZE organizational_staff;",
+        "referenceQuery": "WITH dept_averages AS (\n    SELECT dept_code, ROUND(AVG(base_salary), 2) AS dept_avg_salary\n    FROM organizational_staff\n    GROUP BY dept_code\n)\nSELECT s.staff_id, s.full_name, s.dept_code, s.base_salary,\n       d.dept_avg_salary,\n       (s.base_salary - d.dept_avg_salary) AS salary_gap\nFROM organizational_staff s\nJOIN dept_averages d ON s.dept_code = d.dept_code\nWHERE (s.base_salary - d.dept_avg_salary) >= 20000.00\nORDER BY salary_gap DESC, s.staff_id ASC;",
+        "expected_query": "WITH dept_averages AS (\n    SELECT dept_code, ROUND(AVG(base_salary), 2) AS dept_avg_salary\n    FROM organizational_staff\n    GROUP BY dept_code\n)\nSELECT s.staff_id, s.full_name, s.dept_code, s.base_salary,\n       d.dept_avg_salary,\n       (s.base_salary - d.dept_avg_salary) AS salary_gap\nFROM organizational_staff s\nJOIN dept_averages d ON s.dept_code = d.dept_code\nWHERE (s.base_salary - d.dept_avg_salary) >= 20000.00\nORDER BY salary_gap DESC, s.staff_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "organizational_staff"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1046,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 5,
+        "title": {
+            "en": "Quarterly Sequential Purchaser Retention",
+            "id": "Retensi Pelanggan Pembelian Berulang Antar Kuartal"
+        },
+        "conceptExplanation": {
+            "en": "Customer success teams investigate repeat loyalty. Patrons who completed transactions during the first quarter of 2024 and returned to complete transactions during the second quarter of 2024 represent sustained repeat adopters.",
+            "id": "Tim kepuasan pelanggan menyelidiki loyalitas berulang. Pelanggan yang bertransaksi selama kuartal pertama tahun 2024 dan kembali bertransaksi selama kuartal kedua tahun 2024 merupakan pengguna loyal yang bertahan."
+        },
+        "instructions": {
+            "en": "Retrieve unique `shopper_id` for shoppers who made purchases in Q1 2024 (`order_date >= '2024-01-01' AND order_date <= '2024-03-31'`) who also placed purchases in Q2 2024 (`order_date >= '2024-04-01' AND order_date <= '2024-06-30'`). Sort by shopper_id ascending.",
+            "id": "Dapatkan `shopper_id` unik untuk pelanggan dengan pembelian pada Q1 2024 (`order_date >= '2024-01-01' AND order_date <= '2024-03-31'`) yang juga memiliki pembelian pada Q2 2024 (`order_date >= '2024-04-01' AND order_date <= '2024-06-30'`). Urutkan berdasarkan shopper_id menaik."
+        },
+        "topics": [
+            "subquery-exists",
+            "set-operations",
+            "date-filtering"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE shopper_orders (\n    order_id SERIAL PRIMARY KEY,\n    shopper_id INT NOT NULL,\n    order_date DATE NOT NULL,\n    total_spent NUMERIC(8,2) NOT NULL\n);\nINSERT INTO shopper_orders (shopper_id, order_date, total_spent)\nSELECT (g % 600) + 1,\n       DATE '2024-01-01' + (g % 240),\n       30.00 + (g % 200)\nFROM generate_series(1, 3500) g;\nCREATE INDEX idx_shopper_dates ON shopper_orders (shopper_id, order_date);\nANALYZE shopper_orders;",
+        "referenceQuery": "SELECT DISTINCT o1.shopper_id\nFROM shopper_orders o1\nWHERE o1.order_date >= '2024-01-01' AND o1.order_date <= '2024-03-31'\n  AND EXISTS (\n      SELECT 1\n      FROM shopper_orders o2\n      WHERE o2.shopper_id = o1.shopper_id\n        AND o2.order_date >= '2024-04-01' AND o2.order_date <= '2024-06-30'\n  )\nORDER BY shopper_id ASC;",
+        "expected_query": "SELECT DISTINCT o1.shopper_id\nFROM shopper_orders o1\nWHERE o1.order_date >= '2024-01-01' AND o1.order_date <= '2024-03-31'\n  AND EXISTS (\n      SELECT 1\n      FROM shopper_orders o2\n      WHERE o2.shopper_id = o1.shopper_id\n        AND o2.order_date >= '2024-04-01' AND o2.order_date <= '2024-06-30'\n  )\nORDER BY shopper_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "shopper_orders"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1047,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 5,
+        "title": {
+            "en": "Cross-Depot Product Inventory Imbalance",
+            "id": "Ketidakseimbangan Stok Barang Lintas Gudang"
+        },
+        "conceptExplanation": {
+            "en": "Supply chain controllers identify stock transfer opportunities between depot hubs. Detect product SKUs that possess zero stock (or no record) in Depot North while maintaining 50 or more stock units stored in Depot South.",
+            "id": "Pengawas rantai pasok mendeteksi peluang transfer persediaan antar gudang. Temukan SKU produk yang memiliki stok nol (atau tidak terdata) di Depot North namun memiliki simpanan 50 unit ke atas di Depot South."
+        },
+        "instructions": {
+            "en": "Show `sku`, product title `product_name`, and available stock in South `south_stock` for products possessing 50 or more units in Depot South ('South') where recorded stock in Depot North ('North') is 0 or completely absent. Sort by south_stock descending, then sku.",
+            "id": "Tampilkan `sku`, nama produk `product_name`, dan stok tersedia di South `south_stock` untuk produk dengan persediaan 50 unit ke atas di Depot South ('South') yang stoknya di Depot North ('North') bernilai 0 atau tidak ada sama sekali. Urutkan berdasarkan south_stock menurun, lalu sku."
+        },
+        "topics": [
+            "subquery-not-exists",
+            "relational-join",
+            "conditional-filter"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE product_registry (\n    sku TEXT PRIMARY KEY,\n    product_name TEXT NOT NULL\n);\nCREATE TABLE depot_stock (\n    stock_id SERIAL PRIMARY KEY,\n    sku TEXT NOT NULL REFERENCES product_registry(sku),\n    depot_name TEXT NOT NULL,\n    qty_on_hand INT NOT NULL\n);\nINSERT INTO product_registry (sku, product_name)\nSELECT 'SKU-' || g, 'Item ' || g FROM generate_series(1, 1000) g;\nINSERT INTO depot_stock (sku, depot_name, qty_on_hand)\nSELECT 'SKU-' || ((g % 1000) + 1),\n       CASE WHEN g % 2 = 0 THEN 'South' ELSE 'North' END,\n       (g % 100)\nFROM generate_series(1, 2500) g;\nCREATE INDEX idx_depot_sku_name ON depot_stock (sku, depot_name, qty_on_hand);\nANALYZE product_registry;\nANALYZE depot_stock;",
+        "referenceQuery": "SELECT p.sku, p.product_name, s.qty_on_hand AS south_stock\nFROM product_registry p\nJOIN depot_stock s ON p.sku = s.sku AND s.depot_name = 'South'\nWHERE s.qty_on_hand >= 50\n  AND NOT EXISTS (\n      SELECT 1\n      FROM depot_stock n\n      WHERE n.sku = p.sku\n        AND n.depot_name = 'North'\n        AND n.qty_on_hand > 0\n  )\nORDER BY south_stock DESC, p.sku ASC;",
+        "expected_query": "SELECT p.sku, p.product_name, s.qty_on_hand AS south_stock\nFROM product_registry p\nJOIN depot_stock s ON p.sku = s.sku AND s.depot_name = 'South'\nWHERE s.qty_on_hand >= 50\n  AND NOT EXISTS (\n      SELECT 1\n      FROM depot_stock n\n      WHERE n.sku = p.sku\n        AND n.depot_name = 'North'\n        AND n.qty_on_hand > 0\n  )\nORDER BY south_stock DESC, p.sku ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "product_registry",
+            "depot_stock"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1048,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 5,
+        "title": {
+            "en": "Dual Certificate Discipline Completion",
+            "id": "Kelulusan Sertifikat Disiplin Ilmu Ganda"
+        },
+        "conceptExplanation": {
+            "en": "An education board recognizes students achieving distinguished multi-disciplinary certifications. Eligible candidates must have earned passing credentials in both Data Engineering and Cloud Architecture subject domains during 2024.",
+            "id": "Dewan pendidikan memberikan penghargaan kepada peserta didik yang meraih sertifikasi multi-disiplin. Kandidat yang berhak harus telah mengantongi kelulusan di bidang Data Engineering dan Cloud Architecture selama tahun 2024."
+        },
+        "instructions": {
+            "en": "Retrieve unique `candidate_id` for candidates who completed certificates (`status = 'passed'`) in both 'Data Engineering' and 'Cloud Architecture' achieved during 2024. Sort by candidate_id ascending.",
+            "id": "Dapatkan `candidate_id` unik untuk peserta dengan sertifikat lulus (`status = 'passed'`) pada kedua bidang 'Data Engineering' dan 'Cloud Architecture' selama tahun 2024. Urutkan berdasarkan candidate_id menaik."
+        },
+        "topics": [
+            "subquery-exists",
+            "set-operations",
+            "filtering"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE candidate_credentials (\n    cred_id SERIAL PRIMARY KEY,\n    candidate_id INT NOT NULL,\n    domain_name TEXT NOT NULL,\n    awarded_date DATE NOT NULL,\n    status TEXT NOT NULL\n);\nINSERT INTO candidate_credentials (candidate_id, domain_name, awarded_date, status)\nSELECT (g % 400) + 1,\n       CASE WHEN g % 3 = 0 THEN 'Data Engineering' WHEN g % 3 = 1 THEN 'Cloud Architecture' ELSE 'Cybersecurity' END,\n       DATE '2024-01-01' + (g % 300),\n       CASE WHEN g % 4 = 0 THEN 'failed' ELSE 'passed' END\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_creds_cand_domain ON candidate_credentials (candidate_id, domain_name, status);\nANALYZE candidate_credentials;",
+        "referenceQuery": "SELECT DISTINCT c1.candidate_id\nFROM candidate_credentials c1\nWHERE c1.domain_name = 'Data Engineering'\n  AND c1.status = 'passed'\n  AND c1.awarded_date >= '2024-01-01' AND c1.awarded_date <= '2024-12-31'\n  AND EXISTS (\n      SELECT 1\n      FROM candidate_credentials c2\n      WHERE c2.candidate_id = c1.candidate_id\n        AND c2.domain_name = 'Cloud Architecture'\n        AND c2.status = 'passed'\n        AND c2.awarded_date >= '2024-01-01' AND c2.awarded_date <= '2024-12-31'\n  )\nORDER BY candidate_id ASC;",
+        "expected_query": "SELECT DISTINCT c1.candidate_id\nFROM candidate_credentials c1\nWHERE c1.domain_name = 'Data Engineering'\n  AND c1.status = 'passed'\n  AND c1.awarded_date >= '2024-01-01' AND c1.awarded_date <= '2024-12-31'\n  AND EXISTS (\n      SELECT 1\n      FROM candidate_credentials c2\n      WHERE c2.candidate_id = c1.candidate_id\n        AND c2.domain_name = 'Cloud Architecture'\n        AND c2.status = 'passed'\n        AND c2.awarded_date >= '2024-01-01' AND c2.awarded_date <= '2024-12-31'\n  )\nORDER BY candidate_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "candidate_credentials"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1049,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 5,
+        "title": {
+            "en": "Category Revenue Flagship Item Identification",
+            "id": "Identifikasi Produk Unggulan Pendapatan Kategori"
+        },
+        "conceptExplanation": {
+            "en": "Merchandise analysts locate the single highest grossing item within each merchandise segment. For each category containing sales, determine the product generating the maximal gross turnover. In cases of identical maximal turnover, resolve by alphabetical SKU.",
+            "id": "Analis penjualan mencari barang dengan perolehan omzet tertinggi di setiap segmen kategori. Untuk setiap kategori yang memiliki penjualan, tentukan produk yang menghasilkan perputaran omzet terbesar. Jika terdapat nilai penjualan tertinggi yang sama, tentukan berdasarkan urutan SKU."
+        },
+        "instructions": {
+            "en": "Show `segment_name`, `product_sku`, and total sales `gross_turnover` for products representing the single highest turnover within their segment. Sort by gross_turnover descending, then segment_name.",
+            "id": "Tampilkan `segment_name`, `product_sku`, dan total penjualan `gross_turnover` untuk produk yang mencatatkan penjualan tertinggi di segmennya. Urutkan berdasarkan gross_turnover menurun, lalu segment_name."
+        },
+        "topics": [
+            "subquery-rank",
+            "cte",
+            "group-aggregation"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE segment_item_sales (\n    sale_id SERIAL PRIMARY KEY,\n    segment_name TEXT NOT NULL,\n    product_sku TEXT NOT NULL,\n    amount NUMERIC(8,2) NOT NULL\n);\nINSERT INTO segment_item_sales (segment_name, product_sku, amount)\nSELECT CASE\n           WHEN g % 5 = 0 THEN 'Hardware'\n           WHEN g % 5 = 1 THEN 'Networking'\n           WHEN g % 5 = 2 THEN 'Software'\n           WHEN g % 5 = 3 THEN 'Peripherals'\n           ELSE 'Security'\n       END,\n       'SKU-' || ((g % 40) + 1),\n       50.00 + (g % 300)\nFROM generate_series(1, 3500) g;\nCREATE INDEX idx_sales_seg_sku ON segment_item_sales (segment_name, product_sku);\nANALYZE segment_item_sales;",
+        "referenceQuery": "WITH product_totals AS (\n    SELECT segment_name, product_sku, SUM(amount) AS gross_turnover,\n           ROW_NUMBER() OVER (PARTITION BY segment_name ORDER BY SUM(amount) DESC, product_sku ASC) AS rnk\n    FROM segment_item_sales\n    GROUP BY segment_name, product_sku\n)\nSELECT segment_name, product_sku, gross_turnover\nFROM product_totals\nWHERE rnk = 1\nORDER BY gross_turnover DESC, segment_name ASC;",
+        "expected_query": "WITH product_totals AS (\n    SELECT segment_name, product_sku, SUM(amount) AS gross_turnover,\n           ROW_NUMBER() OVER (PARTITION BY segment_name ORDER BY SUM(amount) DESC, product_sku ASC) AS rnk\n    FROM segment_item_sales\n    GROUP BY segment_name, product_sku\n)\nSELECT segment_name, product_sku, gross_turnover\nFROM product_totals\nWHERE rnk = 1\nORDER BY gross_turnover DESC, segment_name ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "segment_item_sales"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1050,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 5,
+        "title": {
+            "en": "Post-Closure Inactive Account Transaction Anomaly",
+            "id": "Anomali Transaksi Rekening Pasca Penutupan"
+        },
+        "conceptExplanation": {
+            "en": "Financial fraud compliance units inspect banking accounts. Accounts marked as terminated carry a formal termination date. Any transaction booked on a value date strictly following the recorded account closure indicates a procedural anomaly requiring investigation.",
+            "id": "Unit kepatuhan pencegahan penipuan keuangan memeriksa akun perbankan. Akun yang ditutup memiliki tanggal penutupan resmi. Transaksi apa pun yang dibukukan dengan tanggal transaksi setelah tanggal penutupan akun menandakan adanya anomali prosedural yang wajib diinvestigasi."
+        },
+        "instructions": {
+            "en": "Display `account_id`, `account_title`, `closure_date`, `tx_id`, and `transaction_date` for accounts marked terminated (`is_terminated = true`) where `transaction_date > closure_date`. Sort by closure_date, then account_id.",
+            "id": "Tampilkan `account_id`, `account_title`, `closure_date`, `tx_id`, dan `transaction_date` untuk rekening berstatus ditutup (`is_terminated = true`) di mana `transaction_date > closure_date`. Urutkan berdasarkan closure_date, lalu account_id."
+        },
+        "topics": [
+            "correlated-subquery",
+            "relational-join",
+            "anomaly-filtering"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE banking_accounts (\n    account_id SERIAL PRIMARY KEY,\n    account_title TEXT NOT NULL,\n    is_terminated BOOLEAN NOT NULL,\n    closure_date DATE\n);\nCREATE TABLE ledger_postings (\n    tx_id SERIAL PRIMARY KEY,\n    account_id INT NOT NULL REFERENCES banking_accounts(account_id),\n    transaction_date DATE NOT NULL,\n    amount NUMERIC(10,2) NOT NULL\n);\nINSERT INTO banking_accounts (account_title, is_terminated, closure_date)\nSELECT 'Account-' || g,\n       (g % 4 = 0),\n       CASE WHEN g % 4 = 0 THEN DATE '2024-03-01' + (g % 100) ELSE NULL END\nFROM generate_series(1, 1000) g;\nINSERT INTO ledger_postings (account_id, transaction_date, amount)\nSELECT (g % 1000) + 1,\n       DATE '2024-01-01' + (g % 240),\n       100.00 + (g % 500)\nFROM generate_series(1, 3500) g;\nCREATE INDEX idx_ledger_acct_date ON ledger_postings (account_id, transaction_date);\nANALYZE banking_accounts;\nANALYZE ledger_postings;",
+        "referenceQuery": "SELECT a.account_id, a.account_title, a.closure_date,\n       l.tx_id, l.transaction_date\nFROM banking_accounts a\nJOIN ledger_postings l ON a.account_id = l.account_id\nWHERE a.is_terminated = TRUE\n  AND l.transaction_date > a.closure_date\nORDER BY a.closure_date ASC, a.account_id ASC;",
+        "expected_query": "SELECT a.account_id, a.account_title, a.closure_date,\n       l.tx_id, l.transaction_date\nFROM banking_accounts a\nJOIN ledger_postings l ON a.account_id = l.account_id\nWHERE a.is_terminated = TRUE\n  AND l.transaction_date > a.closure_date\nORDER BY a.closure_date ASC, a.account_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "banking_accounts",
+            "ledger_postings"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1051,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 5,
+        "title": {
+            "en": "Regional Merchandise Void Market Detection",
+            "id": "Deteksi Pasar Nihil Penjualan Produk Regional"
+        },
+        "conceptExplanation": {
+            "en": "Territory expansion teams pinpoint merchandise popular in one territory that has achieved zero sales footprint in a neighboring territory. Locate goods sold in Eastern territory during 2024 that have never been purchased in Western territory.",
+            "id": "Tim ekspansi pasar mencari produk yang laris di suatu wilayah namun sama sekali belum memiliki catatan penjualan di wilayah tetangga. Temukan barang yang terjual di wilayah Eastern sepanjang 2024 namun tidak pernah dibeli di wilayah Western."
+        },
+        "instructions": {
+            "en": "Show unique `product_code` for products recording sales in 'Eastern' territory during 2024 that have zero sales records in 'Western' territory. Sort by product_code ascending.",
+            "id": "Tampilkan `product_code` unik untuk produk dengan catatan penjualan di wilayah 'Eastern' sepanjang 2024 yang tidak memiliki catatan penjualan sama sekali di wilayah 'Western'. Urutkan berdasarkan product_code menaik."
+        },
+        "topics": [
+            "subquery-not-exists",
+            "set-operations",
+            "filtering"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE territory_merchandise_sales (\n    sale_id SERIAL PRIMARY KEY,\n    product_code TEXT NOT NULL,\n    territory_name TEXT NOT NULL,\n    sale_date DATE NOT NULL\n);\nINSERT INTO territory_merchandise_sales (product_code, territory_name, sale_date)\nSELECT 'PROD-' || ((g % 200) + 1),\n       CASE WHEN g % 3 = 0 THEN 'Eastern' WHEN g % 3 = 1 THEN 'Western' ELSE 'Northern' END,\n       DATE '2024-01-01' + (g % 300)\nFROM generate_series(1, 3500) g;\nCREATE INDEX idx_merch_territory ON territory_merchandise_sales (product_code, territory_name);\nANALYZE territory_merchandise_sales;",
+        "referenceQuery": "SELECT DISTINCT s1.product_code\nFROM territory_merchandise_sales s1\nWHERE s1.territory_name = 'Eastern'\n  AND s1.sale_date >= '2024-01-01' AND s1.sale_date <= '2024-12-31'\n  AND NOT EXISTS (\n      SELECT 1\n      FROM territory_merchandise_sales s2\n      WHERE s2.product_code = s1.product_code\n        AND s2.territory_name = 'Western'\n  )\nORDER BY product_code ASC;",
+        "expected_query": "SELECT DISTINCT s1.product_code\nFROM territory_merchandise_sales s1\nWHERE s1.territory_name = 'Eastern'\n  AND s1.sale_date >= '2024-01-01' AND s1.sale_date <= '2024-12-31'\n  AND NOT EXISTS (\n      SELECT 1\n      FROM territory_merchandise_sales s2\n      WHERE s2.product_code = s1.product_code\n        AND s2.territory_name = 'Western'\n  )\nORDER BY product_code ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "territory_merchandise_sales"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1052,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 5,
+        "title": {
+            "en": "Technical Specialist Skill Complement Search",
+            "id": "Pencarian Kombinasi Keahlian Spesialis Teknis"
+        },
+        "conceptExplanation": {
+            "en": "Engineering staffing managers seek consultants possessing cross-functional proficiencies. Project leads look for specialists holding active competencies in Database Tuning who also hold active competencies in Distributed Systems.",
+            "id": "Manajer penugasan teknis mencari konsultan yang memiliki keahlian lintas fungsi. Pimpinan proyek mencari spesialis dengan sertifikasi aktif di bidang Database Tuning yang juga memiliki sertifikasi aktif di bidang Distributed Systems."
+        },
+        "instructions": {
+            "en": "Retrieve unique `specialist_id` for consultants who have active competence (`is_active = true`) in both 'Database Tuning' and 'Distributed Systems'. Sort by specialist_id ascending.",
+            "id": "Dapatkan `specialist_id` unik untuk konsultan yang memiliki kompetensi aktif (`is_active = true`) pada kedua bidang 'Database Tuning' dan 'Distributed Systems'. Urutkan berdasarkan specialist_id menaik."
+        },
+        "topics": [
+            "subquery-exists",
+            "set-operations",
+            "filtering"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE specialist_skills (\n    skill_id SERIAL PRIMARY KEY,\n    specialist_id INT NOT NULL,\n    competence_name TEXT NOT NULL,\n    is_active BOOLEAN NOT NULL\n);\nINSERT INTO specialist_skills (specialist_id, competence_name, is_active)\nSELECT (g % 300) + 1,\n       CASE WHEN g % 3 = 0 THEN 'Database Tuning' WHEN g % 3 = 1 THEN 'Distributed Systems' ELSE 'Frontend UX' END,\n       (g % 5 <> 0)\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_skills_spec ON specialist_skills (specialist_id, competence_name, is_active);\nANALYZE specialist_skills;",
+        "referenceQuery": "SELECT DISTINCT s1.specialist_id\nFROM specialist_skills s1\nWHERE s1.competence_name = 'Database Tuning'\n  AND s1.is_active = TRUE\n  AND EXISTS (\n      SELECT 1\n      FROM specialist_skills s2\n      WHERE s2.specialist_id = s1.specialist_id\n        AND s2.competence_name = 'Distributed Systems'\n        AND s2.is_active = TRUE\n  )\nORDER BY specialist_id ASC;",
+        "expected_query": "SELECT DISTINCT s1.specialist_id\nFROM specialist_skills s1\nWHERE s1.competence_name = 'Database Tuning'\n  AND s1.is_active = TRUE\n  AND EXISTS (\n      SELECT 1\n      FROM specialist_skills s2\n      WHERE s2.specialist_id = s1.specialist_id\n        AND s2.competence_name = 'Distributed Systems'\n        AND s2.is_active = TRUE\n  )\nORDER BY specialist_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "specialist_skills"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1053,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 5,
+        "title": {
+            "en": "Tiered Customer Order Volume Threshold Benchmark",
+            "id": "Tolok Ukur Ambang Volume Pesanan Pelanggan Bertingkat"
+        },
+        "conceptExplanation": {
+            "en": "Loyalty marketing segments shoppers who place orders exceeding the platform median order amount. The benchmark order value across the entire database is calculated, and buyers whose purchases consistently remain above that median threshold are identified.",
+            "id": "Pemasaran loyalitas mengelompokkan pembeli yang memiliki nilai transaksi di atas nilai median seluruh pesanan. Nilai patokan pesanan rata-rata dihitung, dan pembeli yang pembeliannya selalu berada di atas ambang batas tersebut diidentifikasi."
+        },
+        "instructions": {
+            "en": "Show `buyer_id`, total orders `order_count`, and average order size `avg_order_size` rounded to 2 decimals for buyers who placed at least 5 orders where every single order placed exceeds the platform overall average order value. Sort by avg_order_size descending, then buyer_id.",
+            "id": "Tampilkan `buyer_id`, total pesanan `order_count`, dan rata-rata pesanan `avg_order_size` dibulatkan 2 desimal untuk pembeli dengan minimal 5 pesanan di mana setiap pesanan yang dilakukan melebihi rata-rata nilai pesanan platform secara keseluruhan. Urutkan berdasarkan avg_order_size menurun, lalu buyer_id."
+        },
+        "topics": [
+            "subquery-benchmark",
+            "having-filter",
+            "group-aggregation"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE platform_orders (\n    order_id SERIAL PRIMARY KEY,\n    buyer_id INT NOT NULL,\n    total_amount NUMERIC(8,2) NOT NULL\n);\nINSERT INTO platform_orders (buyer_id, total_amount)\nSELECT (g % 200) + 1,\n       40.00 + (g % 250)\nFROM generate_series(1, 3500) g;\nCREATE INDEX idx_orders_buyer_amt ON platform_orders (buyer_id, total_amount);\nANALYZE platform_orders;",
+        "referenceQuery": "WITH global_benchmark AS (\n    SELECT AVG(total_amount) AS overall_avg FROM platform_orders\n)\nSELECT o.buyer_id,\n       COUNT(*) AS order_count,\n       ROUND(AVG(o.total_amount), 2) AS avg_order_size\nFROM platform_orders o\nCROSS JOIN global_benchmark b\nGROUP BY o.buyer_id, b.overall_avg\nHAVING COUNT(*) >= 5\n   AND MIN(o.total_amount) > b.overall_avg\nORDER BY avg_order_size DESC, o.buyer_id ASC;",
+        "expected_query": "WITH global_benchmark AS (\n    SELECT AVG(total_amount) AS overall_avg FROM platform_orders\n)\nSELECT o.buyer_id,\n       COUNT(*) AS order_count,\n       ROUND(AVG(o.total_amount), 2) AS avg_order_size\nFROM platform_orders o\nCROSS JOIN global_benchmark b\nGROUP BY o.buyer_id, b.overall_avg\nHAVING COUNT(*) >= 5\n   AND MIN(o.total_amount) > b.overall_avg\nORDER BY avg_order_size DESC, o.buyer_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "platform_orders"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1054,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 6,
+        "title": {
+            "en": "Continuous Financial Ledger Cumulative Position",
+            "id": "Posisi Kumulatif Buku Besar Keuangan Berkelanjutan"
+        },
+        "conceptExplanation": {
+            "en": "Treasury accountants review chronological account activity. For each bank account entry, tracking both the specific transaction change and the resulting cumulative balance provides audit clarity. Compute the running balance across all chronological entries per account.",
+            "id": "Akuntan perbendaharaan meninjau aktivitas rekening secara kronologis. Untuk setiap mutasi rekening, mencatat perubahan transaksi serta saldo akhir kumulatif memberikan kejelasan audit. Hitung saldo berjalan di seluruh mutasi kronologis untuk setiap rekening."
+        },
+        "instructions": {
+            "en": "Show `account_id`, `entry_date`, `delta_amount`, and running cumulative balance `running_balance` computed per account ordered by entry_date and entry_id. Sort by account_id, then entry_date, then entry_id.",
+            "id": "Tampilkan `account_id`, `entry_date`, `delta_amount`, dan saldo kumulatif berjalan `running_balance` yang dihitung per rekening terurut berdasarkan entry_date dan entry_id. Urutkan berdasarkan account_id, lalu entry_date, lalu entry_id."
+        },
+        "topics": [
+            "window-sum",
+            "cumulative-total",
+            "partition-order"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE account_ledger_entries (\n    entry_id SERIAL PRIMARY KEY,\n    account_id INT NOT NULL,\n    entry_date DATE NOT NULL,\n    delta_amount NUMERIC(10,2) NOT NULL\n);\nINSERT INTO account_ledger_entries (account_id, entry_date, delta_amount)\nSELECT (g % 300) + 1,\n       DATE '2024-01-01' + (g % 200),\n       CASE WHEN g % 3 = 0 THEN -100.00 - (g % 200) ELSE 150.00 + (g % 300) END\nFROM generate_series(1, 3500) g;\nCREATE INDEX idx_ledger_acct_seq ON account_ledger_entries (account_id, entry_date, entry_id);\nANALYZE account_ledger_entries;",
+        "referenceQuery": "SELECT account_id, entry_date, delta_amount,\n       SUM(delta_amount) OVER (\n           PARTITION BY account_id\n           ORDER BY entry_date ASC, entry_id ASC\n           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n       ) AS running_balance\nFROM account_ledger_entries\nORDER BY account_id ASC, entry_date ASC, entry_id ASC;",
+        "expected_query": "SELECT account_id, entry_date, delta_amount,\n       SUM(delta_amount) OVER (\n           PARTITION BY account_id\n           ORDER BY entry_date ASC, entry_id ASC\n           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n       ) AS running_balance\nFROM account_ledger_entries\nORDER BY account_id ASC, entry_date ASC, entry_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "account_ledger_entries"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1055,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 6,
+        "title": {
+            "en": "Sales Representative Cumulative Pace Tracking",
+            "id": "Pemantauan Kecepatan Kumulatif Perwakilan Penjualan"
+        },
+        "conceptExplanation": {
+            "en": "Sales executives evaluate monthly booking trajectories. For each representative's monthly record throughout 2024, compute both the current month sales volume and the cumulative total achieved from January through that month.",
+            "id": "Pimpinan penjualan mengevaluasi pencapaian pemesanan bulanan. Untuk catatan bulanan setiap perwakilan selama 2024, hitung volume penjualan bulan berjalan serta total kumulatif yang dicapai sejak Januari hingga bulan tersebut."
+        },
+        "instructions": {
+            "en": "Show `rep_id`, calendar month number `sales_month`, `monthly_sales`, and year-to-date cumulative total `ytd_total` per representative ordered chronologically by sales_month. Sort by rep_id, then sales_month.",
+            "id": "Tampilkan `rep_id`, nomor bulan kalender `sales_month`, `monthly_sales`, dan total kumulatif berjalan tahunan `ytd_total` per perwakilan terurut secara kronologis berdasarkan sales_month. Urutkan berdasarkan rep_id, lalu sales_month."
+        },
+        "topics": [
+            "window-sum",
+            "cumulative-total",
+            "cte"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE rep_monthly_sales (\n    rep_id INT NOT NULL,\n    sales_month INT NOT NULL,\n    monthly_sales NUMERIC(10,2) NOT NULL,\n    PRIMARY KEY (rep_id, sales_month)\n);\nINSERT INTO rep_monthly_sales (rep_id, sales_month, monthly_sales)\nSELECT (g % 250) + 1,\n       ((g % 12) + 1),\n       5000.00 + (g % 15000)\nFROM generate_series(1, 3000) g\nON CONFLICT DO NOTHING;\nANALYZE rep_monthly_sales;",
+        "referenceQuery": "SELECT rep_id, sales_month, monthly_sales,\n       SUM(monthly_sales) OVER (\n           PARTITION BY rep_id\n           ORDER BY sales_month ASC\n           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n       ) AS ytd_total\nFROM rep_monthly_sales\nORDER BY rep_id ASC, sales_month ASC;",
+        "expected_query": "SELECT rep_id, sales_month, monthly_sales,\n       SUM(monthly_sales) OVER (\n           PARTITION BY rep_id\n           ORDER BY sales_month ASC\n           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n       ) AS ytd_total\nFROM rep_monthly_sales\nORDER BY rep_id ASC, sales_month ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "rep_monthly_sales"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1056,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 6,
+        "title": {
+            "en": "Microservice Response Latency Outlier Isolation",
+            "id": "Isolasi Pencilan Latensi Respons Layanan Mikro"
+        },
+        "conceptExplanation": {
+            "en": "Platform engineers investigate anomalous slow service calls. Within each microservice cluster, individual request response latencies are measured. Filter the top 3 highest latency requests per service.",
+            "id": "Teknisi platform menyelidiki respons layanan lambat yang tidak wajar. Di setiap kluster layanan mikro, durasi latensi respons panggilan diukur. Saring 3 panggilan dengan latensi tertinggi untuk setiap layanan."
+        },
+        "instructions": {
+            "en": "Show `service_name`, `request_id`, `latency_ms`, and position order `latency_rank` (assigning 1 to the highest latency) for requests where position is 1, 2, or 3 within their service. Sort by service_name, then latency_rank, then request_id.",
+            "id": "Tampilkan `service_name`, `request_id`, `latency_ms`, dan peringkat `latency_rank` (peringkat 1 untuk latensi tertinggi) bagi panggilan dengan peringkat 1, 2, atau 3 di layanannya. Urutkan berdasarkan service_name, lalu latency_rank, lalu request_id."
+        },
+        "topics": [
+            "window-ranking",
+            "cte",
+            "partition-order"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE service_requests (\n    request_id SERIAL PRIMARY KEY,\n    service_name TEXT NOT NULL,\n    latency_ms INT NOT NULL\n);\nINSERT INTO service_requests (service_name, latency_ms)\nSELECT CASE\n           WHEN g % 4 = 0 THEN 'AuthService'\n           WHEN g % 4 = 1 THEN 'BillingGateway'\n           WHEN g % 4 = 2 THEN 'CatalogSearch'\n           ELSE 'NotificationsHub'\n       END,\n       10 + (g % 900)\nFROM generate_series(1, 4000) g;\nCREATE INDEX idx_requests_service ON service_requests (service_name, latency_ms DESC);\nANALYZE service_requests;",
+        "referenceQuery": "WITH ranked_requests AS (\n    SELECT service_name, request_id, latency_ms,\n           DENSE_RANK() OVER (PARTITION BY service_name ORDER BY latency_ms DESC, request_id ASC) AS latency_rank\n    FROM service_requests\n)\nSELECT service_name, request_id, latency_ms, latency_rank\nFROM ranked_requests\nWHERE latency_rank <= 3\nORDER BY service_name ASC, latency_rank ASC, request_id ASC;",
+        "expected_query": "WITH ranked_requests AS (\n    SELECT service_name, request_id, latency_ms,\n           DENSE_RANK() OVER (PARTITION BY service_name ORDER BY latency_ms DESC, request_id ASC) AS latency_rank\n    FROM service_requests\n)\nSELECT service_name, request_id, latency_ms, latency_rank\nFROM ranked_requests\nWHERE latency_rank <= 3\nORDER BY service_name ASC, latency_rank ASC, request_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "service_requests"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1057,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 6,
+        "title": {
+            "en": "Departmental Preceding Hire Compensation Comparison",
+            "id": "Perbandingan Kompensasi Penerimaan Karyawan Terdahulu Departemen"
+        },
+        "conceptExplanation": {
+            "en": "Compensation specialists examine onboarding salary trends chronologically. For each hire within a department, compare that employee's base salary to the salary of the colleague hired immediately prior in that same department. If no prior hire exists in the department, show 0 for the previous salary.",
+            "id": "Spesialis kompensasi mengamati tren gaji karyawan baru dari waktu ke waktu. Untuk setiap penerimaan di suatu departemen, bandingkan gaji karyawan tersebut dengan gaji rekan yang diterima persis sebelumnya di departemen yang sama. Jika belum ada penerimaan sebelumnya, tampilkan 0."
+        },
+        "instructions": {
+            "en": "Show `dept_name`, `emp_name`, `hire_date`, `salary`, and immediately prior colleague's salary `prior_hire_salary` (or 0 if none exists) within each department ordered by hire_date and emp_id. Sort by dept_name, then hire_date, then emp_name.",
+            "id": "Tampilkan `dept_name`, `emp_name`, `hire_date`, `salary`, dan gaji rekan yang diterima persis sebelumnya `prior_hire_salary` (atau 0 bila tidak ada) di setiap departemen terurut berdasarkan hire_date dan emp_id. Urutkan berdasarkan dept_name, lalu hire_date, lalu emp_name."
+        },
+        "topics": [
+            "window-lag",
+            "coalesce",
+            "partition-order"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE departmental_hires (\n    emp_id SERIAL PRIMARY KEY,\n    dept_name TEXT NOT NULL,\n    emp_name TEXT NOT NULL,\n    hire_date DATE NOT NULL,\n    salary INT NOT NULL\n);\nINSERT INTO departmental_hires (dept_name, emp_name, hire_date, salary)\nSELECT CASE WHEN g % 3 = 0 THEN 'Finance' WHEN g % 3 = 1 THEN 'Engineering' ELSE 'Marketing' END,\n       'Employee-' || g,\n       DATE '2023-01-01' + (g % 500),\n       50000 + (g % 60000)\nFROM generate_series(1, 2500) g;\nCREATE INDEX idx_hires_dept_date ON departmental_hires (dept_name, hire_date);\nANALYZE departmental_hires;",
+        "referenceQuery": "SELECT dept_name, emp_name, hire_date, salary,\n       COALESCE(\n           LAG(salary) OVER (PARTITION BY dept_name ORDER BY hire_date ASC, emp_id ASC),\n           0\n       ) AS prior_hire_salary\nFROM departmental_hires\nORDER BY dept_name ASC, hire_date ASC, emp_name ASC;",
+        "expected_query": "SELECT dept_name, emp_name, hire_date, salary,\n       COALESCE(\n           LAG(salary) OVER (PARTITION BY dept_name ORDER BY hire_date ASC, emp_id ASC),\n           0\n       ) AS prior_hire_salary\nFROM departmental_hires\nORDER BY dept_name ASC, hire_date ASC, emp_name ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "departmental_hires"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1058,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 6,
+        "title": {
+            "en": "Warehouse Daily Stock Depletion Velocity",
+            "id": "Kecepatan Penurunan Stok Harian Gudang"
+        },
+        "conceptExplanation": {
+            "en": "Supply chain inventory analysts track daily stock level reductions. Comparing daily morning balance counts against the previous day count calculates net daily consumption. The first recorded day in the dataset has no previous day and should present 0 for depletion.",
+            "id": "Analis rantai pasok memantau penurunan stok harian. Membandingkan saldo stok pagi hari dengan hari sebelumnya menghitung pemakaian harian bersih. Hari pertama yang tercatat belum memiliki hari sebelumnya dan harus menampilkan 0 untuk penurunan stok."
+        },
+        "instructions": {
+            "en": "Show `item_code`, `inventory_date`, `stock_count`, and daily inventory decrease `daily_drop` (the difference from the previous recorded day, or 0 for the first day) for recordings during June 2024. Sort by item_code, then inventory_date.",
+            "id": "Tampilkan `item_code`, `inventory_date`, `stock_count`, dan penurunan stok harian `daily_drop` (selisih dari hari sebelumnya, atau 0 untuk hari pertama) untuk pencatatan selama Juni 2024. Urutkan berdasarkan item_code, lalu inventory_date."
+        },
+        "topics": [
+            "window-lag",
+            "coalesce",
+            "date-filtering"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE daily_inventory_records (\n    record_id SERIAL PRIMARY KEY,\n    item_code TEXT NOT NULL,\n    inventory_date DATE NOT NULL,\n    stock_count INT NOT NULL\n);\nINSERT INTO daily_inventory_records (item_code, inventory_date, stock_count)\nSELECT 'SKU-' || ((g % 100) + 1),\n       DATE '2024-05-25' + (g % 45),\n       1000 - (g % 300)\nFROM generate_series(1, 3500) g;\nCREATE INDEX idx_inv_item_date ON daily_inventory_records (item_code, inventory_date);\nANALYZE daily_inventory_records;",
+        "referenceQuery": "WITH dated_drops AS (\n    SELECT item_code, inventory_date, stock_count,\n           COALESCE(\n               LAG(stock_count) OVER (PARTITION BY item_code ORDER BY inventory_date ASC) - stock_count,\n               0\n           ) AS daily_drop\n    FROM daily_inventory_records\n)\nSELECT item_code, inventory_date, stock_count, daily_drop\nFROM dated_drops\nWHERE inventory_date >= '2024-06-01' AND inventory_date <= '2024-06-30'\nORDER BY item_code ASC, inventory_date ASC;",
+        "expected_query": "WITH dated_drops AS (\n    SELECT item_code, inventory_date, stock_count,\n           COALESCE(\n               LAG(stock_count) OVER (PARTITION BY item_code ORDER BY inventory_date ASC) - stock_count,\n               0\n           ) AS daily_drop\n    FROM daily_inventory_records\n)\nSELECT item_code, inventory_date, stock_count, daily_drop\nFROM dated_drops\nWHERE inventory_date >= '2024-06-01' AND inventory_date <= '2024-06-30'\nORDER BY item_code ASC, inventory_date ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "daily_inventory_records"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1059,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 6,
+        "title": {
+            "en": "Customer Transaction Sequence Order Counter",
+            "id": "Penghitung Urutan Transaksi Pelanggan"
+        },
+        "conceptExplanation": {
+            "en": "E-commerce retention analysts sequence orders placed by shoppers across historical transactions. For every transaction record, display which chronological order number it represents for that customer (order 1, order 2, etc.) alongside the total running spend accumulated by that buyer through that transaction.",
+            "id": "Analis retensi e-commerce mengurutkan pesanan pembeli dari waktu ke waktu. Untuk setiap transaksi, tampilkan nomor urut transaksi pelanggan tersebut (pesanan 1, pesanan 2, dst.) beserta total pengeluaran kumulatif pembeli hingga transaksi tersebut."
+        },
+        "instructions": {
+            "en": "Display `customer_id`, `order_id`, `order_date`, sequence number `order_sequence_num` (1 for first order, 2 for second), and running expenditure `cumulative_spend` per customer ordered by order_date and order_id. Sort by customer_id, then order_sequence_num.",
+            "id": "Tampilkan `customer_id`, `order_id`, `order_date`, nomor urut `order_sequence_num` (1 untuk pesanan pertama, 2 kedua), dan pengeluaran berjalan `cumulative_spend` per pelanggan terurut berdasarkan order_date dan order_id. Urutkan berdasarkan customer_id, lalu order_sequence_num."
+        },
+        "topics": [
+            "window-row-number",
+            "window-sum",
+            "partition-order"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE shopper_transactions (\n    order_id SERIAL PRIMARY KEY,\n    customer_id INT NOT NULL,\n    order_date DATE NOT NULL,\n    order_total NUMERIC(10,2) NOT NULL\n);\nINSERT INTO shopper_transactions (customer_id, order_date, order_total)\nSELECT (g % 500) + 1,\n       DATE '2024-01-01' + (g % 200),\n       25.00 + (g % 250)\nFROM generate_series(1, 3500) g;\nCREATE INDEX idx_shop_cust_seq ON shopper_transactions (customer_id, order_date, order_id);\nANALYZE shopper_transactions;",
+        "referenceQuery": "SELECT customer_id, order_id, order_date,\n       ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date ASC, order_id ASC) AS order_sequence_num,\n       SUM(order_total) OVER (\n           PARTITION BY customer_id\n           ORDER BY order_date ASC, order_id ASC\n           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n       ) AS cumulative_spend\nFROM shopper_transactions\nORDER BY customer_id ASC, order_sequence_num ASC;",
+        "expected_query": "SELECT customer_id, order_id, order_date,\n       ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date ASC, order_id ASC) AS order_sequence_num,\n       SUM(order_total) OVER (\n           PARTITION BY customer_id\n           ORDER BY order_date ASC, order_id ASC\n           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n       ) AS cumulative_spend\nFROM shopper_transactions\nORDER BY customer_id ASC, order_sequence_num ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "shopper_transactions"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1060,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 6,
+        "title": {
+            "en": "Financial Security Trailing Window Smoothing",
+            "id": "Penghalusan Jendela Bergerak Sekuritas Keuangan"
+        },
+        "conceptExplanation": {
+            "en": "Quantitative investment models analyze historical trading prices. To smooth out daily market volatility, calculate the moving average closing price across a 3-day window comprising the current trading day and the two immediately preceding trading days.",
+            "id": "Model investasi kuantitatif menganalisis riwayat harga perdagangan. Guna meredam volatilitas harian pasar, hitung harga penutupan rata-rata bergerak menggunakan jendela 3 hari yang terdiri dari hari perdagangan saat ini dan dua hari perdagangan sebelumnya."
+        },
+        "instructions": {
+            "en": "Show `ticker_symbol`, `trade_date`, `close_price`, and `moving_avg_3d` (the trailing 3-day average price rounded to 2 decimals) for trading days in May 2024. Sort by ticker_symbol, then trade_date.",
+            "id": "Tampilkan `ticker_symbol`, `trade_date`, `close_price`, dan `moving_avg_3d` (rata-rata harga 3 hari terakhir dibulatkan 2 desimal) untuk hari bursa selama Mei 2024. Urutkan berdasarkan ticker_symbol, lalu trade_date."
+        },
+        "topics": [
+            "window-moving-avg",
+            "frame-specification",
+            "date-filtering"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE asset_trading_daily (\n    trade_id SERIAL PRIMARY KEY,\n    ticker_symbol TEXT NOT NULL,\n    trade_date DATE NOT NULL,\n    close_price NUMERIC(8,2) NOT NULL\n);\nINSERT INTO asset_trading_daily (ticker_symbol, trade_date, close_price)\nSELECT CASE WHEN g % 3 = 0 THEN 'NVDA' WHEN g % 3 = 1 THEN 'MSFT' ELSE 'AAPL' END,\n       DATE '2024-04-15' + (g % 60),\n       120.00 + (g % 80)\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_asset_ticker_date ON asset_trading_daily (ticker_symbol, trade_date);\nANALYZE asset_trading_daily;",
+        "referenceQuery": "WITH smoothed AS (\n    SELECT ticker_symbol, trade_date, close_price,\n           ROUND(\n               AVG(close_price) OVER (\n                   PARTITION BY ticker_symbol\n                   ORDER BY trade_date ASC\n                   ROWS BETWEEN 2 PRECEDING AND CURRENT ROW\n               ), 2\n           ) AS moving_avg_3d\n    FROM asset_trading_daily\n)\nSELECT ticker_symbol, trade_date, close_price, moving_avg_3d\nFROM smoothed\nWHERE trade_date >= '2024-05-01' AND trade_date <= '2024-05-31'\nORDER BY ticker_symbol ASC, trade_date ASC;",
+        "expected_query": "WITH smoothed AS (\n    SELECT ticker_symbol, trade_date, close_price,\n           ROUND(\n               AVG(close_price) OVER (\n                   PARTITION BY ticker_symbol\n                   ORDER BY trade_date ASC\n                   ROWS BETWEEN 2 PRECEDING AND CURRENT ROW\n               ), 2\n           ) AS moving_avg_3d\n    FROM asset_trading_daily\n)\nSELECT ticker_symbol, trade_date, close_price, moving_avg_3d\nFROM smoothed\nWHERE trade_date >= '2024-05-01' AND trade_date <= '2024-05-31'\nORDER BY ticker_symbol ASC, trade_date ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "asset_trading_daily"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1061,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 6,
+        "title": {
+            "en": "User Session Web Navigation Path Sequence",
+            "id": "Urutan Jalur Navigasi Web Sesi Pengguna"
+        },
+        "conceptExplanation": {
+            "en": "Product analytics researchers study web interaction journeys. For each interaction within a user browsing session, assign an incremental navigation step counter starting at 1, alongside the specific URL visited.",
+            "id": "Peneliti analitik produk mempelajari perjalanan interaksi penelusuran web. Untuk setiap kegiatan di dalam sesi penelusuran pengguna, berikan nomor langkah berurutan mulai dari 1 beserta URL yang dikunjungi."
+        },
+        "instructions": {
+            "en": "Display `session_id`, `event_time`, `page_url`, and `step_num` (1 for initial pageview in session, incrementing by step) per session ordered by event_time and hit_id. Sort by session_id, then step_num.",
+            "id": "Tampilkan `session_id`, `event_time`, `page_url`, dan `step_num` (1 untuk tampilan laman pertama dalam sesi, bertambah secara berurutan) per sesi terurut berdasarkan event_time dan hit_id. Urutkan berdasarkan session_id, lalu step_num."
+        },
+        "topics": [
+            "window-row-number",
+            "partition-order",
+            "sessionization"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE web_session_hits (\n    hit_id SERIAL PRIMARY KEY,\n    session_id TEXT NOT NULL,\n    event_time TIMESTAMP NOT NULL,\n    page_url TEXT NOT NULL\n);\nINSERT INTO web_session_hits (session_id, event_time, page_url)\nSELECT 'SES-' || ((g % 400) + 100),\n       TIMESTAMP '2024-07-01 10:00:00' + (g * INTERVAL '3 minutes'),\n       CASE\n           WHEN g % 4 = 0 THEN '/home'\n           WHEN g % 4 = 1 THEN '/pricing'\n           WHEN g % 4 = 2 THEN '/checkout'\n           ELSE '/confirmation'\n       END\nFROM generate_series(1, 3500) g;\nCREATE INDEX idx_web_session_time ON web_session_hits (session_id, event_time, hit_id);\nANALYZE web_session_hits;",
+        "referenceQuery": "SELECT session_id, event_time, page_url,\n       ROW_NUMBER() OVER (PARTITION BY session_id ORDER BY event_time ASC, hit_id ASC) AS step_num\nFROM web_session_hits\nORDER BY session_id ASC, step_num ASC;",
+        "expected_query": "SELECT session_id, event_time, page_url,\n       ROW_NUMBER() OVER (PARTITION BY session_id ORDER BY event_time ASC, hit_id ASC) AS step_num\nFROM web_session_hits\nORDER BY session_id ASC, step_num ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "web_session_hits"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1062,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 6,
+        "title": {
+            "en": "Quarterly Department Expense Growth Percentage",
+            "id": "Persentase Pertumbuhan Pengeluaran Departemen Antar Kuartal"
+        },
+        "conceptExplanation": {
+            "en": "Financial planning directors examine quarterly budget consumption. For each department recording expenditures across consecutive quarters in 2024, compute the consecutive quarterly percentage variance relative to the previous quarter. The initial quarter (Q1) shows 0.0 for variance.",
+            "id": "Direktur perencanaan keuangan memeriksa konsumsi anggaran triwulanan. Untuk setiap departemen yang mencatat pengeluaran di kuartal berurutan tahun 2024, hitung persentase pertumbuhan dibandingkan kuartal sebelumnya. Kuartal awal (Q1) menampilkan 0.0 untuk nilai pertumbuhannya."
+        },
+        "instructions": {
+            "en": "Show `dept_code`, `quarter_name`, `expense_amount`, and `qoq_growth_pct` (consecutive quarterly percentage variance rounded to 1 decimal, or 0.0 for Q1) ordered by quarter_name. Sort by dept_code, then quarter_name.",
+            "id": "Tampilkan `dept_code`, `quarter_name`, `expense_amount`, dan `qoq_growth_pct` (persentase perubahan kuartal dibulatkan 1 desimal, atau 0.0 untuk Q1) terurut berdasarkan quarter_name. Urutkan berdasarkan dept_code, lalu quarter_name."
+        },
+        "topics": [
+            "window-lag",
+            "coalesce",
+            "growth-calculation"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE quarterly_department_budget (\n    record_id SERIAL PRIMARY KEY,\n    dept_code TEXT NOT NULL,\n    quarter_name TEXT NOT NULL,\n    expense_amount NUMERIC(10,2) NOT NULL,\n    UNIQUE (dept_code, quarter_name)\n);\nINSERT INTO quarterly_department_budget (dept_code, quarter_name, expense_amount)\nSELECT CASE\n           WHEN g % 4 = 0 THEN 'FIN'\n           WHEN g % 4 = 1 THEN 'MKT'\n           WHEN g % 4 = 2 THEN 'ENG'\n           ELSE 'OPS'\n       END,\n       CASE\n           WHEN (g / 4) % 4 = 0 THEN '2024-Q1'\n           WHEN (g / 4) % 4 = 1 THEN '2024-Q2'\n           WHEN (g / 4) % 4 = 2 THEN '2024-Q3'\n           ELSE '2024-Q4'\n       END,\n       80000.00 + (g % 30000)\nFROM generate_series(0, 15) g;\nANALYZE quarterly_department_budget;",
+        "referenceQuery": "SELECT dept_code, quarter_name, expense_amount,\n       COALESCE(\n           ROUND(\n               (expense_amount - LAG(expense_amount) OVER (PARTITION BY dept_code ORDER BY quarter_name ASC)) * 100.0 /\n               LAG(expense_amount) OVER (PARTITION BY dept_code ORDER BY quarter_name ASC),\n               1\n           ),\n           0.0\n       ) AS qoq_growth_pct\nFROM quarterly_department_budget\nORDER BY dept_code ASC, quarter_name ASC;",
+        "expected_query": "SELECT dept_code, quarter_name, expense_amount,\n       COALESCE(\n           ROUND(\n               (expense_amount - LAG(expense_amount) OVER (PARTITION BY dept_code ORDER BY quarter_name ASC)) * 100.0 /\n               LAG(expense_amount) OVER (PARTITION BY dept_code ORDER BY quarter_name ASC),\n               1\n           ),\n           0.0\n       ) AS qoq_growth_pct\nFROM quarterly_department_budget\nORDER BY dept_code ASC, quarter_name ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "quarterly_department_budget"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1063,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 6,
+        "title": {
+            "en": "Driver Dispatch Consecutive Fare Accumulation",
+            "id": "Akumulasi Tarif Penugasan Pengemudi Berturutan"
+        },
+        "conceptExplanation": {
+            "en": "Ride-hailing fleet supervisors evaluate driver earnings progression. For completed passenger trips logged on August 10, 2024, track each trip fare alongside the cumulative daily fare earned by that driver through that trip.",
+            "id": "Penyelia armada transportasi online mengevaluasi perkembangan pendapatan pengemudi. Untuk perjalanan penumpang yang terselesaikan pada 10 Agustus 2024, catat tarif setiap perjalanan beserta total tarif harian kumulatif yang dikumpulkan pengemudi hingga perjalanan tersebut."
+        },
+        "instructions": {
+            "en": "Show `driver_id`, `trip_id`, `dropoff_time`, `fare_amount`, and running daily earnings `daily_accumulated_fares` per driver ordered by dropoff_time and trip_id for trips completed on '2024-08-10'. Sort by driver_id, then dropoff_time, then trip_id.",
+            "id": "Tampilkan `driver_id`, `trip_id`, `dropoff_time`, `fare_amount`, dan akumulasi pendapatan harian `daily_accumulated_fares` per pengemudi terurut berdasarkan dropoff_time dan trip_id untuk perjalanan pada '2024-08-10'. Urutkan berdasarkan driver_id, lalu dropoff_time, lalu trip_id."
+        },
+        "topics": [
+            "window-sum",
+            "cumulative-total",
+            "date-filtering"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE fleet_driver_trips (\n    trip_id SERIAL PRIMARY KEY,\n    driver_id INT NOT NULL,\n    dropoff_time TIMESTAMP NOT NULL,\n    fare_amount NUMERIC(8,2) NOT NULL\n);\nINSERT INTO fleet_driver_trips (driver_id, dropoff_time, fare_amount)\nSELECT (g % 200) + 1,\n       TIMESTAMP '2024-08-10 06:00:00' + (g * INTERVAL '4 minutes'),\n       15.00 + (g % 45)\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_trips_driver_time ON fleet_driver_trips (driver_id, dropoff_time);\nANALYZE fleet_driver_trips;",
+        "referenceQuery": "SELECT driver_id, trip_id, dropoff_time, fare_amount,\n       SUM(fare_amount) OVER (\n           PARTITION BY driver_id\n           ORDER BY dropoff_time ASC, trip_id ASC\n           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n       ) AS daily_accumulated_fares\nFROM fleet_driver_trips\nWHERE dropoff_time >= '2024-08-10 00:00:00' AND dropoff_time < '2024-08-11 00:00:00'\nORDER BY driver_id ASC, dropoff_time ASC, trip_id ASC;",
+        "expected_query": "SELECT driver_id, trip_id, dropoff_time, fare_amount,\n       SUM(fare_amount) OVER (\n           PARTITION BY driver_id\n           ORDER BY dropoff_time ASC, trip_id ASC\n           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n       ) AS daily_accumulated_fares\nFROM fleet_driver_trips\nWHERE dropoff_time >= '2024-08-10 00:00:00' AND dropoff_time < '2024-08-11 00:00:00'\nORDER BY driver_id ASC, dropoff_time ASC, trip_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "fleet_driver_trips"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1064,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 6,
+        "title": {
+            "en": "Clinical Vital Sign Deviation Sequential Divergence",
+            "id": "Divergensi Urutan Penyimpangan Tanda Vital Medis"
+        },
+        "conceptExplanation": {
+            "en": "Intensive care monitoring systems calculate instantaneous fluctuations in monitored heart rates. For each patient observation, compute the numerical change in heart rate compared to the immediately preceding measurement. The first measurement displays 0 for change.",
+            "id": "Sistem pemantauan unit perawatan intensif menghitung fluktuasi sesaat pada denyut jantung pasien. Untuk setiap pengukuran pasien, hitung perubahan numerik denyut jantung dibandingkan dengan pengukuran sebelumnya. Pengukuran pertama menampilkan nilai 0 untuk perubahannya."
+        },
+        "instructions": {
+            "en": "Display `patient_id`, `recorded_time`, `pulse_rate`, and previous measurement delta `pulse_delta` (the difference from the prior reading, or 0 if none) ordered by recorded_time and log_id. Sort by patient_id, then recorded_time.",
+            "id": "Tampilkan `patient_id`, `recorded_time`, `pulse_rate`, dan selisih pengukuran sebelumnya `pulse_delta` (selisih dari pengukuran sebelumnya, atau 0 jika tidak ada) terurut berdasarkan recorded_time dan log_id. Urutkan berdasarkan patient_id, lalu recorded_time."
+        },
+        "topics": [
+            "window-lag",
+            "coalesce",
+            "partition-order"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE patient_telemetry_logs (\n    log_id SERIAL PRIMARY KEY,\n    patient_id INT NOT NULL,\n    recorded_time TIMESTAMP NOT NULL,\n    pulse_rate INT NOT NULL\n);\nINSERT INTO patient_telemetry_logs (patient_id, recorded_time, pulse_rate)\nSELECT (g % 200) + 1,\n       TIMESTAMP '2024-09-01 00:00:00' + (g * INTERVAL '10 minutes'),\n       65 + (g % 45)\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_telemetry_patient_time ON patient_telemetry_logs (patient_id, recorded_time);\nANALYZE patient_telemetry_logs;",
+        "referenceQuery": "SELECT patient_id, recorded_time, pulse_rate,\n       COALESCE(\n           pulse_rate - LAG(pulse_rate) OVER (PARTITION BY patient_id ORDER BY recorded_time ASC, log_id ASC),\n           0\n       ) AS pulse_delta\nFROM patient_telemetry_logs\nORDER BY patient_id ASC, recorded_time ASC;",
+        "expected_query": "SELECT patient_id, recorded_time, pulse_rate,\n       COALESCE(\n           pulse_rate - LAG(pulse_rate) OVER (PARTITION BY patient_id ORDER BY recorded_time ASC, log_id ASC),\n           0\n       ) AS pulse_delta\nFROM patient_telemetry_logs\nORDER BY patient_id ASC, recorded_time ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "patient_telemetry_logs"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1065,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 6,
+        "title": {
+            "en": "Customer Lifetime Value Sequential Escalation",
+            "id": "Eskalasi Nilai Seumur Hidup Pelanggan Berurutan"
+        },
+        "conceptExplanation": {
+            "en": "Customer lifetime value analysts observe sequential revenue milestones. As customers purchase software add-ons across successive milestones, each purchase adds to their historical cumulative total. Trace each buyer's expanding cumulative contribution across chronological events.",
+            "id": "Analis nilai seumur hidup pelanggan mengamati capaian pendapatan secara bertahap. Ketika pelanggan membeli add-on perangkat lunak dari waktu ke waktu, setiap transaksi menambah total akumulasi historis. Lacak kontribusi kumulatif pembeli di setiap kejadian kronologis."
+        },
+        "instructions": {
+            "en": "Show `client_id`, `purchase_id`, `purchase_date`, `license_fee`, and expanding historical total `running_ltv` per client ordered by purchase_date and purchase_id. Sort by client_id, then purchase_date, then purchase_id.",
+            "id": "Tampilkan `client_id`, `purchase_id`, `purchase_date`, `license_fee`, dan total historis berjalan `running_ltv` per klien terurut berdasarkan purchase_date dan purchase_id. Urutkan berdasarkan client_id, lalu purchase_date, lalu purchase_id."
+        },
+        "topics": [
+            "window-sum",
+            "cumulative-total",
+            "partition-order"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE client_license_purchases (\n    purchase_id SERIAL PRIMARY KEY,\n    client_id INT NOT NULL,\n    purchase_date DATE NOT NULL,\n    license_fee NUMERIC(8,2) NOT NULL\n);\nINSERT INTO client_license_purchases (client_id, purchase_date, license_fee)\nSELECT (g % 300) + 1,\n       DATE '2024-02-01' + (g % 180),\n       199.00 + (g % 500)\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_client_lic_date ON client_license_purchases (client_id, purchase_date, purchase_id);\nANALYZE client_license_purchases;",
+        "referenceQuery": "SELECT client_id, purchase_id, purchase_date, license_fee,\n       SUM(license_fee) OVER (\n           PARTITION BY client_id\n           ORDER BY purchase_date ASC, purchase_id ASC\n           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n       ) AS running_ltv\nFROM client_license_purchases\nORDER BY client_id ASC, purchase_date ASC, purchase_id ASC;",
+        "expected_query": "SELECT client_id, purchase_id, purchase_date, license_fee,\n       SUM(license_fee) OVER (\n           PARTITION BY client_id\n           ORDER BY purchase_date ASC, purchase_id ASC\n           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n       ) AS running_ltv\nFROM client_license_purchases\nORDER BY client_id ASC, purchase_date ASC, purchase_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "client_license_purchases"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1066,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 7,
+        "title": {
+            "en": "Atomic Escrow Account Balance Transfer",
+            "id": "Transfer Saldo Rekening Escrow Secara Atomik"
+        },
+        "conceptExplanation": {
+            "en": "A banking settlement system transfers funds atomically between accounts. Account 101 must be debited by exactly 500, and Account 202 must be credited by exactly 500 within an atomic transaction. A transfer log record must be inserted into the transfer history.",
+            "id": "Sistem perbankan memindahkan dana antar rekening secara atomik. Rekening 101 harus didebit tepat 500, dan Rekening 202 dikreditkan tepat 500 dalam transaksi terpadu. Catatan pemindahan harus dimasukkan ke dalam riwayat transfer."
+        },
+        "instructions": {
+            "en": "Deduct 500 from `escrow_accounts` where `account_id = 101`, add 500 to `escrow_accounts` where `account_id = 202`, and record an entry into `transfer_audit_log (source_id, dest_id, transfer_amount)` specifying values (101, 202, 500).",
+            "id": "Kurangi 500 dari `escrow_accounts` di mana `account_id = 101`, tambahkan 500 ke `escrow_accounts` di mana `account_id = 202`, dan masukkan data ke `transfer_audit_log (source_id, dest_id, transfer_amount)` bernilai (101, 202, 500)."
+        },
+        "topics": [
+            "transaction",
+            "multi-statement",
+            "atomic-mutation"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE escrow_accounts (\n    account_id INT PRIMARY KEY,\n    balance NUMERIC(10,2) NOT NULL\n);\nCREATE TABLE transfer_audit_log (\n    log_id SERIAL PRIMARY KEY,\n    source_id INT NOT NULL,\n    dest_id INT NOT NULL,\n    transfer_amount NUMERIC(10,2) NOT NULL\n);\nINSERT INTO escrow_accounts VALUES (101, 2500.00), (202, 1000.00);",
+        "referenceQuery": "BEGIN;\nUPDATE escrow_accounts SET balance = balance - 500.00 WHERE account_id = 101;\nUPDATE escrow_accounts SET balance = balance + 500.00 WHERE account_id = 202;\nINSERT INTO transfer_audit_log (source_id, dest_id, transfer_amount) VALUES (101, 202, 500.00);\nCOMMIT;",
+        "expected_query": "BEGIN;\nUPDATE escrow_accounts SET balance = balance - 500.00 WHERE account_id = 101;\nUPDATE escrow_accounts SET balance = balance + 500.00 WHERE account_id = 202;\nINSERT INTO transfer_audit_log (source_id, dest_id, transfer_amount) VALUES (101, 202, 500.00);\nCOMMIT;",
+        "verification_query": "SELECT account_id, balance FROM escrow_accounts ORDER BY account_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "escrow_accounts",
+            "transfer_audit_log"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1067,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 7,
+        "title": {
+            "en": "Warehouse Product Master Price and Stock Harmonization",
+            "id": "Harmonisasi Harga dan Stok Produk Utama Gudang"
+        },
+        "conceptExplanation": {
+            "en": "Logistics systems ingest nightly feeds. When a product SKU already exists, revise its unit price and replenish its stock by adding new quantity. If the product SKU does not yet exist, store a new catalog record.",
+            "id": "Sistem logistik menerima kiriman data berkala. Bila SKU produk sudah terdaftar, perbarui harga satuan dan tambahkan stok baru ke stok lama. Bila SKU produk belum terdaftar, masukkan sebagai produk baru."
+        },
+        "instructions": {
+            "en": "Store product SKU `'SKU-88'` named `'Heavy Duty Clamp'`, unit_price `45.00`, and quantity `100` into `product_master`. If SKU-88 already exists, revise unit_price to `45.00` and increase stock_qty by `100`.",
+            "id": "Masukkan SKU produk `'SKU-88'` bernama `'Heavy Duty Clamp'`, unit_price `45.00`, dan kuantitas `100` ke tabel `product_master`. Bila SKU-88 sudah ada, perbarui unit_price menjadi `45.00` dan tambahkan stock_qty sebesar `100`."
+        },
+        "topics": [
+            "upsert",
+            "on-conflict",
+            "mutation"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE product_master (\n    sku TEXT PRIMARY KEY,\n    name TEXT NOT NULL,\n    unit_price NUMERIC(8,2) NOT NULL,\n    stock_qty INT NOT NULL\n);\nINSERT INTO product_master VALUES ('SKU-88', 'Heavy Duty Clamp', 40.00, 250);",
+        "referenceQuery": "INSERT INTO product_master (sku, name, unit_price, stock_qty)\nVALUES ('SKU-88', 'Heavy Duty Clamp', 45.00, 100)\nON CONFLICT (sku) DO UPDATE SET\n    unit_price = EXCLUDED.unit_price,\n    stock_qty = product_master.stock_qty + EXCLUDED.stock_qty;",
+        "expected_query": "INSERT INTO product_master (sku, name, unit_price, stock_qty)\nVALUES ('SKU-88', 'Heavy Duty Clamp', 45.00, 100)\nON CONFLICT (sku) DO UPDATE SET\n    unit_price = EXCLUDED.unit_price,\n    stock_qty = product_master.stock_qty + EXCLUDED.stock_qty;",
+        "verification_query": "SELECT sku, name, unit_price, stock_qty FROM product_master WHERE sku = 'SKU-88';",
+        "starterQuery": "",
+        "table_names": [
+            "product_master"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1068,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 7,
+        "title": {
+            "en": "Stale User Login Session Purge",
+            "id": "Pembersihan Sesi Masuk Pengguna yang Kadaluarsa"
+        },
+        "conceptExplanation": {
+            "en": "Security compliance requires discarding expired session tokens. Session tokens inactive for more than 90 days prior to June 1, 2024 (last activity strictly before 2024-03-03) that are already marked unauthenticated must be purged from the active session cache.",
+            "id": "Kepatuhan keamanan mewajibkan pembersihan token sesi yang kadaluarsa. Token sesi yang tidak aktif lebih dari 90 hari sebelum 1 Juni 2024 (aktivitas terakhir sebelum 2024-03-03) yang telah berstatus tidak terautentikasi harus dihapus dari tabel sesi aktif."
+        },
+        "instructions": {
+            "en": "Purge records from `user_active_sessions` where `is_authenticated = false` and `last_active_time < DATE '2024-06-01' - 90`.",
+            "id": "Hapus baris dari `user_active_sessions` di mana `is_authenticated = false` dan `last_active_time < DATE '2024-06-01' - 90`."
+        },
+        "topics": [
+            "delete",
+            "date-arithmetic",
+            "filtering"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE user_active_sessions (\n    session_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    is_authenticated BOOLEAN NOT NULL,\n    last_active_time DATE NOT NULL\n);\nINSERT INTO user_active_sessions (user_id, is_authenticated, last_active_time)\nSELECT (g % 300) + 1,\n       (g % 3 = 0),\n       DATE '2024-01-01' + (g % 180)\nFROM generate_series(1, 2000) g;\nCREATE INDEX idx_sessions_purge ON user_active_sessions (is_authenticated, last_active_time);\nANALYZE user_active_sessions;",
+        "referenceQuery": "DELETE FROM user_active_sessions\nWHERE is_authenticated = FALSE\n  AND last_active_time < DATE '2024-06-01' - 90;",
+        "expected_query": "DELETE FROM user_active_sessions\nWHERE is_authenticated = FALSE\n  AND last_active_time < DATE '2024-06-01' - 90;",
+        "verification_query": "SELECT COUNT(*) AS remaining_count FROM user_active_sessions;",
+        "starterQuery": "",
+        "table_names": [
+            "user_active_sessions"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1069,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 7,
+        "title": {
+            "en": "Customer Order Dispatch and Inventory Depletion",
+            "id": "Pengiriman Pesanan Pelanggan dan Pengurangan Stok"
+        },
+        "conceptExplanation": {
+            "en": "When order 501 transitions to shipped status, two actions must occur in synchronization: order status advances to 'shipped', and warehouse stock for the ordered item reduces by the purchase quantity.",
+            "id": "Ketika pesanan 501 beralih ke status dikirim, dua tindakan harus berlangsung sinkron: status pesanan berubah menjadi 'shipped', dan persediaan barang di gudang berkurang sesuai kuantitas yang dibeli."
+        },
+        "instructions": {
+            "en": "In a single transaction, modify `sales_orders` setting `order_status = 'shipped'` where `order_id = 501`, and reduce `warehouse_inventory.available_qty` by 25 where `item_sku = 'SKU-500'`.",
+            "id": "Dalam transaksi tunggal, perbarui `sales_orders` dengan menyetel `order_status = 'shipped'` untuk `order_id = 501`, dan kurangi `warehouse_inventory.available_qty` sebesar 25 di mana `item_sku = 'SKU-500'`."
+        },
+        "topics": [
+            "transaction",
+            "multi-statement",
+            "update"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE sales_orders (\n    order_id INT PRIMARY KEY,\n    item_sku TEXT NOT NULL,\n    quantity INT NOT NULL,\n    order_status TEXT NOT NULL\n);\nCREATE TABLE warehouse_inventory (\n    item_sku TEXT PRIMARY KEY,\n    available_qty INT NOT NULL\n);\nINSERT INTO sales_orders VALUES (501, 'SKU-500', 25, 'pending');\nINSERT INTO warehouse_inventory VALUES ('SKU-500', 100);",
+        "referenceQuery": "BEGIN;\nUPDATE sales_orders SET order_status = 'shipped' WHERE order_id = 501;\nUPDATE warehouse_inventory SET available_qty = available_qty - 25 WHERE item_sku = 'SKU-500';\nCOMMIT;",
+        "expected_query": "BEGIN;\nUPDATE sales_orders SET order_status = 'shipped' WHERE order_id = 501;\nUPDATE warehouse_inventory SET available_qty = available_qty - 25 WHERE item_sku = 'SKU-500';\nCOMMIT;",
+        "verification_query": "SELECT o.order_status, w.available_qty FROM sales_orders o JOIN warehouse_inventory w ON o.item_sku = w.item_sku WHERE o.order_id = 501;",
+        "starterQuery": "",
+        "table_names": [
+            "sales_orders",
+            "warehouse_inventory"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1070,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 7,
+        "title": {
+            "en": "Merchant Automated Fee Assessment Deductions",
+            "id": "Pemotongan Biaya Layanan Otomatis Merchant"
+        },
+        "conceptExplanation": {
+            "en": "At month end, finance charges platform maintenance assessments against active merchants. Record a fee entry for every merchant whose current tier is 'Enterprise', assessing a flat monthly surcharge of 150.00 dated '2024-07-31'.",
+            "id": "Di akhir bulan, bagian keuangan membebankan biaya pemeliharaan platform kepada merchant aktif. Masukkan catatan biaya untuk setiap merchant dengan paket 'Enterprise', dengan nominal 150.00 bertanggal '2024-07-31'."
+        },
+        "instructions": {
+            "en": "Record rows into `merchant_fees (merchant_id, fee_date, fee_amount)` dated `'2024-07-31'` and fee_amount `150.00` for all merchants in `merchant_profiles` where `tier = 'Enterprise'`.",
+            "id": "Masukkan data ke `merchant_fees (merchant_id, fee_date, fee_amount)` dengan fee_date `'2024-07-31'` dan fee_amount `150.00` untuk semua merchant pada `merchant_profiles` di mana `tier = 'Enterprise'`."
+        },
+        "topics": [
+            "insert-select",
+            "mutation",
+            "filtering"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE merchant_profiles (\n    merchant_id SERIAL PRIMARY KEY,\n    merchant_name TEXT NOT NULL,\n    tier TEXT NOT NULL\n);\nCREATE TABLE merchant_fees (\n    fee_id SERIAL PRIMARY KEY,\n    merchant_id INT NOT NULL,\n    fee_date DATE NOT NULL,\n    fee_amount NUMERIC(8,2) NOT NULL\n);\nINSERT INTO merchant_profiles (merchant_name, tier)\nSELECT 'Merchant ' || g, CASE WHEN g % 2 = 0 THEN 'Enterprise' ELSE 'Standard' END\nFROM generate_series(1, 500) g;\nCREATE INDEX idx_merchant_tier ON merchant_profiles (tier);\nANALYZE merchant_profiles;",
+        "referenceQuery": "INSERT INTO merchant_fees (merchant_id, fee_date, fee_amount)\nSELECT merchant_id, DATE '2024-07-31', 150.00\nFROM merchant_profiles\nWHERE tier = 'Enterprise';",
+        "expected_query": "INSERT INTO merchant_fees (merchant_id, fee_date, fee_amount)\nSELECT merchant_id, DATE '2024-07-31', 150.00\nFROM merchant_profiles\nWHERE tier = 'Enterprise';",
+        "verification_query": "SELECT COUNT(*) AS fee_count, SUM(fee_amount) AS total_fees FROM merchant_fees;",
+        "starterQuery": "",
+        "table_names": [
+            "merchant_fees",
+            "merchant_profiles"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1071,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 7,
+        "title": {
+            "en": "Annual Subscription Validity Extension Rollover",
+            "id": "Perpanjangan Masa Berlaku Langganan Tahunan"
+        },
+        "conceptExplanation": {
+            "en": "Subscription services renew automatically for opted-in customers. When annual subscriptions expire on or before August 31, 2024 and auto_renew is true, extend their expiration date by exactly 1 year (365 days).",
+            "id": "Layanan berlangganan diperpanjang otomatis bagi pelanggan yang mengaktifkan opsi perpanjangan. Bila langganan tahunan berakhir pada atau sebelum 31 Agustus 2024 dan auto_renew bernilai true, perpanjang tanggal berakhir tepat 1 tahun (365 hari)."
+        },
+        "instructions": {
+            "en": "Extend `client_memberships` adding 365 days to `expiration_date` (`expiration_date = expiration_date + 365`) for memberships where `auto_renew = true` and `expiration_date <= '2024-08-31'`.",
+            "id": "Perbarui `client_memberships` dengan menambahkan 365 hari ke `expiration_date` (`expiration_date = expiration_date + 365`) untuk keanggotaan di mana `auto_renew = true` dan `expiration_date <= '2024-08-31'`."
+        },
+        "topics": [
+            "update",
+            "date-arithmetic",
+            "filtering"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE client_memberships (\n    membership_id SERIAL PRIMARY KEY,\n    client_id INT NOT NULL,\n    auto_renew BOOLEAN NOT NULL,\n    expiration_date DATE NOT NULL\n);\nINSERT INTO client_memberships (client_id, auto_renew, expiration_date)\nSELECT (g % 300) + 1,\n       (g % 2 = 0),\n       DATE '2024-06-01' + (g % 120)\nFROM generate_series(1, 2000) g;\nCREATE INDEX idx_memberships_renew ON client_memberships (auto_renew, expiration_date);\nANALYZE client_memberships;",
+        "referenceQuery": "UPDATE client_memberships\nSET expiration_date = expiration_date + 365\nWHERE auto_renew = TRUE\n  AND expiration_date <= '2024-08-31';",
+        "expected_query": "UPDATE client_memberships\nSET expiration_date = expiration_date + 365\nWHERE auto_renew = TRUE\n  AND expiration_date <= '2024-08-31';",
+        "verification_query": "SELECT COUNT(*) AS renewed_count FROM client_memberships WHERE expiration_date > '2025-05-01';",
+        "starterQuery": "",
+        "table_names": [
+            "client_memberships"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1072,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 7,
+        "title": {
+            "en": "Warehouse Bin Transfer Relocation",
+            "id": "Pemindahan Lokasi Rak Penyimpanan Gudang"
+        },
+        "conceptExplanation": {
+            "en": "Fulfillment supervisors relocate inventory between warehouse storage bins. 40 units of SKU 'SKU-90' must be transferred from Bin A-1 to Bin B-2. Decrement Bin A-1 by 40 and increment Bin B-2 by 40 in a single transaction.",
+            "id": "Penyelia logistik memindahkan stok barang antar rak penyimpanan gudang. Sebanyak 40 unit SKU 'SKU-90' harus dipindahkan dari Rak A-1 ke Rak B-2. Kurangi Rak A-1 sebanyak 40 dan tambahkan Rak B-2 sebanyak 40 dalam satu transaksi."
+        },
+        "instructions": {
+            "en": "In a transaction, decrement `bin_stock` by 40 in `warehouse_bins` where `bin_code = 'A-1'` and `sku = 'SKU-90'`, and increment `bin_stock` by 40 where `bin_code = 'B-2'` and `sku = 'SKU-90'`.",
+            "id": "Dalam satu transaksi, kurangi `bin_stock` sebesar 40 pada `warehouse_bins` di mana `bin_code = 'A-1'` dan `sku = 'SKU-90'`, lalu tambahkan `bin_stock` sebesar 40 di mana `bin_code = 'B-2'` dan `sku = 'SKU-90'`."
+        },
+        "topics": [
+            "transaction",
+            "multi-statement",
+            "update"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE warehouse_bins (\n    bin_code TEXT NOT NULL,\n    sku TEXT NOT NULL,\n    bin_stock INT NOT NULL,\n    PRIMARY KEY (bin_code, sku)\n);\nINSERT INTO warehouse_bins VALUES ('A-1', 'SKU-90', 100), ('B-2', 'SKU-90', 20);",
+        "referenceQuery": "BEGIN;\nUPDATE warehouse_bins SET bin_stock = bin_stock - 40 WHERE bin_code = 'A-1' AND sku = 'SKU-90';\nUPDATE warehouse_bins SET bin_stock = bin_stock + 40 WHERE bin_code = 'B-2' AND sku = 'SKU-90';\nCOMMIT;",
+        "expected_query": "BEGIN;\nUPDATE warehouse_bins SET bin_stock = bin_stock - 40 WHERE bin_code = 'A-1' AND sku = 'SKU-90';\nUPDATE warehouse_bins SET bin_stock = bin_stock + 40 WHERE bin_code = 'B-2' AND sku = 'SKU-90';\nCOMMIT;",
+        "verification_query": "SELECT bin_code, bin_stock FROM warehouse_bins WHERE sku = 'SKU-90' ORDER BY bin_code ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "warehouse_bins"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1073,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 7,
+        "title": {
+            "en": "Customer Directory Contact Record Synchronization",
+            "id": "Penyelarasan Sinkron Data Kontak Direktori Pelanggan"
+        },
+        "conceptExplanation": {
+            "en": "User directories synchronize profile updates. When a record for email 'alex@company.org' arrives named 'Alex Morgan' and phone '555-0199', store it if missing; if the email exists, modify the contact name and phone number.",
+            "id": "Direktori pengguna menyelaraskan pembaruan profil. Ketika data untuk email 'alex@company.org' masuk dengan nama 'Alex Morgan' dan nomor telepon '555-0199', masukkan jika belum ada; bila sudah terdaftar, perbarui nama kontak dan nomor telepon."
+        },
+        "instructions": {
+            "en": "Store `(email, full_name, phone_number)` specifying values `('alex@company.org', 'Alex Morgan', '555-0199')` into `customer_directory`. On email conflict, modify `full_name` and `phone_number` to the incoming values.",
+            "id": "Masukkan `(email, full_name, phone_number)` bernilai `('alex@company.org', 'Alex Morgan', '555-0199')` ke `customer_directory`. Jika terjadi konflik email, perbarui `full_name` dan `phone_number` sesuai nilai baru."
+        },
+        "topics": [
+            "upsert",
+            "on-conflict",
+            "mutation"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE customer_directory (\n    customer_id SERIAL PRIMARY KEY,\n    email TEXT UNIQUE NOT NULL,\n    full_name TEXT NOT NULL,\n    phone_number TEXT NOT NULL\n);\nINSERT INTO customer_directory (email, full_name, phone_number)\nVALUES ('alex@company.org', 'Alexander M.', '555-0000');",
+        "referenceQuery": "INSERT INTO customer_directory (email, full_name, phone_number)\nVALUES ('alex@company.org', 'Alex Morgan', '555-0199')\nON CONFLICT (email) DO UPDATE SET\n    full_name = EXCLUDED.full_name,\n    phone_number = EXCLUDED.phone_number;",
+        "expected_query": "INSERT INTO customer_directory (email, full_name, phone_number)\nVALUES ('alex@company.org', 'Alex Morgan', '555-0199')\nON CONFLICT (email) DO UPDATE SET\n    full_name = EXCLUDED.full_name,\n    phone_number = EXCLUDED.phone_number;",
+        "verification_query": "SELECT email, full_name, phone_number FROM customer_directory WHERE email = 'alex@company.org';",
+        "starterQuery": "",
+        "table_names": [
+            "customer_directory"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1074,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 7,
+        "title": {
+            "en": "Abandoned Cart Dormancy Deprecation Cleanup",
+            "id": "Pembersihan Keranjang Belanja yang Ditinggalkan"
+        },
+        "conceptExplanation": {
+            "en": "E-commerce databases scrub unpurchased shopping carts. Carts marked 'active' whose most recent modification occurred more than 30 days before July 1, 2024 must be purged to release reserved memory.",
+            "id": "Database e-commerce membersihkan keranjang belanja yang tidak jadi dibeli. Keranjang berstatus 'active' yang pembaruan terakhirnya lebih dari 30 hari sebelum 1 Juli 2024 harus dihapus guna melegakan ruang memori."
+        },
+        "instructions": {
+            "en": "Purge records from `shopping_baskets` where `basket_status = 'active'` and `updated_date < DATE '2024-07-01' - 30`.",
+            "id": "Hapus baris dari `shopping_baskets` di mana `basket_status = 'active'` dan `updated_date < DATE '2024-07-01' - 30`."
+        },
+        "topics": [
+            "delete",
+            "date-arithmetic",
+            "filtering"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE shopping_baskets (\n    basket_id SERIAL PRIMARY KEY,\n    shopper_id INT NOT NULL,\n    basket_status TEXT NOT NULL,\n    updated_date DATE NOT NULL\n);\nINSERT INTO shopping_baskets (shopper_id, basket_status, updated_date)\nSELECT (g % 300) + 1,\n       CASE WHEN g % 2 = 0 THEN 'active' ELSE 'converted' END,\n       DATE '2024-05-01' + (g % 75)\nFROM generate_series(1, 2500) g;\nCREATE INDEX idx_baskets_clean ON shopping_baskets (basket_status, updated_date);\nANALYZE shopping_baskets;",
+        "referenceQuery": "DELETE FROM shopping_baskets\nWHERE basket_status = 'active'\n  AND updated_date < DATE '2024-07-01' - 30;",
+        "expected_query": "DELETE FROM shopping_baskets\nWHERE basket_status = 'active'\n  AND updated_date < DATE '2024-07-01' - 30;",
+        "verification_query": "SELECT COUNT(*) AS active_baskets FROM shopping_baskets WHERE basket_status = 'active';",
+        "starterQuery": "",
+        "table_names": [
+            "shopping_baskets"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1075,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 7,
+        "title": {
+            "en": "Supplier Material Cost Tariff Inflation Adjustment",
+            "id": "Penyesuaian Inflasi Tarif Biaya Material Pemasok"
+        },
+        "conceptExplanation": {
+            "en": "Procurement renegotiates components from supplier 'Acme Metals'. All parts furnished by 'Acme Metals' in product tier 'Heavy' receive a 6 percent price increase, rounded to 2 decimals.",
+            "id": "Divisi pengadaan menegosiasikan kembali harga suku cadang dengan pemasok 'Acme Metals'. Semua komponen dari 'Acme Metals' pada kategori produk 'Heavy' mengalami kenaikan harga 6 persen, dibulatkan 2 desimal."
+        },
+        "instructions": {
+            "en": "Revise `supplier_parts` setting `unit_cost = ROUND(unit_cost * 1.06, 2)` for components where `supplier_name = 'Acme Metals'` and `part_tier = 'Heavy'`.",
+            "id": "Perbarui `supplier_parts` dengan menyetel `unit_cost = ROUND(unit_cost * 1.06, 2)` untuk komponen di mana `supplier_name = 'Acme Metals'` dan `part_tier = 'Heavy'`."
+        },
+        "topics": [
+            "update",
+            "numeric-calculation",
+            "filtering"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE supplier_parts (\n    part_id SERIAL PRIMARY KEY,\n    supplier_name TEXT NOT NULL,\n    part_tier TEXT NOT NULL,\n    unit_cost NUMERIC(8,2) NOT NULL\n);\nINSERT INTO supplier_parts (supplier_name, part_tier, unit_cost)\nSELECT CASE WHEN g % 3 = 0 THEN 'Acme Metals' ELSE 'Global Alloy' END,\n       CASE WHEN g % 2 = 0 THEN 'Heavy' ELSE 'Light' END,\n       50.00 + (g % 200)\nFROM generate_series(1, 2000) g;\nCREATE INDEX idx_parts_supp_tier ON supplier_parts (supplier_name, part_tier);\nANALYZE supplier_parts;",
+        "referenceQuery": "UPDATE supplier_parts\nSET unit_cost = ROUND(unit_cost * 1.06, 2)\nWHERE supplier_name = 'Acme Metals' AND part_tier = 'Heavy';",
+        "expected_query": "UPDATE supplier_parts\nSET unit_cost = ROUND(unit_cost * 1.06, 2)\nWHERE supplier_name = 'Acme Metals' AND part_tier = 'Heavy';",
+        "verification_query": "SELECT AVG(unit_cost) AS avg_acme_heavy FROM supplier_parts WHERE supplier_name = 'Acme Metals' AND part_tier = 'Heavy';",
+        "starterQuery": "",
+        "table_names": [
+            "supplier_parts"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1076,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 7,
+        "title": {
+            "en": "API Key Security Access Revocation",
+            "id": "Pencabutan Izin Akses Kunci API Keamanan"
+        },
+        "conceptExplanation": {
+            "en": "DevOps security protocols revoke old developer tokens. API tokens created prior to 2024 that have remained unused since May 1, 2024 must be deactivated by updating is_revoked to true and recording revocation reason 'Expired Token'.",
+            "id": "Protokol keamanan DevOps mencabut token pengembang lawas. Token API yang dibuat sebelum 2024 dan tidak pernah digunakan sejak 1 Mei 2024 harus dinonaktifkan dengan menyetel is_revoked ke true serta mencatat alasan 'Expired Token'."
+        },
+        "instructions": {
+            "en": "Mark `developer_api_keys` setting `is_revoked = true` and `revocation_reason = 'Expired Token'` where `created_date < '2024-01-01'` and `last_used_date < '2024-05-01'` and `is_revoked = false`.",
+            "id": "Perbarui `developer_api_keys` dengan menyetel `is_revoked = true` dan `revocation_reason = 'Expired Token'` di mana `created_date < '2024-01-01'` dan `last_used_date < '2024-05-01'` serta `is_revoked = false`."
+        },
+        "topics": [
+            "update",
+            "compound-filter",
+            "mutation"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE developer_api_keys (\n    key_id SERIAL PRIMARY KEY,\n    key_hash TEXT NOT NULL,\n    created_date DATE NOT NULL,\n    last_used_date DATE NOT NULL,\n    is_revoked BOOLEAN NOT NULL,\n    revocation_reason TEXT\n);\nINSERT INTO developer_api_keys (key_hash, created_date, last_used_date, is_revoked, revocation_reason)\nSELECT 'HASH-' || g,\n       DATE '2023-01-01' + (g % 300),\n       DATE '2024-01-01' + (g % 180),\n       FALSE,\n       NULL\nFROM generate_series(1, 2000) g;\nCREATE INDEX idx_api_keys_revocation ON developer_api_keys (created_date, last_used_date, is_revoked);\nANALYZE developer_api_keys;",
+        "referenceQuery": "UPDATE developer_api_keys\nSET is_revoked = TRUE,\n    revocation_reason = 'Expired Token'\nWHERE created_date < '2024-01-01'\n  AND last_used_date < '2024-05-01'\n  AND is_revoked = FALSE;",
+        "expected_query": "UPDATE developer_api_keys\nSET is_revoked = TRUE,\n    revocation_reason = 'Expired Token'\nWHERE created_date < '2024-01-01'\n  AND last_used_date < '2024-05-01'\n  AND is_revoked = FALSE;",
+        "verification_query": "SELECT COUNT(*) AS revoked_count FROM developer_api_keys WHERE is_revoked = TRUE;",
+        "starterQuery": "",
+        "table_names": [
+            "developer_api_keys"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1077,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 8,
+        "title": {
+            "en": "Industrial Sensor Voltage Anomaly Isolation",
+            "id": "Isolasi Anomali Tegangan Sensor Industri"
+        },
+        "conceptExplanation": {
+            "en": "Hardware reliability engineers inspect telemetry logs captured by factory sensors. Sensor payload attributes are recorded in a semi-structured format. Isolate reading events during July 2024 where the recorded voltage measurement extracted from the payload exceeds 240.0 volts.",
+            "id": "Teknisi keandalan perangkat keras memeriksa log telemetri dari sensor pabrik. Atribut data sensor disimpan dalam format semi-terstruktur. Pisahkan kejadian pengukuran selama Juli 2024 di mana nilai tegangan yang diekstrak dari data muatan melampaui 240.0 volt."
+        },
+        "instructions": {
+            "en": "Show `device_id`, `event_time`, and numerical voltage `voltage_reading` extracted from `payload->>'voltage'` as numeric for readings during July 2024 where voltage exceeds 240.0. Sort by voltage_reading descending, then device_id.",
+            "id": "Tampilkan `device_id`, `event_time`, dan nilai numerik tegangan `voltage_reading` yang diekstrak dari `payload->>'voltage'` sebagai numeric untuk data selama Juli 2024 di mana tegangan melebihi 240.0. Urutkan berdasarkan voltage_reading menurun, lalu device_id."
+        },
+        "topics": [
+            "jsonb-extraction",
+            "numeric-cast",
+            "date-filtering"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE sensor_telemetry_logs (\n    event_id SERIAL PRIMARY KEY,\n    device_id INT NOT NULL,\n    event_time TIMESTAMP NOT NULL,\n    payload JSONB NOT NULL\n);\nINSERT INTO sensor_telemetry_logs (device_id, event_time, payload)\nSELECT (g % 200) + 1,\n       TIMESTAMP '2024-06-25 00:00:00' + (g * INTERVAL '15 minutes'),\n       json_build_object('voltage', 220 + (g % 35), 'temperature', 40 + (g % 30))::jsonb\nFROM generate_series(1, 3500) g;\nCREATE INDEX idx_sensor_time_json ON sensor_telemetry_logs (event_time);\nANALYZE sensor_telemetry_logs;",
+        "referenceQuery": "SELECT device_id, event_time,\n       (payload->>'voltage')::numeric AS voltage_reading\nFROM sensor_telemetry_logs\nWHERE event_time >= '2024-07-01' AND event_time < '2024-08-01'\n  AND (payload->>'voltage')::numeric > 240.0\nORDER BY voltage_reading DESC, device_id ASC;",
+        "expected_query": "SELECT device_id, event_time,\n       (payload->>'voltage')::numeric AS voltage_reading\nFROM sensor_telemetry_logs\nWHERE event_time >= '2024-07-01' AND event_time < '2024-08-01'\n  AND (payload->>'voltage')::numeric > 240.0\nORDER BY voltage_reading DESC, device_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "sensor_telemetry_logs"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1078,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 8,
+        "title": {
+            "en": "User Communication Preferences Attribute Extraction",
+            "id": "Ekstraksi Atribut Preferensi Komunikasi Pengguna"
+        },
+        "conceptExplanation": {
+            "en": "Customer communications systems manage subscriber delivery channels. User settings are stored in structured document fields. Extract the subscriber preferred notification channel and marketing opt-in status for active subscribers, filtering for users who explicitly enabled notifications.",
+            "id": "Sistem komunikasi pelanggan mengelola saluran pengiriman pesan pelanggan. Pengaturan pengguna tersimpan dalam kolom dokumen terstruktur. Ekstrak saluran pemberitahuan yang dipilih serta status promosi untuk pelanggan aktif yang secara eksplisit mengaktifkan pemberitahuan."
+        },
+        "instructions": {
+            "en": "Show `user_id`, `email`, channel `preferred_channel` from `profile_doc->'preferences'->>'channel'`, and `marketing_opt_in` as boolean from `(profile_doc->'preferences'->>'marketing')::boolean` for users where `(profile_doc->'preferences'->>'enabled')::boolean = true`. Sort by user_id ascending.",
+            "id": "Tampilkan `user_id`, `email`, saluran `preferred_channel` dari `profile_doc->'preferences'->>'channel'`, dan `marketing_opt_in` sebagai boolean dari `(profile_doc->'preferences'->>'marketing')::boolean` untuk pengguna di mana `(profile_doc->'preferences'->>'enabled')::boolean = true`. Urutkan berdasarkan user_id menaik."
+        },
+        "topics": [
+            "jsonb-nested-path",
+            "boolean-cast",
+            "filtering"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE user_settings_registry (\n    user_id SERIAL PRIMARY KEY,\n    email TEXT NOT NULL,\n    profile_doc JSONB NOT NULL\n);\nINSERT INTO user_settings_registry (email, profile_doc)\nSELECT 'user' || g || '@service.net',\n       json_build_object(\n           'preferences', json_build_object(\n               'channel', CASE WHEN g % 2 = 0 THEN 'email' ELSE 'sms' END,\n               'marketing', (g % 3 = 0),\n               'enabled', (g % 4 <> 0)\n           )\n       )::jsonb\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_user_settings_gin ON user_settings_registry USING gin (profile_doc);\nANALYZE user_settings_registry;",
+        "referenceQuery": "SELECT user_id, email,\n       profile_doc->'preferences'->>'channel' AS preferred_channel,\n       (profile_doc->'preferences'->>'marketing')::boolean AS marketing_opt_in\nFROM user_settings_registry\nWHERE (profile_doc->'preferences'->>'enabled')::boolean = TRUE\nORDER BY user_id ASC;",
+        "expected_query": "SELECT user_id, email,\n       profile_doc->'preferences'->>'channel' AS preferred_channel,\n       (profile_doc->'preferences'->>'marketing')::boolean AS marketing_opt_in\nFROM user_settings_registry\nWHERE (profile_doc->'preferences'->>'enabled')::boolean = TRUE\nORDER BY user_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "user_settings_registry"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1079,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 8,
+        "title": {
+            "en": "E-Commerce Catalog Tag Array Match",
+            "id": "Pencarian Larik Tag Katalog E-Commerce"
+        },
+        "conceptExplanation": {
+            "en": "Merchandise discovery platforms categorize inventory through dynamic tag collections. Find items belonging to category 'Footwear' whose specification document includes the tag 'waterproof' in its tag array.",
+            "id": "Platform katalog barang mengelompokkan produk melalui koleksi tag dinamis. Temukan barang berkategori 'Footwear' yang dokumen spesifikasinya memuat tag 'waterproof' pada larik tag."
+        },
+        "instructions": {
+            "en": "Show `item_sku`, `brand_name`, `retail_price` for products in category `'Footwear'` whose `attributes_doc->'tags'` array contains the text value `'waterproof'`. Sort by retail_price descending, then item_sku.",
+            "id": "Tampilkan `item_sku`, `brand_name`, `retail_price` untuk produk dalam kategori `'Footwear'` yang memiliki nilai teks `'waterproof'` di dalam larik `attributes_doc->'tags'`. Urutkan berdasarkan retail_price menurun, lalu item_sku."
+        },
+        "topics": [
+            "jsonb-containment",
+            "array-search",
+            "filtering"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE product_spec_catalog (\n    item_sku TEXT PRIMARY KEY,\n    category TEXT NOT NULL,\n    brand_name TEXT NOT NULL,\n    retail_price NUMERIC(8,2) NOT NULL,\n    attributes_doc JSONB NOT NULL\n);\nINSERT INTO product_spec_catalog (item_sku, category, brand_name, retail_price, attributes_doc)\nSELECT 'SKU-' || g,\n       CASE WHEN g % 3 = 0 THEN 'Footwear' ELSE 'Apparel' END,\n       'Brand-' || ((g % 20) + 1),\n       60.00 + (g % 180),\n       json_build_object(\n           'tags', CASE WHEN g % 5 = 0 THEN json_build_array('waterproof', 'trail', 'cushioned') ELSE json_build_array('indoor', 'light') END\n       )::jsonb\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_spec_cat ON product_spec_catalog (category, retail_price);\nCREATE INDEX idx_spec_doc_gin ON product_spec_catalog USING gin (attributes_doc);\nANALYZE product_spec_catalog;",
+        "referenceQuery": "SELECT item_sku, brand_name, retail_price\nFROM product_spec_catalog\nWHERE category = 'Footwear'\n  AND attributes_doc->'tags' ? 'waterproof'\nORDER BY retail_price DESC, item_sku ASC;",
+        "expected_query": "SELECT item_sku, brand_name, retail_price\nFROM product_spec_catalog\nWHERE category = 'Footwear'\n  AND attributes_doc->'tags' ? 'waterproof'\nORDER BY retail_price DESC, item_sku ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "product_spec_catalog"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1080,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 8,
+        "title": {
+            "en": "API Access Header Client Application Distribution",
+            "id": "Distribusi Aplikasi Klien Header Akses API"
+        },
+        "conceptExplanation": {
+            "en": "API platform architects trace incoming traffic by parsing HTTP header documents. For all traffic logged in August 2024, extract the client name from the headers document, count incoming requests, and calculate average duration in milliseconds. Focus on client clients generating at least 100 requests.",
+            "id": "Arsitek platform API menelusuri lalu lintas data masuk dengan membaca dokumen header HTTP. Untuk lalu lintas selama Agustus 2024, ekstrak nama klien dari dokumen header, hitung total permintaan, dan tentukan rata-rata durasi dalam milidetik. Fokus pada klien dengan minimal 100 panggilan."
+        },
+        "instructions": {
+            "en": "Display client identifier `client_name` from `headers_doc->>'client'`, `request_count`, and `avg_duration_ms` rounded to 1 decimal for requests in August 2024 where `COUNT(*) >= 100`. Sort by request_count descending, then client_name.",
+            "id": "Tampilkan pengenal klien `client_name` dari `headers_doc->>'client'`, `request_count`, dan `avg_duration_ms` dibulatkan 1 desimal untuk panggilan pada Agustus 2024 di mana `COUNT(*) >= 100`. Urutkan berdasarkan request_count menurun, lalu client_name."
+        },
+        "topics": [
+            "jsonb-extraction",
+            "group-aggregation",
+            "having-filter"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE api_access_records (\n    record_id SERIAL PRIMARY KEY,\n    request_time TIMESTAMP NOT NULL,\n    duration_ms INT NOT NULL,\n    headers_doc JSONB NOT NULL\n);\nINSERT INTO api_access_records (request_time, duration_ms, headers_doc)\nSELECT TIMESTAMP '2024-08-01 00:00:00' + (g * INTERVAL '12 minutes'),\n       25 + (g % 300),\n       json_build_object(\n           'client', 'App-' || ((g % 10) + 1),\n           'version', 'v2.' || (g % 5)\n       )::jsonb\nFROM generate_series(1, 3500) g;\nCREATE INDEX idx_api_time ON api_access_records (request_time);\nANALYZE api_access_records;",
+        "referenceQuery": "SELECT headers_doc->>'client' AS client_name,\n       COUNT(*) AS request_count,\n       ROUND(AVG(duration_ms), 1) AS avg_duration_ms\nFROM api_access_records\nWHERE request_time >= '2024-08-01' AND request_time < '2024-09-01'\nGROUP BY headers_doc->>'client'\nHAVING COUNT(*) >= 100\nORDER BY request_count DESC, client_name ASC;",
+        "expected_query": "SELECT headers_doc->>'client' AS client_name,\n       COUNT(*) AS request_count,\n       ROUND(AVG(duration_ms), 1) AS avg_duration_ms\nFROM api_access_records\nWHERE request_time >= '2024-08-01' AND request_time < '2024-09-01'\nGROUP BY headers_doc->>'client'\nHAVING COUNT(*) >= 100\nORDER BY request_count DESC, client_name ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "api_access_records"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1081,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 8,
+        "title": {
+            "en": "Knowledge Base Article Keyword Search Indexing",
+            "id": "Pengindeksan Pencarian Kata Kunci Artikel Pengetahuan"
+        },
+        "conceptExplanation": {
+            "en": "Help center search algorithms locate relevant support articles. Articles matching both terms 'database' and 'replica' within their published body text must be retrieved. Exclude archived articles, presenting the article identifier and title.",
+            "id": "Algoritma pencarian pusat bantuan mencari artikel panduan yang relevan. Artikel yang memuat kedua kata 'database' dan 'replica' di dalam isi artikel harus ditampilkan. Abaikan artikel terarsip, tampilkan id artikel dan judul."
+        },
+        "instructions": {
+            "en": "Show `article_id`, `article_title`, and `view_count` for active articles (`is_archived = false`) whose body text satisfies a full-text match for both `'database'` and `'replica'`. Sort by view_count descending, then article_id.",
+            "id": "Tampilkan `article_id`, `article_title`, dan `view_count` untuk artikel aktif (`is_archived = false`) yang isi teksnya memenuhi pencocokan teks lengkap untuk kata `'database'` dan `'replica'`. Urutkan berdasarkan view_count menurun, lalu article_id."
+        },
+        "topics": [
+            "full-text-search",
+            "tsvector",
+            "filtering"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE knowledge_articles (\n    article_id SERIAL PRIMARY KEY,\n    article_title TEXT NOT NULL,\n    body_text TEXT NOT NULL,\n    view_count INT NOT NULL,\n    is_archived BOOLEAN NOT NULL\n);\nINSERT INTO knowledge_articles (article_title, body_text, view_count, is_archived)\nSELECT 'Guide ' || g,\n       CASE\n           WHEN g % 7 = 0 THEN 'How to configure a production database with read replica synchronization and clustering.'\n           WHEN g % 3 = 0 THEN 'Setting up an analytical database engine without replica nodes.'\n           ELSE 'General network configuration and firewall troubleshooting.'\n       END,\n       100 + (g % 900),\n       (g % 8 = 0)\nFROM generate_series(1, 2000) g;\nCREATE INDEX idx_articles_fts ON knowledge_articles USING gin (to_tsvector('english', body_text));\nANALYZE knowledge_articles;",
+        "referenceQuery": "SELECT article_id, article_title, view_count\nFROM knowledge_articles\nWHERE is_archived = FALSE\n  AND to_tsvector('english', body_text) @@ to_tsquery('english', 'database & replica')\nORDER BY view_count DESC, article_id ASC;",
+        "expected_query": "SELECT article_id, article_title, view_count\nFROM knowledge_articles\nWHERE is_archived = FALSE\n  AND to_tsvector('english', body_text) @@ to_tsquery('english', 'database & replica')\nORDER BY view_count DESC, article_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "knowledge_articles"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1082,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 8,
+        "title": {
+            "en": "Verified Customer Wallet Balance Distribution",
+            "id": "Distribusi Saldo Dompet Pelanggan Terverifikasi"
+        },
+        "conceptExplanation": {
+            "en": "Treasury officers audit digital balances held in Euro currency by verified account holders. Only accounts that completed regulatory identity verification (is_verified is true) holding currency 'EUR' maintaining positive balances are included.",
+            "id": "Petugas perbendaharaan memeriksa saldo digital dalam mata uang Euro milik pemegang akun terverifikasi. Hanya akun yang telah menuntaskan verifikasi identitas (is_verified bernilai true) dengan mata uang 'EUR' bersaldo positif yang diikutsertakan."
+        },
+        "instructions": {
+            "en": "Show `wallet_id`, `holder_name`, and `balance` for verified wallets (`is_verified = true`) holding `'EUR'` where `balance >= 500.00`. Sort by balance descending, then wallet_id.",
+            "id": "Tampilkan `wallet_id`, `holder_name`, dan `balance` untuk dompet terverifikasi (`is_verified = true`) bermata uang `'EUR'` dengan `balance >= 500.00`. Urutkan berdasarkan balance menurun, lalu wallet_id."
+        },
+        "topics": [
+            "partial-index-query",
+            "filtering",
+            "numeric-comparison"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE digital_wallets (\n    wallet_id SERIAL PRIMARY KEY,\n    holder_name TEXT NOT NULL,\n    currency CHAR(3) NOT NULL,\n    balance NUMERIC(10,2) NOT NULL,\n    is_verified BOOLEAN NOT NULL\n);\nINSERT INTO digital_wallets (holder_name, currency, balance, is_verified)\nSELECT 'Holder-' || g,\n       CASE WHEN g % 3 = 0 THEN 'EUR' WHEN g % 3 = 1 THEN 'USD' ELSE 'GBP' END,\n       100.00 + (g % 2000),\n       (g % 4 <> 0)\nFROM generate_series(1, 3500) g;\nCREATE INDEX idx_wallets_verified_eur ON digital_wallets (balance DESC) WHERE is_verified = TRUE AND currency = 'EUR';\nANALYZE digital_wallets;",
+        "referenceQuery": "SELECT wallet_id, holder_name, balance\nFROM digital_wallets\nWHERE is_verified = TRUE\n  AND currency = 'EUR'\n  AND balance >= 500.00\nORDER BY balance DESC, wallet_id ASC;",
+        "expected_query": "SELECT wallet_id, holder_name, balance\nFROM digital_wallets\nWHERE is_verified = TRUE\n  AND currency = 'EUR'\n  AND balance >= 500.00\nORDER BY balance DESC, wallet_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "digital_wallets"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1083,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 8,
+        "title": {
+            "en": "Medical Clinical Diagnostic Screening Threshold",
+            "id": "Ambang Batas Skrining Diagnostik Medis"
+        },
+        "conceptExplanation": {
+            "en": "Clinical epidemiology studies analyze diagnostic laboratory measurements stored as semi-structured records. Extract blood glucose numbers from the diagnostic JSON payload. Report screenings conducted during 2024 where extracted glucose strictly exceeds 140 mg/dL.",
+            "id": "Kajian epidemiologi klinis menganalisis hasil uji laboratorium yang tersimpan dalam format semi-terstruktur. Ekstrak kadar gula darah dari data JSON diagnosis. Laporkan pemeriksaan selama tahun 2024 di mana kadar gula darah melebihi 140 mg/dL."
+        },
+        "instructions": {
+            "en": "Display `screening_id`, `patient_id`, `test_date`, and numerical glucose `glucose_reading` extracted from `test_results->>'glucose'` as integer for screenings in 2024 where glucose exceeds 140. Sort by glucose_reading descending, then screening_id.",
+            "id": "Tampilkan `screening_id`, `patient_id`, `test_date`, dan kadar gula numerik `glucose_reading` yang diekstrak dari `test_results->>'glucose'` sebagai integer untuk tes pada 2024 di mana gula darah melebihi 140. Urutkan berdasarkan glucose_reading menurun, lalu screening_id."
+        },
+        "topics": [
+            "jsonb-extraction",
+            "integer-cast",
+            "date-filtering"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE clinical_screenings (\n    screening_id SERIAL PRIMARY KEY,\n    patient_id INT NOT NULL,\n    test_date DATE NOT NULL,\n    test_results JSONB NOT NULL\n);\nINSERT INTO clinical_screenings (patient_id, test_date, test_results)\nSELECT (g % 400) + 1,\n       DATE '2024-01-01' + (g % 300),\n       json_build_object('glucose', 90 + (g % 80), 'cholesterol', 160 + (g % 70))::jsonb\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_screenings_date ON clinical_screenings (test_date);\nANALYZE clinical_screenings;",
+        "referenceQuery": "SELECT screening_id, patient_id, test_date,\n       (test_results->>'glucose')::int AS glucose_reading\nFROM clinical_screenings\nWHERE test_date >= '2024-01-01' AND test_date <= '2024-12-31'\n  AND (test_results->>'glucose')::int > 140\nORDER BY glucose_reading DESC, screening_id ASC;",
+        "expected_query": "SELECT screening_id, patient_id, test_date,\n       (test_results->>'glucose')::int AS glucose_reading\nFROM clinical_screenings\nWHERE test_date >= '2024-01-01' AND test_date <= '2024-12-31'\n  AND (test_results->>'glucose')::int > 140\nORDER BY glucose_reading DESC, screening_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "clinical_screenings"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1084,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 8,
+        "title": {
+            "en": "System Exception Severity Class Matching",
+            "id": "Pencocokan Tingkat Keparahan Pengecualian Sistem"
+        },
+        "conceptExplanation": {
+            "en": "Application monitoring logs store stack trace dumps. Filter for application failures flagged marked severity 'FATAL' where the inner detail document identifies the exception name as 'DatabaseConnectionTimeout'.",
+            "id": "Log pemantauan aplikasi menyimpan data pelacakan kegagalan. Saring kegagalan sistem dengan tingkat keparahan 'FATAL' di mana rincian dokumen mencantumkan nama kendala 'DatabaseConnectionTimeout'."
+        },
+        "instructions": {
+            "en": "Show `incident_id`, `service_key`, `incident_time`, and host name `host_identifier` from `error_doc->>'hostname'` for incidents where `severity = 'FATAL'` and `error_doc->>'exception'` equals `'DatabaseConnectionTimeout'`. Sort by incident_time descending, then incident_id.",
+            "id": "Tampilkan `incident_id`, `service_key`, `incident_time`, dan nama host `host_identifier` dari `error_doc->>'hostname'` untuk insiden dengan `severity = 'FATAL'` dan `error_doc->>'exception'` bernilai `'DatabaseConnectionTimeout'`. Urutkan berdasarkan incident_time menurun, lalu incident_id."
+        },
+        "topics": [
+            "jsonb-extraction",
+            "compound-filter",
+            "text-comparison"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE system_incidents (\n    incident_id SERIAL PRIMARY KEY,\n    service_key TEXT NOT NULL,\n    severity TEXT NOT NULL,\n    incident_time TIMESTAMP NOT NULL,\n    error_doc JSONB NOT NULL\n);\nINSERT INTO system_incidents (service_key, severity, incident_time, error_doc)\nSELECT 'SRV-' || ((g % 20) + 1),\n       CASE WHEN g % 4 = 0 THEN 'FATAL' ELSE 'WARN' END,\n       TIMESTAMP '2024-08-01 00:00:00' + (g * INTERVAL '10 minutes'),\n       json_build_object(\n           'exception', CASE WHEN g % 3 = 0 THEN 'DatabaseConnectionTimeout' ELSE 'NullPointerException' END,\n           'hostname', 'node-' || ((g % 50) + 1)\n       )::jsonb\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_incidents_sev_time ON system_incidents (severity, incident_time);\nANALYZE system_incidents;",
+        "referenceQuery": "SELECT incident_id, service_key, incident_time,\n       error_doc->>'hostname' AS host_identifier\nFROM system_incidents\nWHERE severity = 'FATAL'\n  AND error_doc->>'exception' = 'DatabaseConnectionTimeout'\nORDER BY incident_time DESC, incident_id ASC;",
+        "expected_query": "SELECT incident_id, service_key, incident_time,\n       error_doc->>'hostname' AS host_identifier\nFROM system_incidents\nWHERE severity = 'FATAL'\n  AND error_doc->>'exception' = 'DatabaseConnectionTimeout'\nORDER BY incident_time DESC, incident_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "system_incidents"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1085,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 8,
+        "title": {
+            "en": "Customs Declarations High-Value Valuation Inspection",
+            "id": "Inspeksi Penilaian Pabean Kiriman Bernilai Tinggi"
+        },
+        "conceptExplanation": {
+            "en": "International border customs stations screen cargo manifests for high-value tax assessments. Parse the declared merchandise value from cargo declaration documents. Identify parcels bound for country 'GB' where declared merchandise value exceeds 1500.00.",
+            "id": "Pos pabean perbatasan internasional menyaring manifest kargo untuk penilaian pajak barang bernilai tinggi. Ekstrak nilai deklarasi barang dari dokumen pabean. Identifikasi paket dengan tujuan 'GB' di mana nilai barang melampaui 1500.00."
+        },
+        "instructions": {
+            "en": "Display `parcel_tracking_code`, `origin_country`, and numerical declared valuation `declared_value` from `declaration_doc->>'valuation'` as numeric for destination `'GB'` (`destination_country = 'GB'`) where declared valuation exceeds 1500.00. Sort by declared_value descending, then parcel_tracking_code.",
+            "id": "Tampilkan `parcel_tracking_code`, `origin_country`, dan nilai taksiran numerik `declared_value` dari `declaration_doc->>'valuation'` sebagai numeric untuk tujuan `'GB'` (`destination_country = 'GB'`) di mana taksiran melebihi 1500.00. Urutkan berdasarkan declared_value menurun, lalu parcel_tracking_code."
+        },
+        "topics": [
+            "jsonb-extraction",
+            "numeric-cast",
+            "filtering"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE customs_declarations (\n    parcel_tracking_code TEXT PRIMARY KEY,\n    origin_country CHAR(2) NOT NULL,\n    destination_country CHAR(2) NOT NULL,\n    declaration_doc JSONB NOT NULL\n);\nINSERT INTO customs_declarations (parcel_tracking_code, origin_country, destination_country, declaration_doc)\nSELECT 'TRK-' || g,\n       'US',\n       CASE WHEN g % 3 = 0 THEN 'GB' ELSE 'FR' END,\n       json_build_object('valuation', 500.00 + (g % 2000), 'contents', 'Electronics')::jsonb\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_customs_dest ON customs_declarations (destination_country);\nANALYZE customs_declarations;",
+        "referenceQuery": "SELECT parcel_tracking_code, origin_country,\n       (declaration_doc->>'valuation')::numeric AS declared_value\nFROM customs_declarations\nWHERE destination_country = 'GB'\n  AND (declaration_doc->>'valuation')::numeric > 1500.00\nORDER BY declared_value DESC, parcel_tracking_code ASC;",
+        "expected_query": "SELECT parcel_tracking_code, origin_country,\n       (declaration_doc->>'valuation')::numeric AS declared_value\nFROM customs_declarations\nWHERE destination_country = 'GB'\n  AND (declaration_doc->>'valuation')::numeric > 1500.00\nORDER BY declared_value DESC, parcel_tracking_code ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "customs_declarations"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1086,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 8,
+        "title": {
+            "en": "Stadium Seating Section Yield Aggregation",
+            "id": "Agregasi Hasil Tiket Area Tempat Duduk Stadion"
+        },
+        "conceptExplanation": {
+            "en": "Concert ticketing managers evaluate pricing performance across venue sections. Seating parameters are stored within a structured seat position document. Extract the section designation from the document, tally tickets sold, and determine the average ticket price across sections selling at least 50 tickets.",
+            "id": "Manajer tiket konser mengevaluasi performa harga di setiap area stadion. Parameter tempat duduk disimpan dalam dokumen posisi tempat duduk. Ekstrak nama area dari dokumen, hitung tiket terjual, dan tentukan rata-rata harga di area yang menjual minimal 50 tiket."
+        },
+        "instructions": {
+            "en": "Show `section_code` extracted from `seat_doc->>'section'`, `tickets_sold`, and `avg_price` rounded to 2 decimals for sections where `COUNT(*) >= 50`. Sort by avg_price descending, then section_code.",
+            "id": "Tampilkan `section_code` dari `seat_doc->>'section'`, `tickets_sold`, dan `avg_price` dibulatkan 2 desimal untuk area dengan `COUNT(*) >= 50`. Urutkan berdasarkan avg_price menurun, lalu section_code."
+        },
+        "topics": [
+            "jsonb-extraction",
+            "group-aggregation",
+            "having-filter"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE venue_event_tickets (\n    ticket_id SERIAL PRIMARY KEY,\n    seat_doc JSONB NOT NULL,\n    ticket_price NUMERIC(8,2) NOT NULL\n);\nINSERT INTO venue_event_tickets (seat_doc, ticket_price)\nSELECT json_build_object('section', 'SEC-' || ((g % 15) + 1), 'row', (g % 30) + 1)::jsonb,\n       50.00 + (g % 150)\nFROM generate_series(1, 3000) g;\nCREATE INDEX idx_tickets_section ON venue_event_tickets ((seat_doc->>'section'));\nANALYZE venue_event_tickets;",
+        "referenceQuery": "SELECT seat_doc->>'section' AS section_code,\n       COUNT(*) AS tickets_sold,\n       ROUND(AVG(ticket_price), 2) AS avg_price\nFROM venue_event_tickets\nGROUP BY seat_doc->>'section'\nHAVING COUNT(*) >= 50\nORDER BY avg_price DESC, section_code ASC;",
+        "expected_query": "SELECT seat_doc->>'section' AS section_code,\n       COUNT(*) AS tickets_sold,\n       ROUND(AVG(ticket_price), 2) AS avg_price\nFROM venue_event_tickets\nGROUP BY seat_doc->>'section'\nHAVING COUNT(*) >= 50\nORDER BY avg_price DESC, section_code ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "venue_event_tickets"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1087,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 8,
+        "title": {
+            "en": "SaaS Tenant Feature Flag Activation Extraction",
+            "id": "Ekstraksi Aktivasi Feature Flag Tenant SaaS"
+        },
+        "conceptExplanation": {
+            "en": "Platform engineers audit customer configuration settings. Each organization's account options reside in a JSON document. Identify organizations deployed in region 'eu-west' whose configuration document explicitly sets the advanced analytics flag to true.",
+            "id": "Teknisi platform mengaudit pengaturan konfigurasi pelanggan. Opsi akun setiap organisasi berada di dalam dokumen JSON. Identifikasi organisasi yang ditempatkan di kawasan 'eu-west' di mana dokumen konfigurasinya menyetel opsi analitik lanjutan bernilai true."
+        },
+        "instructions": {
+            "en": "Show `tenant_id`, `org_name`, and plan tier `plan_tier` from `config_doc->>'tier'` for organizations in `'eu-west'` (`deployment_region = 'eu-west'`) where `(config_doc->'features'->>'advanced_analytics')::boolean = true`. Sort by tenant_id ascending.",
+            "id": "Tampilkan `tenant_id`, `org_name`, dan tingkatan paket `plan_tier` dari `config_doc->>'tier'` untuk organisasi di `'eu-west'` (`deployment_region = 'eu-west'`) di mana `(config_doc->'features'->>'advanced_analytics')::boolean = true`. Urutkan berdasarkan tenant_id menaik."
+        },
+        "topics": [
+            "jsonb-nested-path",
+            "boolean-cast",
+            "filtering"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE organization_tenants (\n    tenant_id SERIAL PRIMARY KEY,\n    org_name TEXT NOT NULL,\n    deployment_region TEXT NOT NULL,\n    config_doc JSONB NOT NULL\n);\nINSERT INTO organization_tenants (org_name, deployment_region, config_doc)\nSELECT 'Org-' || g,\n       CASE WHEN g % 2 = 0 THEN 'eu-west' ELSE 'us-east' END,\n       json_build_object(\n           'tier', CASE WHEN g % 3 = 0 THEN 'Enterprise' ELSE 'Standard' END,\n           'features', json_build_object('advanced_analytics', (g % 4 = 0))\n       )::jsonb\nFROM generate_series(1, 2500) g;\nCREATE INDEX idx_tenant_region ON organization_tenants (deployment_region);\nANALYZE organization_tenants;",
+        "referenceQuery": "SELECT tenant_id, org_name,\n       config_doc->>'tier' AS plan_tier\nFROM organization_tenants\nWHERE deployment_region = 'eu-west'\n  AND (config_doc->'features'->>'advanced_analytics')::boolean = TRUE\nORDER BY tenant_id ASC;",
+        "expected_query": "SELECT tenant_id, org_name,\n       config_doc->>'tier' AS plan_tier\nFROM organization_tenants\nWHERE deployment_region = 'eu-west'\n  AND (config_doc->'features'->>'advanced_analytics')::boolean = TRUE\nORDER BY tenant_id ASC;",
+        "starterQuery": "",
+        "table_names": [
+            "organization_tenants"
+        ],
+        "scoring": {
+            "mode": "plan"
+        }
+    },
+    {
+        "id": 1088,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 9,
+        "title": {
+            "en": "Reporting Specialist Security Role Provisioning",
+            "id": "Penyediaan Peran Keamanan Spesialis Laporan"
+        },
+        "conceptExplanation": {
+            "en": "Database administrators provision dedicated database identities for business intelligence teams. A new identity named `analyst_reporter` must be provisioned authorized to log in capabilities, password 'Secur3Pass!', and read-only query capabilities granted strictly on table `company_reports`.",
+            "id": "Administrator database menyediakan identitas database khusus untuk tim business intelligence. Sebuah peran baru bernama `analyst_reporter` harus disiapkan dengan izin login, kata sandi 'Secur3Pass!', dan izin baca khusus pada tabel `company_reports`."
+        },
+        "instructions": {
+            "en": "Create role `analyst_reporter` configured with login credentials and password 'Secur3Pass!', grant usage on schema public to analyst_reporter, and grant read permissions on table `company_reports` to `analyst_reporter`.",
+            "id": "Buat peran `analyst_reporter` yang dikonfigurasi dengan kredensial login dan kata sandi 'Secur3Pass!', berikan izin penggunaan skema public, dan berikan izin baca pada tabel `company_reports` kepada `analyst_reporter`."
+        },
+        "topics": [
+            "roles",
+            "privileges",
+            "security-grants"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE company_reports (id SERIAL PRIMARY KEY, title TEXT NOT NULL);",
+        "referenceQuery": "CREATE ROLE analyst_reporter WITH LOGIN PASSWORD 'Secur3Pass!';\nGRANT USAGE ON SCHEMA public TO analyst_reporter;\nGRANT SELECT ON TABLE company_reports TO analyst_reporter;",
+        "expected_query": "CREATE ROLE analyst_reporter WITH LOGIN PASSWORD 'Secur3Pass!';\nGRANT USAGE ON SCHEMA public TO analyst_reporter;\nGRANT SELECT ON TABLE company_reports TO analyst_reporter;",
+        "starterQuery": "",
+        "table_names": [
+            "company_reports"
+        ],
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM pg_roles WHERE rolname = 'analyst_reporter';",
+                    "weight": 34,
+                    "description": {
+                        "en": "Role analyst_reporter created",
+                        "id": "Peran analyst_reporter terdaftar"
+                    }
+                },
+                {
+                    "sql": "SELECT rolcanlogin = true FROM pg_roles WHERE rolname = 'analyst_reporter';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Role possesses login permission",
+                        "id": "Peran memiliki izin login"
+                    }
+                },
+                {
+                    "sql": "SELECT has_table_privilege('analyst_reporter', 'company_reports', 'SELECT') = true;",
+                    "weight": 33,
+                    "description": {
+                        "en": "Read permission granted on company_reports",
+                        "id": "Izin baca diberikan pada company_reports"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1089,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 9,
+        "title": {
+            "en": "Intake Clerk Restricted Privilege Authorization",
+            "id": "Otorisasi Hak Akses Terbatas Petugas Input Data"
+        },
+        "conceptExplanation": {
+            "en": "Data governance protocols mandate least-privilege configurations. A data entry identity `intake_clerk` requires login credentials password set to 'Clerk99!' and permissions restricted strictly to reading and appending records on `customer_intake`, without deletion capabilities.",
+            "id": "Protokol tata kelola data mewajibkan konfigurasi hak akses minimum. Identitas petugas `intake_clerk` memerlukan akses login dengan kata sandi 'Clerk99!' dan hak akses terbatas hanya untuk membaca dan menambah baris pada `customer_intake`, tanpa izin penghapusan data."
+        },
+        "instructions": {
+            "en": "Create role `intake_clerk` configured with login credentials and password 'Clerk99!', grant usage on schema public, and grant reading and row-inserting permissions on table `customer_intake` to `intake_clerk`.",
+            "id": "Buat peran `intake_clerk` yang dikonfigurasi dengan kredensial login dan kata sandi 'Clerk99!', berikan izin penggunaan skema public, serta berikan hak membaca dan menambah baris pada tabel `customer_intake` kepada `intake_clerk`."
+        },
+        "topics": [
+            "roles",
+            "table-privileges",
+            "least-privilege"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE customer_intake (id SERIAL PRIMARY KEY, details TEXT NOT NULL);",
+        "referenceQuery": "CREATE ROLE intake_clerk WITH LOGIN PASSWORD 'Clerk99!';\nGRANT USAGE ON SCHEMA public TO intake_clerk;\nGRANT SELECT, INSERT ON TABLE customer_intake TO intake_clerk;",
+        "expected_query": "CREATE ROLE intake_clerk WITH LOGIN PASSWORD 'Clerk99!';\nGRANT USAGE ON SCHEMA public TO intake_clerk;\nGRANT SELECT, INSERT ON TABLE customer_intake TO intake_clerk;",
+        "starterQuery": "",
+        "table_names": [
+            "customer_intake"
+        ],
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM pg_roles WHERE rolname = 'intake_clerk';",
+                    "weight": 34,
+                    "description": {
+                        "en": "Role intake_clerk created",
+                        "id": "Peran intake_clerk terdaftar"
+                    }
+                },
+                {
+                    "sql": "SELECT has_table_privilege('intake_clerk', 'customer_intake', 'SELECT') AND has_table_privilege('intake_clerk', 'customer_intake', 'INSERT');",
+                    "weight": 33,
+                    "description": {
+                        "en": "Read and record-addition privileges granted",
+                        "id": "Hak baca dan tambah data diberikan"
+                    }
+                },
+                {
+                    "sql": "SELECT NOT has_table_privilege('intake_clerk', 'customer_intake', 'DELETE');",
+                    "weight": 33,
+                    "description": {
+                        "en": "Deletion privileges strictly withheld",
+                        "id": "Izin penghapusan data tidak diberikan"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1090,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 9,
+        "title": {
+            "en": "Departmental Personnel Directory Public View",
+            "id": "Tampilan Publik Direktori Personel Departemen"
+        },
+        "conceptExplanation": {
+            "en": "Human resources maintains internal staff records containing sensitive home addresses and salaries. Create a secure presentation layer named `vw_public_staff_summary` that exposes only `emp_id`, `emp_name`, and `department`, omitting confidential salary and contact attributes.",
+            "id": "Bagian personalia menyimpan data internal karyawan yang memuat alamat rumah dan nominal gaji rahasia. Buat lapisan tampilan aman bernama `vw_public_staff_summary` yang hanya memperlihatkan `emp_id`, `emp_name`, dan `department`, tanpa menampilkan data gaji dan kontak rahasia."
+        },
+        "instructions": {
+            "en": "Create a database view named `vw_public_staff_summary` displaying `emp_id`, `emp_name`, and `department` from `internal_personnel`.",
+            "id": "Buat tampilan database bernama `vw_public_staff_summary` yang menampilkan `emp_id`, `emp_name`, dan `department` dari `internal_personnel`."
+        },
+        "topics": [
+            "views",
+            "security-masking",
+            "ddl"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE internal_personnel (\n    emp_id SERIAL PRIMARY KEY,\n    emp_name TEXT NOT NULL,\n    department TEXT NOT NULL,\n    salary INT NOT NULL,\n    home_address TEXT NOT NULL\n);\nINSERT INTO internal_personnel (emp_name, department, salary, home_address)\nVALUES ('Jordan Lee', 'Finance', 85000, '123 Pine St'), ('Avery Park', 'Engineering', 95000, '456 Oak Ave');",
+        "referenceQuery": "CREATE VIEW vw_public_staff_summary AS\nSELECT emp_id, emp_name, department\nFROM internal_personnel;",
+        "expected_query": "CREATE VIEW vw_public_staff_summary AS\nSELECT emp_id, emp_name, department\nFROM internal_personnel;",
+        "starterQuery": "",
+        "table_names": [
+            "internal_personnel"
+        ],
+        "isDdlCreate": true,
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM information_schema.views WHERE table_name = 'vw_public_staff_summary';",
+                    "weight": 34,
+                    "description": {
+                        "en": "View vw_public_staff_summary defined",
+                        "id": "View vw_public_staff_summary terdefinisi"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) = 3 FROM information_schema.columns WHERE table_name = 'vw_public_staff_summary';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Exposes exactly three sanitized columns",
+                        "id": "Hanya menampilkan tiga kolom aman"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) >= 2 FROM vw_public_staff_summary;",
+                    "weight": 33,
+                    "description": {
+                        "en": "View returns populated records successfully",
+                        "id": "View menampilkan baris data dengan benar"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1091,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 9,
+        "title": {
+            "en": "Invoice Line Item Dependent Deletion Relationship",
+            "id": "Relasi Penghapusan Berjenjang Item Tagihan"
+        },
+        "conceptExplanation": {
+            "en": "Accounting schemas establish automatic cleanup rules between invoice headers and itemized invoice details. When an entire invoice record is removed, all dependent detail lines linked to that invoice identifier must be purged automatically by the relational engine.",
+            "id": "Skema akuntansi menetapkan aturan pembersihan otomatis antara kepala tagihan dan rincian item tagihan. Saat data tagihan utama dihapus, seluruh rincian baris yang terhubung harus dibersihkan secara otomatis oleh sistem database."
+        },
+        "instructions": {
+            "en": "Establish a referential relationship named `fk_invoice_items_parent` on table `invoice_line_items` for column `invoice_id` connecting to `customer_invoices(id)` configured for automatic removal of dependent rows upon deletion.",
+            "id": "Tetapkan relasi referensi bernama `fk_invoice_items_parent` pada tabel `invoice_line_items` di kolom `invoice_id` yang terhubung ke `customer_invoices(id)` dengan pengaturan pembersihan otomatis baris terkait saat data induk dihapus."
+        },
+        "topics": [
+            "alter-table",
+            "foreign-key",
+            "cascade-delete"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE customer_invoices (\n    id SERIAL PRIMARY KEY,\n    invoice_number TEXT NOT NULL\n);\nCREATE TABLE invoice_line_items (\n    item_id SERIAL PRIMARY KEY,\n    invoice_id INT NOT NULL,\n    line_description TEXT NOT NULL\n);",
+        "referenceQuery": "ALTER TABLE invoice_line_items\nADD CONSTRAINT fk_invoice_items_parent\nFOREIGN KEY (invoice_id) REFERENCES customer_invoices(id) ON DELETE CASCADE;",
+        "expected_query": "ALTER TABLE invoice_line_items\nADD CONSTRAINT fk_invoice_items_parent\nFOREIGN KEY (invoice_id) REFERENCES customer_invoices(id) ON DELETE CASCADE;",
+        "starterQuery": "",
+        "table_names": [
+            "invoice_line_items",
+            "customer_invoices"
+        ],
+        "isDdlCreate": true,
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM pg_constraint WHERE conname = 'fk_invoice_items_parent';",
+                    "weight": 34,
+                    "description": {
+                        "en": "Foreign key constraint exists",
+                        "id": "Aturan foreign key terpasang"
+                    }
+                },
+                {
+                    "sql": "SELECT contype = 'f' FROM pg_constraint WHERE conname = 'fk_invoice_items_parent';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Constraint is foreign key type",
+                        "id": "Aturan bertipe foreign key"
+                    }
+                },
+                {
+                    "sql": "SELECT confdeltype = 'c' FROM pg_constraint WHERE conname = 'fk_invoice_items_parent';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Deletion rule configured as cascade",
+                        "id": "Aturan penghapusan disetel cascade"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1092,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 9,
+        "title": {
+            "en": "Departmental Namespace Isolation and Ownership Transfer",
+            "id": "Isolasi Namespace Departemen dan Pengalihan Kepemilikan"
+        },
+        "conceptExplanation": {
+            "en": "Enterprise multi-schema databases isolate departmental assets into distinct namespaces. Provision a security role named `vault_admin` and create a dedicated relational schema named `finance_vault` owned by `vault_admin`.",
+            "id": "Database multi-skema perusahaan mengisolasi data departemen ke dalam namespace terpisah. Siapkan peran keamanan bernama `vault_admin` dan buat skema relasional bernama `finance_vault` yang dimiliki oleh `vault_admin`."
+        },
+        "instructions": {
+            "en": "Create role `vault_admin`, create schema `finance_vault`, and alter the owner of schema `finance_vault` to `vault_admin`.",
+            "id": "Buat peran `vault_admin`, buat skema `finance_vault`, dan ubah pemilik skema `finance_vault` menjadi `vault_admin`."
+        },
+        "topics": [
+            "schema",
+            "roles",
+            "ownership"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "",
+        "referenceQuery": "CREATE ROLE vault_admin;\nCREATE SCHEMA finance_vault;\nALTER SCHEMA finance_vault OWNER TO vault_admin;",
+        "expected_query": "CREATE ROLE vault_admin;\nCREATE SCHEMA finance_vault;\nALTER SCHEMA finance_vault OWNER TO vault_admin;",
+        "starterQuery": "",
+        "table_names": [],
+        "isDdlCreate": true,
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM pg_roles WHERE rolname = 'vault_admin';",
+                    "weight": 34,
+                    "description": {
+                        "en": "Role vault_admin created",
+                        "id": "Peran vault_admin terdaftar"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM pg_namespace WHERE nspname = 'finance_vault';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Schema finance_vault created",
+                        "id": "Skema finance_vault terbuat"
+                    }
+                },
+                {
+                    "sql": "SELECT r.rolname = 'vault_admin' FROM pg_namespace n JOIN pg_roles r ON n.nspowner = r.oid WHERE n.nspname = 'finance_vault';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Ownership granted to vault_admin",
+                        "id": "Kepemilikan diberikan ke vault_admin"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1093,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 9,
+        "title": {
+            "en": "Customer Tax Identifier Privacy Masking View",
+            "id": "Tampilan Penyamaran Privasi Nomor Wajib Pajak Pelanggan"
+        },
+        "conceptExplanation": {
+            "en": "Privacy compliance standards forbid exposing full government tax numbers to customer service staff. Construct view `vw_masked_client_tax` presenting `client_id`, `client_name`, and masked tax number `masked_tax_id` formatted as `'***-**-'` joined to the final 4 characters of the tax identifier.",
+            "id": "Standar privasi melarang penayangan lengkap nomor identitas pajak kepada staf layanan pelanggan. Bangun tampilan `vw_masked_client_tax` yang menyajikan `client_id`, `client_name`, dan nomor pajak tersamar `masked_tax_id` dengan format `'***-**-'` disambung 4 karakter terakhir nomor identitas pajak."
+        },
+        "instructions": {
+            "en": "Define view `vw_masked_client_tax` displaying `client_id`, `client_name`, and `masked_tax_id` computed as `'***-**-' || RIGHT(tax_id, 4)` from `client_tax_records`.",
+            "id": "Definisikan view `vw_masked_client_tax` yang menampilkan `client_id`, `client_name`, dan `masked_tax_id` yang dihitung sebagai `'***-**-' || RIGHT(tax_id, 4)` dari `client_tax_records`."
+        },
+        "topics": [
+            "views",
+            "string-concatenation",
+            "data-masking"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE client_tax_records (\n    client_id SERIAL PRIMARY KEY,\n    client_name TEXT NOT NULL,\n    tax_id TEXT NOT NULL\n);\nINSERT INTO client_tax_records (client_name, tax_id)\nVALUES ('Acme Corp', '123-45-6789'), ('Summit Global', '987-65-4321');",
+        "referenceQuery": "CREATE VIEW vw_masked_client_tax AS\nSELECT client_id, client_name,\n       '***-**-' || RIGHT(tax_id, 4) AS masked_tax_id\nFROM client_tax_records;",
+        "expected_query": "CREATE VIEW vw_masked_client_tax AS\nSELECT client_id, client_name,\n       '***-**-' || RIGHT(tax_id, 4) AS masked_tax_id\nFROM client_tax_records;",
+        "starterQuery": "",
+        "table_names": [
+            "client_tax_records"
+        ],
+        "isDdlCreate": true,
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM information_schema.views WHERE table_name = 'vw_masked_client_tax';",
+                    "weight": 34,
+                    "description": {
+                        "en": "View vw_masked_client_tax exists",
+                        "id": "View vw_masked_client_tax terbuat"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) = 3 FROM information_schema.columns WHERE table_name = 'vw_masked_client_tax';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Exposes three defined columns",
+                        "id": "Menampilkan tiga kolom terdefinisi"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) = 2 FROM vw_masked_client_tax WHERE masked_tax_id LIKE '***-**-%';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Tax numbers properly masked",
+                        "id": "Nomor pajak tersamar dengan benar"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1094,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 9,
+        "title": {
+            "en": "Legacy Service Account Modification Revocation",
+            "id": "Pencabutan Izin Modifikasi Akun Layanan Lawas"
+        },
+        "conceptExplanation": {
+            "en": "During database hardening, automated background accounts are converted to read-only status. Remove data modification permissions (record addition, updating, and deletion) from role `legacy_service_user` on table `system_audit_trail`.",
+            "id": "Dalam penguatan keamanan database, akun latar belakang dialihkan ke status hanya-baca. Cabut seluruh hak modifikasi data (penambahan, pembaruan, dan penghapusan) dari peran `legacy_service_user` pada tabel `system_audit_trail`."
+        },
+        "instructions": {
+            "en": "Revoke record addition, record updating, and record deletion permissions on table `system_audit_trail` from role `legacy_service_user`.",
+            "id": "Cabut izin penambahan baris, pembaruan baris, dan penghapusan baris pada tabel `system_audit_trail` dari peran `legacy_service_user`."
+        },
+        "topics": [
+            "revoke",
+            "privileges",
+            "security-hardening"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE ROLE legacy_service_user;\nCREATE TABLE system_audit_trail (id SERIAL PRIMARY KEY, note TEXT);\nGRANT SELECT, INSERT, UPDATE, DELETE ON TABLE system_audit_trail TO legacy_service_user;",
+        "referenceQuery": "REVOKE INSERT, UPDATE, DELETE ON TABLE system_audit_trail FROM legacy_service_user;",
+        "expected_query": "REVOKE INSERT, UPDATE, DELETE ON TABLE system_audit_trail FROM legacy_service_user;",
+        "starterQuery": "",
+        "table_names": [
+            "system_audit_trail"
+        ],
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT has_table_privilege('legacy_service_user', 'system_audit_trail', 'SELECT') = true;",
+                    "weight": 34,
+                    "description": {
+                        "en": "Read permission preserved",
+                        "id": "Hak baca tetap tersedia"
+                    }
+                },
+                {
+                    "sql": "SELECT has_table_privilege('legacy_service_user', 'system_audit_trail', 'INSERT') = false;",
+                    "weight": 33,
+                    "description": {
+                        "en": "Addition permission revoked",
+                        "id": "Hak penambahan dicabut"
+                    }
+                },
+                {
+                    "sql": "SELECT has_table_privilege('legacy_service_user', 'system_audit_trail', 'DELETE') = false;",
+                    "weight": 33,
+                    "description": {
+                        "en": "Deletion permission revoked",
+                        "id": "Hak penghapusan dicabut"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1095,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 9,
+        "title": {
+            "en": "Departmental Role Group Membership Delegation",
+            "id": "Pemberian Keanggotaan Grup Peran Departemen"
+        },
+        "conceptExplanation": {
+            "en": "Role-based access administration utilizes group roles to manage shared privileges. Create a parent group role named `billing_analysts`, create an individual agent identity `billing_agent_01` authorized to log in permissions, and assign `billing_analysts` role membership to `billing_agent_01`.",
+            "id": "Pengelolaan hak akses berbasis peran menggunakan peran kelompok untuk mengelola wewenang bersama. Buat peran kelompok bernama `billing_analysts`, buat identitas individu `billing_agent_01` dengan hak login, dan berikan keanggotaan `billing_analysts` kepada `billing_agent_01`."
+        },
+        "instructions": {
+            "en": "Create role `billing_analysts`, create role `billing_agent_01` configured with login permission, and grant role `billing_analysts` to `billing_agent_01`.",
+            "id": "Buat peran `billing_analysts`, buat peran `billing_agent_01` yang dikonfigurasi dengan izin login, dan berikan peran `billing_analysts` kepada `billing_agent_01`."
+        },
+        "topics": [
+            "roles",
+            "role-inheritance",
+            "rbac"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "",
+        "referenceQuery": "CREATE ROLE billing_analysts;\nCREATE ROLE billing_agent_01 WITH LOGIN;\nGRANT billing_analysts TO billing_agent_01;",
+        "expected_query": "CREATE ROLE billing_analysts;\nCREATE ROLE billing_agent_01 WITH LOGIN;\nGRANT billing_analysts TO billing_agent_01;",
+        "starterQuery": "",
+        "table_names": [],
+        "isDdlCreate": true,
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM pg_roles WHERE rolname = 'billing_analysts';",
+                    "weight": 34,
+                    "description": {
+                        "en": "Group role billing_analysts created",
+                        "id": "Peran kelompok billing_analysts terdaftar"
+                    }
+                },
+                {
+                    "sql": "SELECT rolcanlogin = true FROM pg_roles WHERE rolname = 'billing_agent_01';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Agent role created authorized to log in capability",
+                        "id": "Peran agen dibuat dengan wewenang login"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM pg_auth_members m JOIN pg_roles g ON m.roleid = g.oid JOIN pg_roles u ON m.member = u.oid WHERE g.rolname = 'billing_analysts' AND u.rolname = 'billing_agent_01';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Membership association established",
+                        "id": "Hubungan keanggotaan terpasang"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1096,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 9,
+        "title": {
+            "en": "Granular Field-Level Authorization Provisioning",
+            "id": "Penyediaan Otorisasi Granular Tingkat Kolom"
+        },
+        "conceptExplanation": {
+            "en": "Security compliance mandates restricting contractor access away from confidential columns. Authorize role `guest_contractor` to execute read queries exclusively on columns `id` and `public_bio` of table `staff_profiles`, without exposing column `salary_cents`.",
+            "id": "Kepatuhan keamanan mewajibkan pembatasan akses kontraktor dari kolom rahasia. Berikan izin baca kepada peran `guest_contractor` secara eksklusif hanya untuk kolom `id` dan `public_bio` pada tabel `staff_profiles`, tanpa membuka kolom `salary_cents`."
+        },
+        "instructions": {
+            "en": "Grant usage on schema public to `guest_contractor`, and grant read query permission exclusively on columns `(id, public_bio)` of table `staff_profiles` to `guest_contractor`.",
+            "id": "Berikan izin penggunaan skema public kepada `guest_contractor`, dan berikan izin baca secara eksklusif pada kolom `(id, public_bio)` tabel `staff_profiles` kepada `guest_contractor`."
+        },
+        "topics": [
+            "column-privileges",
+            "least-privilege",
+            "grants"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE ROLE guest_contractor;\nCREATE TABLE staff_profiles (\n    id SERIAL PRIMARY KEY,\n    public_bio TEXT NOT NULL,\n    salary_cents INT NOT NULL\n);",
+        "referenceQuery": "GRANT USAGE ON SCHEMA public TO guest_contractor;\nGRANT SELECT (id, public_bio) ON TABLE staff_profiles TO guest_contractor;",
+        "expected_query": "GRANT USAGE ON SCHEMA public TO guest_contractor;\nGRANT SELECT (id, public_bio) ON TABLE staff_profiles TO guest_contractor;",
+        "starterQuery": "",
+        "table_names": [
+            "staff_profiles"
+        ],
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT has_column_privilege('guest_contractor', 'staff_profiles', 'id', 'SELECT') = true;",
+                    "weight": 34,
+                    "description": {
+                        "en": "Column id read authorized",
+                        "id": "Izin baca kolom id diberikan"
+                    }
+                },
+                {
+                    "sql": "SELECT has_column_privilege('guest_contractor', 'staff_profiles', 'public_bio', 'SELECT') = true;",
+                    "weight": 33,
+                    "description": {
+                        "en": "Column public_bio read authorized",
+                        "id": "Izin baca kolom public_bio diberikan"
+                    }
+                },
+                {
+                    "sql": "SELECT has_column_privilege('guest_contractor', 'staff_profiles', 'salary_cents', 'SELECT') = false;",
+                    "weight": 33,
+                    "description": {
+                        "en": "Sensitive salary column remains protected",
+                        "id": "Kolom gaji tetap terlindungi"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1097,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 9,
+        "title": {
+            "en": "Project Leader Nullification Referential Specification",
+            "id": "Spesifikasi Penghapusan Pemimpin Proyek Bersifat Null"
+        },
+        "conceptExplanation": {
+            "en": "When an assigned team supervisor departs or their supervisor record is removed, assigned project records should not disappear. The relational rule must automatically set the project supervisor reference to null.",
+            "id": "Ketika penyelia tim yang ditugaskan mengundurkan diri atau datanya dihapus, data proyek terkait tidak boleh hilang. Aturan relasional harus secara otomatis menyetel referensi penyelia proyek tersebut menjadi null."
+        },
+        "instructions": {
+            "en": "Establish a referential relationship named `fk_project_supervisor` on `assigned_projects(supervisor_id)` connecting to `supervisors(id)` configured to set the reference value to null upon deletion.",
+            "id": "Tetapkan relasi referensi bernama `fk_project_supervisor` pada `assigned_projects(supervisor_id)` yang terhubung ke `supervisors(id)` dengan pengaturan penghapusan yang menyetel nilai referensi menjadi null saat data induk dihapus."
+        },
+        "topics": [
+            "alter-table",
+            "foreign-key",
+            "set-null-delete"
+        ],
+        "difficulty": "medium",
+        "seed_sql": "CREATE TABLE supervisors (\n    id SERIAL PRIMARY KEY,\n    name TEXT NOT NULL\n);\nCREATE TABLE assigned_projects (\n    project_id SERIAL PRIMARY KEY,\n    project_name TEXT NOT NULL,\n    supervisor_id INT\n);",
+        "referenceQuery": "ALTER TABLE assigned_projects\nADD CONSTRAINT fk_project_supervisor\nFOREIGN KEY (supervisor_id) REFERENCES supervisors(id) ON DELETE SET NULL;",
+        "expected_query": "ALTER TABLE assigned_projects\nADD CONSTRAINT fk_project_supervisor\nFOREIGN KEY (supervisor_id) REFERENCES supervisors(id) ON DELETE SET NULL;",
+        "starterQuery": "",
+        "table_names": [
+            "assigned_projects",
+            "supervisors"
+        ],
+        "isDdlCreate": true,
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM pg_constraint WHERE conname = 'fk_project_supervisor';",
+                    "weight": 34,
+                    "description": {
+                        "en": "Constraint fk_project_supervisor exists",
+                        "id": "Aturan fk_project_supervisor terpasang"
+                    }
+                },
+                {
+                    "sql": "SELECT contype = 'f' FROM pg_constraint WHERE conname = 'fk_project_supervisor';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Constraint is foreign key",
+                        "id": "Aturan bertipe foreign key"
+                    }
+                },
+                {
+                    "sql": "SELECT confdeltype = 'n' FROM pg_constraint WHERE conname = 'fk_project_supervisor';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Deletion rule configured as set null",
+                        "id": "Aturan penghapusan disetel set null"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 1098,
+        "bank": "exam",
+        "moduleId": 0,
+        "categorySlot": 9,
+        "title": {
+            "en": "Daily Sales Aggregate Snapshot Materialization",
+            "id": "Materialisasi Ringkasan Agregat Penjualan Harian"
+        },
+        "conceptExplanation": {
+            "en": "Data architects optimize repetitive reporting queries through precomputed materialized storage. Define a materialized view named `mv_daily_sales_turnover` presenting `sale_date` and total sales `total_turnover` (the sum of sales amount) grouped by `sale_date`.",
+            "id": "Arsitek data mengoptimalkan query laporan berulang melalui penyimpanan terkomputasi awal. Definisikan materialized view bernama `mv_daily_sales_turnover` yang menyajikan `sale_date` dan total penjualan `total_turnover` (jumlah amount) yang dikelompokkan berdasarkan `sale_date`."
+        },
+        "instructions": {
+            "en": "Create a materialized view named `mv_daily_sales_turnover` displaying `sale_date` and `SUM(amount)` as `total_turnover` from `raw_store_sales` grouped by `sale_date`.",
+            "id": "Buat materialized view bernama `mv_daily_sales_turnover` yang menampilkan `sale_date` dan `SUM(amount)` sebagai `total_turnover` dari `raw_store_sales` yang dikelompokkan berdasarkan `sale_date`."
+        },
+        "topics": [
+            "materialized-view",
+            "group-aggregation",
+            "ddl"
+        ],
+        "difficulty": "hard",
+        "seed_sql": "CREATE TABLE raw_store_sales (\n    sale_id SERIAL PRIMARY KEY,\n    sale_date DATE NOT NULL,\n    amount NUMERIC(8,2) NOT NULL\n);\nINSERT INTO raw_store_sales (sale_date, amount)\nSELECT DATE '2024-08-01' + (g % 30), 20.00 + (g % 80) FROM generate_series(1, 1000) g;\nANALYZE raw_store_sales;",
+        "referenceQuery": "CREATE MATERIALIZED VIEW mv_daily_sales_turnover AS\nSELECT sale_date, SUM(amount) AS total_turnover\nFROM raw_store_sales\nGROUP BY sale_date;",
+        "expected_query": "CREATE MATERIALIZED VIEW mv_daily_sales_turnover AS\nSELECT sale_date, SUM(amount) AS total_turnover\nFROM raw_store_sales\nGROUP BY sale_date;",
+        "starterQuery": "",
+        "table_names": [
+            "raw_store_sales"
+        ],
+        "isDdlCreate": true,
+        "scoring": {
+            "mode": "structural",
+            "checks": [
+                {
+                    "sql": "SELECT COUNT(*) = 1 FROM pg_matviews WHERE matviewname = 'mv_daily_sales_turnover';",
+                    "weight": 34,
+                    "description": {
+                        "en": "Materialized view mv_daily_sales_turnover created",
+                        "id": "Materialized view mv_daily_sales_turnover terbuat"
+                    }
+                },
+                {
+                    "sql": "SELECT ispopulated = true FROM pg_matviews WHERE matviewname = 'mv_daily_sales_turnover';",
+                    "weight": 33,
+                    "description": {
+                        "en": "Materialized view populated with data",
+                        "id": "Materialized view terisi data"
+                    }
+                },
+                {
+                    "sql": "SELECT COUNT(*) >= 20 FROM mv_daily_sales_turnover;",
+                    "weight": 33,
+                    "description": {
+                        "en": "Contains aggregated daily records",
+                        "id": "Memuat data harian teragregasi"
+                    }
+                }
+            ]
+        }
+    }
+];
+// ===== EXAM BANK END =====

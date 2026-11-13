@@ -85,15 +85,6 @@ export class PgliteEngine implements IDbEngine {
 		}
 	}
 
-	async dumpDataDir(compression: 'none' | 'gzip' = 'none'): Promise<Blob | File> {
-		if (!this.db) throw new Error('Database engine not initialized');
-		return await (this.db as any).dumpDataDir(compression);
-	}
-
-	async loadDataDir(file: Blob | File): Promise<void> {
-		await this.destroy();
-		this.db = await PGlite.create({ loadDataDir: file });
-	}
 
 	getInternalDb(): PGlite | null {
 		return this.db;
@@ -123,6 +114,13 @@ function preprocessSqlForSqlJs(sql: string): string {
 		.replace(/\bAUTO_INCREMENT\b/gi, 'AUTOINCREMENT')
 		.replace(/\bLAST_INSERT_ID\(\)/gi, 'last_insert_rowid()')
 		.replace(/\bIF\s*\((?!NOT\s+EXISTS|EXISTS)/gi, 'IIF(')
+		.replace(/DATE_ADD\s*\(\s*([^,]+),\s*INTERVAL\s+(\d+)\s+([a-zA-Z]+)\s*\)/gi, (_m, col, n, unit) => {
+			return `datetime(${col}, '+${n} ${unit.toLowerCase()}')`;
+		})
+		.replace(/DATE_SUB\s*\(\s*([^,]+),\s*INTERVAL\s+(\d+)\s+([a-zA-Z]+)\s*\)/gi, (_m, col, n, unit) => {
+			return `datetime(${col}, '-${n} ${unit.toLowerCase()}')`;
+		})
+		.replace(/\bINSERT\s+IGNORE\s+INTO\b/gi, 'INSERT OR IGNORE INTO')
 		.replace(/\bON\s+DUPLICATE\s+KEY\s+UPDATE\b/gi, 'ON CONFLICT DO UPDATE SET')
 		.replace(/\bVALUES\s*\(\s*(\w+)\s*\)/gi, 'excluded.$1')
 		.replace(/GROUP_CONCAT\s*\(\s*(?:DISTINCT\s+)?([\w.]+)(?:\s+ORDER\s+BY\s+[^)]+?)?\s+SEPARATOR\s+(['"][^'"]+['"])\s*\)/gi, 'GROUP_CONCAT($1, $2)')
@@ -137,7 +135,11 @@ function preprocessSqlForSqlJs(sql: string): string {
 		.replace(/\bTRUNCATE\s+TABLE\s+(\w+);?/gi, 'DELETE FROM $1;')
 		.replace(/\bTRUNCATE\s+(\w+);?/gi, 'DELETE FROM $1;')
 		.replace(/\bSTART\s+TRANSACTION;?/gi, 'BEGIN TRANSACTION;')
+		.replace(/SET\s+(?:SESSION\s+|GLOBAL\s+|TRANSACTION\s+)?TRANSACTION\s+ISOLATION\s+LEVEL\s+[^;]+;?/gi, ';')
+		.replace(/\s+FOR\s+UPDATE\s+(?:SKIP\s+LOCKED|NOWAIT);?/gi, ';')
 		.replace(/\s+FOR\s+UPDATE;?/gi, ';')
+		.replace(/\bREFRESH\s+MATERIALIZED\s+VIEW\s+[^;]+;?/gi, ';')
+		.replace(/\bMATERIALIZED\s+VIEW\b/gi, 'VIEW')
 		.replace(/\bCREATE\s+SCHEMA\s+(?:IF\s+NOT\s+EXISTS\s+)?(\w+);?/gi, ';')
 		.replace(/\bCREATE\s+DATABASE\s+(?:IF\s+NOT\s+EXISTS\s+)?(\w+);?/gi, ';')
 		.replace(/\bUSE\s+(\w+);?/gi, ';')
@@ -222,6 +224,27 @@ export class SqlJsEngine implements IDbEngine {
 			} catch {
 				return 0;
 			}
+		});
+		this.db.create_function('gen_random_uuid', () => 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
+		this.db.create_function('UUID', () => 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
+		this.db.create_function('DATE_FORMAT', (dateStr: string, formatStr: string) => {
+			if (!dateStr) return null;
+			const d = new Date(dateStr.includes('T') ? dateStr : dateStr.replace(' ', 'T'));
+			if (isNaN(d.getTime())) return dateStr;
+			const pad = (n: number) => String(n).padStart(2, '0');
+			const Y = d.getFullYear();
+			const m = pad(d.getMonth() + 1);
+			const day = pad(d.getDate());
+			const H = pad(d.getHours());
+			const i = pad(d.getMinutes());
+			const s = pad(d.getSeconds());
+			return formatStr
+				.replace('%Y', String(Y))
+				.replace('%m', m)
+				.replace('%d', day)
+				.replace('%H', H)
+				.replace('%i', i)
+				.replace('%s', s);
 		});
 		if (seedSql.trim()) {
 			this.db.exec(preprocessSqlForSqlJs(seedSql));

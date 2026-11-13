@@ -238,7 +238,7 @@ describe('Feature: Auto-Resume to Last In-Progress Task Upon Entering Selected E
 
 			it('lands on the Module Overview dashboard (/[dbms]) when all curriculum modules are completed', () => {
 				saveProgress('postgres', {
-					completedModules: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+					completedModules: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
 					modules: {}
 				});
 
@@ -248,7 +248,7 @@ describe('Feature: Auto-Resume to Last In-Progress Task Upon Entering Selected E
 
 			it('lands on /mysql Module Overview when all modules are completed in mysql', () => {
 				saveProgress('mysql', {
-					completedModules: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+					completedModules: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
 					modules: {}
 				});
 
@@ -263,7 +263,7 @@ describe('Feature: Auto-Resume to Last In-Progress Task Upon Entering Selected E
 					engine: 'postgres'
 				});
 				saveProgress('postgres', {
-					completedModules: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+					completedModules: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
 					modules: {}
 				});
 

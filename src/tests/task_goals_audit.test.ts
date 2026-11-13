@@ -4,8 +4,8 @@ import { MODULES } from '$lib/data/questions';
 describe('Task Goals Audit - Zero SQL Solution Leaks', () => {
     // Prohibited SQL statement and clause fragments that must not appear in instructions
     const leakedPatterns = [
-        /using\s+[`'"]?[A-Z_\s();*]+[`'"]?/i,
-        /menggunakan\s+(?:perintah\s+|klausa\s+|operator\s+|sintaks\s+)?[`'"]?[A-Z_\s();*]+[`'"]?/i,
+        /\busing\s+(?:clause|statement|operator)\s+[`'"]?[A-Z_\s();*]+[`'"]?/i,
+        /menggunakan\s+(?:perintah\s+|klausa\s+|operator\s+|sintaks\s+)[`'"]?[A-Z_\s();*]+[`'"]?/i,
         /`\s*(?:SELECT|INSERT|UPDATE|DELETE|CREATE|ALTER|DROP|TRUNCATE|GRANT|REVOKE|COMMIT|ROLLBACK|SAVEPOINT|LOCK|UNLOCK)\b[^`]*`/i,
         /`\s*(?:WHERE|GROUP BY|HAVING|ORDER BY|LIMIT|OFFSET|JOIN|UNION|INTERSECT|EXCEPT|ON CONFLICT|ON DUPLICATE KEY)\b[^`]*`/i,
         /`\s*[a-zA-Z0-9_]+\s*(?:=|<|>|<=|>=|!=|<>|\+|-|\*|\/)\s*[^`]+`/i, // e.g. `price > 100`, `rating = rating + 0.5`

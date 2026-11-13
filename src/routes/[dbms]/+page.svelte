@@ -106,11 +106,21 @@
 							<h2 class="text-base font-semibold text-white group-hover:text-zinc-100 transition-colors">
 								{mod.title[$locale]}
 							</h2>
-							{#if completedModules.includes(mod.id)}
-								<span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 shrink-0 font-medium">
-									✓ {t[$locale].passed}
-								</span>
-							{/if}
+							<div class="flex items-center gap-1.5 shrink-0">
+								{#if mod.id >= 10}
+									<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-950/60 border border-blue-800/60 text-blue-300 font-medium">
+										PGlite WASM
+									</span>
+								{/if}
+								{#if completedModules.includes(mod.id)}
+									<span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 shrink-0 font-medium inline-flex items-center gap-1">
+										<svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-emerald-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+											<polyline points="20 6 9 17 4 12"/>
+										</svg>
+										<span>{t[$locale].passed}</span>
+									</span>
+								{/if}
+							</div>
 						</div>
 						<p class="text-xs text-zinc-400 leading-relaxed mb-6">
 							{mod.description[$locale]}
@@ -130,9 +140,16 @@
 							<h2 class="text-base font-medium text-zinc-400">
 								{mod.title[$locale]}
 							</h2>
-							<span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-900/80 border border-zinc-800 text-zinc-500 shrink-0 font-medium">
-								{t[$locale].locked}
-							</span>
+							<div class="flex items-center gap-1.5 shrink-0">
+								{#if mod.id >= 10}
+									<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-500 font-medium">
+										PGlite WASM
+									</span>
+								{/if}
+								<span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-900/80 border border-zinc-800 text-zinc-500 shrink-0 font-medium">
+									{t[$locale].locked}
+								</span>
+							</div>
 						</div>
 						<p class="text-xs text-zinc-500 leading-relaxed mb-6">
 							{mod.description[$locale]}
@@ -164,8 +181,11 @@
 					</div>
 					<div class="flex items-center gap-2">
 						{#if challengePassed}
-							<span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 shrink-0 font-medium">
-								✓ {t[$locale].passed}
+							<span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 shrink-0 font-medium inline-flex items-center gap-1">
+								<svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-emerald-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+									<polyline points="20 6 9 17 4 12"/>
+								</svg>
+								<span>{t[$locale].passed}</span>
 							</span>
 						{/if}
 						<span class="text-[10px] font-mono px-2 py-0.5 rounded border border-zinc-800 bg-zinc-900 {isExamOpen ? 'text-zinc-300' : 'text-zinc-500'}">

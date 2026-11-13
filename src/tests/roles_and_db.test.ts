@@ -16,9 +16,9 @@ describe('Feature 1 & Feature 2: Role, Privilege & Database Management Questions
 			expect(q).toBeDefined();
 			expect(q?.moduleId).toBe(9);
 			if (id <= 939) {
-				expect(q?.categorySlot).toBe(9);
+				expect(q?.categorySlot).toBe(8);
 			} else {
-				expect(q?.categorySlot).toBe(10);
+				expect(q?.categorySlot).toBe(7);
 			}
 		}
 	});
